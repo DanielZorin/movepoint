@@ -1,2 +1,3 @@
 glob:*.pyc
 glob:src/SchedulerGUI/build/*
+glob:*.qm
