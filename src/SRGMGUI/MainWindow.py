@@ -1,7 +1,12 @@
 from PyQt4 import QtGui, QtCore
 from ui_main import Ui_MainWindow
-from projectdialog import ProjectDialog, OpenDialog, SettingsDialog
-from SRGM.computer import Computer
+from ProjectDialog import ProjectDialog, OpenDialog, SettingsDialog
+from SRGM.SRGM import SRGM
+from SRGM.GoelOkumoto import GoelOkumoto
+from SRGM.JelinskiMoranda import JelinskiMoranda
+from SRGM.LittlewoodVerrall import LittlewoodVerrall
+from SRGM.SShaped import SShaped
+from SRGM.Logarithmic import Logarithmic
 import sys, pickle, os, math
 import xml.dom.minidom
 
@@ -49,7 +54,7 @@ class Graph(QtGui.QWidget):
         paint.end()
 
 
-class MyMainWindow(QtGui.QMainWindow):
+class MainWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
@@ -172,7 +177,7 @@ class MyMainWindow(QtGui.QMainWindow):
         self.startTime = 0
         self.endTime = 2**64
         self.SetupData()
-        self.computer = Computer(self.fileName)
+        self.computer = SRGM(self.fileName)
         self.endTime = self.computer.totaltime
         #self.Compute()
 
@@ -230,7 +235,7 @@ class MyMainWindow(QtGui.QMainWindow):
         self.startTime = int(self.settingsDialog.lineedit4.text())
         self.endTime = int(self.settingsDialog.lineedit5.text())
         self.SetupData()
-        self.computer = Computer(self.fileName)
+        self.computer = SRGM(self.fileName)
         
     def SetupData(self):
         #Here the slice is done
@@ -328,7 +333,7 @@ class MyMainWindow(QtGui.QMainWindow):
         ft.close()
         self.ParseXml()
         self.SetupData()
-        self.computer = Computer(self.fileName)
+        self.computer = SRGM(self.fileName)
 
     def BatchAddData(self):
         #Add a pack of errors
@@ -349,7 +354,7 @@ class MyMainWindow(QtGui.QMainWindow):
         self.errors.sort(cmp = compare)
         self.SetupData()
         self.DumpXml()
-        self.computer = Computer(self.fileName)
+        self.computer = SRGM(self.fileName)
 
     def LoadNewXML(self):
         #Loads new data, overrides current
@@ -364,7 +369,7 @@ class MyMainWindow(QtGui.QMainWindow):
         f.close()
         self.ParseXml()
         self.SetupData()
-        self.computer = Computer(self.fileName)
+        self.computer = SRGM(self.fileName)
         
     def ParseXml(self):
         name = self.fileNameXml
@@ -425,7 +430,8 @@ class MyMainWindow(QtGui.QMainWindow):
         a0 = -1
         a1 = -1
         if model == "Goel-Okumoto":
-            a, p, b, a0, a1 = self.computer.GoelOkumoto()
+            self.computer = GoelOkumoto(self.fileName)
+            a, p, b, a0, a1 = self.computer.Compute()
             if a != -2:
                 f = lambda x: a*(1-math.exp(-p*x))
                 f2 = lambda x: a*p*math.exp(-p*x)
@@ -445,7 +451,8 @@ class MyMainWindow(QtGui.QMainWindow):
                 year = f(self.computer.totaltime+365)
                 #self.ui.comboBox_2.setCurrentIndex(0)
         elif model == "S-Shaped":
-            a, p, b = self.computer.SShaped()
+            self.computer = SShaped(self.fileName)
+            a, p, b = self.computer.Compute()
             f = lambda x: a*(1-(1+p)*math.exp(-p*x))
             f2 = lambda x: a*p*p*x*math.exp(-p*x)
             if self.ui.comboBox_2.currentIndex() == 0:
@@ -464,7 +471,8 @@ class MyMainWindow(QtGui.QMainWindow):
             year = f(self.computer.totaltime+365)
             #self.ui.comboBox_2.setCurrentIndex(0)
         elif model == "Jelinski-Moranda":
-            a, p, b = self.computer.JelinskiMoranda()
+            self.computer = JelinskiMoranda(self.fileName)
+            a, p, b = self.computer.Compute()
             f = lambda x: a*(1-math.exp(-p*int(x)))
             f2 = lambda x: a*p*math.exp(-p*int(x))
             if self.ui.comboBox_2.currentIndex() == 0:
@@ -482,7 +490,8 @@ class MyMainWindow(QtGui.QMainWindow):
             #self.ui.comboBox_2.setCurrentIndex(0)
         elif model == "Littlewood-Verrall":
             a = -1
-            a, b, p = self.computer.LittlewoodVerrall()
+            self.computer = LittlewoodVerrall(self.fileName)
+            a, b, p = self.computer.Compute()
             f = lambda x: (p[0]-1)/(4*p[2]*(p[0]-1)) * math.sqrt(2*p[2]*(p[0]-1)*x + p[1]**2)
             f2 = lambda x: (p[0]-1)/math.sqrt(p[1]**2+2*p[2]*x*(p[0]-1))
             if self.ui.comboBox_2.currentIndex() == 0:
@@ -501,7 +510,8 @@ class MyMainWindow(QtGui.QMainWindow):
             year = f(self.computer.totaltime+365)
             #self.ui.comboBox_2.setCurrentIndex(0)
         elif model == "Logarithmic":
-            b0, b1, b = self.computer.Logarithmic()
+            self.computer = Logarithmic(self.fileName)
+            b0, b1, b = self.computer.Compute()
             a = -1
             f = lambda x: b0*math.log(x*b1 + 1)
             f2 = lambda x: b0*b1 / (b1*x + 1)
