@@ -8,7 +8,14 @@ from Core.Version import Version
 from Schedules.ProgramVertex import *
 
 class ScheduleVertex(object):
-    '''Class ScheduleVertex'''
+    '''Represents an element of the schedule: a quadruple consisting of four objects given in the constructor.
+
+        * v - Task
+        * k - Version of the task
+        * m - Processor
+        * n - Number on the processor
+    
+    '''
 
     v = None
     '''ProgramVertex'''
@@ -23,8 +30,6 @@ class ScheduleVertex(object):
     '''Number on the processor'''
 
     def __init__(self, v, k, m, n):
-        ''' initializer 
-        '''
         self.v = v
         
         if k.__class__.__name__ == "Version":
@@ -43,13 +48,17 @@ class ScheduleVertex(object):
         return "{" + str(self.v) + str(self.k) + str(self.m) + str(self.n) + "}\n" 
     
     def Task(self):
+        ''' Getter for v provided for convenience '''
         return self.v
     
     def Version(self):
+        ''' Getter for k provided for convenience '''
         return self.k
     
     def Processor(self):
+        ''' Getter for m provided for convenience '''
         return self.m
     
     def Order(self):
+        ''' Getter for n provided for convenience '''
         return self.n
