@@ -1,4 +1,4 @@
-from math import *
+from math import exp, sqrt, log
 
 class Computer:
     def __init__(self, name):

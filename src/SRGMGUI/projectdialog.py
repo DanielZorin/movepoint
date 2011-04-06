@@ -1,4 +1,4 @@
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtCore
 from PyQt4.QtGui import *
 
 #Pages of the wizard "Create Project"

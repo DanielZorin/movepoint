@@ -1,7 +1,7 @@
 from PyQt4 import QtGui, QtCore
 from ui_main import Ui_MainWindow
 from projectdialog import ProjectDialog, OpenDialog, SettingsDialog
-from computer import Computer
+from SRGM.computer import Computer
 import sys, pickle, os, math
 import xml.dom.minidom
 
@@ -20,7 +20,7 @@ class Graph(QtGui.QWidget):
 
     def paintEvent(self, event):
         paint = QtGui.QPainter()
-        paint.begin()
+        paint.begin(self)
         paint.setPen(QtGui.QColor(168, 34, 3))
         paint.setFont(QtGui.QFont('Decorative', 10))
         if self.func == self.meanFunc:
