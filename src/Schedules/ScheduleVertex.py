@@ -8,13 +8,23 @@ from Core.Version import Version
 from Schedules.ProgramVertex import *
 
 class ScheduleVertex(object):
+    '''Class ScheduleVertex'''
 
     v = None
+    '''ProgramVertex'''
+    
     k = None
+    '''Version'''
+    
     m = None
+    '''Processor'''
+    
     n = None
+    '''Number on the processor'''
 
     def __init__(self, v, k, m, n):
+        ''' initializer 
+        '''
         self.v = v
         
         if k.__class__.__name__ == "Version":

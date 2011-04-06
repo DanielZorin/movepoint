@@ -5,7 +5,7 @@ Created on 07.11.2010
 '''
 from Schedules.Schedule import Schedule
 from Schedules.Program import Program
-from Schedules.Processor import Processor
+from Core.Processor import Processor
 import random
 
 p = Program()
