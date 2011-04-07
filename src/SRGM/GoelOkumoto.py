@@ -12,9 +12,9 @@ class GoelOkumoto(SRGM):
     Represents the Goel-Okumoto model (also known as exponential)
     '''
 
-    def __init__(self, name):
-        SRGM.__init__(self, name)
-             
+    def __init__(self):
+        SRGM.__init__(self)
+               
     def GOfunc(self, x):
         sum = 0
         i = 1
@@ -73,7 +73,7 @@ class GoelOkumoto(SRGM):
             conf1 = self.total/(1-exp(-(b+bconf)*self.totaltime))
             conf2 = self.total/(1-exp(-(b)*self.totaltime))
         return conf1, conf2
-        
+       
     def Compute(self):
         b = self.Solve(self.GOfunc, 0.00001, 0.1)
         n = self.total / (1-exp(-b*self.totaltime))
@@ -85,4 +85,10 @@ class GoelOkumoto(SRGM):
         conf1, conf2 = self.GOConfidence(b)
         #if b == 0.1:
         #    return -2, -2, -2, -2, -2
-        return n, b, mttf, conf1, conf2
+        return {"n":n, 
+                "b":b, 
+                "mttf":mttf, 
+                "conf1":conf1, 
+                "conf2":conf2,
+                "fmean":lambda x: n*(1-exp(-b*x)),
+                "fint": lambda x: n*b*exp(-b*x)}

@@ -12,8 +12,8 @@ class Logarithmic(SRGM):
     Represents the logarithmic model
     '''
 
-    def __init__(self, name):
-        SRGM.__init__(self, name) 
+    def __init__(self):
+        SRGM.__init__(self)
     
 
     def LogarithmicFunc(self, x):
@@ -29,4 +29,10 @@ class Logarithmic(SRGM):
         b0 = self.total / log(1+b1*self.totaltime)
         tmp = b0*b1/(b1*self.totaltime + 1)
         mttf = 1/tmp
-        return b0, b1, mttf
+        return {"n":"Undefined", 
+                "b":b1, 
+                "mttf":mttf, 
+                "conf1":"Not implemented", 
+                "conf2":"Not implemented",
+                "fmean":lambda x: b0*log(x*b1 + 1),
+                "fint":lambda x: b0*b1 / (b1*x + 1)}  

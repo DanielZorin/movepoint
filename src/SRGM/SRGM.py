@@ -22,18 +22,12 @@ class SRGM(object):
     totaltime = 0
     '''Time of the last detected fault'''
 
-    def __init__(self, name):
-        f = open(name, "r")
-        self.data = f.read()
-        self.data = self.data.split(',')
-        f.close()
-        self.total = 0
-        for i in range(0,len(self.data)):
-            self.data[i] = int(self.data[i])
-        for i in range(1, len(self.data)):
-            self.data[i] = self.data[i] - self.data[0] + 1
-        self.data[0] = 1
-        self.data.insert(0,0)
+    def __init__(self):
+        pass
+        
+    def SetData(self, data):
+        self.data = [0]
+        self.data += data
         self.total = len(self.data)-1
         self.totaltime = self.data[self.total]
     

@@ -11,8 +11,8 @@ class SShaped(SRGM):
     Represents the S-Shaped model
     '''
 
-    def __init__(self, name):
-        SRGM.__init__(self, name) 
+    def __init__(self):
+        SRGM.__init__(self) 
         
     def SShapedFunc(self, x):
         i = 1
@@ -57,4 +57,10 @@ class SShaped(SRGM):
                 mttf = self.Solve(f, self.totaltime+0.01, self.totaltime*4.0) - self.totaltime
             except:
                 mttf = -1
-        return n, b, mttf       
+        return {"n":n, 
+                "b":b, 
+                "mttf":mttf, 
+                "conf1":"Not implemented", 
+                "conf2":"Not implemented",
+                "fmean":lambda x: n*(1-(1+b)*exp(-b*x)),
+                "fint": lambda x: n*b*b*x*exp(-b*x)}     

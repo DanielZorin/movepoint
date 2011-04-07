@@ -1,94 +1,41 @@
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, qApp
+from PyQt4.QtCore import QTranslator
 from ui_main import Ui_MainWindow
 from ProjectDialog import ProjectDialog, OpenDialog, SettingsDialog
+from Graph import Graph
+from Project import Project
 from SRGM.SRGM import SRGM
+from SRGM.SRGMList import SRGMList
 from SRGM.GoelOkumoto import GoelOkumoto
 from SRGM.JelinskiMoranda import JelinskiMoranda
 from SRGM.LittlewoodVerrall import LittlewoodVerrall
 from SRGM.SShaped import SShaped
 from SRGM.Logarithmic import Logarithmic
-import sys, pickle, os, math
+from SRGM.SRGMList import SRGMList
+import sys, pickle, _pickle, os, math
 import xml.dom.minidom
 
-class Graph(QtGui.QWidget):
-    def __init__(self, parent = None):
-        QtGui.QWidget.__init__(self, parent)
-        self.setGeometry(440, 90, 300, 300)
-        self.func = self.meanFunc = self.intensity = lambda x: 0
-        self.time = self.number = 5
-
-    def Change(self, k):
-        if k == 1:
-            self.func = self.meanFunc
-        else:
-            self.func = self.intensity
-
-    def paintEvent(self, event):
-        paint = QtGui.QPainter()
-        paint.begin(self)
-        paint.setPen(QtGui.QColor(168, 34, 3))
-        paint.setFont(QtGui.QFont('Decorative', 10))
-        if self.func == self.meanFunc:
-            x0, y0 = 0, self.height()
-            ki = 300.0/(self.time+1)
-            kj = 300.0/(self.number+1.5)
-            for i in range(1, self.width()):
-                x1, y1 = i, int(self.func(i/ki)*kj)
-                y1 = 300 - y1
-                paint.drawLine(x0, y0, x1, y1)
-                x0, y0 = x1, y1
-        else:
-            if self.func(0) - 0.0 < 0.01:
-                x0, y0 = 1, 1
-                ki = 300.0/(self.time+1)
-                kj = 300.0/(1.3)                
-            else:
-                x0, y0 = 1, self.func(0)
-                ki = 300.0/(self.time+1)
-                kj = 300.0/(self.func(0)*1.3)
-            for i in range(1, self.width()):
-                x1, y1 = i, int(self.func(i/ki)*kj)
-                y1 = 300 - y1
-                paint.drawLine(x0, y0, x1, y1)
-                x0, y0 = x1, y1            
-        paint.end()
-
-
 class MainWindow(QtGui.QMainWindow):
+    
+    project = None
+    projectFile = None
+    
+    projFilter = ""
+    models = []
+
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.d = ProjectDialog()
-        f = open("settings.txt", "rb")
-        u = pickle.Unpickler(f)
-        #Current project, list of projects with files and models
-        self.settings = u.load()
-        #Name of the current project
-        self.currentProject = self.settings["current"]
-        #File with XMl data
-        self.fileNameXml = "projects/"+self.currentProject+".xml"
-        #File with processed data (time only) 
-        self.fileName = "projects/"+self.currentProject+".txt"
-        #Computer of SRGM
-        self.computer = None
-        #List of relevant dta for slices
+        self.projFilter = self.tr("SRGM projects (*.srgm *.srg)")
+        self.setPreferences()
+        #List of relevant data for slices
         self.programmers = []
         self.severity = []
         self.items = []
         self.errors = []
-        f.close()
         self.LoadProject()
-        QtCore.QObject.connect(self.ui.actionExit, 
-                               QtCore.SIGNAL("triggered()"), self.Exit)
-        QtCore.QObject.connect(self.ui.actionAbout, 
-                               QtCore.SIGNAL("triggered()"), self.About)
-        QtCore.QObject.connect(self.ui.actionNew_project, 
-                               QtCore.SIGNAL("triggered()"), self.NewProject)
-        QtCore.QObject.connect(self.ui.actionOpen_Project, 
-                               QtCore.SIGNAL("triggered()"), self.OpenProject)
-        QtCore.QObject.connect(self.ui.actionDelete_project, 
-                               QtCore.SIGNAL("triggered()"), self.DeleteProject)
         QtCore.QObject.connect(self.ui.actionChange_models_list, 
                                QtCore.SIGNAL("triggered()"), self.ChangeModelsList)
         QtCore.QObject.connect(self.ui.actionLoad_new_XML_file, 
@@ -105,114 +52,119 @@ class MainWindow(QtGui.QMainWindow):
                                QtCore.SIGNAL("clicked()"), self.RePlot)
         QtCore.QObject.connect(self.ui.pushButton_3, 
                                QtCore.SIGNAL("clicked()"), self.Compare)
-        QtCore.QObject.connect(self.d, 
-                               QtCore.SIGNAL("accepted()"), self.CreateProject)
         self.ui.graph = Graph(self)
         self.ui.graph.show()
     
     def __del__(self):
-        #Dump settings before exit
-        f = open("settings.txt", "wb")
-        p = pickle.Pickler(f)
-        p.dump(self.settings)
-        f.close()
+        ''''f = open("srgm.ini", "wb")
+        settings = {}
+        settings["file"] = self.projectFile
+        settings["models"] = self.models
+        pickle.dump(settings, f)
+        f.close()'''
+        pass
+    
+    def setPreferences(self):
+        if "srgm.ini" in os.listdir("."):
+            try:
+                f = open("srgm.ini", "rb")
+                settings = pickle.load(f)
+                self.projectFile = settings["file"]
+                self.OpenProjectFromFile(self.projectFile)
+                self.models = settings["models"]
+                f.close()
+                # Temporary, until the language is saved in .ini file
+                self.currentLanguage = "English"  
+            except:
+                self.loadDefaultPreferences()
+        else:
+            self.loadDefaultPreferences()
+            
+    def loadDefaultPreferences(self):
+        self.project = Project()
+        self.currentLanguage = "English" 
+        self.models = SRGMList.keys()
 
     def NewProject(self):
         #Open New project dialog
-        self.d.show()
+        d = ProjectDialog()
+        d.exec()
+        if d.result() == QDialog.Accepted:
+            res = d.GetData()
+            self.project = Project(name=res["name"], data=res["file"])
+            self.ChangeModels(res["models"])
+            self.LoadProject()
         
     def OpenProject(self):
         #Call Open project dialog
-        self.open = OpenDialog(self.settings["list"])
-        QtCore.QObject.connect(self.open, QtCore.SIGNAL("accepted()"), self.OpenSelectedProject)
-        self.open.show()
+        name = QFileDialog.getOpenFileName(filter=self.projFilter)
+        if name == None or name == '':
+            return
+        self.OpenProjectFromFile(name)
+        
+    def OpenProjectFromFile(self, name):
+        self.project = Project()
+        try:
+            self.project.Deserialize(name)
+        except _pickle.UnpicklingError:
+            QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
+            return  
+        self.projectFile = name
+        self.setWindowTitle(self.project.name + " - SRGM GUI")
+        self.LoadProject()
+        
+    def SaveProject(self):
+        if self.projectFile == None:
+            self.SaveProjectAs()
+        else:
+            self.project.Serialize(self.projectFile)
     
-    def OpenSelectedProject(self):
-        #Handler for OpenProject
-        self.currentProject = self.open.combo.currentText()
-        self.settings["current"] = self.currentProject
-        self.LoadProject()
-        
-    def CreateProject(self):
-        #Create new project: settings
-        res = self.d.GetData()
-        self.currentProject = res["name"]
-        self.settings["list"].append(res) 
-        self.settings["current"] = res["name"]
-        self.fileNameXml = "projects/"+res["name"]+".xml"
-        self.fileName = "projects/"+res["name"]+".txt"
-        if self.fileNameXml != res["file"]:
-            f = open(self.fileNameXml, "w")
-            data = open(res["file"], "r")
-            f.write(data.read())
-            f.close()
-            data.close()
-        self.ParseXml()
-        self.SetupData()
-        self.LoadProject()
-        
-    def DeleteProject(self):
-        #Delete project: settings
-        for i in range(len(self.settings["list"])):
-            if self.settings["list"][i]["name"] == self.currentProject:
-                os.unlink(str( "projects/"+self.settings["list"][i]["name"]+".txt" ))
-                self.settings["list"].pop(i)
-        self.currentProject = self.settings["list"][0]["name"]
-        self.settings["current"] = self.currentProject
-        self.LoadProject()
-             
+    def SaveProjectAs(self):
+        self.projectFile = QFileDialog.getSaveFileName(directory=self.project.name + ".srgm", filter=self.projFilter)
+        if self.projectFile != '':
+            self.project.Serialize(self.projectFile)             
 
     def LoadProject(self):
         #Common function: call XML parser, write all necessary data
-        self.ui.label_3.setText("Project name: " + self.currentProject)
-        self.fileName = "projects/"+self.currentProject+".txt"
-        self.fileNameXml = "projects/"+self.currentProject+".xml"
+        self.ui.label_3.setText("Project name: " + self.project.name)
         self.ui.comboBox.clear()
-        tmp = self.settings["list"]
-        for s in tmp:
-            if s["name"] == self.currentProject:
-                for s0 in s["models"]:
-                    self.ui.comboBox.addItem(s0)
-        self.ParseXml()
+        for s in self.models:
+            self.ui.comboBox.addItem(s)
         self.startTime = 0
         self.endTime = 2**64
-        self.SetupData()
-        self.computer = SRGM(self.fileName)
+        self.computer = SRGM()
         self.endTime = self.computer.totaltime
-        #self.Compute()
 
     def ChangeModelsList(self):
         #Menu item handler
-        self.dialog = QtGui.QDialog()
-        self.label = QtGui.QLabel("Select the models: ")
-        self.box = []
-        models = ["Goel-Okumoto", "S-Shaped", "Jelinski-Moranda", "Littlewood-Verrall", "Logarithmic"]
-        for i in range(0,5):
-            self.box.append(QtGui.QCheckBox(models[i]))
+        d = QtGui.QDialog()
+        label = QtGui.QLabel("Select the models: ")
+        box = []
+        models = list(SRGMList.keys())
+        for i in range(len(models)):
+            box.append(QtGui.QCheckBox(models[i]))
         #self.dialog.setTitle("Select models")
-        self.layout = QtGui.QVBoxLayout()
-        self.layout.addWidget(self.label)
-        for i in range(0,5):
-            self.layout.addWidget(self.box[i])
-        self.buttonOK = QtGui.QPushButton("OK")
-        self.layout.addWidget(self.buttonOK)
-        self.dialog.setLayout(self.layout)
-        QtCore.QObject.connect(self.buttonOK, QtCore.SIGNAL("clicked()"), self.dialog, QtCore.SLOT("accept()"))
-        QtCore.QObject.connect(self.dialog, QtCore.SIGNAL("accepted()"), self.ChangeModels)
-        self.dialog.show()
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(label)
+        for i in range(len(models)):
+            layout.addWidget(box[i])
+        buttonOK = QtGui.QPushButton("OK")
+        layout.addWidget(buttonOK)
+        d.setLayout(layout)
+        QtCore.QObject.connect(buttonOK, QtCore.SIGNAL("clicked()"), d, QtCore.SLOT("accept()"))
+        d.exec()
+        if d.result() == QDialog.Accepted:         
+            lst = []
+            for i in range(len(models)):
+                if box[i].isChecked():
+                    lst.append(box[i].text())
+            self.ChangeModels(lst)          
     
-    def ChangeModels(self):
+    def ChangeModels(self, lst):
         self.ui.comboBox.clear()
-        lst = []
-        for i in range(0, 5):
-            if self.box[i].isChecked():
-                lst.append(self.box[i].text())
-        tmp = self.settings["list"]
-        for s in tmp:
-            if s["name"] == self.currentProject:
-                s["models"] = lst
-                for s0 in s["models"]:
-                    self.ui.comboBox.addItem(s0)     
+        self.models = lst
+        for s in self.models:
+            self.ui.comboBox.addItem(s)     
 
     def SetupDataDialog(self):
         #Setup slice of data
@@ -234,11 +186,11 @@ class MainWindow(QtGui.QMainWindow):
             self.items = []
         self.startTime = int(self.settingsDialog.lineedit4.text())
         self.endTime = int(self.settingsDialog.lineedit5.text())
-        self.SetupData()
-        self.computer = SRGM(self.fileName)
+        #self.SetupData()
         
     def SetupData(self):
         #Here the slice is done
+        #TODO: WTF IS THIS WHY THE FUCK DO WE OVERWRITE THE FILE!?
         times = []
         if self.programmers == [] or str(self.errors[0]["programmer"]) in self.programmers:
             if self.severity == [] or str(self.errors[0]["severity"]) in self.severity:
@@ -333,242 +285,54 @@ class MainWindow(QtGui.QMainWindow):
         ft.close()
         self.ParseXml()
         self.SetupData()
-        self.computer = SRGM(self.fileName)
 
     def BatchAddData(self):
         #Add a pack of errors
-        def compare(a,b):
-            if a["time"] > b["time"]:
-                return 1
-            elif a["time"] < b["time"]:
-                return -1
-            else:
-                return 0
         fileName = QtGui.QFileDialog.getOpenFileName()
         if fileName == "":
             return
-        tmp = self.fileNameXml
-        self.fileNameXml = fileName
-        self.ParseXml()
-        self.fileNameXml = tmp
-        self.errors.sort(cmp = compare)
-        self.SetupData()
-        self.DumpXml()
-        self.computer = SRGM(self.fileName)
+        self.project.AddData(fileName)
 
     def LoadNewXML(self):
         #Loads new data, overrides current
         fileName = QtGui.QFileDialog.getOpenFileName()
         if fileName == "":
             return
-        f = open(fileName, "r")
-        s = f.read()
-        f.close()
-        f = open(self.fileNameXml, "w")
-        f.write(s)
-        f.close()
-        self.ParseXml()
-        self.SetupData()
-        self.computer = SRGM(self.fileName)
-        
-    def ParseXml(self):
-        name = self.fileNameXml
-        q = open(name, "r")
-        dom = xml.dom.minidom.parse(q)
-        dom.normalize()
-        self.errors = []
-        for node in dom.childNodes:
-            if node.tagName == "errors":
-                for error in node.childNodes:
-                    currentError = {}
-                    for attr in error.childNodes:
-                        if attr.nodeName == "time":
-                            for k in attr.childNodes:
-                                currentError["time"] = int(k.nodeValue)
-                        elif attr.nodeName == "programmer":
-                            for k in attr.childNodes:
-                                currentError["programmer"] = int(k.nodeValue)
-                        elif attr.nodeName == "severity":
-                            for k in attr.childNodes:
-                                currentError["severity"] = int(k.nodeValue)
-                        elif attr.nodeName == "item":
-                            for k in attr.childNodes:
-                                currentError["item"] = int(k.nodeValue)   
-                    if currentError != {}:
-                        self.errors.append(currentError)                         
-        q.close()
-        
-    def DumpXml(self):
-        pass
-        dom = xml.dom.minidom.Document()
-        root = dom.createElement("errors")
-        dom.appendChild(root)
-        for s in self.errors:
-            node = dom.createElement("error")
-            time = dom.createElement("time")
-            time.appendChild(dom.createTextNode(str(s["time"])))
-            programmer = dom.createElement("programmer")
-            programmer.appendChild(dom.createTextNode(str(s["programmer"])))
-            severity = dom.createElement("severity")
-            severity.appendChild(dom.createTextNode(str(s["severity"])))
-            item = dom.createElement("item")
-            item.appendChild(dom.createTextNode(str(s["item"])))
-            node.appendChild(time)
-            node.appendChild(programmer)
-            node.appendChild(severity)
-            node.appendChild(item)
-            root.appendChild(node)
-        f = open(self.fileNameXml, "w")
-        dom.writexml(f)
-        f.close()
-        
+        self.project.ReplaceData(fileName)
+    
     def Compute(self):
-        #Calls computing functions and displays results
         model = self.ui.comboBox.currentText()
-        a = -1
-        b = -1
-        a0 = -1
-        a1 = -1
-        if model == "Goel-Okumoto":
-            self.computer = GoelOkumoto(self.fileName)
-            a, p, b, a0, a1 = self.computer.Compute()
-            if a != -2:
-                f = lambda x: a*(1-math.exp(-p*x))
-                f2 = lambda x: a*p*math.exp(-p*x)
-                if self.ui.comboBox_2.currentIndex() == 0:
-                    self.ui.graph.func = f
-                else:
-                    self.ui.graph.func = f2
-                self.ui.graph.meanFunc = f
-                self.ui.graph.intensity = f2
-                self.ui.graph.time = self.computer.totaltime
-                self.ui.graph.number = self.computer.total
-                self.ui.graph.update()
-                self.ui.label_13.setText(str(self.computer.total+3))
-                self.ui.label_14.setText(str(self.computer.totaltime+1))
-                week = f(self.computer.totaltime+7)
-                month = f(self.computer.totaltime+30)
-                year = f(self.computer.totaltime+365)
-                #self.ui.comboBox_2.setCurrentIndex(0)
-        elif model == "S-Shaped":
-            self.computer = SShaped(self.fileName)
-            a, p, b = self.computer.Compute()
-            f = lambda x: a*(1-(1+p)*math.exp(-p*x))
-            f2 = lambda x: a*p*p*x*math.exp(-p*x)
-            if self.ui.comboBox_2.currentIndex() == 0:
-                self.ui.graph.func = f
-            else:
-                self.ui.graph.func = f2
-            self.ui.graph.meanFunc = f
-            self.ui.graph.intensity = f2
-            self.ui.graph.time = self.computer.totaltime
-            self.ui.graph.number = self.computer.total
-            self.ui.graph.update()
-            self.ui.label_13.setText(str(self.computer.total+3))
-            self.ui.label_14.setText(str(self.computer.totaltime+1))
-            week = f(self.computer.totaltime+7)
-            month = f(self.computer.totaltime+30)
-            year = f(self.computer.totaltime+365)
-            #self.ui.comboBox_2.setCurrentIndex(0)
-        elif model == "Jelinski-Moranda":
-            self.computer = JelinskiMoranda(self.fileName)
-            a, p, b = self.computer.Compute()
-            f = lambda x: a*(1-math.exp(-p*int(x)))
-            f2 = lambda x: a*p*math.exp(-p*int(x))
-            if self.ui.comboBox_2.currentIndex() == 0:
-                self.ui.graph.func = f
-            else:
-                self.ui.graph.func = f2
-            self.ui.graph.meanFunc = f
-            self.ui.graph.intensity = f2
-            self.ui.graph.time = self.computer.totaltime
-            self.ui.graph.number = self.computer.total
-            self.ui.graph.update()
-            week = f(self.computer.totaltime+7)
-            month = f(self.computer.totaltime+30)
-            year = f(self.computer.totaltime+365)
-            #self.ui.comboBox_2.setCurrentIndex(0)
-        elif model == "Littlewood-Verrall":
-            a = -1
-            self.computer = LittlewoodVerrall(self.fileName)
-            a, b, p = self.computer.Compute()
-            f = lambda x: (p[0]-1)/(4*p[2]*(p[0]-1)) * math.sqrt(2*p[2]*(p[0]-1)*x + p[1]**2)
-            f2 = lambda x: (p[0]-1)/math.sqrt(p[1]**2+2*p[2]*x*(p[0]-1))
-            if self.ui.comboBox_2.currentIndex() == 0:
-                self.ui.graph.func = f
-            else:
-                self.ui.graph.func = f2
-            self.ui.graph.meanFunc = f
-            self.ui.graph.intensity = f2
-            self.ui.graph.time = self.computer.totaltime
-            self.ui.graph.number = self.computer.total
-            self.ui.graph.update()
-            self.ui.label_13.setText(str(self.computer.total+3))
-            self.ui.label_14.setText(str(self.computer.totaltime+1))
-            week = f(self.computer.totaltime+7)
-            month = f(self.computer.totaltime+30)
-            year = f(self.computer.totaltime+365)
-            #self.ui.comboBox_2.setCurrentIndex(0)
-        elif model == "Logarithmic":
-            self.computer = Logarithmic(self.fileName)
-            b0, b1, b = self.computer.Compute()
-            a = -1
-            f = lambda x: b0*math.log(x*b1 + 1)
-            f2 = lambda x: b0*b1 / (b1*x + 1)
-            if self.ui.comboBox_2.currentIndex() == 0:
-                self.ui.graph.func = f
-            else:
-                self.ui.graph.func = f2
-            self.ui.graph.meanFunc = f
-            self.ui.graph.intensity = f2
-            self.ui.graph.time = self.computer.totaltime
-            self.ui.graph.number = self.computer.total
-            self.ui.graph.update()
-            self.ui.label_13.setText(str(self.computer.total+3))
-            self.ui.label_14.setText(str(self.computer.totaltime+1))
-            week = f(self.computer.totaltime+7)
-            month = f(self.computer.totaltime+30)
-            year = f(self.computer.totaltime+365)
-            #self.ui.comboBox_2.setCurrentIndex(0)
-        self.ui.label_18.setText(str(self.computer.total))
-        self.ui.label_22.setText(str(self.computer.totaltime))
-        if a == -1:
-            self.ui.label_2.setText("Undefined")
-        elif a == -2:
-            self.ui.label_2.setText("Diverges")
+        res = self.project.ComputeModel(model)
+        if self.ui.comboBox_2.currentIndex() == 0:
+            self.ui.graph.func = res["fmean"]
         else:
-            self.ui.label_2.setText(str(a)[:8])
-            self.ui.label_16.setText(str(month)[:7])
-            self.ui.label_20.setText(str(month - self.computer.total)[:7])
-            self.ui.label_24.setText(str(year)[:7])
-            self.ui.label_26.setText(str(year - self.computer.total)[:7])
-            self.ui.label_28.setText(str(week)[:7])
-            self.ui.label_30.setText(str(week - self.computer.total)[:7])
-        if b == -1:
-            self.ui.label_5.setText("Undefined")
-        elif b == -2:
-            self.ui.label_5.setText("Diverges")      
-        else:
-            self.ui.label_5.setText(str(b)[:8])
-            self.ui.label_16.setText(str(month)[:7])
-            self.ui.label_20.setText(str(month - self.computer.total)[:7])
-            self.ui.label_24.setText(str(year)[:7])
-            self.ui.label_26.setText(str(year - self.computer.total)[:7])
-            self.ui.label_28.setText(str(week)[:7])
-            self.ui.label_30.setText(str(week - self.computer.total)[:7])
-        if a0 == -1:
-            self.ui.label_7.setText("Undefined")
-        elif a0 == -2:
-            self.ui.label_7.setText("Diverges")
-        else:
-            self.ui.label_7.setText(str(a0)[:7])
-        if a1 == -1:
-            self.ui.label_9.setText("Undefined")
-        elif a1 == -2:
-            self.ui.label_9.setText("Diverges")
-        else:
-            self.ui.label_9.setText(str(a1)[:7])
-     
+            self.ui.graph.func = res["fint"]
+        self.ui.graph.meanFunc = res["fmean"]
+        self.ui.graph.intensity = res["fint"]
+        f = res["fmean"]
+        totaltime = self.project.GetTotalTime()
+        total = self.project.GetErrorsNumber()
+        self.ui.graph.time = totaltime
+        self.ui.graph.number = total
+        self.ui.graph.update()
+        self.ui.label_13.setText(str(total+3))
+        self.ui.label_14.setText(str(totaltime+1))
+        week = f(totaltime+7)
+        month = f(totaltime+30)
+        year = f(totaltime+365)
+        self.ui.label_18.setText(str(total))
+        self.ui.label_22.setText(str(totaltime))
+        self.ui.label_2.setText(str(res["n"])[:8])
+        self.ui.label_5.setText(str(res["mttf"])[:8])
+        self.ui.label_16.setText(str(month)[:7])
+        self.ui.label_20.setText(str(month - total)[:7])
+        self.ui.label_24.setText(str(year)[:7])
+        self.ui.label_26.setText(str(year - total)[:7])
+        self.ui.label_28.setText(str(week)[:7])
+        self.ui.label_30.setText(str(week - total)[:7])
+        self.ui.label_7.setText(str(res["conf1"])[:7])
+        self.ui.label_9.setText(str(res["conf2"])[:7])
+
     def RePlot(self):
         #Refreshes the graph
         if self.ui.comboBox_2.currentText() == "Mean value function":

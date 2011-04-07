@@ -12,8 +12,8 @@ class JelinskiMoranda(SRGM):
     Represents the Jelinski-Moranda model
     '''
 
-    def __init__(self, name):
-        SRGM.__init__(self, name)    
+    def __init__(self):
+        SRGM.__init__(self)   
         
     def JMfunc(self, x):
         sum = 0
@@ -32,4 +32,10 @@ class JelinskiMoranda(SRGM):
             tmpsum += (i-1)*(self.data[i]-self.data[i-1])
         phi = self.total / (self.totaltime*n - tmpsum)
         mttf = 1 / (phi*(n - self.total))
-        return n, phi, mttf
+        return {"n":n, 
+                "b":phi, 
+                "mttf":mttf, 
+                "conf1":"Not implemented", 
+                "conf2":"Not implemented",
+                "fmean":lambda x: n*(1-exp(-phi*int(x))),
+                "fint":lambda x: n*phi*exp(-phi*int(x))}

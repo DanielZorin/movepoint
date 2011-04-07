@@ -44,7 +44,7 @@ class Project(object):
         self.name = dict["name"]
         self.system = dict["system"]
         self.system.processors = dict["proc"]
-        self.method = RandomSimulatedAnnealing(self.system)
+        self.method = SimulatedAnnealing(self.system)
         self.method.Deserialize(dict["method"])
     
     def Step(self):

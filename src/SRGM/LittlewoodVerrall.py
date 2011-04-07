@@ -12,8 +12,8 @@ class LittlewoodVerrall(SRGM):
     Represents the LV model
     '''
 
-    def __init__(self, name):
-        SRGM.__init__(self, name) 
+    def __init__(self):
+        SRGM.__init__(self)
         
     def Compute(self):
         def f1(a,b,c):
@@ -54,4 +54,13 @@ class LittlewoodVerrall(SRGM):
                 x1[2] += x0[2]
         except: #ValueError:
             print("ZERO")
-        return -1, (x1[1]+x1[2]*(self.total+1))/(x1[0]-1), x1
+        p = x1
+        # TODO: it doesn't work at all
+        return {"n":"Undefined", 
+                "b":"Undefined", 
+                "mttf":(x1[1]+x1[2]*(self.total+1))/(x1[0]-1), 
+                "conf1":"Not implemented", 
+                "conf2":"Not implemented",
+                "fmean":lambda x: (p[0]-1)/(4*p[2]*(p[0]-1)) * sqrt(2*p[2]*(p[0]-1)*x + p[1]**2),
+                "fint":lambda x: (p[0]-1)/sqrt(p[1]**2+2*p[2]*x*(p[0]-1))}
+    
