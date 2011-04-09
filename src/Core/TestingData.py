@@ -15,6 +15,12 @@ class TestingData(object):
     errors = []
     
     errortimes = []
+    
+    programmer = []
+    severity = []
+    item = []
+    startTime = None
+    endTime = None
 
     def __init__(self, file=""):
         if file == "":
@@ -38,13 +44,13 @@ class TestingData(object):
                                 currentError["time"] = int(k.nodeValue)
                         elif attr.nodeName == "programmer":
                             for k in attr.childNodes:
-                                currentError["programmer"] = int(k.nodeValue)
+                                currentError["programmer"] = k.nodeValue
                         elif attr.nodeName == "severity":
                             for k in attr.childNodes:
-                                currentError["severity"] = int(k.nodeValue)
+                                currentError["severity"] = k.nodeValue
                         elif attr.nodeName == "item":
                             for k in attr.childNodes:
-                                currentError["item"] = int(k.nodeValue)   
+                                currentError["item"] = k.nodeValue   
                     if currentError != {}:
                         e = Error(time=currentError["time"], programmer=currentError["programmer"],
                                   severity=currentError["severity"], item=currentError["item"])
@@ -81,10 +87,24 @@ class TestingData(object):
         dom.writexml(f)
         f.close()
         
+    def AddError(self, t, p, s, i):
+        e = Error(t, p, s, i)
+        self.errors.append(e)
+        self.CalculateErrorTimes()
+        
     def CalculateErrorTimes(self):
         self.errortimes = []
         for e in self.errors:
-            self.errortimes.append(e.time)
+            if self.programmer != [] and not e.programmer in self.programmer:
+                pass
+            elif self.severity != [] and not e.severity in self.severity:
+                pass
+            elif self.item != [] and not e.item in self.item:
+                pass
+            else:
+                # TODO: think how to get rid of None here. Beware: lazy logical expression
+                if self.startTime == None or self.endTime == None or (e.time < self.endTime and e.time > self.startTime): 
+                    self.errortimes.append(e.time)
         self.errortimes.sort()
         
     def GetErrorTimes(self):
@@ -94,5 +114,29 @@ class TestingData(object):
     def ErrorsNumber(self):
         return len(self.errortimes)
     
+    def StartTime(self):
+        # TODO: error if it's empty
+        return self.errortimes[0]
+    
+    def EndTime(self):
+        return self.errortimes[len(self.errortimes) - 1]
+    
     def TotalTime(self):
         return self.errortimes[len(self.errortimes)-1]
+    
+    def SetProgrammerRestriction(self, p):
+        self.programmer = p
+        self.CalculateErrorTimes()
+        
+    def SetSeverityRestriction(self, s):
+        self.severity = s
+        self.CalculateErrorTimes()
+        
+    def SetItemRestriction(self, i):
+        self.item = i
+        self.CalculateErrorTimes()
+        
+    def SetTimeRestriction(self, st, end):        
+        self.startTime = st
+        self.endTime = end
+        self.CalculateErrorTimes()

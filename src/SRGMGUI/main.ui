@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>820</width>
-    <height>645</height>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -18,14 +18,14 @@
      <x>0</x>
      <y>22</y>
      <width>820</width>
-     <height>602</height>
+     <height>410</height>
     </rect>
    </property>
    <widget class="QComboBox" name="comboBox" >
     <property name="geometry" >
      <rect>
       <x>20</x>
-      <y>80</y>
+      <y>30</y>
       <width>221</width>
       <height>31</height>
      </rect>
@@ -35,7 +35,7 @@
     <property name="geometry" >
      <rect>
       <x>30</x>
-      <y>130</y>
+      <y>90</y>
       <width>331</width>
       <height>271</height>
      </rect>
@@ -356,29 +356,11 @@
      </property>
     </widget>
    </widget>
-   <widget class="QLabel" name="label_3" >
-    <property name="geometry" >
-     <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>581</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font" >
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text" >
-     <string>Project name: </string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton" >
     <property name="geometry" >
      <rect>
       <x>260</x>
-      <y>80</y>
+      <y>30</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -530,80 +512,6 @@
      <string>Plot</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3" >
-    <property name="geometry" >
-     <rect>
-      <x>660</x>
-      <y>430</y>
-      <width>121</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>Compute</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget" >
-    <property name="geometry" >
-     <rect>
-      <x>30</x>
-      <y>430</y>
-      <width>601</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <property name="rowCount" >
-     <number>4</number>
-    </property>
-    <property name="columnCount" >
-     <number>5</number>
-    </property>
-    <row>
-     <property name="text" >
-      <string>Convergence</string>
-     </property>
-    </row>
-    <row>
-     <property name="text" >
-      <string>Accuracy</string>
-     </property>
-    </row>
-    <row>
-     <property name="text" >
-      <string>Stability</string>
-     </property>
-    </row>
-    <row>
-     <property name="text" >
-      <string>Recommended</string>
-     </property>
-    </row>
-    <column>
-     <property name="text" >
-      <string>Goel-Okumoto</string>
-     </property>
-    </column>
-    <column>
-     <property name="text" >
-      <string>Jelinski-Moranda</string>
-     </property>
-    </column>
-    <column>
-     <property name="text" >
-      <string>Littlewood-Verrall</string>
-     </property>
-    </column>
-    <column>
-     <property name="text" >
-      <string>S-Shaped</string>
-     </property>
-    </column>
-    <column>
-     <property name="text" >
-      <string>Logarithmic</string>
-     </property>
-    </column>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
@@ -614,7 +522,7 @@
      <height>22</height>
     </rect>
    </property>
-      <widget class="QMenu" name="menuFile" >
+   <widget class="QMenu" name="menuFile" >
     <property name="title" >
      <string>File</string>
     </property>
@@ -643,7 +551,7 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>624</y>
+     <y>432</y>
      <width>820</width>
      <height>21</height>
     </rect>
@@ -659,7 +567,7 @@
     <string>About</string>
    </property>
   </action>
- <action name="actionNew_Project" >
+  <action name="actionNew_Project" >
    <property name="text" >
     <string>New Project</string>
    </property>
@@ -815,5 +723,126 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAdd_data_to_current_project</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>AddData()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBatch_data_load</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>BatchAddData()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionChange_models_list</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ChangeModelsList()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLoad_new_XML_file</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>LoadNewXml()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSetup_data_selection</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>SelectData()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>Compute()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>310</x>
+     <y>67</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>RePlot()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>707</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>409</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>AddData()</slot>
+  <slot>BatchAddData()</slot>
+  <slot>LoadNewXml()</slot>
+  <slot>SelectData()</slot>
+  <slot>ChangeModelsList()</slot>
+  <slot>Compute()</slot>
+  <slot>RePlot()</slot>
+ </slots>
 </ui>

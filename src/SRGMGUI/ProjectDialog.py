@@ -59,6 +59,7 @@ class ThirdPage(QWizardPage):
       
 #Calls the wizard                
 class ProjectDialog(QWizard):
+    # TODO: Qt Desginer, change from Wizard to single dialog window
     def __init__(self):
         QWizard.__init__(self)
         self.firstpage = FirstPage()
@@ -94,14 +95,16 @@ class OpenDialog(QDialog):
         QtCore.QObject.connect(self.button, QtCore.SIGNAL("accepted()"), self.accept)
 
 #Set data slice        
-class SettingsDialog(QDialog):
+class DataSelectDialog(QDialog):
     def __init__(self):
+        # TODO: Qt Designer
         QDialog.__init__(self)
         self.label1 = QLabel("Enter programmer ids")
         self.label2 = QLabel("Enter severity")
         self.label3 = QLabel("Enter item ids")
         self.label4 = QLabel("Time period")
         self.label5 = QLabel(" to ")
+        # TODO: validators
         self.lineedit1 = QLineEdit()
         self.lineedit2 = QLineEdit()
         self.lineedit3 = QLineEdit()
@@ -122,3 +125,22 @@ class SettingsDialog(QDialog):
         self.layout.addWidget(self.button, 9, 1, 1, 3)
         self.setLayout(self.layout)
         QtCore.QObject.connect(self.button, QtCore.SIGNAL("accepted()"), self.accept)
+        
+    def SetTime(self, start, end):
+        self.lineedit4.setText(str(start))
+        self.lineedit5.setText(str(end))
+        
+    def GetData(self):
+        programmers = str(self.lineedit1.text()).split(",")
+        severity = str(self.lineedit2.text()).split(",")
+        items = str(self.lineedit3.text()).split(",")
+        if programmers == ['']:
+            programmers = []
+        if severity == ['']:
+            severity = []
+        if items == ['']:
+            items = []
+        startTime = int(self.lineedit4.text())
+        endTime = int(self.lineedit5.text())
+        return programmers, severity, items, startTime, endTime
+        
