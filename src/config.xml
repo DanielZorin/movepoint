@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<config>
+<priorities>
+	<opt-reliability>
+		<time-normal AddVersion="3" AddProcessor="2" MoveVertex="1"/>
+		<time-exceed AddProcessor="3" AddVersion="2" MoveVertex="1"/>
+	</opt-reliability>
+	<opt-time>
+		<time-normal DeleteVersion="1" DeleteProcessor="2" MoveVertex="3"/>
+		<time-exceed DeleteProcessor="1" DeleteVersion="1" MoveVertex="3"/>
+	</opt-time>
+</priorities>
+<limits>
+	<choice-vertices n="15"/>
+	<choice-places n="15"/>
+	<cut-processor p="0.8"/>
+	<new-processor p="0.8"/>
+</limits>
+<strategies delay="0" idle="0" mixed="1"/>
+<thresholds>
+	<threshold id="1" type="linear" param="0.1"/>
+	<threshold id="2" type="linear" param="0.2"/>
+	<threshold id="3" type="linear" param="0.3"/>
+</thresholds>
+</config>
