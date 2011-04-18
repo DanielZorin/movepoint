@@ -10,12 +10,23 @@ from Schedules.Schedule import Schedule
 import xml.dom.minidom, copy
 
 class System(object):
+    ''' Represents a multi-processor system with a program running on it.
+    Parts of the program are assigned to the processors via a schedule'''
 
     program = None
+    ''':class: `Program`'''
+    
     processors = []
+    '''List of :class: `Processor`s'''
+    
     schedule = None
+    ''':class: `Schedule`'''
+    
     tdir = 0
+    '''Time limit for the program execution'''
+    
     rdir = 0.0
+    '''Reliability limit for both software and hardware'''
     
     defaultSettings = {"n":20, 
                     "t1":1, 
@@ -33,6 +44,7 @@ class System(object):
         self.schedule.SetToDefault()
         
     def LoadProcessors(self, filename):
+        '''Parse the XML with to get the specs of the processors'''
         f = open(filename)
         dom = xml.dom.minidom.parse(f)
         
@@ -51,6 +63,8 @@ class System(object):
 
             
     def LocalOptimal(self):
+        '''Check if the current schedule is local optimal, i.e.
+        no single operation can improve the time, reliability and processors number of the schedule.'''
         onestep = []
         
         for i in range(len(list(self.schedule.processors))):
@@ -91,22 +105,25 @@ class System(object):
                 return False
         return True
      
-    # Generates a random system
-    # Now that the processors are fixed it merely creates a random program  
     def GenerateRandom(self, params):
+        ''' Generates a random system.
+        Now that the processors are fixed it merely creates a random program
+        The params dictionary is passed to the :func: `Program.GenerateRandom` function.
+        
+        Time and reliability constraints are generated here. Types of constraints (params["tdir"]/params["rdir"]):
+        
+        * 0 = Impossible
+        * 1 = Strict
+        * 2 = Normal
+        * 3 = Nonexisting
+        
+        Numbers are used because strings in GUI can be translated'''
         self.program = Program("")
         self.program.GenerateRandom(params)
         self.schedule = Schedule(self.program, self.processors)       
         self.schedule.SetToDefault()
-        self.rdir = 0.0#self.schedule.GetReliability() * 1.05
         maxchain = self.program.FindMaxChain(True) 
         ss = sum([v.time for v in self.program.vertices])     
-        # Types of constraints:
-        # 0 = Impossible
-        # 1 = Strict
-        # 2 = Normal
-        # 3 = Nonexisting
-        # Numbers are used because strings in GUI can be translated
         self.tdir = {
                      0: 0,
                      1: maxchain,
