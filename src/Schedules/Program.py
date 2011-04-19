@@ -16,16 +16,14 @@ class Program(object):
     ''' Represents a program that consists of several tasks depending on each other
         Basically, it's a direct acyclic graph.
         
-    Args:
-    
-        filename: name of the XML file with the specification
+    :param filename: name of the XML file with the specification
     '''
     
     vertices = []
-    ''' List of tasks, i.e. vertices of the graph '''
+    ''' List of tasks, i.e. :class:`vertices  <Schedules.ProgramVertex.ProgramVertex>` of the graph '''
     
     edges = []
-    ''' List of dependencies, i.e. edges of the graph '''
+    ''' List of dependencies, i.e. :class:`edges  <Schedules.ProgramEdge.ProgramEdge>` of the graph'''
     
     versions = []
     ''' '''
@@ -80,7 +78,7 @@ class Program(object):
     def CheckCycles(self):
         ''' Checks that there are no cycles in the graph 
         
-        Attention: it's not implemented yet'''
+        ..warning:: it's not implemented yet'''
         pass
     
     def FindEdge(self, v1, v2):

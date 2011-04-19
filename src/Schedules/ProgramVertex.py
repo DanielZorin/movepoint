@@ -14,7 +14,7 @@ class ProgramVertex(object):
     '''Time required to complete the task'''
     
     versions = None
-    '''List of versions of the task. See Core.Version for reference'''
+    '''List of versions of the task. See :class:`~Core.Version.Version` for reference'''
     
     def __init__(self, n, c):
         self.number = n

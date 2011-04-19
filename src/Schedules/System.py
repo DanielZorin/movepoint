@@ -14,13 +14,13 @@ class System(object):
     Parts of the program are assigned to the processors via a schedule'''
 
     program = None
-    ''':class: `Program`'''
+    ''':class:`~Schedules.Program.Program` object'''
     
     processors = []
-    '''List of :class: `Processor`s'''
+    '''List of :class:`~Core.Processor.Processor` objects'''
     
     schedule = None
-    ''':class: `Schedule`'''
+    ''':class:`~Schedules.Schedule.Schedule` object'''
     
     tdir = 0
     '''Time limit for the program execution'''
@@ -108,7 +108,7 @@ class System(object):
     def GenerateRandom(self, params):
         ''' Generates a random system.
         Now that the processors are fixed it merely creates a random program
-        The params dictionary is passed to the :func: `Program.GenerateRandom` function.
+        The params dictionary is passed to the :meth:`~Schedules.Program.Program.GenerateRandom` function.
         
         Time and reliability constraints are generated here. Types of constraints (params["tdir"]/params["rdir"]):
         

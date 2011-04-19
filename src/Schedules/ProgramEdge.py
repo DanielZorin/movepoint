@@ -8,10 +8,10 @@ class ProgramEdge(object):
     '''Represents an edge of the program data flow graph'''
     
     source = None
-    ''' First vertex'''
+    ''' First :class:`vertex <Schedules.ProgramVertex.ProgramVertex>` '''
     
     destination = None
-    ''' Second vertex'''
+    ''' Second :class:`vertex <Schedules.ProgramVertex.ProgramVertex>`'''
     
     volume = None
     '''Volume of data sent over this edge'''

@@ -8,7 +8,7 @@ from Schedules.Program import Program
 from Core.Processor import Processor
 import random
 
-p = Program()
+"""p = Program()
 p.LoadFromXML("program2.xml")
 s = Schedule(p, [Processor(0, 0.99)])
 s.SetToDefault()
@@ -70,4 +70,4 @@ if s.GetProcessorsWithoutDoubles() < 4:
     
 print(s.GetTime())
 print(s.GetReliability())
-print(s.GetProcessors())
+print(s.GetProcessors())"""
