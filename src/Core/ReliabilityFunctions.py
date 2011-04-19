@@ -1,6 +1,8 @@
-#TODO: this class is obsolete. All the techniques are now implemented in their own classes
-
 class reliabilityFunctions:
+    '''.. deprecated:: 0.1
+    All the techniques are now implemented in their own classes
+    '''
+    
     def __init__(self, pall, pd, prv):
         self.pall = pall
         self.pd = pd

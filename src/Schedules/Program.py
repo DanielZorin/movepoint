@@ -78,7 +78,7 @@ class Program(object):
     def CheckCycles(self):
         ''' Checks that there are no cycles in the graph 
         
-        ..warning:: it's not implemented yet'''
+        .. warning:: it's not implemented yet'''
         pass
     
     def FindEdge(self, v1, v2):
