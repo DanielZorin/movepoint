@@ -35,7 +35,9 @@ class Program(object):
             self.LoadFromXML(filename)
             
     def LoadFromXML(self, filename):
-        ''' Load edges and vertices from XML '''
+        ''' Load edges and vertices from XML
+        
+        .. warning:: Describe XML format here'''
         try:
             f = open(filename, "r")
             dom = xml.dom.minidom.parse(f)

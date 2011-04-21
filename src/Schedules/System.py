@@ -44,7 +44,9 @@ class System(object):
         self.schedule.SetToDefault()
         
     def LoadProcessors(self, filename):
-        '''Parse the XML with to get the specs of the processors'''
+        '''Parse the XML with to get the specs of the processors
+        
+        .. warning:: Describe XML format here'''
         f = open(filename)
         dom = xml.dom.minidom.parse(f)
         

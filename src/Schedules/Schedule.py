@@ -12,7 +12,7 @@ from Schedules.Exceptions import SchedulerTypeException
 
 class Schedule(object):
     '''Represents a schedule for a certain program. A schedule is a set of quadruples
-    (task, version, processor, number). Info about reserve processor is stored too.
+    (task, version, processor, number). Info about reserve processor is stored here too.
     
     :param program: :class:`~Schedules.Program.Program` object
     :param processors: List of available processors'''
@@ -587,7 +587,8 @@ class Schedule(object):
  
     # TODO: deprecate this method       
     def TryMoveVertex(self, s1, m, n):
-        '''.. deprecated:: 0.1 
+        '''.. deprecated:: 0.1
+        
         Use MoveVertex'''
         if s1.m == m:
         # Same processor
