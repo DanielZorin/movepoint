@@ -6,39 +6,55 @@ from Core.RedundancyTechnique import RedundancyTechnique as Method
 from Core.ReliabilityFunctions import reliabilityFunctions    
 
 class Point:
+    ''' Represents a point in the graph of the system, i.e. a subsystem. It has hardware and software components '''  
+    
+    name = None
+    '''Point name'''
+    
+    hardware = []
+    '''List of hardware. Elements are instances of :class:`~Core.Hardware.Hardware` class.'''
+    
+    software = []
+    '''List of software. Elements are instances of :class:`~Core.Software.Software` class.'''
+    
+    methods = []
+    '''List of methods. Elements are instances of :class:`~Core.RedundancyTechnique.RedundancyTechnique` class.'''
+    
+    currentHardware = None
+    '''List of indexes of the elements of :attr:`~Systems.Point.hardware` currently used.'''
+    
+    currentSoftware = None
+    '''List of indexes of the elements of :attr:`~Systems.Point.software` currently used.'''
+    
+    currentMethod = None
+    '''Index of currently used method in :attr:`~Systems.Point.methods`'''
+    
+    _methodMask = []
+    '''Maximum number of variants for each method.'''
+    
     def __init__(self, name):
-        #Point name
         self.name = name
-        #List of hardware. Elements are instances of Hardware class.
-        self.hardware = []
-        #List of software. Elements are instances of Software class.
-        self.software = []
-        #List of methods. Elements are instances of Method class.
-        self.methods = []
-        #List of indexes of the elements of self.hardware currently used.
-        self.currentHardware = None
-        #List of indexes of the elements of self.software currently used.
-        self.currentSoftware = None
-        #Index of currently used method in self.methods
-        self.currentMethod = None
-        #Maximum number of variants for each method.
-        self._methodMask = []
-
         self.pall = 1.0
         self.pd = 1.0
         self.prv = 1.0
         
     def AddHardware(self, rel, var, cost, name):
+        ''' Add a hardware variant'''
         self.hardware.append(Hardware(rel, var, cost, name))
         self.FixData()
+        
     def AddSoftware(self, rel, var, cost, name):
+        ''' Add a software variant'''
         self.software.append(Software(rel, var, cost, name))
         self.FixData()
+        
     def AddMethod(self, name, hard, soft):
+        ''' Add an available method'''
         self.methods.append(Method(name, hard, soft))
         self.FixData()
         
     def FixData(self):
+        ''' Auxiliary function used to enumerate all combinations of hardware and software'''
         for m in self.methods:
             h = len(self.hardware)
             s = len(self.software)
@@ -57,12 +73,14 @@ class Point:
             self._methodMask.append(res)
         
     def CheckIfSet(self):
+        ''' :return: True if there are hardware, software and methods'''
         if (self.currentMethod == None) or (self.currentHardware == None) or (self.currentSoftware == None):
             return False
         else: 
             return True
     
     def CheckConsistency(self):
+        ''' :return: true if everything is correct in this point'''
         if self.CheckIfSet() == False:
             return False
         if len(self.currentHardware) != self.methods[self.currentMethod].hardware:
@@ -72,6 +90,9 @@ class Point:
         return True
         
     def GetReliability(self):
+        ''' Calculates relaibility of this point
+        
+        .. warning:: this function uses a deprecated method.'''
         self.reliabilityCalculator = reliabilityFunctions(self.pall, self.pd, self.prv)       
         currentHardwareList = []
         currentSoftwareList = []
@@ -84,6 +105,7 @@ class Point:
                                                     currentHardwareList, 
                                                     currentSoftwareList)
     def GetCost(self):
+        ''' Calculates total cost of this point '''
         res = 0
         for i in self.currentHardware:
             res += self.hardware[i].cost
@@ -92,6 +114,10 @@ class Point:
         return res        
         
     def Encode(self):
+        ''' Encodes this point to a dictionary
+        {"software": s, "hardware": h}
+        where s and h are numbers of combinations.
+        '''
         res = {"software": 0, "hardware": 0}
         if (self.currentMethod == None) or (self.currentHardware == None) or (self.currentSoftware == None):
             return res
@@ -114,6 +140,7 @@ class Point:
         return res
         
     def GetMaximumValues(self):
+        ''' :return: number of combinations'''
         h = 0
         s = 0
         for k in self._methodMask:
@@ -122,11 +149,10 @@ class Point:
         return {"software": s, "hardware": h}
     
     def Decode(self, v):
-        #Decodes a point. Returns false if the values are invalid.
+        '''Decodes a point. Returns false if the values are invalid.'''
         value = {}
         value["hardware"] = v["hardware"]
         value["software"] = v["software"]
-        tmp = {"software": 0, "hardware": 0}
         for i in range(len(self._methodMask)):
             if value["software"] <= self._methodMask[i]["software"]:
                 self.currentMethod = i
@@ -147,10 +173,10 @@ class Point:
         return True
     
     def TestSolution(self, v):
+        ''' Checks if it's possible to decode the point without actually updating any attributes'''
         value = {}
         value["hardware"] = v["hardware"]
         value["software"] = v["software"]
-        tmp = {"software": 0, "hardware": 0}
         for i in range(len(self._methodMask)):
             if value["software"] <= self._methodMask[i]["software"]:
                 break
