@@ -21,10 +21,10 @@ class MainWindow(QMainWindow):
         QtGui.QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.projFilter = self.tr("SRGM projects (*.srgm *.srg)")
-        self.setPreferences()
         self.ui.graph = Graph(self)
         self.ui.graph.show()
+        self.projFilter = self.tr("SRGM projects (*.srgm *.srg)")
+        self.setPreferences()
     
     def __del__(self):
         ''''f = open("srgm.ini", "wb")
@@ -66,6 +66,7 @@ class MainWindow(QMainWindow):
             res = d.GetData()
             self.project = Project(name=res["name"], data=res["file"])
             self.ChangeModels(res["models"])
+            self.Update() 
         
     def OpenProject(self):
         #Call Open project dialog
@@ -83,6 +84,7 @@ class MainWindow(QMainWindow):
             return  
         self.projectFile = name
         self.setWindowTitle(self.project.name + " - SRGM GUI")
+        self.Update() 
         
     def SaveProject(self):
         if self.projectFile == None:
@@ -135,12 +137,14 @@ class MainWindow(QMainWindow):
             # TODO: research the best way to handle such things
             a, b, c, d, e = settingsDialog.GetData()
             self.project.SetRestrictions(a, b, c, d, e)
+            self.Update()
                     
     def AddData(self):
         #Add a new error
         d = AddDataDialog()
         if d.exec_() == QDialog.Accepted:
-            self.project.AddError(d.GetData()) 
+            self.project.AddError(d.GetData())
+            self.Update() 
 
     def BatchAddData(self):
         #Add a pack of errors
@@ -148,6 +152,7 @@ class MainWindow(QMainWindow):
         if fileName == "":
             return
         self.project.AddData(fileName)
+        self.Update() 
 
     def LoadNewXml(self):
         #Loads new data, overrides current
@@ -155,29 +160,20 @@ class MainWindow(QMainWindow):
         if fileName == "":
             return
         self.project.ReplaceData(fileName)
+        self.Update() 
     
     def Compute(self):
         model = self.ui.comboBox.currentText()
         res = self.project.ComputeModel(model)
-        if self.ui.comboBox_2.currentIndex() == 0:
-            self.ui.graph.func = res["fmean"]
-        else:
-            self.ui.graph.func = res["fint"]
-        self.ui.graph.meanFunc = res["fmean"]
-        self.ui.graph.intensity = res["fint"]
+        self.ui.graph.AddFunction("Mean function", res["fmean"])
+        # This isn't used
+        #self.ui.graph.intensity = res["fint"]
         f = res["fmean"]
         totaltime = self.project.GetTotalTime()
         total = self.project.GetErrorsNumber()
-        self.ui.graph.time = totaltime
-        self.ui.graph.number = total
-        self.ui.graph.update()
-        self.ui.label_13.setText(str(total+3))
-        self.ui.label_14.setText(str(totaltime+1))
         week = f(totaltime+7)
         month = f(totaltime+30)
         year = f(totaltime+365)
-        self.ui.label_18.setText(str(total))
-        self.ui.label_22.setText(str(totaltime))
         self.ui.label_2.setText(str(res["n"])[:8])
         self.ui.label_5.setText(str(res["mttf"])[:8])
         self.ui.label_16.setText(str(month)[:7])
@@ -188,16 +184,19 @@ class MainWindow(QMainWindow):
         self.ui.label_30.setText(str(week - total)[:7])
         self.ui.label_7.setText(str(res["conf1"])[:7])
         self.ui.label_9.setText(str(res["conf2"])[:7])
-        self.RePlot()
+        self.Update()
 
-    def RePlot(self):
-        #Refreshes the graph
-        # TODO: refactor the graph widget
-        if self.ui.comboBox_2.currentText() == "Mean value function":
-            self.ui.graph.Change(1)
-        else:
-            self.ui.graph.Change(2)
+    def Update(self):
+        totaltime = self.project.GetTotalTime()
+        total = self.project.GetErrorsNumber()
+        self.ui.graph.SetLimits(totaltime, total)
+        ef = self.project.GetErrorFunction()
+        self.ui.graph.AddFunction("Errors", ef)
         self.ui.graph.update()
+        self.ui.label_13.setText(str(total))
+        self.ui.label_14.setText(str(totaltime))
+        self.ui.label_18.setText(str(total))
+        self.ui.label_22.setText(str(totaltime))
 
     def About(self):
         #Calls about box

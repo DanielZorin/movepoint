@@ -28,6 +28,7 @@ class Project(object):
         fn.close()
         self.name = dict["name"]
         self.testingData = dict["data"]
+        self.testingData.CalculateErrorTimes()
         
     def ReplaceData(self, file):
         self.testingData = TestingData(file)
@@ -40,6 +41,17 @@ class Project(object):
         # What will happen if we need a new field?
         # Maybe passing the dictionary will be a better option in future.
         self.testingData.AddError(e["time"], e["programmer"], e["severity"], e["item"])
+      
+    def GetErrorFunction(self):
+        ran = list(range(len(self.testingData.errortimes)))
+        et = self.testingData.errortimes
+        def findr(x):
+            for i in range(len(et)):
+                if et[i] > x:
+                    if i == 0:
+                        return 0
+                    return ran[i-1]
+        return lambda x: findr(int(x))
         
     def ComputeModel(self, model):
         computer = SRGMList[model]()
