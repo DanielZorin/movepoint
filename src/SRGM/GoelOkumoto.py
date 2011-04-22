@@ -4,7 +4,8 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from SRGM.SRGM import SRGM
+from .SRGM import SRGM
+from Core.Common import findroot
 from math import exp, sqrt, log
 
 class GoelOkumoto(SRGM):
@@ -75,7 +76,7 @@ class GoelOkumoto(SRGM):
         return conf1, conf2
        
     def Compute(self):
-        b = self.Solve(self.GOfunc, 0.00001, 0.1)
+        b = findroot(self.GOfunc, 0.00001, 0.1)
         n = self.total / (1-exp(-b*self.totaltime))
         tmp = exp(-b*self.totaltime)-(1/n)
         if tmp > 0:

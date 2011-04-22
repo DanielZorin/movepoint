@@ -3,12 +3,12 @@ Created on 06.04.2011
 
 @author: juan
 '''
-from SRGM.SRGM import SRGM
-from SRGM.GoelOkumoto import GoelOkumoto
-from SRGM.JelinskiMoranda import JelinskiMoranda
-from SRGM.LittlewoodVerrall import LittlewoodVerrall
-from SRGM.SShaped import SShaped
-from SRGM.Logarithmic import Logarithmic
+from .SRGM import SRGM
+from .GoelOkumoto import GoelOkumoto
+from .JelinskiMoranda import JelinskiMoranda
+from .LittlewoodVerrall import LittlewoodVerrall
+from .SShaped import SShaped
+from .Logarithmic import Logarithmic
 
 SRGMList = {"Goel-Okumoto":GoelOkumoto,
             "Jelinski-Moranda":JelinskiMoranda,

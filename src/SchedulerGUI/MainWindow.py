@@ -1,14 +1,14 @@
 from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, qApp
 from PyQt4.QtCore import QTranslator
 import sys, os, pickle, _pickle, re
-from Project import Project
-from NewProjectDialog import NewProjectDialog
-from PreferencesDialog import PreferencesDialog
-from SettingsDialog import SettingsDialog
-from RandomSystemDialog import RandomSystemDialog
-from ScheduleVisualizer import ScheduleVisualizer
-from ScheduleContainer import ScheduleContainer
-from ComboBoxDialog import ComboBoxDialog
+from SchedulerGUI.Project import Project
+from SchedulerGUI.NewProjectDialog import NewProjectDialog
+from SchedulerGUI.PreferencesDialog import PreferencesDialog
+from SchedulerGUI.SettingsDialog import SettingsDialog
+from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
+from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
+from SchedulerGUI.ScheduleContainer import ScheduleContainer
+from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
 from Windows.ui_MainWindow import Ui_MainWindow
 from Schedules.Exceptions import SchedulerException
 
