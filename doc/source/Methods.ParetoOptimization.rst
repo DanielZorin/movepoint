@@ -28,7 +28,7 @@ ParetoOptimization Package
 :mod:`NPGA` Module
 ------------------
 
-.. automodule:: Methods.ParetoOptimization.NPGA
+.. autoclass:: Methods.ParetoOptimization.NPGA.NPGA
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ ParetoOptimization Package
 :mod:`NSGA` Module
 ------------------
 
-.. automodule:: Methods.ParetoOptimization.NSGA
+.. autoclass:: Methods.ParetoOptimization.NSGA.NSGA
     :members:
     :undoc-members:
     :show-inheritance:
@@ -68,7 +68,7 @@ ParetoOptimization Package
 :mod:`SPEA` Module
 ------------------
 
-.. automodule:: Methods.ParetoOptimization.SPEA
+.. autoclass:: Methods.ParetoOptimization.SPEA.SPEA
     :members:
     :undoc-members:
     :show-inheritance:
@@ -76,7 +76,7 @@ ParetoOptimization Package
 :mod:`SPEA2` Module
 -------------------
 
-.. automodule:: Methods.ParetoOptimization.SPEA2
+.. autoclass:: Methods.ParetoOptimization.SPEA2.SPEA2
     :members:
     :undoc-members:
     :show-inheritance:
@@ -92,7 +92,7 @@ ParetoOptimization Package
 :mod:`VEGA` Module
 ------------------
 
-.. automodule:: Methods.ParetoOptimization.VEGA
+.. autoclass:: Methods.ParetoOptimization.VEGA.VEGA
     :members:
     :undoc-members:
     :show-inheritance:

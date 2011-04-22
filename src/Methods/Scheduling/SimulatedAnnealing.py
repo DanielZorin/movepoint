@@ -12,61 +12,70 @@ import random
 import copy
 
 class SimulatedAnnealing(object):
-
-    # System, program and schedule to optimize
+    ''' Simulated Annealing method adapted for scheduling.
+    
+    .. warning:: Write details here'''
+    
     system = None
+    ''' System, program and schedule to optimize'''
     
-    # Current iteration and temperature (see Simulated Annealing)
     iteration = 0
-    temperature = 0
+    ''' Current iteration (see Simulated Annealing) '''
     
-    # Operation priorities (dictionary operation name:priority)
+    temperature = 0
+    ''' Current temperature (see Simulated Annealing) '''
+    
     opt_reliability = { "time-normal":{}, "time-exceed":{} }
     opt_time = { "time-normal":{}, "time-exceed":{} }
+    ''' Operation priorities (dictionary operation_name:priority) '''
     
-    # Maximum number of vertices and places among which the parameters for "MoveVertex" are chosen
     choice_vertices = 5
+    ''' Maximum number of vertices among which the parameters for "MoveVertex" are chosen '''
+    
     choice_places = 5
+    ''' Maximum number of places among which the parameters for "MoveVertex" are chosen '''
     
-    # Probability of special operations (see the paper)
     cut_processor = 0.5
+    ''' Probability of the special operation "Cut processor" '''
+    
     new_processor = 0.5
+    ''' Probability of the special operation "Cut processor" '''
     
-    # Used strategies for MoveVertex and their probabilities
     strategies = {}
+    ''' Used strategies for MoveVertex and their probabilities '''
     
-    # Parameters of the current approximation
     curTime = None
     curRel = None
     curProc = None
+    ''' Parameters of the current approximation '''
     
-    # Current approximation. A copy is saved here, and all changes are applied to the original
     oldSchedule = None
+    ''' Current approximation. A copy is saved here, and all changes are applied to the original '''
     
-    # Current best solution and its characteristics
     bestSchedule = None
     bestTime = None
     bestRel = None
     bestProc = None
+    ''' Current best solution and its characteristics '''
     
-    # Number of iteration is 10 * number of vertices
     numberOfIterations = 0
+    ''' Number of iteration is 10 * number of vertices '''
     
-    # Threshold functions (see the paper)
     f1 = None
     f2 = None
     f3 = None
+    ''' Threshold functions (see the paper) '''
     
-    # Here we keep the last operation. It's used in GUI
     lastOperation = {"operation": "",
                         "parameters": [],
                         "result": False}
+    ''' Here we keep the info about the last operation. It's used in GUI '''
     
-    # Experimental feature: cut processors completely
     completeCutting = True
+    ''' Turns on experimental feature: cut processors completely '''
     
-    # Debug feature: print debug information
     writeLog = False
+    ''' Debug feature: print debug information '''
 
     def __init__(self, system):
         self.iteration = 0
@@ -75,6 +84,7 @@ class SimulatedAnnealing(object):
         self.temperature = 0
     
     def write(self, *text):
+        ''' Print debug information'''
         if self.writeLog:
             res = []
             for s in text:
@@ -82,9 +92,13 @@ class SimulatedAnnealing(object):
             print(" ".join(res))
     
     def ChangeSystem(self, s):
+        ''' Replace the system'''
         self.system = s
         
     def LoadConfig(self, filename):
+        ''' Loads the config from XML
+        
+        .. warning:: Describe the format here'''
         def LoadPrioritiesList(node):
             tmp = {}
             for att in node.attributes.keys():
@@ -160,6 +174,9 @@ class SimulatedAnnealing(object):
             raise SchedulerXmlException(filename)
       
     def Serialize(self):
+        ''' Serializes this class.
+        The class is not picklable because f1, f2, f3 are lambda functions.
+        Therefore, all necessaary information is stored in the following dictionary.'''
         return {
         "opt_reliability": self.opt_reliability,
         "opt_time": self.opt_time,
@@ -174,6 +191,7 @@ class SimulatedAnnealing(object):
         "f3":(self.f3.type, self.f3.params)}
         
     def Deserialize(self, dict):
+        '''Deserializes the class from a dictionary of parameters'''
         self.opt_reliability = dict["opt_reliability"]
         self.opt_time = dict["opt_time"]
         self.choice_vertices = dict["choice_vertices"]
@@ -187,6 +205,7 @@ class SimulatedAnnealing(object):
         self.f3 = Threshold(type=dict["f3"][0], cachedparams=dict["f3"][1])
     
     def Reset(self):
+        ''' Resets the method to the zero iteration'''
         self.system.schedule.SetToDefault()
         self.curTime = self.system.schedule.Interpret()
         self.curRel = self.system.schedule.GetReliability()
@@ -198,6 +217,7 @@ class SimulatedAnnealing(object):
     
     # TODO: clean up this function    
     def Start(self):
+        ''' Runs the algorithm with the given number of iterations'''
         self.bestSchedule = self.system.schedule
         self.curTime = self.system.schedule.Interpret()
         self.curRel = self.system.schedule.GetReliability()
@@ -219,6 +239,7 @@ class SimulatedAnnealing(object):
         return self.system.schedule
             
     def Step(self):
+        ''' Makes a single iteration of the algorithm'''
         self.write("---------------------------")
         self.write("iteration ", self.iteration)
         self.lastOperation = {}
@@ -229,8 +250,8 @@ class SimulatedAnnealing(object):
         self._applyOperation(op)
         self._selectNewSchedule()
      
-    # Dict is key:probability. A key is chosen according to this distribution
     def _chooseRandomKey(self, dict):
+        ''' Dict is key:probability. A key is chosen according to this distribution'''
         v = random.random()
         sum = 0.0
         # Sum can be less than 1 if some operations are impossible on the current step.

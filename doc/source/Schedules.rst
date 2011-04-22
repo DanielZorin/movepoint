@@ -10,9 +10,8 @@ Schedules Package
     :show-inheritance:
 
 :mod:`Program` Module
----------------------
-
-.. automodule:: Schedules.Program
+------------------------
+.. autoclass:: Schedules.Program.Program
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +19,7 @@ Schedules Package
 :mod:`ProgramEdge` Module
 -------------------------
 
-.. automodule:: Schedules.ProgramEdge
+.. autoclass:: Schedules.ProgramEdge.ProgramEdge
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +27,7 @@ Schedules Package
 :mod:`ProgramVertex` Module
 ---------------------------
 
-.. automodule:: Schedules.ProgramVertex
+.. autoclass:: Schedules.ProgramVertex.ProgramVertex
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +35,7 @@ Schedules Package
 :mod:`Schedule` Module
 ----------------------
 
-.. automodule:: Schedules.Schedule
+.. autoclass:: Schedules.Schedule.Schedule
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +43,7 @@ Schedules Package
 :mod:`ScheduleVertex` Module
 ----------------------------
 
-.. automodule:: Schedules.ScheduleVertex
+.. autoclass:: Schedules.ScheduleVertex.ScheduleVertex
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +51,7 @@ Schedules Package
 :mod:`System` Module
 --------------------
 
-.. automodule:: Schedules.System
+.. autoclass:: Schedules.System.System
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,7 +59,7 @@ Schedules Package
 :mod:`Threshold` Module
 -----------------------
 
-.. automodule:: Schedules.Threshold
+.. autoclass:: Schedules.Threshold.Threshold
     :members:
     :undoc-members:
     :show-inheritance:

@@ -3,8 +3,9 @@ from Core.Common import *
 from Methods.ParetoOptimization.Settings import *
 import random, copy
 
-# Generates Pareto front by random selection of solutions.
 def PAES(system):
+    '''.. warning:: Describe the algorithm here'''
+    
     iteration = 0
     paretofront = []
     paretosolutions = []

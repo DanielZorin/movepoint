@@ -1,3 +1,7 @@
+'''.. deprecated:: 0.1
+    
+    To be reimplemented as Z-test'''
+
 NumberOfIterations = 1
 
 DefaultAccuracy = 0.5

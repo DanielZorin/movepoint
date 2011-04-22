@@ -4,8 +4,8 @@ from Core.Common import *
 from Methods.ParetoOptimization.FullIteration import *
 from Methods.ParetoOptimization.Settings import *
 
-# Generates Pareto front by random selection of solutions.
 def RandomSelection(system):
+    ''' Generates Pareto front by random selection of solutions. '''
     iteration = 0
     paretofront = []
     paretosolutions = []

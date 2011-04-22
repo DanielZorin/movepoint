@@ -3,7 +3,8 @@ Created on 06.04.2011
 
 @author: juan
 '''
-from SRGM.SRGM import SRGM
+from .SRGM import SRGM
+from Core.Common import findroot
 from math import exp, sqrt, log
 
 class SShaped(SRGM):
@@ -48,7 +49,7 @@ class SShaped(SRGM):
         return sum
     
     def Compute(self):
-        b = self.Solve(self.SShapedFunc, 0.000001, 0.01)     
+        b = findroot(self.SShapedFunc, 0.000001, 0.01)     
         n = self.total / (1-(1+b*self.totaltime)*exp(-b*self.totaltime))
         f = lambda x: n*(1-(1+b*x)*exp(-b*x))-self.total-1
         mttf = -1

@@ -1,23 +1,31 @@
 import random
 import xml.dom.minidom
-from Systems.Point import *
+from Systems.Point import Point
 
 class PointSystem:
-    """
-    self.points - list of all points of the system.
-    self.connections - list of pairs of points, representing the structure
-        of the system graph.
-    """
+    '''
+    Represents a system consisting of points
+    '''
+    
+    points = []
+    ''' List of all points of the system.'''
+    
+    connections = []
+    ''' List of pairs of points, representing the structure of the system graph.'''
+    
     def __init__(self):
         self.points = []
         self.connections = []
         
     def LoadFromXml(self, filename):
+        ''' Loads the points from XML.
+        
+        .. warning:: Describe the format here'''
         #Clear the system before loading
         self.points = []
         self.connections = []
         #Parse the XML file
-        f = file(filename)
+        f = open(filename)
         dom = xml.dom.minidom.parse(f)
         for node in dom.childNodes:
             if node.tagName == "system":
@@ -89,6 +97,9 @@ class PointSystem:
         self._default()
         
     def SaveStateToXml(self, filename):
+        ''' Saves the current configuration to XML
+        
+        .. warning:: Describe the format here'''
         if self.CheckConsistency() == False:
             #FIXME: exception here
             return
@@ -112,15 +123,16 @@ class PointSystem:
                 method.appendChild(soft)
             point.appendChild(method)
             resultsystem.appendChild(point)
-        f = file(filename, "w")
+        f = open(filename, "w")
         f.write(dom.toprettyxml())
     
     def SaveToXml(self, filename):
+        '''.. warning:: not implemented'''
         pass
         #TODO: implement
         
     def Encode(self):
-        #Encodes system into a string, returns it and a string of maximum values. 
+        '''Encodes system into a string, returns it and a string of maximum values. '''
         encodedList = []
         maximumList = []
         for p in self.points:
@@ -129,21 +141,21 @@ class PointSystem:
         return encodedList, maximumList
     
     def Decode(self, encodedList):
-        #Load the system from a string
+        ''' Load the system from a string'''
         for i in range(len(encodedList)):
             if self.points[i].Decode(encodedList[i]) == False:
                 return False
         return True
     
     def TestSolution(self, solution):
-        #Test if the given solution is encoded correctly.
+        '''Test if the given solution is encoded correctly.'''
         for i in range(len(solution)):
             if self.points[i].TestSolution(solution[i]) == False:
                 return False
         return True
     
-    # Function for debug purposes. Sets all points to some values 
     def _default(self):
+        ''' Function for debug purposes. Sets all points to some values '''
         for i in range(len(self.points)):
             n = random.randrange(0, len(self.points[i].methods))
             h = self.points[i].methods[n].hardware
@@ -152,8 +164,8 @@ class PointSystem:
             self.points[i].currentSoftware = list(range(s))
             self.points[i].currentHardware = list(range(h))
             
-    #Generates a random valid solution for the given system
     def GenerateRandomSolution(self):
+        ''' Generates a random valid solution for the given system '''
         v, max = self.Encode()
         i = 0
         while i < len(v):
@@ -164,11 +176,13 @@ class PointSystem:
         return v
     
     def CheckConsistency(self):
+        ''' Check if everything is correct'''
         for p in self.points:
             if p.CheckConsistency() == False:
                 return False
     
     def GetReliability(self):
+        ''' Calculates total reliability'''
         if self.CheckConsistency() == False:
             raise "System not set. Try to decode it first."
         r = 1.0
@@ -177,6 +191,7 @@ class PointSystem:
         return r
     
     def GetCost(self):
+        ''' Calculates total cost'''
         if self.CheckConsistency() == False:
             raise "System not set. Try to decode it first."
         r = 0

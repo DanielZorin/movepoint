@@ -1,10 +1,14 @@
 from Systems.PointSystem import PointSystem
 from Core.Common import *
 from Methods.ParetoOptimization.Settings import *
-import copy, pickle
 import random
 
 class Chromosome(object):
+    ''' Represents a chromosome used in the genetic algorithm
+    
+    :param chromosome: An encoded list of :class:`~Systems.Point.Point` objects 
+    :param length: length of the chromosome'''
+    
     seperator = ''
 
     def __init__(self, chromosome=None, length=0):
@@ -14,19 +18,7 @@ class Chromosome(object):
     
     def _makechromosome(self):
         "makes a chromosome from randomly selected alleles."
-        return zeros(self.length)
-
-    def evaluate(self, optimum=None):
-        "this method MUST be overridden to evaluate individual fitness score."
-        pass
-    
-    def crossover(self, other):
-        "override this method to use your preferred crossover method."
-        return self._twopoint(other)
-    
-    def mutate(self, gene):
-        "override this method to use your preferred mutation method."
-        self._pick(gene) 
+        return [0 for i in range(self.length)]
 
     def __repr__(self):
         "returns string representation of self"
@@ -39,12 +31,15 @@ class Chromosome(object):
         return res
     
     def copy(self):
+        ''' make a copy'''
         twin = self.__class__(self.chromosome[:])
         twin.score = self.score
         return twin
 
 
 class GeneticAlgorithm(object):
+    ''' Implements basic genetic algorithm for Pareto Optimization '''
+    
     def __init__(self, system):
         self.system = system
         self.generation = 0
@@ -72,6 +67,7 @@ class GeneticAlgorithm(object):
         return self.generation > MaximumIterations
     
     def step(self):
+        ''' Makes one step of the algorithm: selection, crossover, mutation'''
         self._select()
         self._crossover()
         self._mutation()
@@ -129,8 +125,10 @@ class GeneticAlgorithm(object):
         self.system._default()
 
     def report(self):
+        ''' Print debug data '''
         print("generation: ", self.generation)
         
     def Start(self):
+        ''' Run the algorithm until the goal is acheived'''
         while not self._goal():
             self.step()

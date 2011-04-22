@@ -4,7 +4,8 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from SRGM.SRGM import SRGM
+from .SRGM import SRGM
+from Core.Common import findroot
 from math import exp, sqrt, log
 
 class Logarithmic(SRGM):
@@ -25,7 +26,7 @@ class Logarithmic(SRGM):
         return sum
     
     def Compute(self):
-        b1 = self.Solve(self.LogarithmicFunc, 0.001, 2)
+        b1 = findroot(self.LogarithmicFunc, 0.001, 2)
         b0 = self.total / log(1+b1*self.totaltime)
         tmp = b0*b1/(b1*self.totaltime + 1)
         mttf = 1/tmp

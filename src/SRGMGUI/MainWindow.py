@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
     def NewProject(self):
         #Open New project dialog
         d = ProjectDialog()
-        d.exec()
+        d.exec_()
         if d.result() == QDialog.Accepted:
             res = d.GetData()
             self.project = Project(name=res["name"], data=res["file"])
@@ -112,7 +112,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(buttonOK)
         d.setLayout(layout)
         QtCore.QObject.connect(buttonOK, QtCore.SIGNAL("clicked()"), d, QtCore.SLOT("accept()"))
-        d.exec()
+        d.exec_()
         if d.result() == QDialog.Accepted:         
             lst = []
             for i in range(len(models)):
@@ -131,7 +131,7 @@ class MainWindow(QMainWindow):
         # TODO: visualize current restrictions
         settingsDialog = DataSelectDialog()
         settingsDialog.SetTime(self.project.GetStartTime(), self.project.GetEndTime())
-        if settingsDialog.exec() == QDialog.Accepted:
+        if settingsDialog.exec_() == QDialog.Accepted:
             # TODO: research the best way to handle such things
             a, b, c, d, e = settingsDialog.GetData()
             self.project.SetRestrictions(a, b, c, d, e)
@@ -139,7 +139,7 @@ class MainWindow(QMainWindow):
     def AddData(self):
         #Add a new error
         d = AddDataDialog()
-        if d.exec() == QDialog.Accepted:
+        if d.exec_() == QDialog.Accepted:
             self.project.AddError(d.GetData()) 
 
     def BatchAddData(self):

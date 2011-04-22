@@ -4,7 +4,8 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from SRGM.SRGM import SRGM
+from .SRGM import SRGM
+from Core.Common import findroot
 from math import exp, sqrt, log
 
 class JelinskiMoranda(SRGM):
@@ -26,7 +27,7 @@ class JelinskiMoranda(SRGM):
         return sum        
     
     def Compute(self):
-        n = self.Solve(self.JMfunc, self.total+1.0, self.total*2.0)
+        n = findroot(self.JMfunc, self.total+1.0, self.total*2.0)
         tmpsum = 0.0
         for i in range(1, self.total+1 ):  
             tmpsum += (i-1)*(self.data[i]-self.data[i-1])

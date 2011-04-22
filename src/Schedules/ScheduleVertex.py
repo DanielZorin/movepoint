@@ -10,21 +10,21 @@ from Schedules.ProgramVertex import *
 class ScheduleVertex(object):
     '''Represents an element of the schedule: a quadruple consisting of four objects given in the constructor.
 
-        * v - Task
-        * k - Version of the task
-        * m - Processor
-        * n - Number on the processor
+    :param v: Task
+    :param k: Version of the task
+    :param m: Processor
+    :param n: Number on the processor
     
     '''
 
     v = None
-    '''ProgramVertex'''
+    ''':class:`~Schedules.ProgramVertex.ProgramVertex` object'''
     
     k = None
-    '''Version'''
+    ''':class:`~Core.Version.Version` object'''
     
     m = None
-    '''Processor'''
+    ''':class:`~Core.Processor.Processor` object'''
     
     n = None
     '''Number on the processor'''

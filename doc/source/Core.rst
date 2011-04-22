@@ -17,10 +17,18 @@ Core Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`Error` Module
+----------------------
+
+.. autoclass:: Core.Error.Error
+    :members:
+    :undoc-members:
+    :show-inheritance:
+	
 :mod:`Hardware` Module
 ----------------------
 
-.. automodule:: Core.Hardware
+.. autoclass:: Core.Hardware.Hardware
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +36,7 @@ Core Package
 :mod:`NVP` Module
 -----------------
 
-.. automodule:: Core.NVP
+.. autoclass:: Core.NVP.NVP
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +44,7 @@ Core Package
 :mod:`Processor` Module
 -----------------------
 
-.. automodule:: Core.Processor
+.. autoclass:: Core.Processor.Processor
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +52,7 @@ Core Package
 :mod:`RedundancyTechnique` Module
 ---------------------------------
 
-.. automodule:: Core.RedundancyTechnique
+.. autoclass:: Core.RedundancyTechnique.RedundancyTechnique
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,7 +68,7 @@ Core Package
 :mod:`Reserve` Module
 ---------------------
 
-.. automodule:: Core.Reserve
+.. autoclass:: Core.Reserve.Reserve
     :members:
     :undoc-members:
     :show-inheritance:
@@ -68,7 +76,15 @@ Core Package
 :mod:`Software` Module
 ----------------------
 
-.. automodule:: Core.Software
+.. autoclass:: Core.Software.Software
+    :members:
+    :undoc-members:
+    :show-inheritance:
+	
+:mod:`TestingData` Module
+-------------------------
+
+.. autoclass:: Core.TestingData.TestingData
     :members:
     :undoc-members:
     :show-inheritance:
@@ -76,7 +92,7 @@ Core Package
 :mod:`Version` Module
 ---------------------
 
-.. automodule:: Core.Version
+.. autoclass:: Core.Version.Version
     :members:
     :undoc-members:
     :show-inheritance:

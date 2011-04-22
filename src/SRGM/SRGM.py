@@ -30,16 +30,3 @@ class SRGM(object):
         self.data += data
         self.total = len(self.data)-1
         self.totaltime = self.data[self.total]
-    
-    #TODO: Move to Common    
-    def Solve(self, f, a, b):
-        k = (a + b) / 2
-        fa = f(a)
-        fb = f(b)
-        fk = f(k)
-        if b - a < 0.001:
-            return b
-        if(fk*fa < 0):
-            return self.Solve(f, a, k)
-        else:
-            return self.Solve(f, k, b)

@@ -1,14 +1,14 @@
 from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, qApp
 from PyQt4.QtCore import QTranslator
 import sys, os, pickle, _pickle, re
-from Project import Project
-from NewProjectDialog import NewProjectDialog
-from PreferencesDialog import PreferencesDialog
-from SettingsDialog import SettingsDialog
-from RandomSystemDialog import RandomSystemDialog
-from ScheduleVisualizer import ScheduleVisualizer
-from ScheduleContainer import ScheduleContainer
-from ComboBoxDialog import ComboBoxDialog
+from SchedulerGUI.Project import Project
+from SchedulerGUI.NewProjectDialog import NewProjectDialog
+from SchedulerGUI.PreferencesDialog import PreferencesDialog
+from SchedulerGUI.SettingsDialog import SettingsDialog
+from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
+from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
+from SchedulerGUI.ScheduleContainer import ScheduleContainer
+from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
 from Windows.ui_MainWindow import Ui_MainWindow
 from Schedules.Exceptions import SchedulerException
 
@@ -77,7 +77,7 @@ class MainWindow(QMainWindow):
 
     def NewProject(self):
         self.newproject = NewProjectDialog()
-        self.newproject.exec()
+        self.newproject.exec_()
         if self.newproject.result() == QDialog.Accepted:
             try:
                 self.project = Project(self.newproject.GetSystem(), self.newproject.GetConfig(), self.newproject.GetName())     
@@ -220,7 +220,7 @@ class MainWindow(QMainWindow):
         t, r = self.project.GetLimits()
         data = {"Time":t, "Reliability": r}
         d = SettingsDialog(data)
-        d.exec()
+        d.exec_()
         if d.result() == QDialog.Accepted:
             t = data["Time"]
             r = data["Reliability"]
@@ -230,13 +230,13 @@ class MainWindow(QMainWindow):
     def Settings(self):
         data = self.project.method.Serialize()
         d = SettingsDialog(data)
-        d.exec()
+        d.exec_()
         if d.result() == QDialog.Accepted:
             self.project.method.Deserialize(d.data)
     
     def GenerateRandomSystem(self):
         d = RandomSystemDialog()
-        d.exec()
+        d.exec_()
         if d.result() == QDialog.Accepted:
             params = d.GetResult()
             self.project.GenerateRandomSystem(params)
@@ -248,7 +248,7 @@ class MainWindow(QMainWindow):
 
     def ChangeLanguage(self):
         dialog = ComboBoxDialog(self.languages, self.currentLanguage)
-        dialog.exec()
+        dialog.exec_()
         selected = self.languages[dialog.combo.currentIndex()]
         self.currentLanguage = selected
         self.Translate("Translations\Scheduler_" + selected + ".qm")
@@ -264,7 +264,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(self.project.name + " - Scheduler GUI") 
 
     def Preferences(self):
-        self.preferences.exec()
+        self.preferences.exec_()
         if self.preferences.result() == QDialog.Accepted:
             self.UpdatePreferences()
             

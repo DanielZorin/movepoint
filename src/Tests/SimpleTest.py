@@ -5,6 +5,10 @@ from Tests.Settings import *
 import math, pickle
 
 class SimpleTest:
+    '''.. deprecated:: 0.1
+    
+    To be reimplemented as Z-test'''
+    
     def __init__(self, method, system, log=None, ideal=None):
         self.method = method
         self.idealresult = ideal

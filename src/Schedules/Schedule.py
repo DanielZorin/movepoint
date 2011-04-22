@@ -11,11 +11,24 @@ from Schedules.ScheduleVertex import ScheduleVertex
 from Schedules.Exceptions import SchedulerTypeException
 
 class Schedule(object):
+    '''Represents a schedule for a certain program. A schedule is a set of quadruples
+    (task, version, processor, number). Info about reserve processor is stored here too.
+    
+    :param program: :class:`~Schedules.Program.Program` object
+    :param processors: List of available processors'''
     
     vertices = []
+    '''List of :class:`~Schedules.ScheduleVertex.ScheduleVertex` objects'''
+    
     processors = []
+    '''List of :class:`~Core.Processor.Processor` '''
+    
     program = None
+    ''':class:`~Schedules.Program.Program` scheduled'''
+    
     availableProcessors = []
+    ''' List of :class:`~Core.Processor.Processor` objects representing the types of processors
+    that can be used. In future it'll contain more info on them'''
     
     # TODO: rename: delays -> idletimes, waiting -> delays
     delays = []
@@ -26,8 +39,6 @@ class Schedule(object):
     # This data is used for fast drawing of the schedule in GUI.
     executionTimes = {}
     deliveryTimes = []
-    
-    '''Constructors and auxiliary functions'''
     
     def __init__(self, program, processors=[]):
         self.program = program
@@ -43,7 +54,7 @@ class Schedule(object):
         return res
     
     def SetToDefault(self):    
-        # Each vertex is placed on a new processor
+        ''' Places each vertex on a new processor'''
         self.vertices = []
         self.processors = []
         self.emptyprocessors = []
@@ -55,7 +66,7 @@ class Schedule(object):
             i += 1
             
     def SetToDefault2(self):
-        # All vertices are placed on one processor
+        ''' Places all vertices on one processor '''
         self.vertices = []
         self.processors = []
         self.emptyprocessors = []
@@ -154,9 +165,9 @@ class Schedule(object):
 
     '''Search specific elements in the schedule'''
     
-    #Returns the first vertex satisfying the given mask.
-    #"None" stands for any value
     def FindVertex(self, v = None, k = None, m = None, n = None):
+        ''' Returns the first vertex satisfying the given (v, k, m, n) mask.
+        "None" stands for any value'''
         for ver in self.vertices:
             if (v is None) or (ver.v == v):
                 if (k is None) or (ver.k == k):
@@ -164,9 +175,10 @@ class Schedule(object):
                         if (n is None) or (ver.n == n):
                             return ver
         return None
-    
-    # Returns a list of vertices satisfying the given mask
+     
     def FindAllVertices(self, v = None, k = None, m = None, n = None):
+        ''' Returns a list of vertices satisfying the given mask.
+        "None" stands for any value'''
         res = []
         for ver in self.vertices:
             if (v is None) or (ver.v == v):
@@ -179,6 +191,7 @@ class Schedule(object):
     '''Main features of a schedule: time, reliability, size'''
 
     def GetTime(self):
+        ''' Returns the time of schedule execution assuming that data delivery begins as soon as the task ends'''
         def FindReadyTask(l, parsed):
             for s in l:
                 b = True
@@ -218,6 +231,9 @@ class Schedule(object):
         return max
     
     def Interpret(self):
+        ''' Returns the time of schedule execution assuming that each processor supports
+        only one sending/receiving operation at a time. If one of the processors is busy, the delivery
+        is added to the queue and is initiated only when both processors become available.'''
         # Uses local variables donetasks and edges
         def CheckReady(v):
             for v0 in self._dep(v):
@@ -226,7 +242,7 @@ class Schedule(object):
                     return False
             for e in edges:
                 if (e[1] == v) and (e[3] == False):
-                    # Waiting for delivery to finish
+                    # Waiting for a delivery to finish
                     return False
             return True
         
@@ -384,7 +400,7 @@ class Schedule(object):
                     b = False        
             if b:
                 break
-            # TODO: this is an old workaround used for testing. Beware.
+            # TODO: this is an old workaround used for debugging. Beware.
             if time > 1000000:
                 break
         
@@ -403,6 +419,9 @@ class Schedule(object):
         return time
     
     def GetReliability(self):
+        ''' Calculates reliability of the system as a product of the reliability 
+        of all processors (including reserves) and the reliability of all tasks
+        (including the task that are run with NVP)'''
         hard = 1.0
         soft = 1.0      
         for p in set(self.processors):
@@ -419,14 +438,19 @@ class Schedule(object):
         return hard * soft
     
     def GetProcessors(self):
+        ''' :return: the total number of processors used in the schedule'''
         return sum([p.reserves for p in self.processors])
     
     def GetProcessorsWithoutDoubles(self):
+        ''' :return: the number of main processors (not counting the reserves) '''
         return len(set(self.processors))
     
     '''Operations with schedules'''
     
     def AddProcessor(self, m):
+        ''' Adds a reserve to processor m
+        
+        :return: True is the operation is successful (m exists and it's possible to add a reserve)'''
         for p in self.processors:
             if p == m:
                 p.reserves += 1
@@ -434,6 +458,9 @@ class Schedule(object):
         return False
         
     def DeleteProcessor(self, m):
+        ''' Deletes a reserve to processor m
+        
+        :return: True is the operation is successful (m exists and has at least one reserve'''
         if m.reserves > 1:
             m.reserves -= 1
             return True
@@ -441,6 +468,9 @@ class Schedule(object):
             return False
         
     def AddVersion(self, v):
+        ''' Adds a pair of versions to task v
+        
+        :return: True is the operation is successful (v exists and it's possible to add two versions)'''
         curver = self.FindAllVertices(v=v)
         totalver = v.versions
         #Not enough versions
@@ -454,6 +484,9 @@ class Schedule(object):
         return True
     
     def DeleteVersion(self, v):
+        ''' Deletes a pair of verions of task v
+        
+        :return: True is the operation is successful (v exists and has at least three versions used'''
         curver = self.FindAllVertices(v=v)
         # Only one version remains
         if len(curver) == 1:
@@ -479,6 +512,9 @@ class Schedule(object):
         self._delEmptyProc(p2)
         
     def MoveVertex(self, s1, m, n):
+        ''' Moves a :class:`~Schedules.ScheduleVertex.ScheduleVertex` s1 to position n on processor m 
+        
+        :return: True if the operation is successful (all objects exist and the operation doesn't cause the appearance of cycles in the schedule)'''
         if s1.m == m:
         # Same processor
             if n > s1.n:
@@ -551,6 +587,9 @@ class Schedule(object):
  
     # TODO: deprecate this method       
     def TryMoveVertex(self, s1, m, n):
+        '''.. deprecated:: 0.1
+        
+        Use MoveVertex'''
         if s1.m == m:
         # Same processor
             if n > s1.n:
@@ -588,16 +627,21 @@ class Schedule(object):
             return True
         
     def CanDeleteProcessor(self):
+        ''':return: True if there is at least one processor with at least one reserve'''
         for v in self.vertices:
             if v.m.reserves > 1:
                 return True
         return False
     
     def CanDeleteVersions(self):
+        ''':return: True if there is at least one task with more than one version '''
         for v in self.vertices:
             if v.k.number > 1:
                 return True
         return False
     
     def CanAddVersions(self):
+        ''':return: True if there is at least one task with two available unused versions
+        
+        .. warning:: Not implemented yet'''
         return True

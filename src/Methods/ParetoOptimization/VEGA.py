@@ -6,6 +6,7 @@ import copy, pickle
 import random
 
 class VEGA(GeneticAlgorithm):
+    '''.. warning:: Describe the algorithm here'''
     
     def __init__(self, system):
         GeneticAlgorithm.__init__(self, system)
