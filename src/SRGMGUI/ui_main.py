@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sat Apr 09 12:31:48 2011
+# Created: Fri Apr 22 21:09:05 2011
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
         self.pushButton = QtGui.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(260, 30, 101, 31))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.graph = QtGui.QWidget(self.centralwidget)
+        self.graph = Graph(self.centralwidget)
         self.graph.setGeometry(QtCore.QRect(440, 110, 300, 300))
         self.graph.setObjectName(_fromUtf8("graph"))
         self.label_11 = QtGui.QLabel(self.graph)
@@ -204,7 +204,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionLoad_new_XML_file, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadNewXml)
         QtCore.QObject.connect(self.actionSetup_data_selection, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.SelectData)
         QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.Compute)
-        QtCore.QObject.connect(self.pushButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.RePlot)
+        QtCore.QObject.connect(self.pushButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.Update)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -261,3 +261,4 @@ class Ui_MainWindow(object):
         self.actionSetup_data_selection.setText(QtGui.QApplication.translate("MainWindow", "Setup data selection", None, QtGui.QApplication.UnicodeUTF8))
         self.actionBatch_data_load.setText(QtGui.QApplication.translate("MainWindow", "Batch data load", None, QtGui.QApplication.UnicodeUTF8))
 
+from Graph import Graph

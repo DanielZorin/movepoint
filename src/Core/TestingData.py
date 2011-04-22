@@ -57,7 +57,8 @@ class TestingData(object):
         for node in dom.childNodes:
             if node.tagName == "errors":
                 for error in node.childNodes:
-                    currentError = {}
+                    # TODO: default values
+                    currentError = {"time":0, "programmer":0, "severity":0, "item":0}
                     for attr in error.childNodes:
                         if attr.nodeName == "time":
                             for k in attr.childNodes:
@@ -148,15 +149,24 @@ class TestingData(object):
     def StartTime(self):
         ''' :return: time of the first error'''
         # TODO: error if it's empty
-        return self.errortimes[0]
+        if self.errortimes != []:
+            return self.errortimes[0]
+        else:
+            return 0
     
     def EndTime(self):
         ''' :return: time of the last error'''
-        return self.errortimes[len(self.errortimes) - 1]
+        if self.errortimes != []:
+            return self.errortimes[len(self.errortimes) - 1]
+        else:
+            return 0
     
     def TotalTime(self):
         ''' :return: total time between the first and the last error '''
-        return self.errortimes[len(self.errortimes) - 1] - self.errortimes[0]
+        if self.errortimes != []:
+            return self.errortimes[len(self.errortimes) - 1] - self.errortimes[0]
+        else:
+            return 0
     
     def SetProgrammerRestriction(self, p):
         ''' Sets the :attr:`~Core.TestingData.TestingData.programmer` list and computes errortimes again'''

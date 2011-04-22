@@ -369,7 +369,7 @@
      <string>Compute</string>
     </property>
    </widget>
-   <widget class="QWidget" native="1" name="graph" >
+   <widget class="Graph" native="1" name="graph" >
     <property name="geometry" >
      <rect>
       <x>440</x>
@@ -625,6 +625,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Graph</class>
+   <extends>QWidget</extends>
+   <header location="global" >Graph.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -823,7 +831,7 @@
    <sender>pushButton_2</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>RePlot()</slot>
+   <slot>Update()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>707</x>
@@ -843,6 +851,6 @@
   <slot>SelectData()</slot>
   <slot>ChangeModelsList()</slot>
   <slot>Compute()</slot>
-  <slot>RePlot()</slot>
+  <slot>Update()</slot>
  </slots>
 </ui>
