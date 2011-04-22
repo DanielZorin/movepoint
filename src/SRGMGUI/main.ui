@@ -43,7 +43,7 @@
     <property name="title" >
      <string>Parameters</string>
     </property>
-    <widget class="QLabel" name="label_2" >
+    <widget class="QLabel" name="estimate" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -82,7 +82,7 @@
       <string>Mean time to fault:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_5" >
+    <widget class="QLabel" name="mttf" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -108,7 +108,7 @@
       <string>Confidence interval:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_7" >
+    <widget class="QLabel" name="conf1" >
      <property name="geometry" >
       <rect>
        <x>140</x>
@@ -134,7 +134,7 @@
       <string>to</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_9" >
+    <widget class="QLabel" name="conf2" >
      <property name="geometry" >
       <rect>
        <x>220</x>
@@ -160,7 +160,7 @@
       <string>Errors after one month estimate:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_16" >
+    <widget class="QLabel" name="afterMonth" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -186,7 +186,7 @@
       <string>Current number of faults:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_18" >
+    <widget class="QLabel" name="numberOfFaults" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -212,7 +212,7 @@
       <string>Errors during next month:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_20" >
+    <widget class="QLabel" name="month" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -238,7 +238,7 @@
       <string>Current testing time:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_22" >
+    <widget class="QLabel" name="testingTime" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -264,7 +264,7 @@
       <string>Errors after one year estimate:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_24" >
+    <widget class="QLabel" name="afterYear" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -290,7 +290,7 @@
       <string>Errors during next year:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_26" >
+    <widget class="QLabel" name="year" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -316,7 +316,7 @@
       <string>Errors after one week estimate:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_28" >
+    <widget class="QLabel" name="afterWeek" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -342,7 +342,7 @@
       <string>Errors during next week:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_30" >
+    <widget class="QLabel" name="week" >
      <property name="geometry" >
       <rect>
        <x>180</x>
@@ -440,12 +440,12 @@
      <string>0</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_13" >
+   <widget class="QLabel" name="graphY" >
     <property name="geometry" >
      <rect>
       <x>410</x>
       <y>80</y>
-      <width>21</width>
+      <width>51</width>
       <height>16</height>
      </rect>
     </property>
@@ -453,12 +453,12 @@
      <string>n</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_14" >
+   <widget class="QLabel" name="graphX" >
     <property name="geometry" >
      <rect>
       <x>760</x>
       <y>370</y>
-      <width>21</width>
+      <width>41</width>
       <height>16</height>
      </rect>
     </property>
@@ -477,39 +477,6 @@
     </property>
     <property name="orientation" >
      <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox_2" >
-    <property name="geometry" >
-     <rect>
-      <x>510</x>
-      <y>30</y>
-      <width>141</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text" >
-      <string>Mean value function</string>
-     </property>
-    </item>
-    <item>
-     <property name="text" >
-      <string>Failure intensity</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2" >
-    <property name="geometry" >
-     <rect>
-      <x>670</x>
-      <y>30</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>Plot</string>
     </property>
    </widget>
   </widget>
@@ -820,22 +787,6 @@
     <hint type="sourcelabel" >
      <x>310</x>
      <y>67</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>409</x>
-     <y>226</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>Update()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>707</x>
-     <y>63</y>
     </hint>
     <hint type="destinationlabel" >
      <x>409</x>
