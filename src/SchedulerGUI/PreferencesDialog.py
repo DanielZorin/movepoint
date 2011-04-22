@@ -4,9 +4,8 @@ Created on 06.01.2011
 @author: juan
 '''
 
-from PyQt4.QtGui import QDialog, QFileDialog, QColorDialog, QColor
-import os
-from Windows.ui_PreferencesDialog import Ui_PreferencesDialog
+from PyQt4.QtGui import QDialog, QColorDialog
+from SchedulerGUI.Windows.ui_PreferencesDialog import Ui_PreferencesDialog
 
      
 class PreferencesDialog(QDialog):

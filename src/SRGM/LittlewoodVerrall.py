@@ -4,16 +4,16 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from .SRGM import SRGM
-from math import exp, sqrt, log
+from SRGM.SRGMBase import SRGMBase
+from math import sqrt, log
 
-class LittlewoodVerrall(SRGM):
+class LittlewoodVerrall(SRGMBase):
     '''
     Represents the LV model
     '''
 
     def __init__(self):
-        SRGM.__init__(self)
+        SRGMBase.__init__(self)
         
     def Compute(self):
         def f1(a,b,c):

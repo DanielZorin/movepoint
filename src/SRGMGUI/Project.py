@@ -3,7 +3,7 @@ Created on 15.12.2010
 
 @author: juan
 '''
-import pickle, xml.dom.minidom
+import pickle
 from SRGM.SRGMList import SRGMList
 from Core.TestingData import TestingData
 

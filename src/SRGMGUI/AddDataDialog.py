@@ -5,7 +5,7 @@ Created on 09.04.2011
 '''
 
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, qApp
+from PyQt4.QtGui import QDialog
 
 
 class AddDataDialog(QDialog):

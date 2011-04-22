@@ -4,17 +4,17 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from .SRGM import SRGM
+from SRGM.SRGMBase import SRGMBase
 from Core.Common import findroot
 from math import exp, sqrt, log
 
-class GoelOkumoto(SRGM):
+class GoelOkumoto(SRGMBase):
     '''
     Represents the Goel-Okumoto model (also known as exponential)
     '''
 
     def __init__(self):
-        SRGM.__init__(self)
+        SRGMBase.__init__(self)
                
     def GOfunc(self, x):
         sum = 0

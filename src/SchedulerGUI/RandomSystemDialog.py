@@ -3,9 +3,8 @@ Created on 09.01.2011
 
 @author: juan
 '''
-from PyQt4.QtGui import QDialog, QFileDialog, QColorDialog, QColor
-import os
-from Windows.ui_RandomSystemDialog import Ui_RandomSystemDialog
+from PyQt4.QtGui import QDialog
+from SchedulerGUI.Windows.ui_RandomSystemDialog import Ui_RandomSystemDialog
 
      
 class RandomSystemDialog(QDialog):
