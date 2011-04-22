@@ -1,7 +1,7 @@
 from PyQt4 import QtGui
 import sys
 
-from MainWindow import MainWindow
+from SchedulerGUI.MainWindow import MainWindow
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

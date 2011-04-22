@@ -4,17 +4,17 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from .SRGM import SRGM
+from SRGM.SRGMBase import SRGMBase
 from Core.Common import findroot
-from math import exp, sqrt, log
+from math import log
 
-class Logarithmic(SRGM):
+class Logarithmic(SRGMBase):
     '''
     Represents the logarithmic model
     '''
 
     def __init__(self):
-        SRGM.__init__(self)
+        SRGMBase.__init__(self)
     
 
     def LogarithmicFunc(self, x):

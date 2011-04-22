@@ -3,7 +3,7 @@ Created on 06.04.2011
 
 @author: juan
 '''
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
 
 class Graph(QtGui.QWidget):
     def __init__(self, parent = None):

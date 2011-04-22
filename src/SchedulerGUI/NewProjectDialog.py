@@ -3,10 +3,10 @@ Created on 15.12.2010
 
 @author: juan
 '''
-from PyQt4 import QtGui, QtCore
+
 from PyQt4.QtGui import QDialog, QFileDialog
 import os
-from Windows.ui_NewProjectDialog import Ui_NewProjectDialog
+from SchedulerGUI.Windows.ui_NewProjectDialog import Ui_NewProjectDialog
 
      
 class NewProjectDialog(QDialog):

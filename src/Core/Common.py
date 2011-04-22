@@ -8,10 +8,10 @@ def factorial(x):
         return 1
     return x * factorial(x - 1)
 
-def findroot(f, x, a, b, eps=0.001):
+def findroot(f, a, b, eps=0.001):
     ''' Solves the equation f(z) = x with dichotomy method 
     assuming that the root is in [a,b] with precision eps'''
-    k = x
+    k = (a + b) / 2
     fa = f(a)
     fk = f(k)
     if b - a < eps:

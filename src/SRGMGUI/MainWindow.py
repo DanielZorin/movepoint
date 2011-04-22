@@ -1,13 +1,13 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, qApp
 from PyQt4.QtCore import QTranslator
-from ui_main import Ui_MainWindow
-from ProjectDialog import ProjectDialog, DataSelectDialog
-from Graph import Graph
-from AddDataDialog import AddDataDialog
-from Project import Project
+from SRGMGUI.ui_main import Ui_MainWindow
+from SRGMGUI.ProjectDialog import ProjectDialog, DataSelectDialog
+from SRGMGUI.Graph import Graph
+from SRGMGUI.AddDataDialog import AddDataDialog
+from SRGMGUI.Project import Project
 from SRGM.SRGMList import SRGMList
-import sys, pickle, _pickle, os, math
+import sys, pickle, _pickle, os
 
 class MainWindow(QMainWindow):
     

@@ -44,7 +44,7 @@ SRGM Package
 :mod:`SRGM` Module
 ------------------
 
-.. autoclass:: SRGM.SRGM.SRGM
+.. autoclass:: SRGM.SRGMBase.SRGMBase
     :members:
     :undoc-members:
     :show-inheritance:

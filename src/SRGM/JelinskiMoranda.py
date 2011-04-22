@@ -4,17 +4,17 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from .SRGM import SRGM
+from SRGM.SRGMBase import SRGMBase
 from Core.Common import findroot
-from math import exp, sqrt, log
+from math import exp
 
-class JelinskiMoranda(SRGM):
+class JelinskiMoranda(SRGMBase):
     '''
     Represents the Jelinski-Moranda model
     '''
 
     def __init__(self):
-        SRGM.__init__(self)   
+        SRGMBase.__init__(self)   
         
     def JMfunc(self, x):
         sum = 0

@@ -9,7 +9,7 @@ from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
 from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
 from SchedulerGUI.ScheduleContainer import ScheduleContainer
 from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
-from Windows.ui_MainWindow import Ui_MainWindow
+from SchedulerGUI.Windows.ui_MainWindow import Ui_MainWindow
 from Schedules.Exceptions import SchedulerException
 
 class MainWindow(QMainWindow):
