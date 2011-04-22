@@ -2,10 +2,14 @@ from Systems.PointSystem import PointSystem
 from Systems.SystemGenerator import SystemGenerator
 from Core.Common import Cmeasure
 #from Optimize.mpmath import erfinv
-from Settings import *
+from Tests.Settings import *
 import math,pickle
 
 class ComparativeTest:
+    '''.. deprecated:: 0.1
+    
+    To be reimplemented as Z-test'''
+    
     def __init__(self, methods, log=None):
         self.methods = methods
         self.systemGenerator = SystemGenerator(20,6,6)

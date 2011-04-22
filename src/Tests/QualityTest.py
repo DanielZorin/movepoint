@@ -7,6 +7,10 @@ from Tests.Settings import *
 import math,pickle
 
 class QualityTest:
+    '''.. deprecated:: 0.1
+    
+    To be reimplemented as Z-test'''
+    
     def __init__(self, methods, log=None):
         self.methods = methods
         self.idealresult = []

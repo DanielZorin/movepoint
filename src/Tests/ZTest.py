@@ -8,6 +8,12 @@ Created on 12.02.2011
 import math
 
 class ZTest:
+    ''' Implementation of a simple one-sample Z-test for a sample of Bernoulli distributed variables
+    
+    :param method: A function that takes an object from the samlple and returns some other object as a result. 
+    :param sample: A list of objects
+    :param func: A function that takes the result of "method" and evaluates it thus returning the actual value of the random variable to be tested
+    :param log: File for debug output'''
     
     significance = 0.05
     
@@ -38,8 +44,8 @@ class ZTest:
             self.log.write("Experiment " + str(i) + " returned " + str(v) + "\n")
         return res
     
-    # Tests whether the valueFunction(sample) has Bernoulli distribution with parameter param.
     def Test(self, param):
+        ''' Tests whether the valueFunction(sample) has Bernoulli distribution with parameter param.'''
         result = self._collectData()
         var = self._getNumericalSample(result)          
         p = float(sum(var)) / float(len(self.sample))
