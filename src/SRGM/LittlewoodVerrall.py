@@ -4,7 +4,7 @@ Created on 06.04.2011
 @author: juan
 '''
 
-from SRGM.SRGM import SRGM
+from .SRGM import SRGM
 from math import exp, sqrt, log
 
 class LittlewoodVerrall(SRGM):

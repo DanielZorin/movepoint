@@ -8,6 +8,7 @@ from Methods.Scheduling.RandomSimulatedAnnealing import RandomSimulatedAnnealing
 import copy
 
 def RunMixed(sys):
+    ''' Runs Simulated annealing with mixed strategy on a given system'''
     m = SimulatedAnnealing(sys)
     m.LoadConfig("config.xml")
     res = m.Start() 

@@ -10,13 +10,11 @@ class Threshold(object):
     
     Represents the probability to choose a new approximation on a certain iteration.
     
-    The fuction is supposed to be decreasing with the growth of x.
+    The function is supposed to be decreasing with the growth of x.
     
-    Args:
-    
-    * type - one of the predefined types: linear or square
-    * cachedparams - dictionary of parameters. Used to serialize the Threshold object.
-    * params - a list of other params, specifically coefficients of the polynom
+    :param type: One of the predefined types: linear or square
+    :param cachedparams: The dictionary of parameters. Used to serialize the Threshold object.
+    :param params: A list of other params, specifically coefficients of the polynom
     ''' 
     
     def __init__(self, type, cachedparams=None, **params):

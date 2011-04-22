@@ -3,6 +3,7 @@ Created on 03.11.2010
 
 @author: juan
 '''
+
 import xml.dom.minidom
 import random
 from Schedules.ProgramVertex import ProgramVertex
@@ -12,10 +13,20 @@ from Core.NVP import NVP
 from Schedules.Exceptions import SchedulerFileException, SchedulerXmlException
 
 class Program(object):
-
+    ''' Represents a program that consists of several tasks depending on each other
+        Basically, it's a direct acyclic graph.
+        
+    :param filename: name of the XML file with the specification
+    '''
+    
     vertices = []
+    ''' List of tasks, i.e. :class:`vertices  <Schedules.ProgramVertex.ProgramVertex>` of the graph '''
+    
     edges = []
+    ''' List of dependencies, i.e. :class:`edges  <Schedules.ProgramEdge.ProgramEdge>` of the graph'''
+    
     versions = []
+    ''' '''
 
     def __init__(self, filename=""):
         self.vertices = []
@@ -24,7 +35,9 @@ class Program(object):
             self.LoadFromXML(filename)
             
     def LoadFromXML(self, filename):
-        # Load edges and vertices from XML
+        ''' Load edges and vertices from XML
+        
+        .. warning:: Describe XML format here'''
         try:
             f = open(filename, "r")
             dom = xml.dom.minidom.parse(f)
@@ -65,10 +78,13 @@ class Program(object):
             raise SchedulerXmlException(filename)
     
     def CheckCycles(self):
-        # Checks that there are no cycles in the graph
+        ''' Checks that there are no cycles in the graph 
+        
+        .. warning:: it's not implemented yet'''
         pass
     
     def FindEdge(self, v1, v2):
+        '''Search for a specific edge from v1 to v2. Returns None if the edge doesn't exist'''
         for ver in self.edges:
             if (ver.source == v1):
                 if (ver.destination == v2):
@@ -76,6 +92,9 @@ class Program(object):
         return None
     
     def FindAllEdges(self, v1 = None, v2 = None):
+        '''Search for all edges where source is v1 and destination is v2. 
+        If v1 or v2 is None, it doesn't set any restrictions.
+        I.e. FindAllEdges(None, None) returns a list of all edges of the graph'''
         res = []
         for ver in self.edges:
             if (v1 is None) or (ver.source == v1):
@@ -84,6 +103,14 @@ class Program(object):
         return res
     
     def FindMaxChain(self, countedges):
+        '''Finds the longest (in terms of time) chain in the graph.
+        
+        Each vertex has an integer attribute "time" assigned to it. This function finds the chain
+        of edges where the sum of times is maximal. It's not necessary the chain that has the most vertices
+        
+        If countedges is True, then the volume of the edges between the vertices is counted as well.
+        It makes sense when the time of delivery between processors is constant, hence volume of data
+        is proportional to the time'''
         def Walk(v, cur, countedges):
             lst = self.FindAllEdges(v1=v)
             m = cur + v.time
@@ -104,6 +131,8 @@ class Program(object):
         return m
     
     def GetReliabilityBoundaries(self):
+        '''Finds the maximal realiability achievable for this program (when all versions
+        of all tasks are used)'''
         strict = 1.0
         normal = 1.0
         for v in self.vertices:
@@ -114,11 +143,12 @@ class Program(object):
             
         return strict, normal
     
-    # Generates a random graph with n vertices
-    # Each task has from 1 to 5 versions
-    # Times are random integers from t1 to t2
-    # Volumes are random integers from v1 to v2
     def GenerateRandom(self, params):
+        '''Generates a random graph with n vertices.
+        Each task has from 1 to 5 versions.
+        Times are random integers from t1 to t2.
+        Volumes are random integers from v1 to v2.
+        All parameters are passed in a dictionary.'''
         for i in range(params["n"]):
             v = ProgramVertex(i + 1, random.randint(params["t1"], params["t2"]))
             self.vertices.append(v)

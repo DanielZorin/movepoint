@@ -5,6 +5,12 @@ import random
 
 
 class SystemGenerator:
+    ''' Generator a random :class:`~Systems.PointSystem.PointSystem` object
+    
+    :param size: Number of points
+    :param soft: Average number of software components in a point
+    :param hard: Average number of hardware components in a point'''
+    
     def __init__(self, size = 5, soft = 4, hard = 4):
         self.size = size
         if soft >= 3:
@@ -22,6 +28,9 @@ class SystemGenerator:
         self.methods.append(Method("rb/1/1", 2, 2))
         
     def Generate(self):
+        ''' Generates the system
+        
+        .. warning:: the implementation of random variables is weird'''
         res = PointSystem()
         for i in range(self.size):
             p = Point("generated point")

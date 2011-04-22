@@ -7,6 +7,7 @@ import copy, pickle, math
 import random
 
 class SPEA2(GeneticAlgorithm):
+    '''.. warning:: Describe the algorithm here'''
     
     def __init__(self, system):
         GeneticAlgorithm.__init__(self, system)

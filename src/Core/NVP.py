@@ -7,10 +7,19 @@ from Core.RedundancyTechnique import RedundancyTechnique
 import itertools
 
 class NVP(RedundancyTechnique):
+    ''' Represents an N-version programming structure. It requires an odd number of versions of the program.
+    The versions are executed simultaneously, if less than half fail, the system doesn't fail
+    
+    .. warning:: currently only NVP/0/n and NVP/1/1 are implemented. If the number of processors is more than 3, behavior might be undefined'''
     
     pall = None
+    ''' Probability of a common error in all versions'''
+    
     pd = None
+    ''' Probability of the fault of the decision-maker'''
+    
     prv = None
+    ''' Probability of a related fault between two versions'''
     
     def __init__(self, soft, hard, pall, pd, prv):
         RedundancyTechnique.__init__(self, "nvp", hard, soft)
@@ -19,6 +28,7 @@ class NVP(RedundancyTechnique):
         self.prv = prv
     
     def GetReliability(self):
+        ''' Calculates reliability'''
         # NVP/0/n
         if len(self.hardware) <= 1:
             res = 0.0

@@ -1,30 +1,28 @@
 import math, copy
 
-#Returns factorial of an integer value
 def factorial(x):
+    '''Returns factorial of an integer value'''
     if x <= 0:
         return 1
     if x == 1:
         return 1
     return x * factorial(x - 1)
 
-# Solves the equation f(res) = x
-def findroot(f, x, a, b):
+def findroot(f, x, a, b, eps=0.001):
+    ''' Solves the equation f(z) = x with dichotomy method 
+    assuming that the root is in [a,b] with precision eps'''
     k = x
     fa = f(a)
-    fb = f(b)
     fk = f(k)
-    if b - a < 0.001:
+    if b - a < eps:
         return b
     if(fk*fa < 0):
-        return findroot(f, a, k)
+        return findroot(f, a, k, eps)
     else:
-        return findroot(f, k, b)
-
-def erf(x):
-    pass
+        return findroot(f, k, b, eps)
 
 def sign(x):
+    ''' Returns sign of x '''
     if x > 0:
         return 1
     elif x < 0:
@@ -32,18 +30,15 @@ def sign(x):
     else:
         return 0
 
-# Calculates error function
-def erfinv(x):
-    if abs(x) < 0.9:
-        a = 0.53728*x**3 + 0.813198*x
-    else:
-        # An asymptotic formula
-        u = math.log(2/math.pi/(abs(x)-1)**2)
-        a = sign(x) * math.sqrt(u - math.log(u))/math.sqrt(2)
-    return findroot(lambda t: erf(t)-x, a, 0, 100000)
-
-#Returns ordinal number of a given combination
 def combinationNumber(b, m):
+    ''' Returns the ordinal number of a given combination
+    
+    :param b: A list of numbers from 1 to m
+    :param m: Maximal number in the combination
+    
+    Assume m=5, n=2. Then all combinations C(m,n) can be sorted "alphabetically", i.e. (2,3) will precede
+    (2,4), (1,3) will precede (2,1) and so on. This function returns the number of a given combination.
+    n isn't passed explicitly because it's the length of b'''
     n = len(b)
     if n == 0:
         return 0
@@ -54,6 +49,7 @@ def combinationNumber(b, m):
         return int(c + combinationNumber(b[:n-1], m-1))
     
 def getCombinationByNumber(n0, m0, k0):
+    ''' Finds k0 combination among all combinations C(n0, m0) sorted alphabetically.'''
     n = n0
     m = m0
     k = k0
@@ -83,8 +79,11 @@ def getCombinationByNumber(n0, m0, k0):
                 v[j] = v[p] + j - p + 1
     raise "Wrong combination number"
                
-#Compares two solutions in terms of Pareto domination
 def Dominates(x, y):
+    ''' Compares two solutions in terms of Pareto domination. x and y are dictionaries "cost"->int, "rel"->float
+    If x and y are equal, this function returns True.
+    
+    .. warning:: the implementation is unstable'''
     if (x["cost"] < y["cost"]) and ((x["rel"] - y["rel"]) > 0.000000000000001):
         return True
     if (x["cost"] == y["cost"]) and ((x["rel"] - y["rel"]) > 0.000000000000001):
@@ -98,27 +97,31 @@ def Dominates(x, y):
         return False
     
 def DominatesStrictly(x, y):
+    ''' Compares two solutions in terms of Pareto domination. x and y are dictionaries "cost"->int, "rel"->float
+    If x and y are equal, this function returns False.
+    
+    .. warning:: the implementation is unstable'''
     if (x["cost"] < y["cost"]) and ((x["rel"] - y["rel"]) > 0.000000000000001):
         return True 
     else:
         return False
 
-#Checks if any element of x dominates elem
 def ExistsDominating(elem, x):
+    '''Checks if any element of x dominates elem or is equal to elem'''
     for x0 in x:
         if Dominates(x0, elem):
             return True
     return False
 
-#Checks if any element of x dominates elem
 def ExistsDominatingStrictly(elem, x):
+    ''' Checks if any element of x dominates elem'''
     for x0 in x:
         if DominatesStrictly(x0, elem):
             return True
     return False
-
-# C(X,Y)   
+  
 def Cmeasure(x, y):
+    ''' C(X,Y) '''
     top = 0.0
     bottom = float(len(y))
     for elem in y:

@@ -5,10 +5,16 @@ Created on 03.11.2010
 '''
 
 class ProgramEdge(object):
+    '''Represents an edge of the program data flow graph'''
     
     source = None
+    ''' First :class:`vertex <Schedules.ProgramVertex.ProgramVertex>` '''
+    
     destination = None
+    ''' Second :class:`vertex <Schedules.ProgramVertex.ProgramVertex>`'''
+    
     volume = None
+    '''Volume of data sent over this edge'''
 
     def __init__(self, src, dst, v):
         self.source = src

@@ -17,8 +17,6 @@ Contents:
 
    Schedules
    
-   SchedulerGUI
-   
    Systems
    
    Tests
