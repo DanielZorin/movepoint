@@ -148,7 +148,7 @@ class MainWindow(QMainWindow):
 
     def BatchAddData(self):
         #Add a pack of errors
-        fileName = QtGui.QFileDialog.getOpenFileName()
+        fileName = QtGui.QFileDialog.getOpenFileName(filter="XML files (*.xml)")
         if fileName == "":
             return
         self.project.AddData(fileName)
@@ -156,7 +156,7 @@ class MainWindow(QMainWindow):
 
     def LoadNewXml(self):
         #Loads new data, overrides current
-        fileName = QtGui.QFileDialog.getOpenFileName()
+        fileName = QtGui.QFileDialog.getOpenFileName(filter="XML files (*.xml)")
         if fileName == "":
             return
         self.project.ReplaceData(fileName)
@@ -202,7 +202,7 @@ class MainWindow(QMainWindow):
         #Calls about box
         m = QtGui.QMessageBox(self)
         m.setWindowTitle("About this program")
-        m.setText("Designed by Daniel A. Zorin. Just as planned!")
+        m.setText("Designed by Daniel A. Zorin.")
         m.show()
 
     def Exit(self):
