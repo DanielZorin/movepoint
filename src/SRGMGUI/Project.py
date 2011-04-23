@@ -51,6 +51,7 @@ class Project(object):
                     if i == 0:
                         return 0
                     return ran[i-1]
+            return 0
         return lambda x: findr(int(x))
         
     def ComputeModel(self, model):
