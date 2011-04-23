@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Wed Feb 23 19:32:44 2011
+# Created: Sat Apr 23 13:00:03 2011
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -166,7 +166,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.rdir)
         self.laststep = QtGui.QPushButton(self.centralwidget)
         self.laststep.setEnabled(False)
-        self.laststep.setMaximumSize(QtCore.QSize(75, 16777215))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.laststep.sizePolicy().hasHeightForWidth())
+        self.laststep.setSizePolicy(sizePolicy)
+        self.laststep.setMaximumSize(QtCore.QSize(9999999, 16777215))
         self.laststep.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.laststep.setObjectName(_fromUtf8("laststep"))
         self.verticalLayout_3.addWidget(self.laststep)

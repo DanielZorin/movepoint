@@ -59,12 +59,12 @@ class PreferencesDialog(QDialog):
         self.ui.lastop.setStyleSheet("background-color: " + l.name())
         self.lastopColor = l
     
-    def exec(self):
+    def exec_(self):
         self.axisColortmp = self.axisColor
         self.taskColortmp = self.taskColor
         self.deliveriesColortmp = self.deliveriesColor
         self.lastopColortmp = self.lastopColor      
-        QDialog.exec(self)
+        QDialog.exec_(self)
         
     def OK(self):
         self.axisColor = self.axisColortmp
