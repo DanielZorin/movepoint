@@ -312,9 +312,15 @@
           <property name="enabled" >
            <bool>false</bool>
           </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize" >
            <size>
-            <width>75</width>
+            <width>9999999</width>
             <height>16777215</height>
            </size>
           </property>
