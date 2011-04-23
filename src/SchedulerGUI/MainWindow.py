@@ -25,10 +25,11 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.visualizer = ScheduleVisualizer(self.ui.visualizerArea)
         self.ui.visualizerArea.setWidget(self.visualizer)
+        self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
+        self.title = self.tr("Scheduler GUI")
         self.container = ScheduleContainer()
         self.loadTranslations()
         self.setPreferences()
-        self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
     
     def __del__(self):
         ''''f = open("scheduler.ini", "wb")
@@ -84,7 +85,7 @@ class MainWindow(QMainWindow):
             except SchedulerException as e:
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
-            self.setWindowTitle(self.project.name + " - Scheduler GUI") 
+            self.setWindowTitle(self.project.name + " - " + self.title) 
             self.container.Clear()
             self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
             self.EnableRunning()
@@ -106,7 +107,7 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
             return  
         self.projectFile = name
-        self.setWindowTitle(self.project.name + " - Scheduler GUI") 
+        self.setWindowTitle(self.project.name + " - " + self.title) 
         self.container.Clear()
         self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
         self.EnableRunning()
@@ -214,7 +215,7 @@ class MainWindow(QMainWindow):
         s = QInputDialog.getText(self, "Change Project Name", "Enter the new project name", text=self.project.name)
         if s[1] == True:           
             self.project.ChangeName(s[0])
-            self.setWindowTitle(self.project.name + " - Scheduler GUI") 
+            self.setWindowTitle(self.project.name + " - " + self.title) 
     
     def ChangeLimits(self):
         t, r = self.project.GetLimits()
@@ -261,7 +262,7 @@ class MainWindow(QMainWindow):
         self.ui.retranslateUi(self)   
         self.preferences.ui.retranslateUi(self.preferences) 
         self.loadSchedule()    
-        self.setWindowTitle(self.project.name + " - Scheduler GUI") 
+        self.setWindowTitle(self.project.name + " - " + self.tr(self.title)) 
 
     def Preferences(self):
         self.preferences.exec_()
@@ -287,6 +288,9 @@ class MainWindow(QMainWindow):
         self.ui.rdir.setText('{:f}'.format(r)[:10])
     
     def loadSchedule(self):
+        if self.container.IsEmpty():
+            return
+        
         self.visualizer.Visualize(self.container.GetCurrent())
         self.showTotals()
         self.ui.labelTotal.setText(str(self.container.GetTotal()))
