@@ -41,6 +41,9 @@ class ScheduleContainer(object):
     def IsLast(self):
         return self.current == len(self.schedules) - 1
     
+    def IsEmpty(self):
+        return len(self.schedules) == 0
+    
     def Clear(self):
         self.schedules = []
         self.stats = []
