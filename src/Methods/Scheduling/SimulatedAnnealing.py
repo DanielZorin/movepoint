@@ -71,7 +71,7 @@ class SimulatedAnnealing(object):
                         "result": False}
     ''' Here we keep the info about the last operation. It's used in GUI '''
     
-    completeCutting = True
+    completeCutting = False
     ''' Turns on experimental feature: cut processors completely '''
     
     writeLog = False
@@ -213,7 +213,7 @@ class SimulatedAnnealing(object):
         self.bestProc = self.curProc
         self.bestTime = self.curTime
         self.bestRel = self.curRel
-        self.bestSchedule = copy.deepcopy(self.system.schedule)
+        self.bestSchedule = self.system.schedule.GetCopy()
     
     # TODO: clean up this function    
     def Start(self):
@@ -232,7 +232,7 @@ class SimulatedAnnealing(object):
                 print ("Early end: ", self.iteration)
                 return self.system.schedule
             #print(self.iteration)         
-        self.system.schedule = self.bestSchedule
+        self.system.schedule.RestoreFromCopy(self.bestSchedule)
         self.curTime = self.bestTime
         self.curRel = self.bestRel
         self.curProc = self.bestProc
@@ -245,8 +245,6 @@ class SimulatedAnnealing(object):
         self.lastOperation = {}
         self.temperature += 1
         op = self._chooseOperation()
-        #TODO: reconsider this implementation: maybe we should apply changes to the copy?
-        self.oldSchedule = copy.deepcopy(self.system.schedule) 
         self._applyOperation(op)
         self._selectNewSchedule()
      
@@ -375,7 +373,8 @@ class SimulatedAnnealing(object):
                                         self.lastOperation["parameters"] = [s1.v.number, s1.k.number, -1, target_pos]
                                     else:
                                         self.lastOperation["parameters"] = [s1.v.number, s1.k.number, target_proc.number, target_pos]
-                                    if s.MoveVertex(s1, target_proc, target_pos):
+                                    if s.TryMoveVertex(s1, target_proc, target_pos):
+                                        s.MoveVertex(s1, target_proc, target_pos)
                                         break
                         return           
                 # Move the task with the highest delay
@@ -478,7 +477,8 @@ class SimulatedAnnealing(object):
                 self.lastOperation["parameters"] = [s1.v.number, s1.k.number, -1, target_pos]
             else:
                 self.lastOperation["parameters"] = [s1.v.number, s1.k.number, target_proc.number, target_pos]
-            if not s.MoveVertex(s1, target_proc, target_pos):
+            if s.TryMoveVertex(s1, target_proc, target_pos):
+                s.MoveVertex(s1, target_proc, target_pos)
                 # TODO: handle this situation
                 pass
 
@@ -495,13 +495,14 @@ class SimulatedAnnealing(object):
                     self.bestProc = self.curProc
                     self.bestTime = self.curTime
                     self.bestRel = self.curRel
-                    self.bestSchedule = copy.deepcopy(self.system.schedule)
+                    self.bestSchedule = self.system.schedule.GetCopy()
                     self.write("BEST SOLUTION:", self.bestTime, self.bestProc, self.system.tdir)
             
         def refuse():  
             self.write("Refuse")
             self.lastOperation["result"] = False
-            self.system.schedule = self.oldSchedule 
+            #self.system.schedule = self.oldSchedule 
+            self.system.schedule.RollBack()
             
         def choose(f1, f2, f3):
             self.write(f1(self.temperature), f2(self.temperature), f3(self.temperature))
@@ -547,7 +548,8 @@ class SimulatedAnnealing(object):
         else:
             refuse()
            
-'''ss = System("program2.xml")
+ss = System("program.xml")
+ss.GenerateRandom({"n":40, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":2})
 s = SimulatedAnnealing(ss)
 s.LoadConfig("config.xml")
-s.Start()'''            
+s.Start()
