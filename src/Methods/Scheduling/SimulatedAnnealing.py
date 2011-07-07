@@ -71,17 +71,21 @@ class SimulatedAnnealing(object):
                         "result": False}
     ''' Here we keep the info about the last operation. It's used in GUI '''
     
-    completeCutting = False
+    completeCutting = True
     ''' Turns on experimental feature: cut processors completely '''
     
     writeLog = False
     ''' Debug feature: print debug information '''
+    
+    multioperation = False
 
     def __init__(self, system):
         self.iteration = 0
         self.system = system
-        self.numberOfIterations = len(self.system.program.vertices) * 5
+        self.numberOfIterations = len(self.system.program.vertices) * 10
         self.temperature = 0
+        self.system.schedule.SetToDefault()
+        self._prepare()
     
     def write(self, *text):
         ''' Print debug information'''
@@ -93,7 +97,9 @@ class SimulatedAnnealing(object):
     
     def ChangeSystem(self, s):
         ''' Replace the system'''
+        self.numberOfIterations = len(self.system.program.vertices) * 10
         self.system = s
+        self._prepare()
         
     def LoadConfig(self, filename):
         ''' Loads the config from XML
@@ -207,6 +213,9 @@ class SimulatedAnnealing(object):
     def Reset(self):
         ''' Resets the method to the zero iteration'''
         self.system.schedule.SetToDefault()
+        self._prepare()
+    
+    def _prepare(self):
         self.curTime = self.system.schedule.Interpret()
         self.curRel = self.system.schedule.GetReliability()
         self.curProc = self.system.schedule.GetProcessors()
@@ -214,24 +223,15 @@ class SimulatedAnnealing(object):
         self.bestTime = self.curTime
         self.bestRel = self.curRel
         self.bestSchedule = self.system.schedule.GetCopy()
-    
-    # TODO: clean up this function    
+        
     def Start(self):
         ''' Runs the algorithm with the given number of iterations'''
-        self.bestSchedule = self.system.schedule
-        self.curTime = self.system.schedule.Interpret()
-        self.curRel = self.system.schedule.GetReliability()
-        self.curProc = self.system.schedule.GetProcessors()
-        self.bestProc = self.curProc
-        self.bestTime = self.curTime
-        self.bestRel = self.curRel
         while self.iteration < self.numberOfIterations:
             self.Step()
             self.iteration += 1
             if (self.curProc == 1) and (self.curTime <= self.system.tdir) and (self.curRel >= self.system.rdir):
-                print ("Early end: ", self.iteration)
-                return self.system.schedule
-            #print(self.iteration)         
+                self.write("Early end: ", self.iteration)
+                return self.system.schedule       
         self.system.schedule.RestoreFromCopy(self.bestSchedule)
         self.curTime = self.bestTime
         self.curRel = self.bestRel
@@ -263,9 +263,6 @@ class SimulatedAnnealing(object):
             sum += dict[k]
             
     def _chooseOperation(self):
-        self.curTime = self.system.schedule.Interpret()
-        self.curRel = self.system.schedule.GetReliability()
-        self.curProc = self.system.schedule.GetProcessors()
         if self.curRel < self.system.rdir:
             if self.curTime > self.system.tdir:
                 vector = self.opt_reliability["time-exceed"]
@@ -293,6 +290,7 @@ class SimulatedAnnealing(object):
     def _applyOperation(self, op):
         self.write(op)
         self.lastOperation["operation"] = op
+        self.multioperation = False
         if op == "AddProcessor":
             proc = list(self.system.schedule.processors)
             proc.sort(key=lambda x: x.reserves)
@@ -362,6 +360,8 @@ class SimulatedAnnealing(object):
                                 break
                     else:
                         # TODO: this is an experimental implementation of complete cutting
+                        self.multioperation = True
+                        self.backup = self.system.schedule.GetCopy()
                         for s1 in ch:  
                             while True:
                                 num = random.randint(0, len(s.processors)-1)
@@ -501,8 +501,10 @@ class SimulatedAnnealing(object):
         def refuse():  
             self.write("Refuse")
             self.lastOperation["result"] = False
-            #self.system.schedule = self.oldSchedule 
-            self.system.schedule.RollBack()
+            if not self.multioperation:
+                self.system.schedule.RollBack()
+            else:
+                self.system.schedule.RestoreFromCopy(self.backup)
             
         def choose(f1, f2, f3):
             self.write(f1(self.temperature), f2(self.temperature), f3(self.temperature))
@@ -547,9 +549,15 @@ class SimulatedAnnealing(object):
             accept()
         else:
             refuse()
-           
+       
+import time
 ss = System("program.xml")
-ss.GenerateRandom({"n":40, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":2})
-s = SimulatedAnnealing(ss)
-s.LoadConfig("config.xml")
-s.Start()
+t0 = time.clock()
+for i in range(1, 11):
+    ss.GenerateRandom({"n":i*10, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":2})
+    s = SimulatedAnnealing(ss)
+    s.LoadConfig("config.xml")
+    s.Start()
+    t1 = time.clock() - t0
+    n = i*10
+    print (n, t1, t1/n, t1/(n**2), t1/(n**3))
