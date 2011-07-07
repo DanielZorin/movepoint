@@ -40,6 +40,9 @@ class Schedule(object):
     executionTimes = {}
     deliveryTimes = []
     
+    # TODO: merge with  SimulatedAnnealing.lastoperation
+    lastOp = {"op": "", "params":[]}
+    
     def __init__(self, program, processors=[]):
         self.program = program
         self.availableProcessors = processors
@@ -454,6 +457,8 @@ class Schedule(object):
         for p in self.processors:
             if p == m:
                 p.reserves += 1
+                self.lastOp["op"] = "AddProcessor"
+                self.lastOp["params"] = [m]
                 return True
         return False
         
@@ -463,6 +468,8 @@ class Schedule(object):
         :return: True is the operation is successful (m exists and has at least one reserve'''
         if m.reserves > 1:
             m.reserves -= 1
+            self.lastOp["op"] = "DeleteProcessor"
+            self.lastOp["params"] = [m]
             return True
         else:
             return False
@@ -481,6 +488,8 @@ class Schedule(object):
         s2 = ScheduleVertex(v, totalver[len(curver)+1], p, 2)
         self.vertices.append(s1)
         self.vertices.append(s2)
+        self.lastOp["op"] = "AddVersion"
+        self.lastOp["params"] = [v]
         return True
     
     def DeleteVersion(self, v):
@@ -495,6 +504,8 @@ class Schedule(object):
         # TODO: this is assuming versions are ordered
         s1 = curver[len(curver) - 1]
         s2 = curver[len(curver) - 2]
+        self.lastOp["op"] = "DeleteVersion"
+        self.lastOp["params"] = [v, s1.m, s1.n, s2.m, s2.n]
         p1 = s1.m
         p2 = s2.m
         proc1 = self.FindAllVertices(m=p1)
@@ -511,17 +522,27 @@ class Schedule(object):
         #TODO: is this really correct when p1=p2?
         self._delEmptyProc(p2)
         
+    def UndoDeleteVersion(self, v, m1, n1, m2, n2):
+        self.AddVersion(v)
+        curver = self.FindAllVertices(v=v)
+        s1 = curver[len(curver) - 1]
+        s2 = curver[len(curver) - 2]
+        self.MoveVertex(s1, m1, n1)
+        self.MoveVertex(s2, m2, n2)
+        
     def MoveVertex(self, s1, m, n):
         ''' Moves a :class:`~Schedules.ScheduleVertex.ScheduleVertex` s1 to position n on processor m 
         
         :return: True if the operation is successful (all objects exist and the operation doesn't cause the appearance of cycles in the schedule)'''
+        self.lastOp["op"] = "MoveVertex"
+        self.lastOp["params"] = [s1, m, n, s1.m, s1.n]
         if s1.m == m:
         # Same processor
             if n > s1.n:
             #Move forward
                 s2 = self.FindVertex(m=s1.m, n=n)
                 # TODO: fix this. Why is s2 == None when there's only one processor?
-                if s2 in self._succ(s1) or s2 == None:
+                if s2 == None:
                     return False
                 else:
                     after_s2 = self.FindAllVertices(m = s1.m)
@@ -534,10 +555,6 @@ class Schedule(object):
             elif n < s1.n:
             #Move backward
                 after_s2 = self.FindAllVertices(m = s1.m)
-                for v in after_s2:
-                    if v.n >= n and v.n < s1.n:
-                        if s1 in self._succ(v):
-                            return False
                 for v in after_s2:
                     if v.n >= n and v.n < s1.n:
                         v.n += 1
@@ -561,18 +578,8 @@ class Schedule(object):
                 s1.n = 1
                 self._delEmptyProc(old)
                 return True
-            succ_s1 = self._succ(s1)
             s1_proc = self.FindAllVertices(m = s1.m)
             other_proc = self.FindAllVertices(m = m)
-            if n > len(other_proc) + 1:
-                return False
-            for v in other_proc:
-                if v.n < n:
-                    if v in succ_s1:
-                        return False
-                if v.n >= n:
-                    if s1 in self._succ(v):
-                        return False
             for v in other_proc:
                 if v.n >= n:
                     v.n += 1
@@ -583,7 +590,69 @@ class Schedule(object):
             p = s1.m
             s1.m = m
             self._delEmptyProc(p)
-            return True  
+            return True
+      
+    def UndoMoveVertex(self, s1, m, n, m2, n2):
+        if (s1.m != m2 or s1.n != n2):
+            if (m2 is None):
+                print ("FUCKING SHIT")
+                print (s1.m, s1.n, m2, n2)
+                return
+        if s1.m == m:
+        # Same processor
+            if n > s1.n:
+            #Move forward
+                s2 = self.FindVertex(m=s1.m, n=n)
+                # TODO: fix this. Why is s2 == None when there's only one processor?
+                if s2 == None:
+                    return False
+                else:
+                    after_s2 = self.FindAllVertices(m = s1.m)
+                    for v in after_s2:
+                        if (v.n <= s2.n) and (v.n > s1.n):
+                            v.n -= 1
+                    s1.n = n
+                    self._delEmptyProc(s1.m)
+                    return True
+            elif n < s1.n:
+            #Move backward
+                after_s2 = self.FindAllVertices(m = s1.m)
+                for v in after_s2:
+                    if v.n >= n and v.n < s1.n:
+                        v.n += 1
+                s1.n = n
+                self._delEmptyProc(s1.m)
+                return True
+            else:
+                # "Move" to the same position
+                return True
+        else:
+        #Different processors
+            # m = None -> move to a new processor
+            if m == None:
+                p = self._getProcessor()
+                s1_proc = self.FindAllVertices(m = s1.m)
+                for v in s1_proc:
+                    if v.n > s1.n:
+                        v.n -= 1  
+                old = s1.m
+                s1.m = p
+                s1.n = 1
+                self._delEmptyProc(old)
+                return True
+            s1_proc = self.FindAllVertices(m = s1.m)
+            other_proc = self.FindAllVertices(m = m)
+            for v in other_proc:
+                if v.n >= n:
+                    v.n += 1
+            for v in s1_proc:
+                if v.n > s1.n:
+                    v.n -= 1        
+            s1.n = n
+            p = s1.m
+            s1.m = m
+            self._delEmptyProc(p)
+            return True
  
     # TODO: deprecate this method       
     def TryMoveVertex(self, s1, m, n):
@@ -595,7 +664,8 @@ class Schedule(object):
             if n > s1.n:
             #Move forward
                 s2 = self.FindVertex(m=s1.m, n=n)
-                if s2 in self._succ(s1):
+                # TODO: bug with nonexistent position. Fix it in the algorithm
+                if s2 in self._succ(s1) or s2 is None:
                     return False
                 else:
                     return True
@@ -613,7 +683,6 @@ class Schedule(object):
             if m == None:
                 return True
             succ_s1 = self._succ(s1)
-            s1_proc = self.FindAllVertices(m = s1.m)
             other_proc = self.FindAllVertices(m = m)
             if n > len(other_proc) + 1:
                 return False
@@ -645,3 +714,39 @@ class Schedule(object):
         
         .. warning:: Not implemented yet'''
         return True
+    
+    def RollBack(self):
+        ''' Undo the last operation on this schedule'''
+        if self.lastOp["op"] == "AddProcessor":
+            self.DeleteProcessor(self.lastOp["params"][0])
+        elif self.lastOp["op"] == "DeleteProcessor":
+            self.AddProcessor(self.lastOp["params"][0])
+        elif self.lastOp["op"] == "AddVersion":
+            self.DeleteVersion(self.lastOp["params"][0])
+        elif self.lastOp["op"] == "DeleteVersion":
+            self.UndoDeleteVersion(self.lastOp["params"][0],
+                                   self.lastOp["params"][1],
+                                   self.lastOp["params"][2],
+                                   self.lastOp["params"][3],
+                                   self.lastOp["params"][4])
+        elif self.lastOp["op"] == "MoveVertex":
+            # TODO: understand what's wrong
+            self.UndoMoveVertex(self.lastOp["params"][0], 
+                                self.lastOp["params"][1], 
+                                self.lastOp["params"][2], 
+                                self.lastOp["params"][3], 
+                                self.lastOp["params"][4])
+            
+    def GetCopy(self):
+        ver = []
+        pr = self.processors
+        avpr = self.availableProcessors
+        for v in self.vertices:
+            tmp = ScheduleVertex(v.v, v.k, v.m, v.n)
+            ver.append(tmp)
+        return (ver, pr, avpr)
+    
+    def RestoreFromCopy(self, copy):
+        self.vertices = copy[0]
+        self.processors = copy[1]
+        self.availableProcessors = copy[2]
