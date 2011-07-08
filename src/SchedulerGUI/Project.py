@@ -78,13 +78,11 @@ class Project(object):
     
     def GenerateRandomSystem(self, params):
         self.system.GenerateRandom(params)
-        self.method.curProc = self.method.curRel = self.method.curTime = None
-        self.method.system = self.system
+        self.method.ChangeSystem(self.system)
         
     def ChangeSystem(self, s):
         self.system = System(s)
         self.method.ChangeSystem(self.system)
-        self.method.curProc = self.method.curRel = self.method.curTime = None
     
     def ChangeMethod(self, s):
         self.method.LoadConfig(s)
