@@ -9,7 +9,7 @@ from Schedules.Threshold import Threshold
 from Methods.Scheduling.Exceptions import SchedulerFileException, SchedulerXmlException
 import xml.dom.minidom
 import random
-import copy
+import logging
 
 class SimulatedAnnealing(object):
     ''' Simulated Annealing method adapted for scheduling.
@@ -78,6 +78,7 @@ class SimulatedAnnealing(object):
     ''' Debug feature: print debug information '''
     
     multioperation = False
+    noOperation = False
 
     def __init__(self, system):
         self.iteration = 0
@@ -86,6 +87,8 @@ class SimulatedAnnealing(object):
         self.temperature = 0
         self.system.schedule.SetToDefault()
         self._prepare()
+        logging.basicConfig(level=logging.DEBUG)
+        self.logger = logging.getLogger('SimulatedAnnealing')
     
     def write(self, *text):
         ''' Print debug information'''
@@ -93,7 +96,7 @@ class SimulatedAnnealing(object):
             res = []
             for s in text:
                 res.append(str(s))
-            print(" ".join(res))
+            self.logger.debug(" ".join(res))
     
     def ChangeSystem(self, s):
         ''' Replace the system'''
@@ -291,6 +294,7 @@ class SimulatedAnnealing(object):
         self.write(op)
         self.lastOperation["operation"] = op
         self.multioperation = False
+        self.noOperation = False
         if op == "AddProcessor":
             proc = list(self.system.schedule.processors)
             proc.sort(key=lambda x: x.reserves)
@@ -323,7 +327,7 @@ class SimulatedAnnealing(object):
             if len(vers) != 0:
                 self.system.schedule.AddVersion(vers[0])
                 self.lastOperation["parameters"] = [vers[0].number]
-                self.write(vers[0].number)                         
+                self.write(vers[0].number)                        
         elif op == "DeleteVersion":
             vers = list(filter(lambda v: len(self.system.schedule.FindAllVertices(v=v)) > 1, \
                 self.system.schedule.program.vertices))
@@ -339,6 +343,7 @@ class SimulatedAnnealing(object):
             target_proc = None
             target_pos = None
             move_delay = False
+            noOp = False
             if self.curTime < self.system.tdir:
                 # Cut from a certain processor
                 if random.random() < self.cut_processor and self.curProc > 1:
@@ -362,20 +367,24 @@ class SimulatedAnnealing(object):
                         # TODO: this is an experimental implementation of complete cutting
                         self.multioperation = True
                         self.backup = self.system.schedule.GetCopy()
-                        for s1 in ch:  
-                            while True:
+                        for s1 in ch:
+                            flag = True
+                            i = 0
+                            while flag:
                                 num = random.randint(0, len(s.processors)-1)
                                 if s.processors[num] != proc:
                                     target_proc = s.processors[num]
                                     target_pos = random.randint(1, len(s.FindAllVertices(m=s.processors[num]))+1)                                       
-                                    #self.write("CUT PROCESSOR", s1.v.number, s1.m.number, s1.n, target_proc, target_pos)
                                     if target_proc == None:
                                         self.lastOperation["parameters"] = [s1.v.number, s1.k.number, -1, target_pos]
                                     else:
                                         self.lastOperation["parameters"] = [s1.v.number, s1.k.number, target_proc.number, target_pos]
+                                    i += 1
                                     if s.TryMoveVertex(s1, target_proc, target_pos):
                                         s.MoveVertex(s1, target_proc, target_pos)
-                                        break
+                                        flag = False
+                                    if i > 500:
+                                        flag = False
                         return           
                 # Move the task with the highest delay
                 else:
@@ -398,8 +407,7 @@ class SimulatedAnnealing(object):
                 if r < self.strategies["mixed"]:
                     # TODO: what should we do if there are no delays? Maybe stop the algorithm?
                     if len(s.waiting) == 0:
-                        return
-                        s1 = s.vertices[random.randint(0, len(s.vertices)-1)]
+                        noOp = True
                     else:
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
                     ch = []
@@ -408,21 +416,38 @@ class SimulatedAnnealing(object):
                         if d[1] == 0:
                             break
                         s2 = d[0]
-                        proc = s2.m
-                        num = s2.n
-                        if (s2 != s1) and s.TryMoveVertex(s1, proc, num):
+                        if (s2 != s1) and s.TryMoveVertex(s1, s2.m, s2.n):
                             ch.append(s2)
                         if len(ch) == self.choice_places:
                             break
+                    for p in ch:
+                        if s.TryMoveVertex(s1, p.m, p.n) == False:
+                            print ("FFFFFF")
+                            print (s1, p)
+                            print(s)
+                            for q in s._succCache.keys():
+                                print("SUCC ", q)
+                                for w in s._succCache[q]:
+                                    print(w)
+                            for q in s._transCache.keys():
+                                print("TRANS ", q)
+                                for w in s._transCache[q]:
+                                    print(w)
+                            s._succCache = {}
+                            print ("tesssssssssssst")
+                            for z in s._succ(s1):
+                                print (z)
+                            raise 0                  
                     if len(ch) == 1:
                         s2 = ch[0]
                     elif len(ch) == 0:
-                        # TODO: get rid of random selection
-                        s2 = s.vertices[random.randint(0, len(s.vertices)-1)]
+                        noOp = True
+                        s2 = None
                     else:
                         s2 = ch[random.randint(0, len(ch)-1)]
-                    target_proc = s2.m
-                    target_pos = s2.n
+                    if s2:
+                        target_proc = s2.m
+                        target_pos = s2.n
                 # Delay strategy
                 elif r < self.strategies["mixed"] + self.strategies["delay"]:
                     if len(s.waiting) == 0:
@@ -443,8 +468,8 @@ class SimulatedAnnealing(object):
                     if len(ch) == 1:
                         s2 = ch[0]
                     elif len(ch) == 0:
-                        # TODO: get rid of random selection
-                        s2 = s.vertices[random.randint(0, len(s.vertices)-1)]
+                        s2 = None
+                        noOp = True
                     else:
                         s2 = ch[random.randint(0, len(ch)-1)]
                     target_proc = s2.m
@@ -467,10 +492,14 @@ class SimulatedAnnealing(object):
                     if len(ch) == 1:
                         s1 = ch[0]
                     elif len(ch) == 0:
-                        # TODO: get rid of random selection
-                        s1 = s.vertices[random.randint(0, len(s.vertices)-1)]
+                        s1 = None
+                        noOp = True
                     else:
                         s1 = ch[random.randint(0, len(ch)-1)]
+            
+            if noOp:
+                self.noOperation = True
+                return
                     
             self.write(s1.v.number, s1.m.number, s1.n, target_proc, target_pos)
             if target_proc == None:
@@ -479,9 +508,11 @@ class SimulatedAnnealing(object):
                 self.lastOperation["parameters"] = [s1.v.number, s1.k.number, target_proc.number, target_pos]
             if s.TryMoveVertex(s1, target_proc, target_pos):
                 s.MoveVertex(s1, target_proc, target_pos)
-                # TODO: handle this situation
-                pass
-
+            else:
+                print ([p for p in ch])
+                for p in ch:
+                    print (s.TryMoveVertex(s1, p.m, p.n))
+                raise "Something went wrong"
     
     def _selectNewSchedule(self):
         def accept():
@@ -529,6 +560,9 @@ class SimulatedAnnealing(object):
                 else:
                     refuse()              
 
+        if self.noOperation:
+            return
+        
         new_time = self.system.schedule.Interpret()
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
@@ -549,15 +583,3 @@ class SimulatedAnnealing(object):
             accept()
         else:
             refuse()
-       
-import time
-ss = System("program.xml")
-t0 = time.clock()
-for i in range(1, 11):
-    ss.GenerateRandom({"n":i*10, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":2})
-    s = SimulatedAnnealing(ss)
-    s.LoadConfig("config.xml")
-    s.Start()
-    t1 = time.clock() - t0
-    n = i*10
-    print (n, t1, t1/n, t1/(n**2), t1/(n**3))

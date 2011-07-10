@@ -45,6 +45,7 @@ class Schedule(object):
     
     _depCache = {}
     _transCache = {}
+    _succCache = {}
     
     def __init__(self, program, processors=[]):
         self.program = program
@@ -123,7 +124,7 @@ class Schedule(object):
             res = []
             for e in self.program.edges:
                 if e.destination == s.v:
-                    res.append(self.FindVertex(v=e.source))
+                    res += self.FindAllVertices(v=e.source) 
             self._depCache[s] = res
             return res
     
@@ -157,6 +158,7 @@ class Schedule(object):
                     new = []        
     
     def _succ(self, s):
+        # TODO: WHAT THE FLYING FUCK IS GOING ON WITH SUCC CACHE!?
         cur = self._trans(s)
         new = []
         while True:
@@ -172,6 +174,7 @@ class Schedule(object):
                         if not(v2 in new):
                             new.append(v2)
             if new == cur:
+                self._succCache[s] = new
                 return new
             else:
                 cur = []
@@ -416,15 +419,25 @@ class Schedule(object):
                     b = False        
             if b:
                 break
-
+            
             # TODO: this is an old workaround used for debugging. Beware.
-            if time > 1000000:
+            if time > 1000:
                 break
         
         self.delays = sorted(self.delays, key=lambda x: x[1])
         # Calculate waiting time for each task
         for v in self.vertices:
-            start = endTimes[v] - v.m.GetTime(v.v.time)
+            try:
+                start = endTimes[v] - v.m.GetTime(v.v.time)
+            except:
+                print(v)
+                for v in self.program.edges:
+                    print (v)
+                for v in self.vertices:
+                    print([v.v.number, v.m.number, v.n])
+                print(self)
+                print("ERROR OCCURRED")
+                raise 8
             dep = self._dep(v)
             tmp = 0
             for v0 in dep:
@@ -504,10 +517,13 @@ class Schedule(object):
         self.vertices.append(s2)
         self.lastOp["op"] = "AddVersion"
         self.lastOp["params"] = [v]
+        self._depCache = {}
+        self._transCache = {}
+        self._succCache = {}
         return True
     
     def DeleteVersion(self, v):
-        ''' Deletes a pair of verions of task v
+        ''' Deletes a pair of versions of task v
         
         :return: True is the operation is successful (v exists and has at least three versions used'''
         curver = self.FindAllVertices(v=v)
@@ -516,10 +532,15 @@ class Schedule(object):
             return False
 
         # TODO: this is assuming versions are ordered
-        s1 = curver[len(curver) - 1]
+        try:
+            s1 = curver[len(curver) - 1]
+        except:
+            print (v, [p for p in curver])
+            print (self)
+            raise 9
         s2 = curver[len(curver) - 2]
         self.lastOp["op"] = "DeleteVersion"
-        self.lastOp["params"] = [v, s1.m, s1.n, s2.m, s2.n]
+        self.lastOp["params"] = [ScheduleVertex(s1.v, s1.k, s1.m, s1.n), ScheduleVertex(s2.v, s2.k, s2.m, s2.n)]
         p1 = s1.m
         p2 = s2.m
         proc1 = self.FindAllVertices(m=p1)
@@ -535,18 +556,31 @@ class Schedule(object):
         self._delEmptyProc(p1)
         #TODO: is this really correct when p1=p2?
         self._delEmptyProc(p2)
+        self._depCache = {}
+        self._transCache = {}
+        self._succCache = {}
+        return True
         
-    def UndoDeleteVersion(self, v, m1, n1, m2, n2):
-        # TODO: fix
-        self.AddVersion(v)
-        curver = self.FindAllVertices(v=v)
-        s1 = curver[len(curver) - 1]
-        s2 = curver[len(curver) - 2]
-        self.MoveVertex(s1, m1, n1)
-        if m1 in self.processors or m1 != m2:
-            self.MoveVertex(s2, m2, n2)
-        else:
-            self.MoveVertex(s2, s1.m, n2)
+    def UndoDeleteVersion(self, s1, s2):
+        proc1 = self.FindAllVertices(m=s1.m)
+        proc2 = self.FindAllVertices(m=s2.m)
+        if s1.m == s2.m:
+            if s1.n > s2.n:
+                for v in proc2:
+                    if v.n >= s2.n:
+                        v.n += 1
+                for v in proc1:
+                    if v.n >= s1.n:
+                        v.n += 1
+        else:        
+            for v in proc1:
+                if v.n >= s1.n:
+                    v.n += 1
+            for v in proc2:
+                if v.n >= s2.n:
+                    v.n += 1
+        self.vertices += [s1, s2]
+
         
     def MoveVertex(self, s1, m, n):
         ''' Moves a :class:`~Schedules.ScheduleVertex.ScheduleVertex` s1 to position n on processor m 
@@ -554,14 +588,14 @@ class Schedule(object):
         :return: True if the operation is successful (all objects exist and the operation doesn't cause the appearance of cycles in the schedule)'''
         self.lastOp["op"] = "MoveVertex"
         self.lastOp["params"] = [s1, m, n, s1.m, s1.n]
+        self._succCache = {}
         if s1.m == m:
         # Same processor
             if n > s1.n:
             #Move forward
                 s2 = self.FindVertex(m=s1.m, n=n)
                 # TODO: fix this. Why is s2 == None when there's only one processor?
-                if s2 == None:                   
-                    print( "STRANGE ERROR", s1, m, n)
+                if s2 == None:              
                     return False
                 else:
                     after_s2 = self.FindAllVertices(m = s1.m)
@@ -671,7 +705,11 @@ class Schedule(object):
         ''':return: True if there is at least one task with two available unused versions
         
         .. warning:: Not implemented yet'''
-        return True
+        for v in self.program.vertices:
+            cur = self.FindAllVertices(v=v)
+            if len(v.versions) >= len(cur) + 2:
+                return True
+        return False
     
     def RollBack(self):
         ''' Undo the last operation on this schedule'''
@@ -683,24 +721,29 @@ class Schedule(object):
             self.DeleteVersion(self.lastOp["params"][0])
         elif self.lastOp["op"] == "DeleteVersion":
             self.UndoDeleteVersion(self.lastOp["params"][0],
-                                   self.lastOp["params"][1],
-                                   self.lastOp["params"][2],
-                                   self.lastOp["params"][3],
-                                   self.lastOp["params"][4])
+                                   self.lastOp["params"][1])
         elif self.lastOp["op"] == "MoveVertex":
             # TODO: understand what's wrong
+            #self.RestoreFromCopy(self.lastOp["params"])
             self.MoveVertex(self.lastOp["params"][0], self.lastOp["params"][3], self.lastOp["params"][4])
+        self.lastOp = {}
+        self._succCache = {}
             
     def GetCopy(self):
         ver = []
         pr = [p for p in self.processors]
         avpr = [p for p in self.availableProcessors]
+        empty = [p for p in self.emptyprocessors]
         for v in self.vertices:
             tmp = ScheduleVertex(v.v, v.k, v.m, v.n)
             ver.append(tmp)
-        return (ver, pr, avpr)
+        return (ver, pr, avpr, empty)
     
     def RestoreFromCopy(self, copy):
-        self.vertices = copy[0]
+        self.lastOp = {}
+        self._transCache = {}
+        self._depCache = {}
+        self.vertices = [v for v in copy[0]]
         self.processors = copy[1]
         self.availableProcessors = copy[2]
+        self.emptyprocessors = copy[3]
