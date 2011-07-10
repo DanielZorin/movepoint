@@ -81,7 +81,7 @@ class Program(object):
         ''' Checks that there are no cycles in the graph 
         
         .. warning:: it's not implemented yet'''
-        pass
+        pass        
     
     def FindEdge(self, v1, v2):
         '''Search for a specific edge from v1 to v2. Returns None if the edge doesn't exist'''
@@ -159,7 +159,7 @@ class Program(object):
             for j in range(len(v.versions)):
                 v.versions[j].number = j + 1
         for i in range(params["n"]-1):
-            for j in range(random.randint(0, 1)):
+            for j in [0]:#range(random.randint(0, 1)):
                 src = self.vertices[i]
                 dest = self.vertices[random.randint(i+1, params["n"]-1)]
                 volume = random.randint(params["v1"], params["v2"])
