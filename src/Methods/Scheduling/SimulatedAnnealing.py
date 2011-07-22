@@ -350,7 +350,7 @@ class SimulatedAnnealing(object):
                     mini = len(s.vertices)
                     proc = None
                     for m in s.processors:
-                        f = len(s.FindAllVertices(m=m))
+                        f = len(s.vertices[m.number])
                         if f < mini:
                             mini = f
                             proc = m

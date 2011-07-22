@@ -27,6 +27,9 @@ class Program(object):
     
     versions = []
     ''' '''
+    
+    _dep = {}
+    _trans = {}
 
     def __init__(self, filename=""):
         self.vertices = []
@@ -70,6 +73,7 @@ class Program(object):
                             e = ProgramEdge(self.vertices[source-1], self.vertices[destination-1], volume)
                             self.edges.append(e)
             f.close()
+            self._buildData()
             
         except IOError:
             raise SchedulerFileException(filename)
@@ -81,7 +85,39 @@ class Program(object):
         ''' Checks that there are no cycles in the graph 
         
         .. warning:: it's not implemented yet'''
-        pass        
+        pass
+    
+    def _buildData(self):
+        for v in self.vertices:
+            res = []
+            for e in self.FindAllEdges(v2=v):
+                res.append(e.source)
+            self._dep[v.number] = res 
+            
+        for v in self.vertices:
+            cur = [v]
+            new = []
+            while True:
+                for v1 in cur:
+                    if not(v1 in new):
+                        new.append(v1)
+                    for v2 in self.vertices:
+                        if self.FindEdge(v1, v2):
+                            if not(v2 in new):
+                                new.append(v2)
+                if new == cur:
+                    # Delete s and all its versions
+                    final = []
+                    for v0 in new:
+                        if v0 != v:
+                            final.append(v0)
+                    self._trans[v.number] = final
+                    return final
+                else:
+                    cur = []
+                    for v0 in new:
+                        cur.append(v0)
+                    new = []      
     
     def FindEdge(self, v1, v2):
         '''Search for a specific edge from v1 to v2. Returns None if the edge doesn't exist'''
@@ -166,6 +202,8 @@ class Program(object):
                 e = ProgramEdge(src, dest, volume)
                 if self.FindEdge(src, dest) == None:
                     self.edges.append(e)
+                    
+        self._buildData()
     
     def __str__(self):
         res = ""
