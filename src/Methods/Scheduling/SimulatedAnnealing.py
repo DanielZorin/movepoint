@@ -137,6 +137,7 @@ class SimulatedAnnealing(object):
                     self.opt_time["time-normal"] = LoadPrioritiesList(tmp)
                     tmp = list(filter(lambda node: node.nodeName == "time-exceed", list(opt_time.childNodes)))[0]
                     self.opt_time["time-exceed"] = LoadPrioritiesList(tmp)
+                    print(self.opt_time)
                     
                     # Parse limits
                     lim = list(filter(lambda node: node.nodeName == "limits", list(c.childNodes)))[0]
@@ -230,6 +231,7 @@ class SimulatedAnnealing(object):
     def Start(self):
         ''' Runs the algorithm with the given number of iterations'''
         while self.iteration < self.numberOfIterations:
+            print(self.iteration)
             self.Step()
             self.iteration += 1
             if (self.curProc == 1) and (self.curTime <= self.system.tdir) and (self.curRel >= self.system.rdir):
@@ -276,16 +278,20 @@ class SimulatedAnnealing(object):
                 vector = self.opt_time["time-exceed"]
             else:
                 vector = self.opt_time["time-normal"]
+        ops = {}
+        for v in vector.keys():
+            ops[v] = vector[v]
         
+        ops.pop("MoveVertex", True)
         # Delete impossible operations
         if not self.system.schedule.CanDeleteProcessor():
-            vector.pop("DeleteProcessor", True)
+            ops.pop("DeleteProcessor", True)
             
         if not self.system.schedule.CanDeleteVersions():
-            vector.pop("DeleteVersion", True)
+            ops.pop("DeleteVersion", True)
             
         if not self.system.schedule.CanAddVersions():
-            vector.pop("AddVersion", True)
+            ops.pop("AddVersion", True)
           
         return self._chooseRandomKey(vector)
     
@@ -295,6 +301,7 @@ class SimulatedAnnealing(object):
         self.lastOperation["operation"] = op
         self.multioperation = False
         self.noOperation = False
+        print(op)
         if op == "AddProcessor":
             proc = list(self.system.schedule.processors)
             proc.sort(key=lambda x: x.reserves)
@@ -354,7 +361,7 @@ class SimulatedAnnealing(object):
                         if f < mini:
                             mini = f
                             proc = m
-                    ch = s.FindAllVertices(m=proc)
+                    ch = s.vertices[m.number]
                     if self.completeCutting == False:
                         s1 = ch[random.randint(0, len(ch)-1)]
                         while True:
@@ -374,7 +381,7 @@ class SimulatedAnnealing(object):
                                 num = random.randint(0, len(s.processors)-1)
                                 if s.processors[num] != proc:
                                     target_proc = s.processors[num]
-                                    target_pos = random.randint(1, len(s.FindAllVertices(m=s.processors[num]))+1)                                       
+                                    target_pos = random.randint(1, len(s.vertices[s.processors[num]])+1)                                       
                                     if target_proc == None:
                                         self.lastOperation["parameters"] = [s1.v.number, s1.k.number, -1, target_pos]
                                     else:
@@ -583,3 +590,8 @@ class SimulatedAnnealing(object):
             accept()
         else:
             refuse()
+
+ss = System("program.xml")
+s = SimulatedAnnealing(ss)
+s.LoadConfig("config.xml")
+s.Start()           
