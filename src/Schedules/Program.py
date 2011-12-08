@@ -112,7 +112,7 @@ class Program(object):
                         if v0 != v:
                             final.append(v0)
                     self._trans[v.number] = final
-                    return final
+                    break
                 else:
                     cur = []
                     for v0 in new:

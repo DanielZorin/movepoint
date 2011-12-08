@@ -67,7 +67,7 @@ class Schedule(object):
         res = "Schedule: \n"
         for v in self.vertices.values():
             for v2 in v:
-                res+= str(v2)
+                res += str(v2)
         return res
     
     def SetToDefault(self):    
@@ -114,9 +114,8 @@ class Schedule(object):
         return p
     
     def _delEmptyProc(self, p):
-        for v in self.vertices:
-            if v.m == p:
-                return
+        if self.vertices[p.number]:
+            return
         tmp = []
         for v in self.processors:
             if v != p:
@@ -130,11 +129,17 @@ class Schedule(object):
     '''Auxiliary functions: check dependencies between vertices'''
     
     def _dep(self, s):
-        return reduce(lambda x, y: x + self.currentVersions[y.number], self.program._dep[s.v.number], [])
+        dep = []
+        for v in self.program._dep[s.v.number]:
+            dep += self.currentVersions[v.number]
+        return dep
     
     def _trans(self, s):
-        return reduce(lambda x, y: x + self.currentVersions[y.number], self.program._trans[s.v.number], [])       
-    
+        trans = []
+        for v in self.program._trans[s.v.number]:
+            trans += self.currentVersions[v.number]
+        return trans
+        
     def _succ(self, s):
         # TODO: WHAT THE FLYING FUCK IS GOING ON WITH SUCC CACHE!?
         cur = set(self._trans(s))
@@ -142,7 +147,7 @@ class Schedule(object):
         while True:
             for v in cur:
                 new.add(v)
-                tr = self._trans(v1)
+                tr = self._trans(v)
                 for v0 in self._trans(v):
                     new.add(v0)
                 for v0 in self.vertices[v.m.number][v.n:]:
@@ -190,14 +195,16 @@ class Schedule(object):
                     if not (v in parsed):
                         b = False
                 if s.n > 1:
-                    if not (self.FindVertex(m=s.m, n=s.n-1) in parsed):
+                    if not (self.vertices[s.m.number][s.n-2] in parsed):
                         b = False
                 if b:
                     return s
             return None
         
         parsed = []
-        notparsed = list(self.vertices)
+        notparsed = []
+        for v in self.vertices.values():
+            notparsed += v
         timestamps = {}
         while notparsed != []:
             s = FindReadyTask(notparsed, parsed)
@@ -208,7 +215,7 @@ class Schedule(object):
             if s.n == 1:
                 max = 0
             else:
-                max = timestamps[self.FindVertex(m=s.m, n=s.n-1)]
+                max = timestamps[self.vertices[s.m.number][s.n-2]]
             for prev in self._dep(s):
                 e = self.program.FindEdge(prev.v, s.v)
                 tmp = timestamps[prev] + prev.Processor().GetDeliveryTime(s.Processor(), e.volume)
@@ -222,6 +229,8 @@ class Schedule(object):
         return max
     
     def Interpret(self):
+        # Let it be like this for now
+        return self.GetTime()
         ''' Returns the time of schedule execution assuming that each processor supports
         only one sending/receiving operation at a time. If one of the processors is busy, the delivery
         is added to the queue and is initiated only when both processors become available.'''
@@ -610,8 +619,9 @@ class Schedule(object):
             for v in s1_proc:
                 if v.n > s1.n:
                     v.n -= 1        
-            del s1_proc[s1.n]
-            other_proc[s1.m.number].insert(s1, n-1) 
+            del s1_proc[s1.n-1]
+            print (other_proc, s1)
+            other_proc.insert(n-1, s1) 
             s1.n = n
             p = s1.m
             s1.m = m
@@ -627,7 +637,8 @@ class Schedule(object):
         # Same processor
             if n > s1.n:
             #Move forward
-                s2 = self.vertices[s1.m.number][n]
+                print (self.vertices, [s1.m.number], [n-1])
+                s2 = self.vertices[s1.m.number][n-1]
                 # TODO: bug with nonexistent position. Fix it in the algorithm
                 if s2 in self._succ(s1) or s2 is None:
                     return False
@@ -661,10 +672,9 @@ class Schedule(object):
         
     def CanDeleteProcessor(self):
         ''':return: True if there is at least one processor with at least one reserve'''
-        for v0 in self.vertices.values():
-            for v in v0:
-                if v.m.reserves > 1:
-                    return True
+        for m in self.processors:
+            if m.reserves > 1:
+                return True
         return False
     
     def CanDeleteVersions(self):
