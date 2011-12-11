@@ -6,6 +6,7 @@ Created on 10.11.2010
 
 from Schedules.System import System
 from Schedules.Threshold import Threshold
+from Schedules.Operation import *
 from Methods.Scheduling.Exceptions import SchedulerFileException, SchedulerXmlException
 import xml.dom.minidom
 import random
@@ -66,9 +67,7 @@ class SimulatedAnnealing(object):
     f3 = None
     ''' Threshold functions (see the paper) '''
     
-    lastOperation = {"operation": "",
-                        "parameters": [],
-                        "result": False}
+    lastOperation = VoidOperation()
     ''' Here we keep the info about the last operation. It's used in GUI '''
     
     completeCutting = True
@@ -247,7 +246,7 @@ class SimulatedAnnealing(object):
         ''' Makes a single iteration of the algorithm'''
         self.write("---------------------------")
         self.write("iteration ", self.iteration)
-        self.lastOperation = {}
+        self.lastOperation = VoidOperation()
         self.temperature += 1
         op = self._chooseOperation()
         self._applyOperation(op)
@@ -281,8 +280,7 @@ class SimulatedAnnealing(object):
         ops = {}
         for v in vector.keys():
             ops[v] = vector[v]
-        
-        ops.pop("MoveVertex", True)
+        #ops = {'DeleteProcessor': 0.2, 'DeleteVersion': 0.2, 'AddProcessor': 0.3, 'AddVersion':0.3}
         # Delete impossible operations
         if not self.system.schedule.CanDeleteProcessor():
             ops.pop("DeleteProcessor", True)
@@ -293,12 +291,12 @@ class SimulatedAnnealing(object):
         if not self.system.schedule.CanAddVersions():
             ops.pop("AddVersion", True)
           
-        return self._chooseRandomKey(vector)
+        
+        return self._chooseRandomKey(ops)
     
     # Selects parameters for the operation and applies it whenever possible
     def _applyOperation(self, op):
         self.write(op)
-        self.lastOperation["operation"] = op
         self.multioperation = False
         self.noOperation = False
         print(op)
@@ -310,8 +308,8 @@ class SimulatedAnnealing(object):
             for p in proc:
                 dict[p] = float(p.reserves)/float(total)
             m = self._chooseRandomKey(dict)
-            self.system.schedule.AddProcessor(m)
-            self.lastOperation["parameters"] = [m.number]
+            self.lastOperation = AddProcessor(m)
+            self.system.schedule.ApplyOperation(self.lastOperation)
             self.write(m)
         elif op == "DeleteProcessor":
             proc = list(self.system.schedule.processors)
@@ -323,26 +321,34 @@ class SimulatedAnnealing(object):
                     dict[p] = float(p.reserves)/float(total)
             if len(dict.keys()) > 0:
                 m = self._chooseRandomKey(dict)
-                self.system.schedule.DeleteProcessor(m)
-                self.lastOperation["parameters"] = [m.number]
+                self.lastOperation = DeleteProcessor(m)
+                self.system.schedule.ApplyOperation(self.lastOperation)
                 self.write(m)
+            else:
+                raise "Error"
                 
         elif op == "AddVersion":
             vers = list(filter(lambda v: len(v.versions) >= len(self.system.schedule.FindAllVertices(v=v)) + 2, \
                 self.system.schedule.program.vertices))
             vers.sort(key=lambda v: len(v.versions))
+            print(vers)
             if len(vers) != 0:
-                self.system.schedule.AddVersion(vers[0])
-                self.lastOperation["parameters"] = [vers[0].number]
-                self.write(vers[0].number)                        
+                newproc = self.system.schedule.AddVersion(vers[0])
+                self.lastOperation = AddVersion(vers[0], newproc, 1, newproc, 2)
+                self.write(vers[0].number)
+            else:
+                raise "Error"
         elif op == "DeleteVersion":
             vers = list(filter(lambda v: len(self.system.schedule.FindAllVertices(v=v)) > 1, \
                 self.system.schedule.program.vertices))
             vers.sort(key=lambda v: len(v.versions))
+            print(vers)
             if len(vers) != 0:
-                self.system.schedule.DeleteVersion(vers[len(vers)-1]) 
-                self.lastOperation["parameters"] = [vers[0].number]  
+                (m1, m2, n1, n2) = self.system.schedule.DeleteVersion(vers[len(vers)-1]) 
+                self.lastOperation = DeleteVersion(vers[len(vers)-1], m1, n1, m2, n2)
                 self.write(vers[len(vers)-1].number)
+            else:
+                raise "Error"
                 
         elif op == "MoveVertex":
             s = self.system.schedule
@@ -368,7 +374,7 @@ class SimulatedAnnealing(object):
                             num = random.randint(0, len(s.processors)-1)
                             if s.processors[num] != proc:
                                 target_proc = s.processors[num]
-                                target_pos = len(s.FindAllVertices(m=s.processors[num]))
+                                target_pos = len(s.vertices[s.processors[num]])
                                 break
                     else:
                         # TODO: this is an experimental implementation of complete cutting
@@ -382,10 +388,6 @@ class SimulatedAnnealing(object):
                                 if s.processors[num] != proc:
                                     target_proc = s.processors[num]
                                     target_pos = random.randint(1, len(s.vertices[s.processors[num]])+1)                                       
-                                    if target_proc == None:
-                                        self.lastOperation["parameters"] = [s1.v.number, s1.k.number, -1, target_pos]
-                                    else:
-                                        self.lastOperation["parameters"] = [s1.v.number, s1.k.number, target_proc.number, target_pos]
                                     i += 1
                                     if s.TryMoveVertex(s1, target_proc, target_pos):
                                         s.MoveVertex(s1, target_proc, target_pos)
@@ -509,12 +511,9 @@ class SimulatedAnnealing(object):
                 return
                     
             self.write(s1.v.number, s1.m.number, s1.n, target_proc, target_pos)
-            if target_proc == None:
-                self.lastOperation["parameters"] = [s1.v.number, s1.k.number, -1, target_pos]
-            else:
-                self.lastOperation["parameters"] = [s1.v.number, s1.k.number, target_proc.number, target_pos]
             if s.TryMoveVertex(s1, target_proc, target_pos):
-                s.MoveVertex(s1, target_proc, target_pos)
+                self.lastOperation = MoveVertex(s1, s1.m.number, s1.n, target_proc, target_pos)
+                s.ApplyOperation(self.lastOperation)
             else:
                 print ([p for p in ch])
                 for p in ch:
@@ -524,7 +523,7 @@ class SimulatedAnnealing(object):
     def _selectNewSchedule(self):
         def accept():
             self.write("Accept")
-            self.lastOperation["result"] = True
+            self.lastOperation.result = True
             self.curTime = new_time
             self.curRel = new_rel
             self.curProc = new_proc
@@ -538,9 +537,9 @@ class SimulatedAnnealing(object):
             
         def refuse():  
             self.write("Refuse")
-            self.lastOperation["result"] = False
+            self.lastOperation.result = False
             if not self.multioperation:
-                self.system.schedule.RollBack()
+                self.system.schedule.ApplyOperation(self.lastOperation.Reverse())
             else:
                 self.system.schedule.RestoreFromCopy(self.backup)
             
@@ -594,4 +593,4 @@ class SimulatedAnnealing(object):
 ss = System("program.xml")
 s = SimulatedAnnealing(ss)
 s.LoadConfig("config.xml")
-s.Start()           
+s.Start()     
