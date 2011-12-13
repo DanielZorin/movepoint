@@ -132,12 +132,14 @@ class Schedule(object):
     
     def _dep(self, s):
         dep = []
+        #self.program._buildData()
         for v in self.program._dep[s.v.number]:
             dep += self.currentVersions[v.number]
         return dep
     
     def _trans(self, s):
         trans = []
+        #self.program._buildData()
         for v in self.program._trans[s.v.number]:
             trans += self.currentVersions[v.number]
         return trans
@@ -239,16 +241,20 @@ class Schedule(object):
         is added to the queue and is initiated only when both processors become available.'''
         # Uses local variables donetasks and edges
         def CheckReady(v):
+            #print (v.v.number, " depends on ", [q.v.number for q in self._dep(v)])
             for v0 in self._dep(v):
                 if not (v0 in donetasks):
                     # Waiting for some task
+                    #print(v, " waiting for ", v0)
+                    #for q in donetasks:
+                    #    print(v0.v.number, " neq ", q.v.number)
                     return False
             for e in edges:
                 if (e[1] == v) and (e[3] == False):
                     # Waiting for a delivery to finish
                     return False
             return True
-        return 10
+
         # Ordered queue of tasks for each processor
         sortedTasks = {}
         # Current step
@@ -281,10 +287,10 @@ class Schedule(object):
                         # The boolean field indicates whether the delivery is finished or not
                         edges.append([i, j, e.volume, False])
         
-        for m in self.processors:
-            tmp = sorted(self.FindAllVertices(m=m), key=lambda x: x.n)
+        for proc in self.processors:
             #print(tmp)
-            sortedTasks[m] = tmp
+            m = proc.number
+            sortedTasks[m] = [v for v in self.vertices[m]]
             #print(sortedTasks[m])
             working[m] = None
             portStatus[m] = False
@@ -292,10 +298,10 @@ class Schedule(object):
             if len(sortedTasks[m]) > 0:
                 first = sortedTasks[m][0]
                 if len(self._dep(first)) == 0:
-                    working[first.m] = ["working", first.m.GetTime(first.Task().time)]
+                    working[m] = ["working", first.m.GetTime(first.Task().time)]
                     self.executionTimes[first] = (time, time + first.m.GetTime(first.Task().time))
                 else:
-                    working[first.m] = ["waiting"]
+                    working[m] = ["waiting"]
                     delays[first] = 0
             else:
                 # TODO: this is a bug. Empty processors shouldn't exist
@@ -340,7 +346,8 @@ class Schedule(object):
             deliveries = deliv2
             
             # Advance all tasks by 1 quantum
-            for m in self.processors:
+            for proc in self.processors:
+                m = proc.number
                 if working[m][0] == "working":
                     if working[m][1] > 1:
                         # One more quantum of work
@@ -362,16 +369,16 @@ class Schedule(object):
                             working[m] = ["ready"]
                         else:
                             if CheckReady(sortedTasks[m][0]):
-                                working[m] = ["working", m.GetTime(sortedTasks[m][0].Task().time)]
+                                working[m] = ["working", proc.GetTime(sortedTasks[m][0].Task().time)]
                                 # The task is put to execution, it will end after a fixed period of time
-                                self.executionTimes[sortedTasks[m][0]] = (time, time + m.GetTime(sortedTasks[m][0].Task().time))
+                                self.executionTimes[sortedTasks[m][0]] = (time, time + proc.GetTime(sortedTasks[m][0].Task().time))
                             else:
                                 working[m] = ["waiting"]
                                 delays[sortedTasks[m][0]] = 0
                 elif working[m][0] == "waiting":
                     if CheckReady(sortedTasks[m][0]):
-                        working[m] = ["working", m.GetTime(sortedTasks[m][0].Task().time)]
-                        self.executionTimes[sortedTasks[m][0]] = (time, time + m.GetTime(sortedTasks[m][0].Task().time))
+                        working[m] = ["working", proc.GetTime(sortedTasks[m][0].Task().time)]
+                        self.executionTimes[sortedTasks[m][0]] = (time, time + proc.GetTime(sortedTasks[m][0].Task().time))
                         self.delays.append([sortedTasks[m][0],delays[sortedTasks[m][0]]])
                     else:
                         working[m] = ["waiting"]
@@ -406,28 +413,44 @@ class Schedule(object):
             
             # TODO: this is an old workaround used for debugging. Beware.
             if time > 1000:
+                print("=============================")
+                print(self)
+                print(working)
+                print(self.waiting)
+                print(portStatus)
+                print(deliveries)
+                print(sortedTasks)
+                print(self.vertices)
+                for m in sortedTasks.keys():
+                    if sortedTasks[m]:
+                        CheckReady(sortedTasks[m][0])
+                for v in endTimes.keys():
+                    print(v.v.number, endTimes[v])
+                print([v.v.number for v in donetasks])
+                raise "gdfgkhdk"
                 break
         
         self.delays = sorted(self.delays, key=lambda x: x[1])
         # Calculate waiting time for each task
-        for v in self.vertices:
-            try:
-                start = endTimes[v] - v.m.GetTime(v.v.time)
-            except:
-                print(v)
-                for v in self.program.edges:
-                    print (v)
-                for v in self.vertices:
-                    print([v.v.number, v.m.number, v.n])
-                print(self)
-                print("ERROR OCCURRED")
-                raise 8
-            dep = self._dep(v)
-            tmp = 0
-            for v0 in dep:
-                if start - endTimes[v0] > tmp:
-                    tmp = start - endTimes[v0]
-            self.waiting.append([v, tmp])
+        for m in self.processors:
+            for v in self.vertices[m.number]:
+                try:
+                    start = endTimes[v] - v.m.GetTime(v.v.time)
+                except:
+                    print(v)
+                    for v in self.program.edges:
+                        print (v)
+                    for v in self.vertices:
+                        print([v.v.number, v.m.number, v.n])
+                    print(self)
+                    print("ERROR OCCURRED")
+                    raise 8
+                dep = self._dep(v)
+                tmp = 0
+                for v0 in dep:
+                    if start - endTimes[v0] > tmp:
+                        tmp = start - endTimes[v0]
+                self.waiting.append([v, tmp])
         self.waiting = sorted(self.waiting, key=lambda x: x[1])
         self.endtimes = endTimes
         return time
@@ -561,6 +584,7 @@ class Schedule(object):
         :return: True if the operation is successful (all objects exist and the operation doesn't cause the appearance of cycles in the schedule)'''
         self._succCache = {}
         if s1.m == m:
+            return
         # Same processor
             if n > s1.n:
             #Move forward
@@ -574,7 +598,7 @@ class Schedule(object):
                         v.n -= 1
                 s1.n = n
                 del self.vertices[s1.m.number][n]
-                self.vertices[s1.m.number].insert(s1, n-1)
+                self.vertices[s1.m.number].insert(n-1, s1)
                 self._delEmptyProc(s1.m)
                 return True
             elif n < s1.n:
@@ -615,7 +639,16 @@ class Schedule(object):
             for v in s1_proc:
                 if v.n > s1.n:
                     v.n -= 1        
-            del s1_proc[s1.n-1]
+            try:
+                del s1_proc[s1.n-1]
+            except:
+                for q in s1_proc:
+                    print (q)
+                print("+++++++++++++")
+                print(s1)
+                print(m, n)
+                print(self)
+                raise "qqqqqqqqqqq"
             print (other_proc, s1)
             other_proc.insert(n-1, s1) 
             s1.n = n
@@ -721,3 +754,5 @@ class Schedule(object):
         self.processors = copy[1]
         self.availableProcessors = copy[2]
         self.emptyprocessors = copy[3]
+        for v in self.program.vertices:
+            self.currentVersions[v.number] = self.FindAllVertices(v = v)

@@ -41,4 +41,15 @@ class MoveVertex:
         
     def Reverse(self):
         return MoveVertex(self.task, self.pos2[0], self.pos2[1], self.pos1[0], self.pos1[1])
+    
+class MultiOperation:
+    def __init__(self):
+        self.ops = []
+    def Add(self, op):
+        self.ops.append(op)
+    def Reverse(self):
+        res = []
+        for op in self.ops:
+            res = [op.Reverse()] + res
+        return res
         
