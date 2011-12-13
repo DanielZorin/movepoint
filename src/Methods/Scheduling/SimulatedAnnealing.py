@@ -380,6 +380,7 @@ class SimulatedAnnealing(object):
                         # TODO: this is an experimental implementation of complete cutting
                         self.multioperation = True
                         self.backup = self.system.schedule.GetCopy()
+                        self.lastOperation = MultiOperation()
                         for s1 in ch:
                             flag = True
                             i = 0
@@ -391,6 +392,7 @@ class SimulatedAnnealing(object):
                                     i += 1
                                     if s.TryMoveVertex(s1, target_proc, target_pos):
                                         s.MoveVertex(s1, target_proc, target_pos)
+                                        self.lastOperation.Add(MoveVertex(s1, s1.m, s1.n, target_proc, target_pos))
                                         flag = False
                                     if i > 500:
                                         flag = False
@@ -404,7 +406,9 @@ class SimulatedAnnealing(object):
                     if len(s.delays) > 0:
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
                     else:
-                        s1 = s.vertices[random.randint(0, len(s.vertices)-1)]
+                        keys = [m for m in s.vertices.keys()]
+                        proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+                        s1 = proc[random.randint(0, len(proc)-1)]
                     target_proc = None
                     target_pos = 1
                 else:
@@ -460,7 +464,9 @@ class SimulatedAnnealing(object):
                 # Delay strategy
                 elif r < self.strategies["mixed"] + self.strategies["delay"]:
                     if len(s.waiting) == 0:
-                        s1 = s.vertices[random.randint(0, len(s.vertices)-1)]
+                        keys = [m for m in s.vertices.keys()]
+                        proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+                        s1 = proc[random.randint(0, len(proc)-1)]
                     else:
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
                     ch = []
@@ -486,7 +492,9 @@ class SimulatedAnnealing(object):
                 # Idle strategy
                 else:
                     if len(s.delays) == 0:
-                        s2 = s.vertices[random.randint(0, len(s.vertices)-1)]
+                        keys = [m for m in s.vertices.keys()]
+                        proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+                        s1 = proc[random.randint(0, len(proc)-1)]
                     else:
                         s2 = s.delays[min(random.randint(0,self.choice_places), len(s.delays)-1)][0]
                     target_proc = s2.m
@@ -512,8 +520,9 @@ class SimulatedAnnealing(object):
                     
             self.write(s1.v.number, s1.m.number, s1.n, target_proc, target_pos)
             if s.TryMoveVertex(s1, target_proc, target_pos):
-                self.lastOperation = MoveVertex(s1, s1.m.number, s1.n, target_proc, target_pos)
+                self.lastOperation = MoveVertex(s1, s1.m, s1.n, target_proc, target_pos)
                 s.ApplyOperation(self.lastOperation)
+                self.lastOperation.pos2 = (s1.m, s1.n)
             else:
                 print ([p for p in ch])
                 for p in ch:
@@ -538,10 +547,10 @@ class SimulatedAnnealing(object):
         def refuse():  
             self.write("Refuse")
             self.lastOperation.result = False
-            if not self.multioperation:
-                self.system.schedule.ApplyOperation(self.lastOperation.Reverse())
-            else:
-                self.system.schedule.RestoreFromCopy(self.backup)
+            #if not self.multioperation:
+            self.system.schedule.ApplyOperation(self.lastOperation.Reverse())
+            #else:
+            #    self.system.schedule.RestoreFromCopy(self.backup)
             
         def choose(f1, f2, f3):
             self.write(f1(self.temperature), f2(self.temperature), f3(self.temperature))
@@ -590,7 +599,7 @@ class SimulatedAnnealing(object):
         else:
             refuse()
 
-ss = System("program.xml")
+ss = System("../../program2.xml")
 s = SimulatedAnnealing(ss)
-s.LoadConfig("config.xml")
-s.Start()     
+s.LoadConfig("../../config.xml")
+s.Start()    

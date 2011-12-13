@@ -47,15 +47,16 @@ class ScheduleVisualizer(QWidget):
                 procX[self.schedule.processors[i].number] = 20 + i * 20
             
             # Draw tasks
-            paint.setPen(self.deliveriesColor)    
-            for t in self.schedule.vertices:
-                start = self.schedule.executionTimes[t][0]
-                finish = self.schedule.executionTimes[t][1]  
-                task = QtCore.QRect((50 + start * 10)*self.scale, (procX[t.m.number] - 5)*self.scale, (finish - start)*10*self.scale, 10*self.scale)
-                paint.fillRect(task, self.taskColor)    
-                paint.drawRect(task)    
-                taskRects[(t.v.number, t.k.number)] = task
-                queues[(t.m.number, t.n)] = task
+            paint.setPen(self.deliveriesColor)  
+            for m in self.schedule.vertices.keys():
+                for t in self.schedule.vertices[m]:
+                    start = self.schedule.executionTimes[t][0]
+                    finish = self.schedule.executionTimes[t][1]  
+                    task = QtCore.QRect((50 + start * 10)*self.scale, (procX[t.m.number] - 5)*self.scale, (finish - start)*10*self.scale, 10*self.scale)
+                    paint.fillRect(task, self.taskColor)    
+                    paint.drawRect(task)    
+                    taskRects[(t.v.number, t.k.number)] = task
+                    queues[(t.m.number, t.n)] = task
                 
             # Draw deliveries    
             for d in self.schedule.deliveryTimes:

@@ -19,33 +19,9 @@
 <vertex number="5" complexity="8">
 	<version reliability="0.98"/>
 </vertex>
-<vertex number="6" complexity="5">
-	<version reliability="0.98"/>
-	<version reliability="0.98"/>
-	<version reliability="0.98"/>
-</vertex>
-<vertex number="7" complexity="7">
-	<version reliability="0.98"/>
-	<version reliability="0.98"/>
-	<version reliability="0.98"/>
-</vertex>
-<vertex number="8" complexity="10">
-	<version reliability="0.98"/>
-</vertex>
-<vertex number="9" complexity="6">
-	<version reliability="0.98"/>
-</vertex>
-<vertex number="10" complexity="8">
-	<version reliability="0.98"/>
-</vertex>
 <edge source="1" destination="3" volume="2"/>
 <edge source="2" destination="3" volume="4"/>
 <edge source="3" destination="5" volume="3"/>
 <edge source="4" destination="5" volume="1"/>
-<edge source="6" destination="8" volume="2"/>
-<edge source="7" destination="8" volume="4"/>
-<edge source="9" destination="10" volume="3"/>
-<edge source="5" destination="10" volume="1"/>
-<edge source="8" destination="10" volume="1"/>
 <processor speed="5" reliability="0.99"/>
 </program>

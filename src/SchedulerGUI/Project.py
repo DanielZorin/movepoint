@@ -77,6 +77,8 @@ class Project(object):
         self.method.system = self.system
     
     def GenerateRandomSystem(self, params):
+        if not self.system:
+            self.system = System()
         self.system.GenerateRandom(params)
         self.method.ChangeSystem(self.system)
         
