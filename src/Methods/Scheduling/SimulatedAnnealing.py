@@ -353,6 +353,8 @@ class SimulatedAnnealing(object):
         elif op == "MoveVertex":
             s = self.system.schedule
             s1 = None
+            src_proc = None
+            src_pos = None
             target_proc = None
             target_pos = None
             move_delay = False
@@ -435,22 +437,7 @@ class SimulatedAnnealing(object):
                             break
                     for p in ch:
                         if s.TryMoveVertex(s1, p.m, p.n) == False:
-                            print ("FFFFFF")
-                            print (s1, p)
-                            print(s)
-                            for q in s._succCache.keys():
-                                print("SUCC ", q)
-                                for w in s._succCache[q]:
-                                    print(w)
-                            for q in s._transCache.keys():
-                                print("TRANS ", q)
-                                for w in s._transCache[q]:
-                                    print(w)
-                            s._succCache = {}
-                            print ("tesssssssssssst")
-                            for z in s._succ(s1):
-                                print (z)
-                            raise 0                  
+                            raise "Error"               
                     if len(ch) == 1:
                         s2 = ch[0]
                     elif len(ch) == 0:

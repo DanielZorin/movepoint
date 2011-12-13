@@ -29,7 +29,7 @@ class ScheduleVertex(object):
     n = None
     '''Number on the processor'''
 
-    def __init__(self, v, k, m, n):
+    def __init__(self, v, k, m=None, n=None):
         self.v = v
         
         if k.__class__.__name__ == "Version":
