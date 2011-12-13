@@ -56,13 +56,11 @@ class Schedule(object):
         self.availableProcessors = processors
         self.emptyprocessors = []
         self.vertices = {}
-        i = 1
         for v in self.program.vertices:
             p = self._getProcessor()
-            s = ScheduleVertex(v, v.versions[0], p, 1)
+            s = ScheduleVertex(v, v.versions[0])
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
-            i += 1
         
     def __str__(self):
         res = "Schedule: \n"
@@ -79,7 +77,7 @@ class Schedule(object):
         i = 1
         for v in self.program.vertices:
             p = self._getProcessor()
-            s = ScheduleVertex(v, v.versions[0], p, 1)
+            s = ScheduleVertex(v, v.versions[0])
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
             i += 1
@@ -93,7 +91,7 @@ class Schedule(object):
         i = 1
         self.vertices[p.number] = []
         for v in self.program.vertices:
-            s = ScheduleVertex(v, v.versions[0], p, i)
+            s = ScheduleVertex(v, v.versions[0])
             self.vertices[p.number].append(s)
             self.currentVersions[v.number] = [s]
             i += 1  
@@ -185,6 +183,18 @@ class Schedule(object):
                     if (k is None) or (t.k == k):
                         res.append(t)
         return res
+    
+    def FindProcessor(self, v):
+        for m in self.vertices.keys():
+            if v in self.vertices[m]:
+                return self.GetProcessor(m)
+        raise "None"
+    
+    def GetProcessor(self, n):
+        for p in self.processors:
+            if p.number == n:
+                return p
+        raise "None"
     
     '''Main features of a schedule: time, reliability, size'''
 
@@ -494,7 +504,7 @@ class Schedule(object):
         elif isinstance(op, DeleteVersion):
             return self.AddVersion(op.task)
         elif isinstance(op, MoveVertex):
-            return self.MoveVertex(op.task, op.pos2[0], op.pos2[1])
+            return self.MoveVertex(op.task, op.pos1[0], op.pos1[1], op.pos2[0], op.pos2[1])
     
     def AddProcessor(self, m):
         ''' Adds a reserve to processor m
@@ -549,156 +559,86 @@ class Schedule(object):
             return False
 
         # TODO: this is assuming versions are ordered
-        try:
-            s1 = curver[len(curver) - 1]
-        except:
-            print (v, [p for p in curver])
-            print (self)
-            raise 9
+        s1 = curver[len(curver) - 1]
         s2 = curver[len(curver) - 2]
-        p1 = s1.m
-        p2 = s2.m
+        p1 = self.FindProcessor(s1)
+        p2 = self.FindProcessor(s2)
         proc1 = self.vertices[p1.number]
         proc2 = self.vertices[p2.number]
         self.currentVersions[v.number] = self.currentVersions[v.number][:-2]
-        for v in proc1:
-            if v.n > s1.n:
-                v.n -= 1
-        for v in proc2:
-            if v.n > s2.n:
-                v.n -= 1
-        del proc1[s1.n-1]
+        n1 = proc1.index(s1)
+        n2 = proc2.index(s2)
+        del proc1[proc1.index(s1)]
         self._delEmptyProc(p1)
-        if p1 != p2:
-            del proc2[s2.n-1]
-        else:
-            del proc2[s2.n-2]
+        del proc2[proc2.index(s2)]
         #TODO: is this really correct when p1=p2?
         self._delEmptyProc(p2)
         self._succCache = {}
-        return (p1, p2, s1.n, s2.n)
+        return (p1, p2, n1, n2)
         
-    def MoveVertex(self, s1, m, n):
+    def MoveVertex(self, s, m1, n1, m2, n2):
         ''' Moves a :class:`~Schedules.ScheduleVertex.ScheduleVertex` s1 to position n on processor m 
         
         :return: True if the operation is successful (all objects exist and the operation doesn't cause the appearance of cycles in the schedule)'''
         self._succCache = {}
-        if s1.m == m:
-            return
+        # m = None -> move to a new processor
+        if m2 == None or not m2 in self.processors:
+            p = self._getProcessor()
+            self.vertices[p.number] = [s]
+            del self.vertices[m1][n1]
+            self._delEmptyProc(m1)
+            return True
+        if m1 == m2:
         # Same processor
-            if n > s1.n:
-            #Move forward
-                print("FFFFF ", len(self.vertices[s1.m.number]) , n) 
-                if len(self.vertices[s1.m.number]) <= n:
-                    return False
-                s2 = self.vertices[s1.m.number][n]
-                after_s2 = self.vertices[s1.m.number]
-                for v in after_s2:
-                    if (v.n <= s2.n) and (v.n > s1.n):
-                        v.n -= 1
-                s1.n = n
-                del self.vertices[s1.m.number][n]
-                self.vertices[s1.m.number].insert(n-1, s1)
-                self._delEmptyProc(s1.m)
-                return True
-            elif n < s1.n:
-            #Move backward
-                after_s2 = self.vertices[s1.m.number]
-                for v in after_s2:
-                    if v.n >= n and v.n < s1.n:
-                        v.n += 1
-                s1.n = n
-                del self.vertices[s1.m.number][n]
-                self.vertices[s1.m.number].insert(n-1, s1)                
-                self._delEmptyProc(s1.m)
-                return True
-            else:
-                # "Move" to the same position
-                self._delEmptyProc(s1.m)
-                return True
+            del self.vertices[m1][n1]
+            self.vertices[m1].insert(n2, s)
+            return True
         else:
         #Different processors
-            # m = None -> move to a new processor
-            if m == None or not m in self.processors:
-                p = self._getProcessor()
-                s1_proc = self.vertices[s1.m.number]
-                for v in s1_proc:
-                    if v.n > s1.n:
-                        v.n -= 1  
-                old = s1.m
-                s1.m = p
-                s1.n = 1
-                self.vertices[p] = [s1]
-                self._delEmptyProc(old)
-                return True
-            s1_proc = self.vertices[s1.m.number]
-            other_proc = self.vertices[m.number]
-            for v in other_proc:
-                if v.n >= n:
-                    v.n += 1
-            for v in s1_proc:
-                if v.n > s1.n:
-                    v.n -= 1        
-            try:
-                del s1_proc[s1.n-1]
-            except:
-                for q in s1_proc:
-                    print (q)
-                print("+++++++++++++")
-                print(s1)
-                print(m, n)
-                print(self)
-                raise "qqqqqqqqqqq"
-            print (other_proc, s1)
-            other_proc.insert(n-1, s1) 
-            s1.n = n
-            p = s1.m
-            s1.m = m
-            self._delEmptyProc(p)
+            del self.vertices[m1][n1]
+            self.vertices[m2].insert(n2, s)
+            self._delEmptyProc(m1)
             return True
  
     # TODO: deprecate this method       
-    def TryMoveVertex(self, s1, m, n):
+    def TryMoveVertex(self, s, m1, n1, m2, n2):
         '''.. deprecated:: 0.1
         
         Use MoveVertex'''
-        if s1.m == m:
+        if m1 == m2:
         # Same processor
-            if n > s1.n:
+            if n2 > n1:
             #Move forward
-                print (s1, m, n)
-                if len(self.vertices[s1.m.number]) < n:
+                if len(self.vertices[m1]) < n2:
                     return False
-                s2 = self.vertices[s1.m.number][n-1]
+                s2 = self.vertices[m1][n2]
                 # TODO: bug with nonexistent position. Fix it in the algorithm
-                if s2 in self._succ(s1) or s2 is None:
+                if s2 in self._succ(s) or s2 is None:
                     return False
                 else:
                     return True
             else:
             #Move backward
-                after_s2 = self.vertices[s1.m.number]
+                after_s2 = self.vertices[m1][n2:n1]
                 for v in after_s2:
-                    if v.n >= n and v.n < s1.n:
-                        if s1 in self._succ(v):
-                            return False
+                    if s in self._succ(v):
+                        return False
                 return True
         else:
         #Different processors
             # m = None -> move to a new processor
-            if m == None:
+            if m1 == None:
                 return True
-            succ_s1 = self._succ(s1)
-            other_proc = self.vertices[m.number]
-            if n > len(other_proc) + 1:
+            succ_s = self._succ(s)
+            other_proc = self.vertices[m2]
+            if n2 > len(other_proc) + 1:
                 return False
-            for v in other_proc:
-                if v.n < n:
-                    if v in succ_s1:
-                        return False
-                if v.n >= n:
-                    if s1 in self._succ(v):
-                        return False
+            for v in other_proc[:n2]:
+                if v in succ_s:
+                    return False
+            for v in other_proc[n2:]:
+                if s in self._succ(v):
+                    return False
             return True
         
     def CanDeleteProcessor(self):
@@ -735,7 +675,7 @@ class Schedule(object):
         for k in self.vertices.keys():
             lst = []
             for v in self.vertices[k]:
-                tmp = ScheduleVertex(v.v, v.k, v.m, v.n)
+                tmp = ScheduleVertex(v.v, v.k)
                 lst.append(tmp)
             ver[k] = lst
         return (ver, pr, avpr, empty)
@@ -748,7 +688,7 @@ class Schedule(object):
         for k in copy[0].keys():
             lst = []
             for v in copy[0][k]:
-                tmp = ScheduleVertex(v.v, v.k, v.m, v.n)
+                tmp = ScheduleVertex(v.v, v.k)
                 lst.append(tmp)
             self.vertices[k] = lst
         self.processors = copy[1]
