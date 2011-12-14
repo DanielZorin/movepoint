@@ -29,7 +29,7 @@ class ScheduleVertex(object):
     n = None
     '''Number on the processor'''
 
-    def __init__(self, v, k, m=None, n=None):
+    def __init__(self, v, k, m):
         self.v = v
         
         if k.__class__.__name__ == "Version":
@@ -42,10 +42,8 @@ class ScheduleVertex(object):
         else:
             self.m = Processor(m)
         
-        self.n = n
-        
     def __str__(self):
-        return "{" + str(self.v) + str(self.k) + str(self.m) + str(self.n) + "}\n" 
+        return "{" + str(self.v) + str(self.k) + str(self.m) + "}\n" 
     
     def Task(self):
         ''' Getter for v provided for convenience '''
@@ -58,7 +56,4 @@ class ScheduleVertex(object):
     def Processor(self):
         ''' Getter for m provided for convenience '''
         return self.m
-    
-    def Order(self):
-        ''' Getter for n provided for convenience '''
-        return self.n
+

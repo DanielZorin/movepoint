@@ -58,15 +58,18 @@ class Schedule(object):
         self.vertices = {}
         for v in self.program.vertices:
             p = self._getProcessor()
-            s = ScheduleVertex(v, v.versions[0])
+            s = ScheduleVertex(v, v.versions[0], p)
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
         
     def __str__(self):
         res = "Schedule: \n"
-        for v in self.vertices.values():
-            for v2 in v:
-                res += str(v2)
+        for k in self.vertices.keys():
+            proc = "Processor " + str(k) + ": "
+            for v in self.vertices[k]:
+                proc += str(v.v.number) + " -- "
+            proc += "\n"
+            res += proc
         return res
     
     def SetToDefault(self):    
@@ -77,7 +80,7 @@ class Schedule(object):
         i = 1
         for v in self.program.vertices:
             p = self._getProcessor()
-            s = ScheduleVertex(v, v.versions[0])
+            s = ScheduleVertex(v, v.versions[0], p)
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
             i += 1
@@ -91,7 +94,7 @@ class Schedule(object):
         i = 1
         self.vertices[p.number] = []
         for v in self.program.vertices:
-            s = ScheduleVertex(v, v.versions[0])
+            s = ScheduleVertex(v, v.versions[0], p)
             self.vertices[p.number].append(s)
             self.currentVersions[v.number] = [s]
             i += 1  
@@ -398,17 +401,17 @@ class Schedule(object):
             deliv2 = []
             for e in deliveryQueue:
                 b = True
-                if portStatus[e[0].m] == True:
+                if portStatus[e[0].m.number] == True:
                     b = False
                 for d in e[1]:
-                    if portStatus[d[0].m] == True:
+                    if portStatus[d[0].m.number] == True:
                         b = False
                 if b:
                     # Append: source, destination, length
-                    portStatus[e[0].m] = True
+                    portStatus[e[0].m.number] = True
                     for d in e[1]:
                         deliveries.append([e[0], d[0], e[0].m.GetDeliveryTime(d[0].m, d[1])-1])
-                        portStatus[d[0].m] = True
+                        portStatus[d[0].m.number] = True
                 else:
                     deliv2.append(e)
             deliveryQueue = deliv2              
@@ -504,7 +507,10 @@ class Schedule(object):
         elif isinstance(op, DeleteVersion):
             return self.AddVersion(op.task)
         elif isinstance(op, MoveVertex):
-            return self.MoveVertex(op.task, op.pos1[0], op.pos1[1], op.pos2[0], op.pos2[1])
+            return self.MoveVertex(op.task, op.pos1[1], op.pos2[0], op.pos2[1])
+        elif isinstance(op, MultiOperation):
+            for o in op.ops:
+                self.Applyoperation(o)
     
     def AddProcessor(self, m):
         ''' Adds a reserve to processor m
@@ -537,12 +543,12 @@ class Schedule(object):
             return False
         if not p1:
             p = self._getProcessor()
-            s1 = ScheduleVertex(v, totalver[len(curver)], p, 1)
-            s2 = ScheduleVertex(v, totalver[len(curver)+1], p, 2)
+            s1 = ScheduleVertex(v, totalver[len(curver)], p)
+            s2 = ScheduleVertex(v, totalver[len(curver)+1], p)
             self.vertices[p.number] = [s1, s2]
         else:
-            s1 = ScheduleVertex(v, totalver[len(curver)], p1, n1)
-            s2 = ScheduleVertex(v, totalver[len(curver)+1], p1, n2)
+            s1 = ScheduleVertex(v, totalver[len(curver)], p1)
+            s2 = ScheduleVertex(v, totalver[len(curver)+1], p1)
             self.vertices[p1.number].insert(n1-1, s1)
             self.vertices[p2.number].insert(n2-1, s2)
         self.currentVersions[v.number] += [s1, s2]
@@ -552,7 +558,7 @@ class Schedule(object):
     def DeleteVersion(self, v):
         ''' Deletes a pair of versions of task v
         
-        :return: True is the operation is successful (v exists and has at least three versions used'''
+        :return: True if the operation is successful (v exists and has at least three versions used)'''
         curver = self.currentVersions[v.number]
         # Only one version remains
         if len(curver) == 1:
@@ -561,8 +567,8 @@ class Schedule(object):
         # TODO: this is assuming versions are ordered
         s1 = curver[len(curver) - 1]
         s2 = curver[len(curver) - 2]
-        p1 = self.FindProcessor(s1)
-        p2 = self.FindProcessor(s2)
+        p1 = s1.m
+        p2 = s2.m
         proc1 = self.vertices[p1.number]
         proc2 = self.vertices[p2.number]
         self.currentVersions[v.number] = self.currentVersions[v.number][:-2]
@@ -576,7 +582,7 @@ class Schedule(object):
         self._succCache = {}
         return (p1, p2, n1, n2)
         
-    def MoveVertex(self, s, m1, n1, m2, n2):
+    def MoveVertex(self, s, n1, m2, n2):
         ''' Moves a :class:`~Schedules.ScheduleVertex.ScheduleVertex` s1 to position n on processor m 
         
         :return: True if the operation is successful (all objects exist and the operation doesn't cause the appearance of cycles in the schedule)'''
@@ -585,33 +591,42 @@ class Schedule(object):
         if m2 == None or not m2 in self.processors:
             p = self._getProcessor()
             self.vertices[p.number] = [s]
-            del self.vertices[m1][n1]
-            self._delEmptyProc(m1)
+            del self.vertices[s.m.number][n1]
+            self._delEmptyProc(s.m)
+            s.m = p
             return True
-        if m1 == m2:
+        if s.m == m2:
         # Same processor
-            del self.vertices[m1][n1]
-            self.vertices[m1].insert(n2, s)
+            del self.vertices[s.m.number][n1]
+            self.vertices[s.m.number].insert(n2, s)
             return True
         else:
         #Different processors
-            del self.vertices[m1][n1]
-            self.vertices[m2].insert(n2, s)
-            self._delEmptyProc(m1)
+            try:
+                del self.vertices[s.m.number][n1]
+            except:
+                print (self)
+                print(s, n1, m2, n2)
+                raise "fdsfsd"
+            self.vertices[m2.number].insert(n2, s)
+            self._delEmptyProc(s.m)
+            s.m = m2
             return True
  
     # TODO: deprecate this method       
-    def TryMoveVertex(self, s, m1, n1, m2, n2):
+    def TryMoveVertex(self, s, n1, m2, n2):
         '''.. deprecated:: 0.1
         
         Use MoveVertex'''
-        if m1 == m2:
+        if s.m == m2:
         # Same processor
             if n2 > n1:
             #Move forward
-                if len(self.vertices[m1]) < n2:
+                if len(self.vertices[s.m.number]) < n2:
                     return False
-                s2 = self.vertices[m1][n2]
+                if len(self.vertices[s.m.number]) == n2:
+                    n2 -= 1
+                s2 = self.vertices[s.m.number][n2]
                 # TODO: bug with nonexistent position. Fix it in the algorithm
                 if s2 in self._succ(s) or s2 is None:
                     return False
@@ -619,7 +634,7 @@ class Schedule(object):
                     return True
             else:
             #Move backward
-                after_s2 = self.vertices[m1][n2:n1]
+                after_s2 = self.vertices[s.m.number][n2:n1]
                 for v in after_s2:
                     if s in self._succ(v):
                         return False
@@ -627,10 +642,10 @@ class Schedule(object):
         else:
         #Different processors
             # m = None -> move to a new processor
-            if m1 == None:
+            if m2 == None:
                 return True
             succ_s = self._succ(s)
-            other_proc = self.vertices[m2]
+            other_proc = self.vertices[m2.number]
             if n2 > len(other_proc) + 1:
                 return False
             for v in other_proc[:n2]:
@@ -675,12 +690,13 @@ class Schedule(object):
         for k in self.vertices.keys():
             lst = []
             for v in self.vertices[k]:
-                tmp = ScheduleVertex(v.v, v.k)
+                tmp = ScheduleVertex(v.v, v.k, v.m)
                 lst.append(tmp)
             ver[k] = lst
         return (ver, pr, avpr, empty)
     
     def RestoreFromCopy(self, copy):
+        # TODO: deprecate
         self.lastOp = {}
         self._transCache = {}
         self._depCache = {}
@@ -688,7 +704,7 @@ class Schedule(object):
         for k in copy[0].keys():
             lst = []
             for v in copy[0][k]:
-                tmp = ScheduleVertex(v.v, v.k)
+                tmp = ScheduleVertex(v.v, v.k, self.FindProcessor(copy[0]))
                 lst.append(tmp)
             self.vertices[k] = lst
         self.processors = copy[1]
