@@ -383,6 +383,8 @@ class SimulatedAnnealing(object):
                         self.multioperation = True
                         self.backup = self.system.schedule.GetCopy()
                         self.lastOperation = MultiOperation()
+                        print("MULTI", ch, proc)
+                        src_pos = 0
                         for s1 in ch:
                             flag = True
                             i = 0
@@ -392,12 +394,15 @@ class SimulatedAnnealing(object):
                                     target_proc = s.processors[num]
                                     target_pos = random.randint(1, len(s.vertices[s.processors[num]])+1)                                       
                                     i += 1
-                                    if s.TryMoveVertex(s1, target_proc, target_pos):
-                                        s.MoveVertex(s1, target_proc, target_pos)
-                                        self.lastOperation.Add(MoveVertex(s1, s1.m, s1.n, target_proc, target_pos))
+                                    if s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
+                                        s.MoveVertex(s1, src_pos, target_proc, target_pos)
+                                        self.lastOperation.Add(MoveVertex(s1, s1.m, src_pos, target_proc, target_pos))
                                         flag = False
-                                    if i > 500:
+                                        print(s)
+                                        print(s1, s1.m.number, src_pos, target_proc, target_pos)
+                                    if i > 100:
                                         flag = False
+                            src_pos += 1
                         return           
                 # Move the task with the highest delay
                 else:
@@ -407,10 +412,13 @@ class SimulatedAnnealing(object):
                 if random.random() < self.new_processor:
                     if len(s.delays) > 0:
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
+                        src_proc = s1.m.number
+                        src_pos = s.vertices[src_proc].index(s1)
                     else:
                         keys = [m for m in s.vertices.keys()]
                         proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                        s1 = proc[random.randint(0, len(proc)-1)]
+                        src_pos = random.randint(0, len(proc)-1)
+                        s1 = proc[src_pos]
                     target_proc = None
                     target_pos = 1
                 else:
@@ -420,24 +428,34 @@ class SimulatedAnnealing(object):
                 # TODO: think about a better way to select a strategy
                 #Mixed strategy
                 if r < self.strategies["mixed"]:
+                    print("MIXED")
                     # TODO: what should we do if there are no delays? Maybe stop the algorithm?
                     if len(s.waiting) == 0:
                         noOp = True
                     else:
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
+                        try:
+                            src_pos = s.vertices[s1.m.number].index(s1)
+                            print("SOURCE ", src_pos)
+                        except:
+                            print(s)
+                            print(s1)
+                            raise "gfdsagdasgdag"
                     ch = []
                     for d in s.delays:
                         # If the delay is zero, we mustn't move anything there
                         if d[1] == 0:
                             break
                         s2 = d[0]
-                        if (s2 != s1) and s.TryMoveVertex(s1, s2.m, s2.n):
-                            ch.append(s2)
+                        try:
+                            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)):
+                                ch.append(s2)
+                        except:
+                            print(s)
+                            print(s2)
+                            raise "11111111111"
                         if len(ch) == self.choice_places:
-                            break
-                    for p in ch:
-                        if s.TryMoveVertex(s1, p.m, p.n) == False:
-                            raise "Error"               
+                            break              
                     if len(ch) == 1:
                         s2 = ch[0]
                     elif len(ch) == 0:
@@ -447,9 +465,10 @@ class SimulatedAnnealing(object):
                         s2 = ch[random.randint(0, len(ch)-1)]
                     if s2:
                         target_proc = s2.m
-                        target_pos = s2.n
+                        target_pos = s.vertices[s2.m.number].index(s2)
                 # Delay strategy
                 elif r < self.strategies["mixed"] + self.strategies["delay"]:
+                    print("DELAY")
                     if len(s.waiting) == 0:
                         keys = [m for m in s.vertices.keys()]
                         proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
@@ -461,9 +480,10 @@ class SimulatedAnnealing(object):
                     for d in s.vertices:
                         s2 = d
                         proc = s2.m
-                        num = s2.n
+                        num = s.vertices[s2.m.number].index(s2)
+                        src_pos = s.vertices[s1.m.number].index(s1)
                         if s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
-                            if (s2 != s1) and s.TryMoveVertex(s1, proc, num):
+                            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num):
                                 ch.append(s2)
                         if len(ch) == self.choice_places:
                             break
@@ -475,9 +495,10 @@ class SimulatedAnnealing(object):
                     else:
                         s2 = ch[random.randint(0, len(ch)-1)]
                     target_proc = s2.m
-                    target_pos = s2.n
+                    target_pos = s.vertices[s2.m.number].index(s2)
                 # Idle strategy
                 else:
+                    print("IDLE")
                     if len(s.delays) == 0:
                         keys = [m for m in s.vertices.keys()]
                         proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
@@ -485,11 +506,12 @@ class SimulatedAnnealing(object):
                     else:
                         s2 = s.delays[min(random.randint(0,self.choice_places), len(s.delays)-1)][0]
                     target_proc = s2.m
-                    target_pos = s2.n
+                    target_pos = s.vertices[s2.m.number].index(s2)
                     ch = []
                     for d in s.waiting:
                         s1 = d[0]
-                        if (s2 != s1) and s.TryMoveVertex(s1, target_proc, target_pos):
+                        src_pos = s.vertices[s1.m.number].index(s1)
+                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
                             ch.append(s1)
                         if len(ch) == self.choice_vertices:
                             break
@@ -503,13 +525,21 @@ class SimulatedAnnealing(object):
             
             if noOp:
                 self.noOperation = True
+                print("NO OPERATION")
                 return
                     
-            self.write(s1.v.number, s1.m.number, s1.n, target_proc, target_pos)
-            if s.TryMoveVertex(s1, target_proc, target_pos):
-                self.lastOperation = MoveVertex(s1, s1.m, s1.n, target_proc, target_pos)
+            #src_pos = s.vertices[s1.m.number].index(s1)
+            self.write(s1.v.number, s1.m.number, src_pos, target_proc, target_pos)
+            if s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
+                self.lastOperation = MoveVertex(s1, s1.m, src_pos, target_proc, target_pos)
+                print("BEFORE")
+                print(s)
+                print(s1.v, s1.m.number, src_pos, target_proc, target_pos)
                 s.ApplyOperation(self.lastOperation)
-                self.lastOperation.pos2 = (s1.m, s1.n)
+                print("AFTER")
+                print(s)
+                print(s1.v, s1.m.number, src_pos, target_proc, target_pos)
+                self.lastOperation.pos2 = (s1.m, s.vertices[s1.m.number].index(s1))
             else:
                 print ([p for p in ch])
                 for p in ch:
@@ -535,7 +565,12 @@ class SimulatedAnnealing(object):
             self.write("Refuse")
             self.lastOperation.result = False
             #if not self.multioperation:
+            print("REFUSED")
+            print(self.system.schedule)
+            print(self.lastOperation.Reverse())
             self.system.schedule.ApplyOperation(self.lastOperation.Reverse())
+            print("AFTER")
+            print(self.system.schedule)
             #else:
             #    self.system.schedule.RestoreFromCopy(self.backup)
             
@@ -585,8 +620,8 @@ class SimulatedAnnealing(object):
             accept()
         else:
             refuse()
-
+'''
 ss = System("../../program2.xml")
 s = SimulatedAnnealing(ss)
 s.LoadConfig("../../config.xml")
-s.Start()    
+s.Start()'''
