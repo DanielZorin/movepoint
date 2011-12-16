@@ -178,7 +178,7 @@ class SimulatedAnnealing(object):
             
         except IOError:
             raise SchedulerFileException(filename)
-        except(xml.parsers.expat.ExpatError, ValueError):
+        except(ValueError):
             f.close()
             raise SchedulerXmlException(filename)
       
@@ -502,7 +502,7 @@ class SimulatedAnnealing(object):
                     if len(s.delays) == 0:
                         keys = [m for m in s.vertices.keys()]
                         proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                        s1 = proc[random.randint(0, len(proc)-1)]
+                        s2 = proc[random.randint(0, len(proc)-1)]
                     else:
                         s2 = s.delays[min(random.randint(0,self.choice_places), len(s.delays)-1)][0]
                     target_proc = s2.m
