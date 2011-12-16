@@ -77,7 +77,7 @@ class Program(object):
             
         except IOError:
             raise SchedulerFileException(filename)
-        except(xml.parsers.expat.ExpatError, ValueError):
+        except(ValueError):
             f.close()
             raise SchedulerXmlException(filename)
     
@@ -211,4 +211,4 @@ class Program(object):
             res += str(v)
         for e in self.edges:
             res += str(e)
-        return res    
+        return res  

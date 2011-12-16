@@ -27,7 +27,6 @@ class MainWindow(QMainWindow):
         self.ui.visualizerArea.setWidget(self.visualizer)
         self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
         self.title = self.tr("Scheduler GUI")
-        self.container = ScheduleContainer()
         self.loadTranslations()
         self.setPreferences()
     
@@ -86,8 +85,6 @@ class MainWindow(QMainWindow):
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
             self.setWindowTitle(self.project.name + " - " + self.title) 
-            self.container.Clear()
-            self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
             self.EnableRunning()
             self.loadSchedule()
             t, r = self.project.GetLimits()
@@ -108,8 +105,6 @@ class MainWindow(QMainWindow):
             return  
         self.projectFile = name
         self.setWindowTitle(self.project.name + " - " + self.title) 
-        self.container.Clear()
-        self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
         self.EnableRunning()
         self.loadSchedule()
         t, r = self.project.GetLimits()
@@ -139,7 +134,6 @@ class MainWindow(QMainWindow):
     def Run(self):
         self.project.method.iteration = 0
         self.project.method.Start()
-        self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
         self.loadSchedule()
     
     def Trace(self):
@@ -147,7 +141,6 @@ class MainWindow(QMainWindow):
         # TODO: encapsulate number of iterations
         while iter < self.project.method.numberOfIterations:
             self.project.Step()
-            self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
             iter += 1
             print(iter)
             self.loadSchedule()
@@ -176,8 +169,6 @@ class MainWindow(QMainWindow):
         
     def ResetSchedule(self):
         self.project.ResetSchedule()
-        self.container.Clear()
-        self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
         self.loadSchedule()
     
     def ChangeScale(self, value):
@@ -195,8 +186,6 @@ class MainWindow(QMainWindow):
             except SchedulerException as e:
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
-            self.container.Clear()
-            self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
             self.EnableRunning()
             self.loadSchedule()
             t, r = self.project.GetLimits()
@@ -241,8 +230,6 @@ class MainWindow(QMainWindow):
         if d.result() == QDialog.Accepted:
             params = d.GetResult()
             self.project.GenerateRandomSystem(params)
-            self.container.Clear()
-            self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
             self.loadSchedule()
             t, r = self.project.GetLimits()
             self.setLimits(t, r)
@@ -287,11 +274,9 @@ class MainWindow(QMainWindow):
         self.ui.tdir.setText(str(t))
         self.ui.rdir.setText('{:f}'.format(r)[:10])
     
-    def loadSchedule(self):
-        if self.container.IsEmpty():
-            return
-        
-        self.visualizer.Visualize(self.container.GetCurrent())
+    def loadSchedule(self):        
+        self.visualizer.Visualize(self.project.system.schedule)
+        return
         self.showTotals()
         self.ui.labelTotal.setText(str(self.container.GetTotal()))
         self.ui.lineEdit.setText(str(self.container.current + 1))
