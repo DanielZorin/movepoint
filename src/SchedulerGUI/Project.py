@@ -43,6 +43,7 @@ class Project(object):
         fn.close()
         self.name = dict["name"]
         self.system = dict["system"]
+        self.system.program._buildData()
         self.system.processors = dict["proc"]
         self.method = SimulatedAnnealing(self.system)
         self.method.Deserialize(dict["method"])

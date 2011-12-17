@@ -522,6 +522,8 @@ class SimulatedAnnealing(object):
                         noOp = True
                     else:
                         s1 = ch[random.randint(0, len(ch)-1)]
+                    if s1:
+                        src_pos = s.vertices[s1.m.number].index(s1)
             
             if noOp:
                 self.noOperation = True
@@ -621,7 +623,7 @@ class SimulatedAnnealing(object):
         else:
             refuse()
 '''
-ss = System("../../program2.xml")
+ss = System("program.xml")
 s = SimulatedAnnealing(ss)
-s.LoadConfig("../../config.xml")
+s.LoadConfig("config.xml")
 s.Start()'''
