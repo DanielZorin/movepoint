@@ -136,7 +136,6 @@ class SimulatedAnnealing(object):
                     self.opt_time["time-normal"] = LoadPrioritiesList(tmp)
                     tmp = list(filter(lambda node: node.nodeName == "time-exceed", list(opt_time.childNodes)))[0]
                     self.opt_time["time-exceed"] = LoadPrioritiesList(tmp)
-                    print(self.opt_time)
                     
                     # Parse limits
                     lim = list(filter(lambda node: node.nodeName == "limits", list(c.childNodes)))[0]
@@ -235,7 +234,8 @@ class SimulatedAnnealing(object):
             self.iteration += 1
             if (self.curProc == 1) and (self.curTime <= self.system.tdir) and (self.curRel >= self.system.rdir):
                 self.write("Early end: ", self.iteration)
-                return self.system.schedule       
+                return self.system.schedule   
+        return    
         self.system.schedule.RestoreFromCopy(self.bestSchedule)
         self.curTime = self.bestTime
         self.curRel = self.bestRel
@@ -299,7 +299,7 @@ class SimulatedAnnealing(object):
         self.write(op)
         self.multioperation = False
         self.noOperation = False
-        print(op)
+        #print(op)
         if op == "AddProcessor":
             proc = list(self.system.schedule.processors)
             proc.sort(key=lambda x: x.reserves)
@@ -331,7 +331,6 @@ class SimulatedAnnealing(object):
             vers = list(filter(lambda v: len(v.versions) >= len(self.system.schedule.FindAllVertices(v=v)) + 2, \
                 self.system.schedule.program.vertices))
             vers.sort(key=lambda v: len(v.versions))
-            print(vers)
             if len(vers) != 0:
                 newproc = self.system.schedule.AddVersion(vers[0])
                 self.lastOperation = AddVersion(vers[0], newproc, 1, newproc, 2)
@@ -342,7 +341,6 @@ class SimulatedAnnealing(object):
             vers = list(filter(lambda v: len(self.system.schedule.FindAllVertices(v=v)) > 1, \
                 self.system.schedule.program.vertices))
             vers.sort(key=lambda v: len(v.versions))
-            print(vers)
             if len(vers) != 0:
                 (m1, m2, n1, n2) = self.system.schedule.DeleteVersion(vers[len(vers)-1]) 
                 self.lastOperation = DeleteVersion(vers[len(vers)-1], m1, n1, m2, n2)
@@ -383,7 +381,6 @@ class SimulatedAnnealing(object):
                         self.multioperation = True
                         self.backup = self.system.schedule.GetCopy()
                         self.lastOperation = MultiOperation()
-                        print("MULTI", ch, proc)
                         src_pos = 0
                         for s1 in ch:
                             flag = True
@@ -398,8 +395,6 @@ class SimulatedAnnealing(object):
                                         s.MoveVertex(s1, src_pos, target_proc, target_pos)
                                         self.lastOperation.Add(MoveVertex(s1, s1.m, src_pos, target_proc, target_pos))
                                         flag = False
-                                        print(s)
-                                        print(s1, s1.m.number, src_pos, target_proc, target_pos)
                                     if i > 100:
                                         flag = False
                             src_pos += 1
@@ -428,7 +423,6 @@ class SimulatedAnnealing(object):
                 # TODO: think about a better way to select a strategy
                 #Mixed strategy
                 if r < self.strategies["mixed"]:
-                    print("MIXED")
                     # TODO: what should we do if there are no delays? Maybe stop the algorithm?
                     if len(s.waiting) == 0:
                         noOp = True
@@ -436,7 +430,6 @@ class SimulatedAnnealing(object):
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
                         try:
                             src_pos = s.vertices[s1.m.number].index(s1)
-                            print("SOURCE ", src_pos)
                         except:
                             print(s)
                             print(s1)
@@ -468,7 +461,6 @@ class SimulatedAnnealing(object):
                         target_pos = s.vertices[s2.m.number].index(s2)
                 # Delay strategy
                 elif r < self.strategies["mixed"] + self.strategies["delay"]:
-                    print("DELAY")
                     if len(s.waiting) == 0:
                         keys = [m for m in s.vertices.keys()]
                         proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
@@ -498,7 +490,6 @@ class SimulatedAnnealing(object):
                     target_pos = s.vertices[s2.m.number].index(s2)
                 # Idle strategy
                 else:
-                    print("IDLE")
                     if len(s.delays) == 0:
                         keys = [m for m in s.vertices.keys()]
                         proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
@@ -534,13 +525,7 @@ class SimulatedAnnealing(object):
             self.write(s1.v.number, s1.m.number, src_pos, target_proc, target_pos)
             if s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
                 self.lastOperation = MoveVertex(s1, s1.m, src_pos, target_proc, target_pos)
-                print("BEFORE")
-                print(s)
-                print(s1.v, s1.m.number, src_pos, target_proc, target_pos)
                 s.ApplyOperation(self.lastOperation)
-                print("AFTER")
-                print(s)
-                print(s1.v, s1.m.number, src_pos, target_proc, target_pos)
                 self.lastOperation.pos2 = (s1.m, s.vertices[s1.m.number].index(s1))
             else:
                 print ([p for p in ch])
@@ -566,15 +551,7 @@ class SimulatedAnnealing(object):
         def refuse():  
             self.write("Refuse")
             self.lastOperation.result = False
-            #if not self.multioperation:
-            print("REFUSED")
-            print(self.system.schedule)
-            print(self.lastOperation.Reverse())
             self.system.schedule.ApplyOperation(self.lastOperation.Reverse())
-            print("AFTER")
-            print(self.system.schedule)
-            #else:
-            #    self.system.schedule.RestoreFromCopy(self.backup)
             
         def choose(f1, f2, f3):
             self.write(f1(self.temperature), f2(self.temperature), f3(self.temperature))
@@ -622,8 +599,9 @@ class SimulatedAnnealing(object):
             accept()
         else:
             refuse()
-'''
+
 ss = System("program.xml")
+ss.GenerateRandom({"n":30, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":3})
 s = SimulatedAnnealing(ss)
 s.LoadConfig("config.xml")
-s.Start()'''
+s.Start()
