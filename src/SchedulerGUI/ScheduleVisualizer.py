@@ -86,11 +86,12 @@ class ScheduleVisualizer(QWidget):
             
             # Draw captions
             paint.setPen(self.axisColor)    
-            for t in self.schedule.vertices:
-                start = self.schedule.executionTimes[t][0]
-                finish = self.schedule.executionTimes[t][1]   
-                s = str(t.v.number) + " v" + str(t.k.number) + " n" + str(t.n)
-                paint.drawText((10 + finish + start - int(len(s)/2))*5*self.scale, (procX[t.m.number]+5)*self.scale, s) 
+            for m in self.schedule.vertices.keys():
+                for t in self.schedule.vertices[m]:
+                    start = self.schedule.executionTimes[t][0]
+                    finish = self.schedule.executionTimes[t][1]   
+                    s = str(t.v.number) + " v" + str(t.k.number)
+                    paint.drawText((10 + finish + start - int(len(s)/2))*5*self.scale, (procX[t.m.number]+5)*self.scale, s) 
                    
         paint.end()
         

@@ -65,7 +65,9 @@ class MainWindow(QMainWindow):
         self.currentLanguage = "English"  
     
     def loadTranslations(self):
-        all = os.listdir("./Translations")
+        q = os.curdir
+        tmp = os.listdir(os.curdir)
+        all = os.listdir("./SchedulerGUI/Translations")
         tsfile = re.compile("Scheduler_([a-zA-z]*)\.ts")
         res = []
         for s in all:
@@ -146,17 +148,10 @@ class MainWindow(QMainWindow):
             self.loadSchedule()
     
     def StepForward(self):
-        if self.container.IsLast():
-            self.project.Step()
-            self.container.Add(self.project.GetSchedule(), self.project.GetStats(), self.project.GetLastStep())
-        else:
-            self.container.current += 1
+        self.project.Step()
         self.loadSchedule()
     
     def StepBackward(self):
-        if self.container.current == 0:
-            return
-        self.container.current -= 1
         self.loadSchedule()
             
     def SelectSchedule(self, s):
