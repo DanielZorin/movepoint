@@ -62,7 +62,7 @@ class MainWindow(QMainWindow):
         self.preferences.setColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))
         self.visualizer.SetColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))      
         self.project = Project() 
-        self.currentLanguage = "English"  
+        self.currentLanguage = "English"
     
     def loadTranslations(self):
         q = os.curdir

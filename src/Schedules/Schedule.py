@@ -147,6 +147,8 @@ class Schedule(object):
         
     def _succ(self, s):
         # TODO: WHAT THE FLYING FUCK IS GOING ON WITH SUCC CACHE!?
+        if s in self._succCache:
+            return self._succCache[s]
         cur = set(self._trans(s))
         new = set([])
         while True:
@@ -208,11 +210,9 @@ class Schedule(object):
                 b = True
                 for v in self._dep(s):
                     if not (v in parsed):
-                        print(s, " waiting ", v)
                         b = False
                 if s.n > 1:
                     if not (self.vertices[s.m.number][s.n-2] in parsed):
-                        print(s, " waiting ", self.vertices[s.m.number][s.n-2])
                         b = False
                 if b:
                     return s
@@ -547,6 +547,7 @@ class Schedule(object):
             s2 = ScheduleVertex(v, totalver[len(curver)+1], p)
             self.vertices[p.number] = [s1, s2]
         else:
+            p = p1
             s1 = ScheduleVertex(v, totalver[len(curver)], p1)
             s2 = ScheduleVertex(v, totalver[len(curver)+1], p1)
             self.vertices[p1.number].insert(n1-1, s1)
@@ -665,7 +666,6 @@ class Schedule(object):
     
     def CanDeleteVersions(self):
         ''':return: True if there is at least one task with more than one version '''
-        print(self.vertices)
         for v0 in self.vertices.values():
             for v in v0:
                 if v.k.number > 1:
