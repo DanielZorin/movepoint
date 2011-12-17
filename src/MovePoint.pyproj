@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74733d23-9d25-4715-ac74-dbbc01fac17a}</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>SchedulerGUI\main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>MovePoint</Name>
+    <RootNamespace>MovePoint</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Methods" />
+    <Folder Include="Methods\ParetoOptimization" />
+    <Folder Include="Methods\Scheduling" />
+    <Folder Include="Core" />
+    <Folder Include="SchedulerGUI" />
+    <Folder Include="SchedulerGUI\Windows" />
+    <Folder Include="SRGMGUI" />
+    <Folder Include="Tests" />
+    <Folder Include="SRGM" />
+    <Folder Include="Systems" />
+    <Folder Include="Schedules" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Common.py" />
+    <Compile Include="Core\Error.py" />
+    <Compile Include="Core\Hardware.py" />
+    <Compile Include="Core\NVP.py" />
+    <Compile Include="Core\Processor.py" />
+    <Compile Include="Core\RedundancyTechnique.py" />
+    <Compile Include="Core\ReliabilityFunctions.py" />
+    <Compile Include="Core\Reserve.py" />
+    <Compile Include="Core\Software.py" />
+    <Compile Include="Core\TestingData.py" />
+    <Compile Include="Core\Version.py" />
+    <Compile Include="Core\__init__.py" />
+    <Compile Include="Methods\ParetoOptimization\FullIteration.py" />
+    <Compile Include="Methods\ParetoOptimization\Genetic.py" />
+    <Compile Include="Methods\ParetoOptimization\NPGA.py" />
+    <Compile Include="Methods\ParetoOptimization\NSGA.py" />
+    <Compile Include="Methods\ParetoOptimization\PAES.py" />
+    <Compile Include="Methods\ParetoOptimization\PESA.py" />
+    <Compile Include="Methods\ParetoOptimization\RandomSelection.py" />
+    <Compile Include="Methods\ParetoOptimization\Settings.py" />
+    <Compile Include="Methods\ParetoOptimization\SPEA.py" />
+    <Compile Include="Methods\ParetoOptimization\SPEA2.py" />
+    <Compile Include="Methods\ParetoOptimization\VEGA.py" />
+    <Compile Include="Methods\ParetoOptimization\__init__.py" />
+    <Compile Include="Methods\Scheduling\ExampleMethod.py" />
+    <Compile Include="Methods\Scheduling\Exceptions.py" />
+    <Compile Include="Methods\Scheduling\Interface.py" />
+    <Compile Include="Methods\Scheduling\RandomSimulatedAnnealing.py" />
+    <Compile Include="Methods\Scheduling\SimulatedAnnealing.py" />
+    <Compile Include="Methods\Scheduling\__init__.py" />
+    <Compile Include="Methods\__init__.py" />
+    <Compile Include="SchedulerGUI\ComboBoxDialog.py" />
+    <Compile Include="SchedulerGUI\exe.py" />
+    <Compile Include="SchedulerGUI\main.py" />
+    <Compile Include="SchedulerGUI\MainWindow.py" />
+    <Compile Include="SchedulerGUI\NewProjectDialog.py" />
+    <Compile Include="SchedulerGUI\PreferencesDialog.py" />
+    <Compile Include="SchedulerGUI\Project.py" />
+    <Compile Include="SchedulerGUI\RandomSystemDialog.py" />
+    <Compile Include="SchedulerGUI\ScheduleContainer.py" />
+    <Compile Include="SchedulerGUI\ScheduleVisualizer.py" />
+    <Compile Include="SchedulerGUI\SettingsDialog.py" />
+    <Compile Include="SchedulerGUI\Windows\ui.py" />
+    <Compile Include="SchedulerGUI\Windows\ui_MainWindow.py" />
+    <Compile Include="SchedulerGUI\Windows\ui_NewProjectDialog.py" />
+    <Compile Include="SchedulerGUI\Windows\ui_PreferencesDialog.py" />
+    <Compile Include="SchedulerGUI\Windows\ui_RandomSystemDialog.py" />
+    <Compile Include="SchedulerGUI\Windows\__init__.py" />
+    <Compile Include="SchedulerGUI\__init__.py" />
+    <Compile Include="Schedules\Exceptions.py" />
+    <Compile Include="Schedules\Operation.py" />
+    <Compile Include="Schedules\Program.py" />
+    <Compile Include="Schedules\ProgramEdge.py" />
+    <Compile Include="Schedules\ProgramVertex.py" />
+    <Compile Include="Schedules\Schedule.py" />
+    <Compile Include="Schedules\ScheduleVertex.py" />
+    <Compile Include="Schedules\System.py" />
+    <Compile Include="Schedules\Threshold.py" />
+    <Compile Include="Schedules\__init__.py" />
+    <Compile Include="SRGMGUI\AddDataDialog.py" />
+    <Compile Include="SRGMGUI\Graph.py" />
+    <Compile Include="SRGMGUI\main.py" />
+    <Compile Include="SRGMGUI\MainWindow.py" />
+    <Compile Include="SRGMGUI\Project.py" />
+    <Compile Include="SRGMGUI\ProjectDialog.py" />
+    <Compile Include="SRGMGUI\SRGMTestingWindow.py" />
+    <Compile Include="SRGMGUI\ui.py" />
+    <Compile Include="SRGMGUI\ui_main.py" />
+    <Compile Include="SRGMGUI\__init__.py" />
+    <Compile Include="SRGM\GoelOkumoto.py" />
+    <Compile Include="SRGM\JelinskiMoranda.py" />
+    <Compile Include="SRGM\LittlewoodVerrall.py" />
+    <Compile Include="SRGM\Logarithmic.py" />
+    <Compile Include="SRGM\SRGMBase.py" />
+    <Compile Include="SRGM\SRGMList.py" />
+    <Compile Include="SRGM\SShaped.py" />
+    <Compile Include="SRGM\__init__.py" />
+    <Compile Include="Systems\Point.py" />
+    <Compile Include="Systems\PointSystem.py" />
+    <Compile Include="Systems\SystemGenerator.py" />
+    <Compile Include="Systems\__init__.py" />
+    <Compile Include="Tests\ComparativeTest.py" />
+    <Compile Include="Tests\QualityTest.py" />
+    <Compile Include="Tests\Settings.py" />
+    <Compile Include="Tests\SimpleTest.py" />
+    <Compile Include="Tests\ZTest.py" />
+    <Compile Include="Tests\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SchedulerGUI\Windows\MainWindow.ui" />
+    <Content Include="SchedulerGUI\Windows\NewProjectDialog.ui" />
+    <Content Include="SchedulerGUI\Windows\PreferencesDialog.ui" />
+    <Content Include="SchedulerGUI\Windows\RandomSystemDialog.ui" />
+    <Content Include="SRGMGUI\main.ui" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
