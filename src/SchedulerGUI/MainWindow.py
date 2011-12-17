@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
     def loadTranslations(self):
         q = os.curdir
         tmp = os.listdir(os.curdir)
-        all = os.listdir("./SchedulerGUI/Translations")
+        all = os.listdir("./Translations")
         tsfile = re.compile("Scheduler_([a-zA-z]*)\.ts")
         res = []
         for s in all:
