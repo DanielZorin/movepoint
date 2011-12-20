@@ -25,6 +25,12 @@ if __name__ == "__main__":
     uic.compileUi(fin, fout)
     fin.close()
     fout.close()
+
+    fin = open("Viewer.ui", "r")
+    fout = open("ui_Viewer.py", "w")
+    uic.compileUi(fin, fout)
+    fin.close()
+    fout.close()
     
     if 0 == 1:
         os.chdir("..")

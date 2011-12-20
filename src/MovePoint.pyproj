@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{74733d23-9d25-4715-ac74-dbbc01fac17a}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Methods\Scheduling\SimulatedAnnealing.py</StartupFile>
+    <StartupFile>SchedulerGUI-launch.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -79,11 +79,13 @@
     <Compile Include="SchedulerGUI\ScheduleContainer.py" />
     <Compile Include="SchedulerGUI\ScheduleVisualizer.py" />
     <Compile Include="SchedulerGUI\SettingsDialog.py" />
+    <Compile Include="SchedulerGUI\Viewer.py" />
     <Compile Include="SchedulerGUI\Windows\ui.py" />
     <Compile Include="SchedulerGUI\Windows\ui_MainWindow.py" />
     <Compile Include="SchedulerGUI\Windows\ui_NewProjectDialog.py" />
     <Compile Include="SchedulerGUI\Windows\ui_PreferencesDialog.py" />
     <Compile Include="SchedulerGUI\Windows\ui_RandomSystemDialog.py" />
+    <Compile Include="SchedulerGUI\Windows\ui_Viewer.py" />
     <Compile Include="SchedulerGUI\Windows\__init__.py" />
     <Compile Include="SchedulerGUI\__init__.py" />
     <Compile Include="Schedules\Exceptions.py" />
@@ -130,6 +132,7 @@
     <Content Include="SchedulerGUI\Windows\NewProjectDialog.ui" />
     <Content Include="SchedulerGUI\Windows\PreferencesDialog.ui" />
     <Content Include="SchedulerGUI\Windows\RandomSystemDialog.ui" />
+    <Content Include="SchedulerGUI\Windows\Viewer.ui" />
     <Content Include="SRGMGUI\main.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
