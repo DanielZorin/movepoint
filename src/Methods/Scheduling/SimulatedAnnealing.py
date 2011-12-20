@@ -587,9 +587,9 @@ class SimulatedAnnealing(object):
             accept()
         else:
             refuse()
-
+'''
 ss = System("program.xml")
 #ss.GenerateRandom({"n":30, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":3})
 s = SimulatedAnnealing(ss)
 s.LoadConfig("config.xml")
-s.Start()
+s.Start()'''

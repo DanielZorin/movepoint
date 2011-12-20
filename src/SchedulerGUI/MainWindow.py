@@ -9,6 +9,7 @@ from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
 from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
 from SchedulerGUI.ScheduleContainer import ScheduleContainer
 from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
+from SchedulerGUI.Viewer import Viewer
 from SchedulerGUI.Windows.ui_MainWindow import Ui_MainWindow
 from Schedules.Exceptions import SchedulerException
 
@@ -23,8 +24,8 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.visualizer = ScheduleVisualizer(self.ui.visualizerArea)
-        self.ui.visualizerArea.setWidget(self.visualizer)
+        self.viewer = Viewer()
+        self.ui.toolBar.addAction(self.ui.actionAbout)
         self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
         self.title = self.tr("Scheduler GUI")
         self.loadTranslations()
@@ -60,7 +61,7 @@ class MainWindow(QMainWindow):
             
     def loadDefaultPreferences(self):
         self.preferences.setColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))
-        self.visualizer.SetColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))      
+        self.viewer.visualizer.SetColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))      
         self.project = Project() 
         self.currentLanguage = "English"
     
@@ -129,10 +130,11 @@ class MainWindow(QMainWindow):
         self.ui.actionStep_Backward.setEnabled(True)
         self.ui.actionStep_Forward.setEnabled(True)
         self.ui.actionReset.setEnabled(True)
-        self.ui.stepforth.setEnabled(True)
-        self.ui.lineEdit.setEnabled(True)
-        self.ui.laststep.setEnabled(True)
+        self.ui.actionLaunch_Viewer.setEnabled(True)
     
+    def LaunchViewer(self):
+        self.viewer.show()
+
     def Run(self):
         self.project.method.iteration = 0
         self.project.method.Start()
@@ -146,21 +148,6 @@ class MainWindow(QMainWindow):
             iter += 1
             print(iter)
             self.loadSchedule()
-    
-    def StepForward(self):
-        self.project.Step()
-        self.loadSchedule()
-    
-    def StepBackward(self):
-        self.loadSchedule()
-            
-    def SelectSchedule(self, s):
-        if s == '':
-            return
-        # TODO: check why the validator doesn't work sometimes
-        n = int(s)
-        self.container.current = n - 1
-        self.loadSchedule()
         
     def ResetSchedule(self):
         self.project.ResetSchedule()
@@ -169,10 +156,6 @@ class MainWindow(QMainWindow):
     def ChangeScale(self, value):
         self.visualizer.SetScale(1.0 + float(value) / 100.0)
         
-    def ShowLastStep(self):
-        self.ui.laststepdata.setText(str(self.container.GetCurrentOperation()))
-        self.visualizer.Visualize(self.container.GetCurrent(), self.container.GetCurrentOperation())
-    
     def LoadSystem(self):
         s = QFileDialog.getOpenFileName()
         if s != '':
@@ -193,7 +176,7 @@ class MainWindow(QMainWindow):
                 self.project.ChangeMethod(s)
             except SchedulerException as e:
                 QMessageBox.critical(self, "An error occured", e.message)
-                return  
+                return
     
     def ChangeName(self):
         s = QInputDialog.getText(self, "Change Project Name", "Enter the new project name", text=self.project.name)
@@ -266,28 +249,14 @@ class MainWindow(QMainWindow):
         sys.exit(0)
     
     def setLimits(self, t, r):
+        return
         self.ui.tdir.setText(str(t))
         self.ui.rdir.setText('{:f}'.format(r)[:10])
     
-    def loadSchedule(self):        
-        self.visualizer.Visualize(self.project.system.schedule)
+    def loadSchedule(self): 
+        self.viewer.setData(self.project.method)  
         return
-        self.showTotals()
-        self.ui.labelTotal.setText(str(self.container.GetTotal()))
-        self.ui.lineEdit.setText(str(self.container.current + 1))
-        self.validator = QIntValidator(1, self.container.GetTotal(), self)
-        self.ui.lineEdit.setValidator(self.validator)
-        
-        if self.container.IsLast():
-            self.ui.laststep.setEnabled(False)
-        else:
-            self.ui.laststep.setEnabled(True)
-            
-        if self.container.current == 0:
-            self.ui.stepback.setEnabled(False)
-        else:
-            self.ui.stepback.setEnabled(True)
-        
+
     def showTotals(self):
         s = self.container.GetCurrentStats()
         self.ui.labeltime.setText(str(s[0]))

@@ -61,9 +61,11 @@ class Trace:
     def __init__(self):
         self.ops = []
         self.best = -1
+        self.current = -1
 
     def addStep(self, op, params):
         self.ops.append((op, params))
+        self.current = self.length()
         
     def setBest(self, i):
         # TODO: check boundaries
