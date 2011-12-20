@@ -56,3 +56,28 @@ class MultiOperation:
         for op in self.ops:
             res = [op.Reverse()] + res
         return res
+
+class Trace:
+    def __init__(self):
+        self.ops = []
+        self.best = -1
+
+    def addStep(self, op, params):
+        self.ops.append((op, params))
+        
+    def setBest(self, i):
+        # TODO: check boundaries
+        self.best = i
+
+    def getBest(self):
+        if self.best != -1:
+            return self.ops[self.best]
+
+    def getLast(self):
+        return self.ops[len(self.ops) - 1]
+
+    def length(self):
+        return len(self.ops)
+
+    def clear(self):
+        self.ops = []

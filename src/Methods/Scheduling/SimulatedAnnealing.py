@@ -45,19 +45,8 @@ class SimulatedAnnealing(object):
     strategies = {}
     ''' Used strategies for MoveVertex and their probabilities '''
     
-    curTime = None
-    curRel = None
-    curProc = None
-    ''' Parameters of the current approximation '''
-    
     oldSchedule = None
     ''' Current approximation. A copy is saved here, and all changes are applied to the original '''
-    
-    bestSchedule = None
-    bestTime = None
-    bestRel = None
-    bestProc = None
-    ''' Current best solution and its characteristics '''
     
     numberOfIterations = 0
     ''' Number of iteration is 10 * number of vertices '''
@@ -70,6 +59,8 @@ class SimulatedAnnealing(object):
     lastOperation = VoidOperation()
     ''' Here we keep the info about the last operation. It's used in GUI '''
     
+    trace = Trace()
+
     completeCutting = True
     ''' Turns on experimental feature: cut processors completely '''
     
@@ -218,13 +209,14 @@ class SimulatedAnnealing(object):
         self._prepare()
     
     def _prepare(self):
-        self.curTime = self.system.schedule.Interpret()
-        self.curRel = self.system.schedule.GetReliability()
-        self.curProc = self.system.schedule.GetProcessors()
-        self.bestProc = self.curProc
-        self.bestTime = self.curTime
-        self.bestRel = self.curRel
-        self.bestSchedule = self.system.schedule.GetCopy()
+        self.trace.clear()
+        self.lastOperation = VoidOperation()
+        data = {"time":self.system.schedule.Interpret(),
+                "reliability":self.system.schedule.GetReliability(),
+                "processors":self.system.schedule.GetProcessors()
+                }
+        self.trace.addStep(self.lastOperation, data)
+        self.trace.setBest(0)
         
     def Start(self):
         ''' Runs the algorithm with the given number of iterations'''
@@ -232,15 +224,12 @@ class SimulatedAnnealing(object):
             print(self.iteration)
             self.Step()
             self.iteration += 1
-            if (self.curProc == 1) and (self.curTime <= self.system.tdir) and (self.curRel >= self.system.rdir):
+            if (self.trace.getLast()[1]["processors"] == 1) and \
+                (self.trace.getLast()[1]["time"]  <= self.system.tdir) and \
+                (self.trace.getLast()[1]["reliability"]  >= self.system.rdir):
                 self.write("Early end: ", self.iteration)
-                return self.system.schedule   
+                return  
         return    
-        self.system.schedule.RestoreFromCopy(self.bestSchedule)
-        self.curTime = self.bestTime
-        self.curRel = self.bestRel
-        self.curProc = self.bestProc
-        return self.system.schedule
             
     def Step(self):
         ''' Makes a single iteration of the algorithm'''
@@ -267,20 +256,20 @@ class SimulatedAnnealing(object):
             sum += dict[k]
             
     def _chooseOperation(self):
-        if self.curRel < self.system.rdir:
+        if self.trace.getLast()[1]["reliability"]  < self.system.rdir:
             if self.curTime > self.system.tdir:
                 vector = self.opt_reliability["time-exceed"]
             else:
                 vector = self.opt_reliability["time-normal"]
         else:
-            if self.curTime > self.system.tdir:
+            if self.trace.getLast()[1]["time"]  > self.system.tdir:
                 vector = self.opt_time["time-exceed"]
             else:
                 vector = self.opt_time["time-normal"]
         ops = {}
         for v in vector.keys():
             ops[v] = vector[v]
-        #ops = {'DeleteProcessor': 0.2, 'DeleteVersion': 0.2, 'AddProcessor': 0.3, 'AddVersion':0.3}
+        
         # Delete impossible operations
         if not self.system.schedule.CanDeleteProcessor():
             ops.pop("DeleteProcessor", True)
@@ -290,8 +279,7 @@ class SimulatedAnnealing(object):
             
         if not self.system.schedule.CanAddVersions():
             ops.pop("AddVersion", True)
-          
-        
+                 
         return self._chooseRandomKey(ops)
     
     # Selects parameters for the operation and applies it whenever possible
@@ -357,9 +345,9 @@ class SimulatedAnnealing(object):
             target_pos = None
             move_delay = False
             noOp = False
-            if self.curTime < self.system.tdir:
+            if self.trace.getLast()[1]["time"]  < self.system.tdir:
                 # Cut from a certain processor
-                if random.random() < self.cut_processor and self.curProc > 1:
+                if random.random() < self.cut_processor and self.trace.getLast()[1]["processors"] > 1:
                     mini = len(s.vertices)
                     proc = None
                     for m in s.processors:
@@ -518,7 +506,6 @@ class SimulatedAnnealing(object):
             
             if noOp:
                 self.noOperation = True
-                print("NO OPERATION")
                 return
                     
             #src_pos = s.vertices[s1.m.number].index(s1)
@@ -537,16 +524,12 @@ class SimulatedAnnealing(object):
         def accept():
             self.write("Accept")
             self.lastOperation.result = True
-            self.curTime = new_time
-            self.curRel = new_rel
-            self.curProc = new_proc
-            if self.curTime <= self.system.tdir and self.curRel >= self.system.rdir:
-                if self.bestProc == None or self.curProc < self.bestProc or (self.curProc == self.bestProc and self.curTime < self.bestTime):
-                    self.bestProc = self.curProc
-                    self.bestTime = self.curTime
-                    self.bestRel = self.curRel
-                    self.bestSchedule = self.system.schedule.GetCopy()
-                    self.write("BEST SOLUTION:", self.bestTime, self.bestProc, self.system.tdir)
+            self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
+            best = self.trace.getBest()[1]
+            if new_time <= self.system.tdir and new_rel >= self.system.rdir:
+                if curProc < best["processors"]  or (curProc == best["processors"] and curTime < best["time"]):
+                    self.trace.setBest(self.trace.length())
+                    self.write("BEST SOLUTION:", self.trace.getLast()[1])
             
         def refuse():  
             self.write("Refuse")
@@ -555,22 +538,22 @@ class SimulatedAnnealing(object):
             
         def choose(f1, f2, f3):
             self.write(f1(self.temperature), f2(self.temperature), f3(self.temperature))
-            if (self.curTime > new_time) and (self.curRel < new_rel):
+            if (curTime > new_time) and (curRel < new_rel):
                 if random.random() < f1(self.temperature):
                     accept()
                 else:
                     refuse()
-            elif (self.curTime > new_time) and not (self.curRel < new_rel):
+            elif (curTime > new_time) and not (curRel < new_rel):
                 if random.random() < f2(self.temperature):
                     accept()
                 else:
                     refuse()
-            elif not (self.curTime > new_time) and (self.curRel < new_rel):
+            elif not (curTime > new_time) and (curRel < new_rel):
                 if random.random() < f2(self.temperature):
                     accept()
                 else:
                     refuse()
-            elif not (self.curTime > new_time) and not (self.curRel < new_rel):
+            elif not (curTime > new_time) and not (curRel < new_rel):
                 if random.random() < f3(self.temperature):
                     accept()
                 else:
@@ -583,25 +566,30 @@ class SimulatedAnnealing(object):
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
         
+        cur = self.trace.getLast()[1]
+        curTime = cur["time"]
+        curRel = cur["reliability"]
+        curProc = cur["processors"]
+
         # Thresholds are implemented as described in the paper
         # The code might look a bit redundant, but it's easier to relate implementation with the
         # theoretical description.
-        '''if self.curProc > new_proc:
+        '''if curProc > new_proc:
             choose(lambda x: 1, self.f1.f, self.f2.f)
-        elif self.curProc == new_proc:
+        elif curProc == new_proc:
             choose(self.f1.f, self.f2.f, self.f3.f)
-        elif self.curProc < new_proc:
+        elif curProc < new_proc:
             choose(self.f2.f, self.f3.f, lambda x: 0)'''
         
-        self.write("Old: ", self.curTime, self.curRel, self.curProc)    
+        self.write("Old: ", curTime, curRel, curProc)    
         self.write("New: ", new_time, new_rel, new_proc)   
-        if (self.curProc > new_proc) or (self.curTime > new_time) or (self.curRel < new_rel):
+        if (curProc > new_proc) or (curTime > new_time) or (curRel < new_rel):
             accept()
         else:
             refuse()
 
 ss = System("program.xml")
-ss.GenerateRandom({"n":30, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":3})
+#ss.GenerateRandom({"n":30, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":3})
 s = SimulatedAnnealing(ss)
 s.LoadConfig("config.xml")
 s.Start()
