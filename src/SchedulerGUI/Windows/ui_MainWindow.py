@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Tue Dec 20 20:08:19 2011
+# Created: Thu Dec 22 15:51:10 2011
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,6 +23,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/star.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(_fromUtf8(""))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setStyleSheet(_fromUtf8(""))
@@ -56,10 +59,19 @@ class Ui_MainWindow(object):
         self.actionAbout = QtGui.QAction(MainWindow)
         self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
         self.actionNew_Project = QtGui.QAction(MainWindow)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/page.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.actionNew_Project.setIcon(icon1)
         self.actionNew_Project.setObjectName(_fromUtf8("actionNew_Project"))
         self.actionOpen_Project = QtGui.QAction(MainWindow)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/folder.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.actionOpen_Project.setIcon(icon2)
         self.actionOpen_Project.setObjectName(_fromUtf8("actionOpen_Project"))
         self.actionSave_Project = QtGui.QAction(MainWindow)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/cd.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.actionSave_Project.setIcon(icon3)
         self.actionSave_Project.setObjectName(_fromUtf8("actionSave_Project"))
         self.actionSave_Project_As = QtGui.QAction(MainWindow)
         self.actionSave_Project_As.setObjectName(_fromUtf8("actionSave_Project_As"))
@@ -99,6 +111,9 @@ class Ui_MainWindow(object):
         self.actionChange_Limits = QtGui.QAction(MainWindow)
         self.actionChange_Limits.setObjectName(_fromUtf8("actionChange_Limits"))
         self.actionLaunch_Viewer = QtGui.QAction(MainWindow)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/chart.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.actionLaunch_Viewer.setIcon(icon4)
         self.actionLaunch_Viewer.setObjectName(_fromUtf8("actionLaunch_Viewer"))
         self.menuFile.addAction(self.actionNew_Project)
         self.menuFile.addAction(self.actionOpen_Project)
@@ -195,3 +210,4 @@ class Ui_MainWindow(object):
         self.actionChange_Limits.setText(QtGui.QApplication.translate("MainWindow", "Change Limits...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionLaunch_Viewer.setText(QtGui.QApplication.translate("MainWindow", "Launch Viewer", None, QtGui.QApplication.UnicodeUTF8))
 
+from . import resources_rc
