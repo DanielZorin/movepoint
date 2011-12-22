@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Scheduler GUI</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/pics/pics/star.png</normaloff>:/pics/pics/star.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -123,6 +127,11 @@
    </property>
   </action>
   <action name="actionNew_Project">
+   <property name="icon">
+    <iconset>
+     <normalon>:/pics/pics/page.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>New Project</string>
    </property>
@@ -131,6 +140,11 @@
    </property>
   </action>
   <action name="actionOpen_Project">
+   <property name="icon">
+    <iconset>
+     <normalon>:/pics/pics/folder.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Open Project</string>
    </property>
@@ -139,6 +153,11 @@
    </property>
   </action>
   <action name="actionSave_Project">
+   <property name="icon">
+    <iconset>
+     <normalon>:/pics/pics/cd.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Save Project</string>
    </property>
@@ -263,12 +282,19 @@
    </property>
   </action>
   <action name="actionLaunch_Viewer">
+   <property name="icon">
+    <iconset>
+     <normalon>:/pics/pics/chart.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Launch Viewer</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionExit</sender>

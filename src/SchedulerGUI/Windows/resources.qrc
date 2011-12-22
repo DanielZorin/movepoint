@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="pics">
+    <file>pics/fast_forward.png</file>
+    <file>pics/rewind.png</file>
+    <file>pics/skip_backward.png</file>
+    <file>pics/skip_forward.png</file>
+    <file>pics/star.png</file>
+    <file>pics/calculator.png</file>
+    <file>pics/cd.png</file>
+    <file>pics/chart.png</file>
+    <file>pics/folder.png</file>
+    <file>pics/page.png</file>
+  </qresource>
+</RCC>
