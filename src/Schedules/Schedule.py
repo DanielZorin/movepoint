@@ -510,7 +510,7 @@ class Schedule(object):
             return self.MoveVertex(op.task, op.pos1[1], op.pos2[0], op.pos2[1])
         elif isinstance(op, MultiOperation):
             for o in op.ops:
-                self.Applyoperation(o)
+                self.ApplyOperation(o)
     
     def AddProcessor(self, m):
         ''' Adds a reserve to processor m

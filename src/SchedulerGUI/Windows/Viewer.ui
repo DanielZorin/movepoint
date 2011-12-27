@@ -513,10 +513,16 @@ QLabel, QSlider {
    <property name="text">
     <string>Step Forward</string>
    </property>
+   <property name="shortcut">
+    <string>PgDown</string>
+   </property>
   </action>
   <action name="actionStep_Backward">
    <property name="text">
     <string>Step Backward</string>
+   </property>
+   <property name="shortcut">
+    <string>PgUp</string>
    </property>
   </action>
  </widget>
@@ -572,10 +578,77 @@ QLabel, QSlider {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>stepback</sender>
+   <signal>clicked()</signal>
+   <receiver>Viewer</receiver>
+   <slot>StepBackward()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>191</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stepforth</sender>
+   <signal>clicked()</signal>
+   <receiver>Viewer</receiver>
+   <slot>StepForward()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>286</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replay</sender>
+   <signal>clicked()</signal>
+   <receiver>Viewer</receiver>
+   <slot>Replay()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>323</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rewind</sender>
+   <signal>clicked()</signal>
+   <receiver>Viewer</receiver>
+   <slot>Rewind()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>154</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>Colors()</slot>
   <slot>StepForward()</slot>
   <slot>StepBackward()</slot>
+  <slot>Rewind()</slot>
+  <slot>Replay()</slot>
+  <slot>SelectSchedule(QString)</slot>
  </slots>
 </ui>

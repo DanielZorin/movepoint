@@ -67,7 +67,6 @@ QLabel, QSlider {
      <string>Method</string>
     </property>
     <addaction name="actionStart"/>
-    <addaction name="actionTrace"/>
     <addaction name="actionReset"/>
     <addaction name="actionLoad_New_Method"/>
     <addaction name="actionSettings"/>
@@ -190,17 +189,6 @@ QLabel, QSlider {
   <action name="actionSettings">
    <property name="text">
     <string>Settings...</string>
-   </property>
-  </action>
-  <action name="actionTrace">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Trace</string>
-   </property>
-   <property name="shortcut">
-    <string>F6</string>
    </property>
   </action>
   <action name="actionContents">
@@ -373,22 +361,6 @@ QLabel, QSlider {
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>Run()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>337</x>
-     <y>164</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionTrace</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>Trace()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

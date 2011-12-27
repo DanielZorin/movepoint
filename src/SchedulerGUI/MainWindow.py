@@ -124,7 +124,6 @@ class MainWindow(QMainWindow):
     
     def EnableRunning(self):
         self.ui.actionStart.setEnabled(True)
-        self.ui.actionTrace.setEnabled(True)
         self.ui.actionReset.setEnabled(True)
         self.ui.actionLaunch_Viewer.setEnabled(True)
     
@@ -135,15 +134,6 @@ class MainWindow(QMainWindow):
         self.project.method.iteration = 0
         self.project.method.Start()
         self.loadSchedule()
-    
-    def Trace(self):
-        iter = 0
-        # TODO: encapsulate number of iterations
-        while iter < self.project.method.numberOfIterations:
-            self.project.Step()
-            iter += 1
-            print(iter)
-            self.loadSchedule()
         
     def ResetSchedule(self):
         self.project.ResetSchedule()
