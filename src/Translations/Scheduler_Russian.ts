@@ -1,247 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<!DOCTYPE TS><TS version="2.0" language="ru_RU" sourcelanguage="">
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="31"/>
+        <location filename="MainWindow.py" line="28"/>
         <source>Scheduler projects (*.proj *.prj)</source>
         <translation>Проекты планировщика (*.proj *.prj)</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="307"/>
+        <location filename="Windows/ui_MainWindow.py" line="164"/>
         <source>Scheduler GUI</source>
         <translation>Планировщик</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="308"/>
-        <source>&lt;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Windows/ui_MainWindow.py" line="309"/>
-        <source>/</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Windows/ui_MainWindow.py" line="321"/>
-        <source>0</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Windows/ui_MainWindow.py" line="311"/>
-        <source>&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="Windows/ui_MainWindow.py" line="312"/>
         <source>Time:</source>
-        <translation>Время:</translation>
+        <translation type="obsolete">Время:</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="314"/>
         <source>Reliability:</source>
-        <translation>Надежность:</translation>
+        <translation type="obsolete">Надежность:</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="316"/>
         <source>Processors:</source>
-        <translation>Процессоров:</translation>
+        <translation type="obsolete">Процессоров:</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="318"/>
         <source>Time Limit:</source>
-        <translation>Директивное время:</translation>
+        <translation type="obsolete">Директивное время:</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="320"/>
         <source>Reliability Limit:</source>
-        <translation>Директивная надежность:</translation>
+        <translation type="obsolete">Директивная надежность:</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="322"/>
         <source>Show Step</source>
-        <translation>Показать операцию</translation>
+        <translation type="obsolete">Показать операцию</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="323"/>
+        <location filename="Windows/ui_MainWindow.py" line="165"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="324"/>
+        <location filename="Windows/ui_MainWindow.py" line="166"/>
         <source>Method</source>
         <translation>Метод</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="325"/>
+        <location filename="Windows/ui_MainWindow.py" line="167"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="326"/>
+        <location filename="Windows/ui_MainWindow.py" line="168"/>
         <source>Help</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="327"/>
+        <location filename="Windows/ui_MainWindow.py" line="169"/>
         <source>Project</source>
         <translation>Проект</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="328"/>
+        <location filename="Windows/ui_MainWindow.py" line="171"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="329"/>
+        <location filename="Windows/ui_MainWindow.py" line="172"/>
         <source>Ctrl+X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="349"/>
+        <location filename="Windows/ui_MainWindow.py" line="188"/>
         <source>About Scheduler</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="331"/>
+        <location filename="Windows/ui_MainWindow.py" line="174"/>
         <source>New Project</source>
         <translation>Новый проект</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="332"/>
+        <location filename="Windows/ui_MainWindow.py" line="175"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="333"/>
+        <location filename="Windows/ui_MainWindow.py" line="176"/>
         <source>Open Project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="334"/>
+        <location filename="Windows/ui_MainWindow.py" line="177"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="335"/>
+        <location filename="Windows/ui_MainWindow.py" line="178"/>
         <source>Save Project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="336"/>
+        <location filename="Windows/ui_MainWindow.py" line="179"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="337"/>
+        <location filename="Windows/ui_MainWindow.py" line="180"/>
         <source>Save Project As...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="338"/>
+        <location filename="Windows/ui_MainWindow.py" line="181"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="339"/>
+        <location filename="Windows/ui_MainWindow.py" line="182"/>
         <source>Run</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="340"/>
+        <location filename="Windows/ui_MainWindow.py" line="183"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="341"/>
         <source>Step Forward</source>
-        <translation>Шаг вперед</translation>
-    </message>
-    <message>
-        <location filename="Windows/ui_MainWindow.py" line="342"/>
-        <source>PgDown</source>
-        <translation></translation>
+        <translation type="obsolete">Шаг вперед</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="343"/>
         <source>Step Backward</source>
-        <translation>Шаг назад</translation>
+        <translation type="obsolete">Шаг назад</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="344"/>
-        <source>PgUp</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Windows/ui_MainWindow.py" line="345"/>
+        <location filename="Windows/ui_MainWindow.py" line="184"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="346"/>
+        <location filename="Windows/ui_MainWindow.py" line="185"/>
         <source>Trace</source>
         <translation>Трасировка</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="347"/>
+        <location filename="Windows/ui_MainWindow.py" line="186"/>
         <source>F6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="348"/>
+        <location filename="Windows/ui_MainWindow.py" line="187"/>
         <source>Contents...</source>
         <translation>Содержание...</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="350"/>
         <source>Preferences...</source>
-        <translation>Установки...</translation>
+        <translation type="obsolete">Установки...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="351"/>
+        <location filename="Windows/ui_MainWindow.py" line="189"/>
         <source>Reset</source>
         <translation>Перезапуск</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="352"/>
+        <location filename="Windows/ui_MainWindow.py" line="190"/>
         <source>F10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="353"/>
+        <location filename="Windows/ui_MainWindow.py" line="191"/>
         <source>Change Name...</source>
         <translation>Изменить имя...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="354"/>
+        <location filename="Windows/ui_MainWindow.py" line="192"/>
         <source>Load New System...</source>
         <translation>Загрузить новую систему...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="355"/>
+        <location filename="Windows/ui_MainWindow.py" line="193"/>
         <source>Load New Method...</source>
         <translation>Загрузить новый метод...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="356"/>
+        <location filename="Windows/ui_MainWindow.py" line="194"/>
         <source>Generate Random System</source>
         <translation>Создать случайную систему</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="357"/>
+        <location filename="Windows/ui_MainWindow.py" line="195"/>
         <source>Alt+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="358"/>
+        <location filename="Windows/ui_MainWindow.py" line="196"/>
         <source>Language...</source>
         <translation>Язык интерфейса...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="359"/>
+        <location filename="Windows/ui_MainWindow.py" line="197"/>
         <source>Change Limits...</source>
         <translation>Изменить ограничения...</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_MainWindow.py" line="170"/>
+        <source>toolBar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_MainWindow.py" line="198"/>
+        <source>Launch Viewer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -285,42 +264,42 @@
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="111"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="123"/>
         <source>Preferences</source>
         <translation>Установки</translation>
     </message>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="112"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="124"/>
         <source>Colors</source>
         <translation>Цвета</translation>
     </message>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="113"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="125"/>
         <source>Axis</source>
         <translation>Оси</translation>
     </message>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="114"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="126"/>
         <source>Tasks</source>
         <translation>Задания</translation>
     </message>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="115"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="127"/>
         <source>Deliveries</source>
         <translation>Передачи</translation>
     </message>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="116"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="128"/>
         <source>Last operation</source>
         <translation>Последняя операция</translation>
     </message>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="117"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="129"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="Windows/ui_PreferencesDialog.py" line="118"/>
+        <location filename="Windows/ui_PreferencesDialog.py" line="130"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -328,94 +307,162 @@
 <context>
     <name>RandomSystemDialog</name>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="106"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="169"/>
         <source>Create Random System</source>
         <translation>Создать случайную систему</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="107"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="170"/>
         <source>Number of vertices</source>
         <translation>Число вершин</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="108"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="171"/>
         <source>Mimimal time</source>
         <translation>Минимальное время</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="109"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="172"/>
         <source>Maximal time</source>
         <translation>Максимальное время</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="110"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="173"/>
         <source>Minimal volume</source>
         <translation>Минимальный объем</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="111"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="174"/>
         <source>Maximal volume</source>
         <translation>Максимальный объем</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="112"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="175"/>
         <source>Time constraint</source>
         <translation>Ограничение на время</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="113"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="176"/>
         <source>Reliability constraint</source>
         <translation>Ограничение на надежность</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="123"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="186"/>
         <source>Impossible</source>
         <translation>Невыполнимое</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="124"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="187"/>
         <source>Strict</source>
         <translation>Строгое</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="125"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="188"/>
         <source>Normal</source>
         <translation>Нормальное</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="126"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="189"/>
         <source>Nonexisting</source>
         <translation>Заведомо выполнимое</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="127"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="190"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="128"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="191"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="114"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="177"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="117"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="180"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="116"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="179"/>
         <source>15</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_RandomSystemDialog.py" line="118"/>
+        <location filename="Windows/ui_RandomSystemDialog.py" line="181"/>
         <source>5</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>Viewer</name>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="279"/>
+        <source>Viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="280"/>
+        <source>/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="291"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="282"/>
+        <source>Time:</source>
+        <translation type="unfinished">Время:</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="284"/>
+        <source>Reliability:</source>
+        <translation type="unfinished">Надежность:</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="286"/>
+        <source>Processors:</source>
+        <translation type="unfinished">Процессоров:</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="288"/>
+        <source>Time Limit:</source>
+        <translation type="unfinished">Директивное время:</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="290"/>
+        <source>Reliability Limit:</source>
+        <translation type="unfinished">Директивная надежность:</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="292"/>
+        <source>Schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="293"/>
+        <source>Window</source>
+        <translation type="unfinished">Окно</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="294"/>
+        <source>Colors...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="295"/>
+        <source>Step Forward</source>
+        <translation type="unfinished">Шаг вперед</translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_Viewer.py" line="296"/>
+        <source>Step Backward</source>
+        <translation type="unfinished">Шаг назад</translation>
     </message>
 </context>
 </TS>

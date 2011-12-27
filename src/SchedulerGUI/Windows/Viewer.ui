@@ -24,7 +24,14 @@
     <normaloff>:/pics/pics/chart.png</normaloff>:/pics/pics/chart.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:#494b70</string>
+   <string notr="true">QWidget, QMenuBar::item {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);
+}
+
+QLabel, QSlider {
+	background-color: transparent;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -413,6 +420,9 @@
          </item>
          <item>
           <widget class="QLabel" name="label_4">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
            <property name="text">
             <string>Time Limit:</string>
            </property>
@@ -478,11 +488,94 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSchedule">
+    <property name="title">
+     <string>Schedule</string>
+    </property>
+    <addaction name="actionStep_Forward"/>
+    <addaction name="actionStep_Backward"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionColors"/>
+   </widget>
+   <addaction name="menuSchedule"/>
+   <addaction name="menuWindow"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionColors">
+   <property name="text">
+    <string>Colors...</string>
+   </property>
+  </action>
+  <action name="actionStep_Forward">
+   <property name="text">
+    <string>Step Forward</string>
+   </property>
+  </action>
+  <action name="actionStep_Backward">
+   <property name="text">
+    <string>Step Backward</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionColors</sender>
+   <signal>triggered()</signal>
+   <receiver>Viewer</receiver>
+   <slot>Colors()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStep_Backward</sender>
+   <signal>triggered()</signal>
+   <receiver>Viewer</receiver>
+   <slot>StepBackward()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStep_Forward</sender>
+   <signal>triggered()</signal>
+   <receiver>Viewer</receiver>
+   <slot>StepForward()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>Colors()</slot>
+  <slot>StepForward()</slot>
+  <slot>StepBackward()</slot>
+ </slots>
 </ui>

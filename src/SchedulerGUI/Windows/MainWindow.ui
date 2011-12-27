@@ -24,7 +24,14 @@
     <normaloff>:/pics/pics/star.png</normaloff>:/pics/pics/star.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QWidget, QMenuBar::item {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);
+}
+
+QLabel, QSlider {
+	background-color: transparent;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -61,8 +68,6 @@
     </property>
     <addaction name="actionStart"/>
     <addaction name="actionTrace"/>
-    <addaction name="actionStep_Forward"/>
-    <addaction name="actionStep_Backward"/>
     <addaction name="actionReset"/>
     <addaction name="actionLoad_New_Method"/>
     <addaction name="actionSettings"/>
@@ -73,7 +78,6 @@
      <string>Window</string>
     </property>
     <addaction name="actionLanguage"/>
-    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -97,7 +101,6 @@
    <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>
@@ -184,28 +187,6 @@
     <string>F5</string>
    </property>
   </action>
-  <action name="actionStep_Forward">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Step Forward</string>
-   </property>
-   <property name="shortcut">
-    <string>PgDown</string>
-   </property>
-  </action>
-  <action name="actionStep_Backward">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Step Backward</string>
-   </property>
-   <property name="shortcut">
-    <string>PgUp</string>
-   </property>
-  </action>
   <action name="actionSettings">
    <property name="text">
     <string>Settings...</string>
@@ -230,11 +211,6 @@
   <action name="actionAbout_Scheduler">
    <property name="text">
     <string>About Scheduler</string>
-   </property>
-  </action>
-  <action name="actionPreferences">
-   <property name="text">
-    <string>Preferences...</string>
    </property>
   </action>
   <action name="actionReset">
@@ -437,22 +413,6 @@
     <hint type="destinationlabel">
      <x>328</x>
      <y>155</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionPreferences</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>Preferences()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>365</x>
-     <y>211</y>
     </hint>
    </hints>
   </connection>
