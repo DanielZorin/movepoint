@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Tue Dec 27 19:22:48 2011
+# Created: Tue Dec 27 20:09:46 2011
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -273,6 +273,10 @@ class Ui_Viewer(object):
         QtCore.QObject.connect(self.actionColors, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.Colors)
         QtCore.QObject.connect(self.actionStep_Backward, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.StepBackward)
         QtCore.QObject.connect(self.actionStep_Forward, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.StepForward)
+        QtCore.QObject.connect(self.stepback, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.StepBackward)
+        QtCore.QObject.connect(self.stepforth, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.StepForward)
+        QtCore.QObject.connect(self.replay, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.Replay)
+        QtCore.QObject.connect(self.rewind, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.Rewind)
         QtCore.QMetaObject.connectSlotsByName(Viewer)
 
     def retranslateUi(self, Viewer):
@@ -293,6 +297,8 @@ class Ui_Viewer(object):
         self.menuWindow.setTitle(QtGui.QApplication.translate("Viewer", "Window", None, QtGui.QApplication.UnicodeUTF8))
         self.actionColors.setText(QtGui.QApplication.translate("Viewer", "Colors...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStep_Forward.setText(QtGui.QApplication.translate("Viewer", "Step Forward", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStep_Forward.setShortcut(QtGui.QApplication.translate("Viewer", "PgDown", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStep_Backward.setText(QtGui.QApplication.translate("Viewer", "Step Backward", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStep_Backward.setShortcut(QtGui.QApplication.translate("Viewer", "PgUp", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc

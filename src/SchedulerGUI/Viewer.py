@@ -37,8 +37,7 @@ class Viewer(QMainWindow):
             return
         # TODO: check why the validator doesn't work sometimes
         n = int(s)
-        self.container.current = n - 1
-        self.loadSchedule()
+        self.ScrollTrace(n - self.method.trace.current)
 
     def Colors(self):
         self.preferences.exec_()
@@ -52,7 +51,35 @@ class Viewer(QMainWindow):
                                   self.preferences.lastopColor)  
         
     def StepForward(self):
-        return  
+        self.ScrollTrace(1)
 
     def StepBackward(self):
-        return 
+        self.ScrollTrace(-1)
+
+    def Replay(self):
+        self.ScrollTrace(self.method.trace.length())
+
+    def Rewind(self):
+        self.ScrollTrace(-self.method.trace.length())
+
+    def ScrollTrace(self, diff):
+        if diff == 0:
+            return
+        if diff > 0:
+            if self.method.trace.current + diff > self.method.trace.length():
+                diff = self.method.trace.length() - self.method.trace.current
+            for i in range(diff):
+                self.method.trace.current += 1
+                op = self.method.trace.getCurrent()
+                self.method.system.schedule.ApplyOperation(op[0])
+        if diff < 0:
+            if self.method.trace.current - diff < 0:
+                diff = -self.method.trace.current
+            for i in range(-diff):
+                op = self.method.trace.getCurrent()
+                self.method.system.schedule.ApplyOperation(op[0].Reverse())
+                print(diff, "minus")
+                self.method.trace.current -= 1
+        print("scrolling", diff, self.method.trace.current)
+        self.setData(self.method)
+        self.ui.lineEdit.setText(str(self.method.trace.current + 1))

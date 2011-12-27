@@ -65,7 +65,7 @@ class Trace:
 
     def addStep(self, op, params):
         self.ops.append((op, params))
-        self.current = self.length()
+        self.current = self.length() - 1
         
     def setBest(self, i):
         # TODO: check boundaries
@@ -77,6 +77,9 @@ class Trace:
 
     def getLast(self):
         return self.ops[len(self.ops) - 1]
+
+    def getCurrent(self):
+        return self.ops[self.current]
 
     def length(self):
         return len(self.ops)
