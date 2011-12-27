@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Thu Dec 22 17:34:22 2011
+# Created: Tue Dec 27 19:22:48 2011
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,14 @@ class Ui_MainWindow(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/star.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
-        MainWindow.setStyleSheet(_fromUtf8(""))
+        MainWindow.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
+"    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
+"}\n"
+"\n"
+"QLabel, QSlider {\n"
+"    background-color: transparent;\n"
+"}"))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setStyleSheet(_fromUtf8(""))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -48,9 +55,6 @@ class Ui_MainWindow(object):
         self.menuProject = QtGui.QMenu(self.menubar)
         self.menuProject.setObjectName(_fromUtf8("menuProject"))
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QtGui.QToolBar(MainWindow)
         self.toolBar.setObjectName(_fromUtf8("toolBar"))
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
@@ -78,12 +82,6 @@ class Ui_MainWindow(object):
         self.actionStart = QtGui.QAction(MainWindow)
         self.actionStart.setEnabled(False)
         self.actionStart.setObjectName(_fromUtf8("actionStart"))
-        self.actionStep_Forward = QtGui.QAction(MainWindow)
-        self.actionStep_Forward.setEnabled(False)
-        self.actionStep_Forward.setObjectName(_fromUtf8("actionStep_Forward"))
-        self.actionStep_Backward = QtGui.QAction(MainWindow)
-        self.actionStep_Backward.setEnabled(False)
-        self.actionStep_Backward.setObjectName(_fromUtf8("actionStep_Backward"))
         self.actionSettings = QtGui.QAction(MainWindow)
         self.actionSettings.setObjectName(_fromUtf8("actionSettings"))
         self.actionTrace = QtGui.QAction(MainWindow)
@@ -93,8 +91,6 @@ class Ui_MainWindow(object):
         self.actionContents.setObjectName(_fromUtf8("actionContents"))
         self.actionAbout_Scheduler = QtGui.QAction(MainWindow)
         self.actionAbout_Scheduler.setObjectName(_fromUtf8("actionAbout_Scheduler"))
-        self.actionPreferences = QtGui.QAction(MainWindow)
-        self.actionPreferences.setObjectName(_fromUtf8("actionPreferences"))
         self.actionReset = QtGui.QAction(MainWindow)
         self.actionReset.setEnabled(False)
         self.actionReset.setObjectName(_fromUtf8("actionReset"))
@@ -123,14 +119,11 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionExit)
         self.menuMethod.addAction(self.actionStart)
         self.menuMethod.addAction(self.actionTrace)
-        self.menuMethod.addAction(self.actionStep_Forward)
-        self.menuMethod.addAction(self.actionStep_Backward)
         self.menuMethod.addAction(self.actionReset)
         self.menuMethod.addAction(self.actionLoad_New_Method)
         self.menuMethod.addAction(self.actionSettings)
         self.menuMethod.addAction(self.actionLaunch_Viewer)
         self.menuWindow.addAction(self.actionLanguage)
-        self.menuWindow.addAction(self.actionPreferences)
         self.menuHelp.addAction(self.actionContents)
         self.menuHelp.addAction(self.actionAbout)
         self.menuProject.addAction(self.actionChange_name)
@@ -157,7 +150,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionStart, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Run)
         QtCore.QObject.connect(self.actionTrace, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Trace)
         QtCore.QObject.connect(self.actionReset, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ResetSchedule)
-        QtCore.QObject.connect(self.actionPreferences, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Preferences)
         QtCore.QObject.connect(self.actionGenerate_Random_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.GenerateRandomSystem)
         QtCore.QObject.connect(self.actionLoad_New_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadSystem)
         QtCore.QObject.connect(self.actionLoad_New_Method, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadMethod)
@@ -189,16 +181,11 @@ class Ui_MainWindow(object):
         self.actionSave_Project_As.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Shift+S", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStart.setText(QtGui.QApplication.translate("MainWindow", "Run", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStart.setShortcut(QtGui.QApplication.translate("MainWindow", "F5", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionStep_Forward.setText(QtGui.QApplication.translate("MainWindow", "Step Forward", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionStep_Forward.setShortcut(QtGui.QApplication.translate("MainWindow", "PgDown", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionStep_Backward.setText(QtGui.QApplication.translate("MainWindow", "Step Backward", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionStep_Backward.setShortcut(QtGui.QApplication.translate("MainWindow", "PgUp", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionTrace.setText(QtGui.QApplication.translate("MainWindow", "Trace", None, QtGui.QApplication.UnicodeUTF8))
         self.actionTrace.setShortcut(QtGui.QApplication.translate("MainWindow", "F6", None, QtGui.QApplication.UnicodeUTF8))
         self.actionContents.setText(QtGui.QApplication.translate("MainWindow", "Contents...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout_Scheduler.setText(QtGui.QApplication.translate("MainWindow", "About Scheduler", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionPreferences.setText(QtGui.QApplication.translate("MainWindow", "Preferences...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReset.setText(QtGui.QApplication.translate("MainWindow", "Reset", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReset.setShortcut(QtGui.QApplication.translate("MainWindow", "F10", None, QtGui.QApplication.UnicodeUTF8))
         self.actionChange_name.setText(QtGui.QApplication.translate("MainWindow", "Change Name...", None, QtGui.QApplication.UnicodeUTF8))

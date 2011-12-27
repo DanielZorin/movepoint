@@ -2,13 +2,8 @@ from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, 
 from PyQt4.QtCore import QTranslator
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
-from SchedulerGUI.NewProjectDialog import NewProjectDialog
 from SchedulerGUI.PreferencesDialog import PreferencesDialog
-from SchedulerGUI.SettingsDialog import SettingsDialog
-from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
 from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
-from SchedulerGUI.ScheduleContainer import ScheduleContainer
-from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
 from SchedulerGUI.Windows.ui_Viewer import Ui_Viewer
 from Schedules.Exceptions import SchedulerException
 
@@ -20,6 +15,7 @@ class Viewer(QMainWindow):
         self.ui.setupUi(self)
         self.visualizer = ScheduleVisualizer(self.ui.visualizerArea)
         self.ui.visualizerArea.setWidget(self.visualizer)
+        self.preferences = PreferencesDialog()
 
     def setData(self, m):
         self.method = m
@@ -43,3 +39,20 @@ class Viewer(QMainWindow):
         n = int(s)
         self.container.current = n - 1
         self.loadSchedule()
+
+    def Colors(self):
+        self.preferences.exec_()
+        if self.preferences.result() == QDialog.Accepted:
+            self.UpdatePreferences()
+            
+    def UpdatePreferences(self):
+        self.visualizer.SetColors(self.preferences.axisColor, 
+                                  self.preferences.taskColor,
+                                  self.preferences.deliveriesColor,
+                                  self.preferences.lastopColor)  
+        
+    def StepForward(self):
+        return  
+
+    def StepBackward(self):
+        return 

@@ -25,7 +25,6 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.viewer = Viewer()
-        self.ui.toolBar.addAction(self.ui.actionAbout)
         self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
         self.title = self.tr("Scheduler GUI")
         self.loadTranslations()
@@ -42,15 +41,14 @@ class MainWindow(QMainWindow):
     
     def setPreferences(self):
         # TODO: it's necessary to think how the default preferences are set.
-        self.preferences = PreferencesDialog()
         if "scheduler.ini" in os.listdir("."):
             try:
                 f = open("scheduler.ini", "rb")
                 settings = pickle.load(f)
-                self.preferences.Deserialize(settings["preferences"])
+                self.viewer.preferences.Deserialize(settings["preferences"])
                 self.projectFile = settings["file"]
                 self.OpenProjectFromFile(self.projectFile)
-                self.UpdatePreferences()
+                self.viewer.UpdatePreferences()
                 f.close()
                 # Temporary, until the language is saved in .ini file
                 self.currentLanguage = "English"  
@@ -60,7 +58,7 @@ class MainWindow(QMainWindow):
             self.loadDefaultPreferences()
             
     def loadDefaultPreferences(self):
-        self.preferences.setColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))
+        self.viewer.preferences.setColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))
         self.viewer.visualizer.SetColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))      
         self.project = Project() 
         self.currentLanguage = "English"
@@ -127,8 +125,6 @@ class MainWindow(QMainWindow):
     def EnableRunning(self):
         self.ui.actionStart.setEnabled(True)
         self.ui.actionTrace.setEnabled(True)
-        self.ui.actionStep_Backward.setEnabled(True)
-        self.ui.actionStep_Forward.setEnabled(True)
         self.ui.actionReset.setEnabled(True)
         self.ui.actionLaunch_Viewer.setEnabled(True)
     
@@ -225,20 +221,10 @@ class MainWindow(QMainWindow):
         translator.load(lang)
         qApp.installTranslator(translator)
         self.ui.retranslateUi(self)   
-        self.preferences.ui.retranslateUi(self.preferences) 
+        self.viewer.preferences.ui.retranslateUi(self.viewer.preferences)
+        self.viewer.ui.retranslateUi(self.viewer) 
         self.loadSchedule()    
-        self.setWindowTitle(self.project.name + " - " + self.tr(self.title)) 
-
-    def Preferences(self):
-        self.preferences.exec_()
-        if self.preferences.result() == QDialog.Accepted:
-            self.UpdatePreferences()
-            
-    def UpdatePreferences(self):
-        self.visualizer.SetColors(self.preferences.axisColor, 
-                                  self.preferences.taskColor,
-                                  self.preferences.deliveriesColor,
-                                  self.preferences.lastopColor)        
+        self.setWindowTitle(self.project.name + " - " + self.tr(self.title))     
     
     def About(self):
         #Calls about box

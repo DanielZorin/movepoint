@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Thu Dec 22 17:34:24 2011
+# Created: Tue Dec 27 19:22:48 2011
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,14 @@ class Ui_Viewer(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/chart.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Viewer.setWindowIcon(icon)
-        Viewer.setStyleSheet(_fromUtf8("background-color:#494b70"))
+        Viewer.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
+"    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
+"}\n"
+"\n"
+"QLabel, QSlider {\n"
+"    background-color: transparent;\n"
+"}"))
         self.centralwidget = QtGui.QWidget(Viewer)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -220,6 +227,7 @@ class Ui_Viewer(object):
         self.labelproc.setObjectName(_fromUtf8("labelproc"))
         self.verticalLayout_3.addWidget(self.labelproc)
         self.label_4 = QtGui.QLabel(self.info)
+        self.label_4.setStyleSheet(_fromUtf8(""))
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.verticalLayout_3.addWidget(self.label_4)
         self.tdir = QtGui.QLabel(self.info)
@@ -244,12 +252,27 @@ class Ui_Viewer(object):
         self.menubar = QtGui.QMenuBar(Viewer)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 584, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
+        self.menuSchedule = QtGui.QMenu(self.menubar)
+        self.menuSchedule.setObjectName(_fromUtf8("menuSchedule"))
+        self.menuWindow = QtGui.QMenu(self.menubar)
+        self.menuWindow.setObjectName(_fromUtf8("menuWindow"))
         Viewer.setMenuBar(self.menubar)
-        self.statusbar = QtGui.QStatusBar(Viewer)
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        Viewer.setStatusBar(self.statusbar)
+        self.actionColors = QtGui.QAction(Viewer)
+        self.actionColors.setObjectName(_fromUtf8("actionColors"))
+        self.actionStep_Forward = QtGui.QAction(Viewer)
+        self.actionStep_Forward.setObjectName(_fromUtf8("actionStep_Forward"))
+        self.actionStep_Backward = QtGui.QAction(Viewer)
+        self.actionStep_Backward.setObjectName(_fromUtf8("actionStep_Backward"))
+        self.menuSchedule.addAction(self.actionStep_Forward)
+        self.menuSchedule.addAction(self.actionStep_Backward)
+        self.menuWindow.addAction(self.actionColors)
+        self.menubar.addAction(self.menuSchedule.menuAction())
+        self.menubar.addAction(self.menuWindow.menuAction())
 
         self.retranslateUi(Viewer)
+        QtCore.QObject.connect(self.actionColors, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.Colors)
+        QtCore.QObject.connect(self.actionStep_Backward, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.StepBackward)
+        QtCore.QObject.connect(self.actionStep_Forward, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.StepForward)
         QtCore.QMetaObject.connectSlotsByName(Viewer)
 
     def retranslateUi(self, Viewer):
@@ -266,5 +289,10 @@ class Ui_Viewer(object):
         self.tdir.setText(QtGui.QApplication.translate("Viewer", "0", None, QtGui.QApplication.UnicodeUTF8))
         self.label_6.setText(QtGui.QApplication.translate("Viewer", "Reliability Limit:", None, QtGui.QApplication.UnicodeUTF8))
         self.rdir.setText(QtGui.QApplication.translate("Viewer", "0", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuSchedule.setTitle(QtGui.QApplication.translate("Viewer", "Schedule", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuWindow.setTitle(QtGui.QApplication.translate("Viewer", "Window", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionColors.setText(QtGui.QApplication.translate("Viewer", "Colors...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStep_Forward.setText(QtGui.QApplication.translate("Viewer", "Step Forward", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStep_Backward.setText(QtGui.QApplication.translate("Viewer", "Step Backward", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc
