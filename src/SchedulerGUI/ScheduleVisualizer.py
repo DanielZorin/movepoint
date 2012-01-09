@@ -6,7 +6,7 @@ Created on 27.12.2010
 import math
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QPoint, QPointF
-from PyQt4.QtGui import QWidget, QPainter, QPainterPath
+from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen
 
 class ScheduleVisualizer(QWidget):
 
@@ -47,7 +47,7 @@ class ScheduleVisualizer(QWidget):
                 procX[self.schedule.processors[i].number] = 20 + i * 20
             
             # Draw tasks
-            paint.setPen(self.deliveriesColor)  
+            paint.setPen(self.taskColor)  
             for m in self.schedule.vertices.keys():
                 for t in self.schedule.vertices[m]:
                     start = self.schedule.executionTimes[t][0]
@@ -58,7 +58,8 @@ class ScheduleVisualizer(QWidget):
                     taskRects[(t.v.number, t.k.number)] = task
                     queues[(t.m.number, t.n)] = task
                 
-            # Draw deliveries    
+            # Draw deliveries   
+            paint.setPen(QPen(self.deliveriesColor, 2)) 
             for d in self.schedule.deliveryTimes:
                 self.drawArrow(paint, (50 + d[2] * 10)*self.scale, procX[d[0].number]*self.scale, (50 + d[3] * 10)*self.scale, procX[d[1].number]*self.scale)
             
@@ -111,11 +112,13 @@ class ScheduleVisualizer(QWidget):
                 paint.rotate(-alpha)
             else:
                 paint.rotate(alpha-180)
-        p1 = QPointF(math.sqrt((x2-x1)**2 + (y2-y1)**2) , 0)
+        endcoord = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+        p1 = QPointF(endcoord , 0)
         paint.drawLine(0, 0, p1.x(), 0)
         
-        p2 = QPointF(math.sqrt((x2-x1)**2 + (y2-y1)**2) - 5, 5)
-        p3 = QPointF(math.sqrt((x2-x1)**2 + (y2-y1)**2) - 5, -5)
+        coord = math.sqrt(12**2 - 6**2)
+        p2 = QPointF(endcoord - coord, 6)
+        p3 = QPointF(endcoord - coord, -6)
         path = QPainterPath()
         path.moveTo(p1)
         path.lineTo(p2)
