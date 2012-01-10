@@ -348,14 +348,14 @@ class SimulatedAnnealing(object):
             if self.trace.getLast()[1]["time"]  < self.system.tdir:
                 # Cut from a certain processor
                 if random.random() < self.cut_processor and self.trace.getLast()[1]["processors"] > 1:
-                    mini = len(s.vertices)
+                    mini = len(s.program.vertices)
                     proc = None
                     for m in s.processors:
                         f = len(s.vertices[m.number])
                         if f < mini:
                             mini = f
                             proc = m
-                    ch = s.vertices[m.number]
+                    ch = s.vertices[proc.number]
                     if self.completeCutting == False:
                         s1 = ch[random.randint(0, len(ch)-1)]
                         while True:
@@ -379,9 +379,9 @@ class SimulatedAnnealing(object):
                                     target_proc = s.processors[num]
                                     target_pos = random.randint(1, len(s.vertices[s.processors[num]])+1)                                       
                                     i += 1
-                                    if s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
-                                        s.MoveVertex(s1, src_pos, target_proc, target_pos)
-                                        self.lastOperation.Add(MoveVertex(s1, s1.m, src_pos, target_proc, target_pos))
+                                    if s.TryMoveVertex(s1, 0, target_proc, target_pos):
+                                        s.MoveVertex(s1, 0, target_proc, target_pos)
+                                        self.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                                         flag = False
                                     if i > 100:
                                         flag = False
@@ -524,6 +524,7 @@ class SimulatedAnnealing(object):
         def accept():
             self.write("Accept")
             self.lastOperation.result = True
+            print(self.lastOperation.Export())
             self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
             best = self.trace.getBest()[1]
             if new_time <= self.system.tdir and new_rel >= self.system.rdir:

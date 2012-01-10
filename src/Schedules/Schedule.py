@@ -104,7 +104,19 @@ class Schedule(object):
     # Returns a processor where it's possible to assign a new task
     # Here it just creates a new processor from the list of available processors
     # Reimplement this if you need to make the number of processors limited
-    def _getProcessor(self):
+    def _getProcessor(self, proc=None):
+        if not proc is None:
+            # TODO: check errors
+            print("NOT FOUND TEST ", proc)
+            ind = self.emptyprocessors.index(proc)
+            print("HAHA ", ind)
+            m = self.emptyprocessors[ind]
+            del self.emptyprocessors[ind]
+            self.processors.append(m)
+            for p in self.processors:
+                print (p)
+            return m
+
         if len(self.emptyprocessors) > 0:
             p = self.emptyprocessors[0]
             self.emptyprocessors = self.emptyprocessors[1:]
@@ -507,6 +519,10 @@ class Schedule(object):
         elif isinstance(op, DeleteVersion):
             return self.AddVersion(op.task)
         elif isinstance(op, MoveVertex):
+            try:
+                print("APPLYING ", op.Export())
+            except:
+                pass
             return self.MoveVertex(op.task, op.pos1[1], op.pos2[0], op.pos2[1])
         elif isinstance(op, MultiOperation):
             for o in op.ops:
@@ -590,7 +606,8 @@ class Schedule(object):
         self._succCache = {}
         # m = None -> move to a new processor
         if m2 == None or not m2 in self.processors:
-            p = self._getProcessor()
+            print("NOT FOUND")
+            p = self._getProcessor(m2)
             self.vertices[p.number] = [s]
             del self.vertices[s.m.number][n1]
             self._delEmptyProc(s.m)

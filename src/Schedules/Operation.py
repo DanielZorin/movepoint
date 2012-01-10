@@ -1,5 +1,6 @@
 class VoidOperation:
-    pass
+    def Export(self):
+        return ""
 
 class AddProcessor:
     def __init__(self, proc):
@@ -8,12 +9,18 @@ class AddProcessor:
     def Reverse(self):
         return DeleteProcessor(self.processor)
 
+    def Export(self):
+        return "AddProcessor " + str(self.processor.number) + "\n"
+
 class DeleteProcessor:
     def __init__(self, proc):
         self.processor = proc
 
     def Reverse(self):
         return AddProcessor(self.processor)
+
+    def Export(self):
+        return "DeleteProcessor " + str(self.processor.number) + "\n"
 
 class AddVersion:
     def __init__(self, task, proc1, pos1, proc2, pos2):
@@ -24,6 +31,9 @@ class AddVersion:
     def Reverse(self):
         return DeleteVersion(self.task, self.pos1[0], self.pos1[1], self.pos2[0], self.pos2[1])
 
+    def Export(self):
+        return "AddVersion " + str(self.task.v.number) + "\n"
+
 class DeleteVersion:
     def __init__(self, task, proc1, pos1, proc2, pos2):
         self.task = task
@@ -32,6 +42,9 @@ class DeleteVersion:
 
     def Reverse(self):
         return AddVersion(self.task, self.pos1[0], self.pos1[1], self.pos2[0], self.pos2[1])
+
+    def Export(self):
+        return "DeleteVersion " + str(self.task.v.number) + "\n"
 
 class MoveVertex:
     # TODO: flag indicating processor deletion
@@ -44,7 +57,11 @@ class MoveVertex:
         return MoveVertex(self.task, self.pos2[0], self.pos2[1], self.pos1[0], self.pos1[1])
     
     def __str__(self):
-        return str(self.task) + str(self.pos1[0]) + str(self.pos1[1]) + str(self.pos2[0]) + str(self.pos2[1])
+        return str(self.task.v.number) + ": " + str(self.pos1[0].number) + " " + str(self.pos1[1]) \
+            + " --> " + str(self.pos2[0].number) + " " + str(self.pos2[1])
+
+    def Export(self):
+        return "MoveVertex " + str(self) + "\n"
     
 class MultiOperation:
     def __init__(self):
@@ -52,10 +69,13 @@ class MultiOperation:
     def Add(self, op):
         self.ops.append(op)
     def Reverse(self):
-        res = []
+        res = MultiOperation()
         for op in self.ops:
-            res = [op.Reverse()] + res
+            res.Add(op.Reverse())
         return res
+
+    def Export(self):
+        return "MultiOperation {\n" + ''.join([op.Export() for op in self.ops]) + "}\n"
 
 class Trace:
     def __init__(self):
@@ -86,3 +106,9 @@ class Trace:
 
     def clear(self):
         self.ops = []
+
+    def Export(self):
+        res = ""
+        for op in self.ops:
+            res += op[0].Export()
+        return res
