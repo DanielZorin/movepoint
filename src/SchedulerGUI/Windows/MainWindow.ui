@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>732</width>
-    <height>463</height>
+    <width>308</width>
+    <height>116</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -37,14 +37,29 @@ QLabel, QSlider {
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2"/>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Launch search</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progress">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>732</width>
+     <width>308</width>
      <height>21</height>
     </rect>
    </property>
@@ -94,10 +109,19 @@ QLabel, QSlider {
     <addaction name="actionLoad_New_System"/>
     <addaction name="actionGenerate_Random_System"/>
    </widget>
+   <widget class="QMenu" name="menuExport">
+    <property name="title">
+     <string>Export</string>
+    </property>
+    <addaction name="actionTrace"/>
+    <addaction name="actionResult"/>
+    <addaction name="actionGenerate_Code"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuProject"/>
    <addaction name="menuMethod"/>
    <addaction name="menuWindow"/>
+   <addaction name="menuExport"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -253,6 +277,21 @@ QLabel, QSlider {
    </property>
    <property name="text">
     <string>Launch Viewer</string>
+   </property>
+  </action>
+  <action name="actionTrace">
+   <property name="text">
+    <string>Trace...</string>
+   </property>
+  </action>
+  <action name="actionResult">
+   <property name="text">
+    <string>Result...</string>
+   </property>
+  </action>
+  <action name="actionGenerate_Code">
+   <property name="text">
+    <string>Generate Code...</string>
    </property>
   </action>
  </widget>
@@ -516,6 +555,22 @@ QLabel, QSlider {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionTrace</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ExportTrace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>57</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>57</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>Exit()</slot>
@@ -541,5 +596,6 @@ QLabel, QSlider {
   <slot>ChangeLanguage()</slot>
   <slot>ChangeLimits()</slot>
   <slot>LaunchViewer()</slot>
+  <slot>ExportTrace()</slot>
  </slots>
 </ui>

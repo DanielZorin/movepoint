@@ -1,5 +1,6 @@
+from PyQt4 import QtCore
 from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, qApp
-from PyQt4.QtCore import QTranslator
+from PyQt4.QtCore import QTranslator, SIGNAL, pyqtSignal
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
 from SchedulerGUI.NewProjectDialog import NewProjectDialog
@@ -29,6 +30,7 @@ class MainWindow(QMainWindow):
         self.title = self.tr("Scheduler GUI")
         self.loadTranslations()
         self.setPreferences()
+        QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
     
     def __del__(self):
         ''''f = open("scheduler.ini", "wb")
@@ -132,7 +134,12 @@ class MainWindow(QMainWindow):
 
     def Run(self):
         self.project.method.iteration = 0
-        self.project.method.Start()
+        while self.project.method.iteration < self.project.method.numberOfIterations:
+            self.project.method.Step()
+            print(self.project.method.iteration)
+            self.project.method.iteration += 1
+            #self.ui.progress.setValue(self.project.method.iteration)
+            self.emit(SIGNAL("step"), self.project.method.iteration)
         self.loadSchedule()
         
     def ResetSchedule(self):
@@ -216,6 +223,13 @@ class MainWindow(QMainWindow):
         self.loadSchedule()    
         self.setWindowTitle(self.project.name + " - " + self.tr(self.title))     
     
+    def ExportTrace(self):
+        tracefile = QFileDialog.getSaveFileName(directory=self.project.name + ".trace")
+        if tracefile != '':
+            f = open(tracefile, "w")
+            f.write(self.project.method.trace.Export())
+            f.close()
+
     def About(self):
         #Calls about box
         QMessageBox.about(self, "About this program", "Scheduler GUI.\nAuthor: Daniel A. Zorin\njuan@lvk.cs.msu.su")
