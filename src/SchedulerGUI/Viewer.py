@@ -32,6 +32,11 @@ class Viewer(QMainWindow):
         else:
             self.ui.stepback.setEnabled(True)
 
+        if self.method.trace.current == self.method.trace.length() - 1:
+            self.ui.stepforth.setEnabled(False)
+        else:
+            self.ui.stepforth.setEnabled(True)
+
     def SelectSchedule(self, s):
         if s == '':
             return

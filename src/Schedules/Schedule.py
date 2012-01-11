@@ -525,6 +525,10 @@ class Schedule(object):
                 pass
             return self.MoveVertex(op.task, op.pos1[1], op.pos2[0], op.pos2[1])
         elif isinstance(op, MultiOperation):
+            try:
+                print("APPLYING ", op.Export())
+            except:
+                pass
             for o in op.ops:
                 self.ApplyOperation(o)
     

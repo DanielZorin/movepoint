@@ -257,7 +257,7 @@ class SimulatedAnnealing(object):
             
     def _chooseOperation(self):
         if self.trace.getLast()[1]["reliability"]  < self.system.rdir:
-            if self.curTime > self.system.tdir:
+            if self.trace.getLast()[1]["time"] > self.system.tdir:
                 vector = self.opt_reliability["time-exceed"]
             else:
                 vector = self.opt_reliability["time-normal"]
@@ -377,7 +377,7 @@ class SimulatedAnnealing(object):
                                 num = random.randint(0, len(s.processors)-1)
                                 if s.processors[num] != proc:
                                     target_proc = s.processors[num]
-                                    target_pos = random.randint(1, len(s.vertices[s.processors[num]])+1)                                       
+                                    target_pos = random.randint(0, len(s.vertices[s.processors[num]]))                                       
                                     i += 1
                                     if s.TryMoveVertex(s1, 0, target_proc, target_pos):
                                         s.MoveVertex(s1, 0, target_proc, target_pos)
