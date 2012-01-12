@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="pics">
+    <file>pics/control_play_blue.png</file>
+    <file>pics/play.png</file>
+    <file>pics/computer.png</file>
+    <file>pics/page_edit.png</file>
     <file>pics/fast_forward.png</file>
     <file>pics/rewind.png</file>
     <file>pics/skip_backward.png</file>
