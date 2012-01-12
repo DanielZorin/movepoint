@@ -44,18 +44,18 @@ class MainWindow(QMainWindow):
     def setPreferences(self):
         # TODO: it's necessary to think how the default preferences are set.
         if "scheduler.ini" in os.listdir("."):
-            try:
-                f = open("scheduler.ini", "rb")
-                settings = pickle.load(f)
-                self.viewer.preferences.Deserialize(settings["preferences"])
-                self.projectFile = settings["file"]
-                self.OpenProjectFromFile(self.projectFile)
-                self.viewer.UpdatePreferences()
-                f.close()
-                # Temporary, until the language is saved in .ini file
-                self.currentLanguage = "English"  
-            except:
-                self.loadDefaultPreferences()
+            #try:
+            f = open("scheduler.ini", "rb")
+            settings = pickle.load(f)
+            self.viewer.preferences.Deserialize(settings["preferences"])
+            self.projectFile = settings["file"]
+            self.OpenProjectFromFile(self.projectFile)
+            self.viewer.UpdatePreferences()
+            f.close()
+            # Temporary, until the language is saved in .ini file
+            self.currentLanguage = "English"  
+            #except:
+            #    self.loadDefaultPreferences()
         else:
             self.loadDefaultPreferences()
             
@@ -90,8 +90,7 @@ class MainWindow(QMainWindow):
             self.setWindowTitle(self.project.name + " - " + self.title) 
             self.EnableRunning()
             self.loadSchedule()
-            t, r = self.project.GetLimits()
-            self.setLimits(t, r)
+            self.ui.projectname.setText(self.project.name)
     
     def OpenProject(self):
         name = QFileDialog.getOpenFileName(filter=self.projFilter)
@@ -110,8 +109,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(self.project.name + " - " + self.title) 
         self.EnableRunning()
         self.loadSchedule()
-        t, r = self.project.GetLimits()
-        self.setLimits(t, r)
+        self.ui.projectname.setText(self.project.name)
     
     def SaveProject(self):
         if self.projectFile == None:
@@ -238,17 +236,18 @@ class MainWindow(QMainWindow):
         #Quits program
         sys.exit(0)
     
-    def setLimits(self, t, r):
-        return
-        self.ui.tdir.setText(str(t))
-        self.ui.rdir.setText('{:f}'.format(r)[:10])
-    
     def loadSchedule(self): 
         self.viewer.setData(self.project.method)  
+        self.ui.vertices.setText(str(len(self.project.system.schedule.program.vertices)))
+        self.ui.edges.setText(str(len(self.project.system.schedule.program.edges)))
+        self.ui.tracelen.setText(str(self.project.method.trace.length()))
+        t, r = self.project.GetLimits()
+        self.ui.tdir.setText(str(t))
+        self.ui.rdir.setText('{:f}'.format(r)[:10])
         return
 
     def showTotals(self):
         s = self.container.GetCurrentStats()
         self.ui.labeltime.setText(str(s[0]))
-        self.ui.labelrel.setText('{:f}'.format(s[1])[:10])
+        self.ui.labelrel.setText('{:f}'.format(s[1])[:5])
         self.ui.labelproc.setText(str(s[2]))
