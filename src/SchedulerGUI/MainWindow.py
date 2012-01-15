@@ -1,5 +1,5 @@
 from PyQt4 import QtCore
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, qApp
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, QDoubleValidator, QLineEdit, qApp
 from PyQt4.QtCore import QTranslator, SIGNAL, pyqtSignal
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
@@ -169,12 +169,68 @@ class MainWindow(QMainWindow):
                 QMessageBox.critical(self, "An error occured", e.message)
                 return
     
+    def EditName(self):
+        self.lineedit = QLineEdit(self.ui.projectname.parentWidget())
+        self.lineedit.setGeometry(self.ui.projectname.geometry())
+        self.lineedit.setText(self.ui.projectname.text())
+        self.lineedit.setFocus()
+        self.lineedit.show()
+        self.ui.projectname.hide()
+        # TODO: what's wrong?
+        #self.ui.editname.hide()
+        QtCore.QObject.connect(self.lineedit, SIGNAL("editingFinished()"), self.ChangeName)
+
     def ChangeName(self):
-        s = QInputDialog.getText(self, "Change Project Name", "Enter the new project name", text=self.project.name)
-        if s[1] == True:           
-            self.project.ChangeName(s[0])
-            self.setWindowTitle(self.project.name + " - " + self.title) 
+        s = self.lineedit.text()
+        self.ui.projectname.setText(s)
+        self.ui.projectname.show()
+        #self.ui.editname.show()
+        self.lineedit.hide() 
+        self.project.ChangeName(s)
+        self.setWindowTitle(self.project.name + " - " + self.title) 
+
+    def EditTdir(self):
+        self.tlineedit = QLineEdit(self.ui.tdir.parentWidget())
+        self.tlineedit.setGeometry(self.ui.tdir.geometry())
+        self.tlineedit.setText(self.ui.tdir.text())
+        val = QIntValidator(self)
+        self.tlineedit.setValidator(val)
+        self.tlineedit.setFocus()
+        self.tlineedit.show()
+        self.ui.tdir.hide()
+        self.ui.edittime.hide()
+        QtCore.QObject.connect(self.tlineedit, SIGNAL("editingFinished()"), self.ChangeTdir)
     
+    def ChangeTdir(self):
+        t = self.tlineedit.text()
+        self.ui.tdir.setText(t)
+        self.ui.tdir.show()
+        self.ui.edittime.show()
+        self.tlineedit.hide()
+        t = int(t)
+        self.project.SetTdir(t)
+
+    def EditRdir(self):
+        self.rlineedit = QLineEdit(self.ui.rdir.parentWidget())
+        self.rlineedit.setGeometry(self.ui.rdir.geometry())
+        self.rlineedit.setText(self.ui.rdir.text())
+        val = QDoubleValidator(self)
+        self.rlineedit.setValidator(val)
+        self.rlineedit.setFocus()
+        self.rlineedit.show()
+        self.ui.rdir.hide()
+        self.ui.editrel.hide()
+        QtCore.QObject.connect(self.rlineedit, SIGNAL("editingFinished()"), self.ChangeRdir)
+
+    def ChangeRdir(self):
+        r = self.rlineedit.text()
+        self.ui.rdir.setText(r)
+        self.ui.rdir.show()
+        self.ui.editrel.show()
+        self.rlineedit.hide()
+        r = float(r)
+        self.project.SetRdir(r)
+
     def ChangeLimits(self):
         t, r = self.project.GetLimits()
         data = {"Time":t, "Reliability": r}

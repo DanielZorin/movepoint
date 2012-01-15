@@ -858,6 +858,54 @@ QLabel, QSlider {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>editname</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>EditName()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>122</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>153</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>edittime</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>EditTdir()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>124</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>153</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editrel</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>EditRdir()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>124</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>153</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>Exit()</slot>
@@ -884,5 +932,8 @@ QLabel, QSlider {
   <slot>ChangeLimits()</slot>
   <slot>LaunchViewer()</slot>
   <slot>ExportTrace()</slot>
+  <slot>EditName()</slot>
+  <slot>EditTdir()</slot>
+  <slot>EditRdir()</slot>
  </slots>
 </ui>

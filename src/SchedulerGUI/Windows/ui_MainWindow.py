@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Thu Jan 12 21:09:15 2012
+# Created: Sun Jan 15 15:38:07 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -278,6 +278,9 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionLaunch_Viewer, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LaunchViewer)
         QtCore.QObject.connect(self.actionTrace, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportTrace)
         QtCore.QObject.connect(self.runbutton, QtCore.SIGNAL(_fromUtf8("clicked()")), self.actionStart.trigger)
+        QtCore.QObject.connect(self.editname, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditName)
+        QtCore.QObject.connect(self.edittime, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditTdir)
+        QtCore.QObject.connect(self.editrel, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditRdir)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

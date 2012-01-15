@@ -72,8 +72,11 @@ class Project(object):
     def GetLimits(self):
         return self.system.tdir, self.system.rdir
     
-    def SetLimits(self, t, r):
+    def SetTdir(self, t):
         self.system.tdir = t
+        self.method.system = self.system
+
+    def SetRdir(self, r):
         self.system.rdir = r
         self.method.system = self.system
     
