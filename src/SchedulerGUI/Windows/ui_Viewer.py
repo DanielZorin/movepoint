@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Thu Jan 12 21:09:15 2012
+# Created: Sun Jan 15 15:38:08 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
