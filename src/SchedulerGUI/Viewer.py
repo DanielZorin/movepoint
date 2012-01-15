@@ -26,6 +26,8 @@ class Viewer(QMainWindow):
         self.ui.lineEdit.setText(str(self.method.trace.length()))
         self.validator = QIntValidator(1, self.method.trace.length(), self)
         self.ui.lineEdit.setValidator(self.validator)
+        op = self.method.trace.getCurrent()
+        self.showTotals(op[1])
             
         if self.method.trace.current == 0:
             self.ui.stepback.setEnabled(False)
@@ -88,3 +90,21 @@ class Viewer(QMainWindow):
         print("scrolling", diff, self.method.trace.current)
         self.setData(self.method)
         self.ui.lineEdit.setText(str(self.method.trace.current + 1))
+        op = self.method.trace.getCurrent()
+        self.showTotals(op[1])
+
+    def showTotals(self, s):
+        self.ui.labeltime.setText(str(s["time"]))
+        self.ui.labelrel.setText('{:f}'.format(s["reliability"])[:5])
+        self.ui.labelproc.setText(str(s["processors"]))
+
+    def Scale(self, v):
+        newscale = 1.5
+        v = float(v) / 50.0
+        if v < 0:
+            v = v / 2.0
+            v += 1.0
+        else:
+            v *= 3.0
+            v += 1.0
+        self.visualizer.SetScale(1.5 * v)

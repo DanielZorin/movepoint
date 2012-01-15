@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sun Jan 15 15:38:07 2012
+# Created: Sun Jan 15 17:41:36 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -79,7 +79,7 @@ class Ui_MainWindow(object):
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.gridLayout.addWidget(self.label_7, 2, 0, 1, 1)
         self.tdir = QtGui.QLabel(self.groupBox)
-        self.tdir.setMinimumSize(QtCore.QSize(20, 0))
+        self.tdir.setMinimumSize(QtCore.QSize(24, 24))
         self.tdir.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.tdir.setObjectName(_fromUtf8("tdir"))
         self.gridLayout.addWidget(self.tdir, 2, 1, 1, 1)
@@ -87,6 +87,7 @@ class Ui_MainWindow(object):
         self.label_9.setObjectName(_fromUtf8("label_9"))
         self.gridLayout.addWidget(self.label_9, 3, 0, 1, 1)
         self.rdir = QtGui.QLabel(self.groupBox)
+        self.rdir.setMinimumSize(QtCore.QSize(24, 24))
         self.rdir.setObjectName(_fromUtf8("rdir"))
         self.gridLayout.addWidget(self.rdir, 3, 1, 1, 1)
         self.label_11 = QtGui.QLabel(self.groupBox)
@@ -240,8 +241,6 @@ class Ui_MainWindow(object):
         self.menuWindow.addAction(self.actionLanguage)
         self.menuHelp.addAction(self.actionContents)
         self.menuHelp.addAction(self.actionAbout)
-        self.menuProject.addAction(self.actionChange_name)
-        self.menuProject.addAction(self.actionChange_Limits)
         self.menuProject.addAction(self.actionLoad_New_System)
         self.menuProject.addAction(self.actionGenerate_Random_System)
         self.menuExport.addAction(self.actionTrace)
@@ -271,10 +270,8 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionGenerate_Random_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.GenerateRandomSystem)
         QtCore.QObject.connect(self.actionLoad_New_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadSystem)
         QtCore.QObject.connect(self.actionLoad_New_Method, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadMethod)
-        QtCore.QObject.connect(self.actionChange_name, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ChangeName)
         QtCore.QObject.connect(self.actionSettings, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Settings)
         QtCore.QObject.connect(self.actionLanguage, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ChangeLanguage)
-        QtCore.QObject.connect(self.actionChange_Limits, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ChangeLimits)
         QtCore.QObject.connect(self.actionLaunch_Viewer, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LaunchViewer)
         QtCore.QObject.connect(self.actionTrace, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportTrace)
         QtCore.QObject.connect(self.runbutton, QtCore.SIGNAL(_fromUtf8("clicked()")), self.actionStart.trigger)
