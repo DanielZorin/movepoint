@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'NewProjectDialog.ui'
 #
-# Created: Sun Jan 15 15:38:07 2012
+# Created: Sun Jan 15 17:41:36 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!

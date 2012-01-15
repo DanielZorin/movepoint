@@ -197,7 +197,7 @@ class MainWindow(QMainWindow):
         self.tlineedit.setValidator(val)
         self.tlineedit.setFocus()
         self.tlineedit.show()
-        self.ui.tdir.hide()
+        #self.ui.tdir.hide()
         self.ui.edittime.hide()
         QtCore.QObject.connect(self.tlineedit, SIGNAL("editingFinished()"), self.ChangeTdir)
     
@@ -218,7 +218,7 @@ class MainWindow(QMainWindow):
         self.rlineedit.setValidator(val)
         self.rlineedit.setFocus()
         self.rlineedit.show()
-        self.ui.rdir.hide()
+        #self.ui.rdir.hide()
         self.ui.editrel.hide()
         QtCore.QObject.connect(self.rlineedit, SIGNAL("editingFinished()"), self.ChangeRdir)
 
@@ -229,18 +229,7 @@ class MainWindow(QMainWindow):
         self.ui.editrel.show()
         self.rlineedit.hide()
         r = float(r)
-        self.project.SetRdir(r)
-
-    def ChangeLimits(self):
-        t, r = self.project.GetLimits()
-        data = {"Time":t, "Reliability": r}
-        d = SettingsDialog(data)
-        d.exec_()
-        if d.result() == QDialog.Accepted:
-            t = data["Time"]
-            r = data["Reliability"]
-            self.setLimits(t, r)   
-            self.project.SetLimits(t, r)   
+        self.project.SetRdir(r)  
             
     def Settings(self):
         data = self.project.method.Serialize()
@@ -256,8 +245,6 @@ class MainWindow(QMainWindow):
             params = d.GetResult()
             self.project.GenerateRandomSystem(params)
             self.loadSchedule()
-            t, r = self.project.GetLimits()
-            self.setLimits(t, r)
 
     def ChangeLanguage(self):
         dialog = ComboBoxDialog(self.languages, self.currentLanguage)
@@ -301,9 +288,3 @@ class MainWindow(QMainWindow):
         self.ui.tdir.setText(str(t))
         self.ui.rdir.setText('{:f}'.format(r)[:10])
         return
-
-    def showTotals(self):
-        s = self.container.GetCurrentStats()
-        self.ui.labeltime.setText(str(s[0]))
-        self.ui.labelrel.setText('{:f}'.format(s[1])[:5])
-        self.ui.labelproc.setText(str(s[2]))

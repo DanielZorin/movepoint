@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Sun Jan 15 15:38:08 2012
+# Created: Sun Jan 15 17:41:36 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,15 +26,18 @@ class Ui_Viewer(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/chart.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Viewer.setWindowIcon(icon)
-        Viewer.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
+        Viewer.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item\n"
+"{\n"
 "    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
 "}\n"
 "\n"
-"QLabel, QSlider {\n"
+"QLabel, QSlider\n"
+"{\n"
 "    background-color: transparent;\n"
 "}"))
         self.centralwidget = QtGui.QWidget(Viewer)
+        self.centralwidget.setGeometry(QtCore.QRect(0, 22, 584, 314))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -225,23 +228,13 @@ class Ui_Viewer(object):
         self.labelproc.setSizePolicy(sizePolicy)
         self.labelproc.setObjectName(_fromUtf8("labelproc"))
         self.verticalLayout_3.addWidget(self.labelproc)
-        self.label_4 = QtGui.QLabel(self.info)
-        self.label_4.setStyleSheet(_fromUtf8(""))
-        self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.verticalLayout_3.addWidget(self.label_4)
-        self.tdir = QtGui.QLabel(self.info)
-        self.tdir.setObjectName(_fromUtf8("tdir"))
-        self.verticalLayout_3.addWidget(self.tdir)
-        self.label_6 = QtGui.QLabel(self.info)
-        self.label_6.setObjectName(_fromUtf8("label_6"))
-        self.verticalLayout_3.addWidget(self.label_6)
-        self.rdir = QtGui.QLabel(self.info)
-        self.rdir.setObjectName(_fromUtf8("rdir"))
-        self.verticalLayout_3.addWidget(self.rdir)
         spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem2)
         self.verticalSlider = QtGui.QSlider(self.info)
-        self.verticalSlider.setSliderPosition(50)
+        self.verticalSlider.setMinimum(-50)
+        self.verticalSlider.setMaximum(50)
+        self.verticalSlider.setSliderPosition(0)
+        self.verticalSlider.setTracking(True)
         self.verticalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.verticalSlider.setObjectName(_fromUtf8("verticalSlider"))
         self.verticalLayout_3.addWidget(self.verticalSlider)
@@ -249,7 +242,7 @@ class Ui_Viewer(object):
         self.horizontalLayout_4.addLayout(self.horizontalLayout_3)
         Viewer.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(Viewer)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 584, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 584, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuSchedule = QtGui.QMenu(self.menubar)
         self.menuSchedule.setObjectName(_fromUtf8("menuSchedule"))
@@ -276,6 +269,7 @@ class Ui_Viewer(object):
         QtCore.QObject.connect(self.stepforth, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.StepForward)
         QtCore.QObject.connect(self.replay, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.Replay)
         QtCore.QObject.connect(self.rewind, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.Rewind)
+        QtCore.QObject.connect(self.verticalSlider, QtCore.SIGNAL(_fromUtf8("sliderMoved(int)")), Viewer.Scale)
         QtCore.QMetaObject.connectSlotsByName(Viewer)
 
     def retranslateUi(self, Viewer):
@@ -288,10 +282,6 @@ class Ui_Viewer(object):
         self.labelrel.setText(QtGui.QApplication.translate("Viewer", "0", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Viewer", "Processors:", None, QtGui.QApplication.UnicodeUTF8))
         self.labelproc.setText(QtGui.QApplication.translate("Viewer", "0", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate("Viewer", "Time Limit:", None, QtGui.QApplication.UnicodeUTF8))
-        self.tdir.setText(QtGui.QApplication.translate("Viewer", "0", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_6.setText(QtGui.QApplication.translate("Viewer", "Reliability Limit:", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdir.setText(QtGui.QApplication.translate("Viewer", "0", None, QtGui.QApplication.UnicodeUTF8))
         self.menuSchedule.setTitle(QtGui.QApplication.translate("Viewer", "Schedule", None, QtGui.QApplication.UnicodeUTF8))
         self.menuWindow.setTitle(QtGui.QApplication.translate("Viewer", "Window", None, QtGui.QApplication.UnicodeUTF8))
         self.actionColors.setText(QtGui.QApplication.translate("Viewer", "Colors...", None, QtGui.QApplication.UnicodeUTF8))
