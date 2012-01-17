@@ -107,14 +107,10 @@ class Schedule(object):
     def _getProcessor(self, proc=None):
         if not proc is None:
             # TODO: check errors
-            print("NOT FOUND TEST ", proc)
             ind = self.emptyprocessors.index(proc)
-            print("HAHA ", ind)
             m = self.emptyprocessors[ind]
             del self.emptyprocessors[ind]
             self.processors.append(m)
-            for p in self.processors:
-                print (p)
             return m
 
         if len(self.emptyprocessors) > 0:
@@ -159,24 +155,25 @@ class Schedule(object):
         
     def _succ(self, s):
         # TODO: WHAT THE FLYING FUCK IS GOING ON WITH SUCC CACHE!?
-        if s in self._succCache:
+        try:
             return self._succCache[s]
-        cur = set(self._trans(s))
-        new = set([])
+        except:
+            pass
+        cur = self._trans(s)
+        new = []
         while True:
             for v in cur:
-                new.add(v)
+                new.append(v)
                 tr = self._trans(v)
-                for v0 in self._trans(v):
-                    new.add(v0)
-                for v0 in self.vertices[v.m.number][v.n:]:
-                    new.add(v0)
-            if new == cur:
+                new += tr
+                new += self.vertices[v.m.number][v.n:]
+                new = list(set(new))
+            if len(new) == len(cur):
                 self._succCache[s] = new
                 return new
             else:
-                cur = set([s for s in new])
-                new = set([])
+                cur = new
+                new = []
 
     '''Search specific elements in the schedule'''
     
@@ -519,16 +516,8 @@ class Schedule(object):
         elif isinstance(op, DeleteVersion):
             return self.AddVersion(op.task)
         elif isinstance(op, MoveVertex):
-            try:
-                print("APPLYING ", op.Export())
-            except:
-                pass
             return self.MoveVertex(op.task, op.pos1[1], op.pos2[0], op.pos2[1])
         elif isinstance(op, MultiOperation):
-            try:
-                print("APPLYING ", op.Export())
-            except:
-                pass
             for o in op.ops:
                 self.ApplyOperation(o)
     
@@ -610,7 +599,6 @@ class Schedule(object):
         self._succCache = {}
         # m = None -> move to a new processor
         if m2 == None or not m2 in self.processors:
-            print("NOT FOUND")
             p = self._getProcessor(m2)
             self.vertices[p.number] = [s]
             del self.vertices[s.m.number][n1]

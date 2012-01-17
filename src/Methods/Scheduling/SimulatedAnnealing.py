@@ -221,7 +221,7 @@ class SimulatedAnnealing(object):
     def Start(self):
         ''' Runs the algorithm with the given number of iterations'''
         while self.iteration < self.numberOfIterations:
-            print(self.iteration)
+            #print(self.iteration)
             self.Step()
             self.iteration += 1
             if (self.trace.getLast()[1]["processors"] == 1) and \
@@ -384,6 +384,8 @@ class SimulatedAnnealing(object):
                                         self.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                                         flag = False
                                     if i > 100:
+                                        #self.noOperation = True
+                                        return
                                         flag = False
                             src_pos += 1
                         return           
@@ -524,7 +526,7 @@ class SimulatedAnnealing(object):
         def accept():
             self.write("Accept")
             self.lastOperation.result = True
-            print(self.lastOperation.Export())
+            #print(self.lastOperation.Export())
             self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
             best = self.trace.getBest()[1]
             if new_time <= self.system.tdir and new_rel >= self.system.rdir:
@@ -563,7 +565,12 @@ class SimulatedAnnealing(object):
         if self.noOperation:
             return
         
-        new_time = self.system.schedule.Interpret()
+        try:
+            new_time = self.system.schedule.Interpret()
+        except:
+            print(self.trace.Export())
+            print("LAST: ",self.lastOperation.Export())
+            raise 999
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
         
@@ -588,9 +595,3 @@ class SimulatedAnnealing(object):
             accept()
         else:
             refuse()
-'''
-ss = System("program.xml")
-#ss.GenerateRandom({"n":30, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":3})
-s = SimulatedAnnealing(ss)
-s.LoadConfig("config.xml")
-s.Start()'''
