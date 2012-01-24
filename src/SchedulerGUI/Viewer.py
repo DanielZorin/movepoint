@@ -31,13 +31,17 @@ class Viewer(QMainWindow):
             
         if self.method.trace.current == 0:
             self.ui.stepback.setEnabled(False)
+            self.ui.rewind.setEnabled(False)
         else:
             self.ui.stepback.setEnabled(True)
+            self.ui.rewind.setEnabled(True)
 
         if self.method.trace.current == self.method.trace.length() - 1:
             self.ui.stepforth.setEnabled(False)
+            self.ui.replay.setEnabled(False)
         else:
             self.ui.stepforth.setEnabled(True)
+            self.ui.replay.setEnabled(True)
 
     def SelectSchedule(self, s):
         if s == '':
@@ -74,13 +78,13 @@ class Viewer(QMainWindow):
             return
         if diff > 0:
             if self.method.trace.current + diff > self.method.trace.length():
-                diff = self.method.trace.length() - self.method.trace.current
+                diff = self.method.trace.length() - self.method.trace.current - 1
             for i in range(diff):
                 self.method.trace.current += 1
                 op = self.method.trace.getCurrent()
                 self.method.system.schedule.ApplyOperation(op[0])
         if diff < 0:
-            if self.method.trace.current - diff < 0:
+            if self.method.trace.current + diff < 0:
                 diff = -self.method.trace.current
             for i in range(-diff):
                 op = self.method.trace.getCurrent()

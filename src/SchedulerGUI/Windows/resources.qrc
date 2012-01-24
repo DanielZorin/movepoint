@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="pics">
+    <file>pics/edge.png</file>
+    <file>pics/select.png</file>
+    <file>pics/vertex.png</file>
     <file>pics/control_play_blue.png</file>
     <file>pics/play.png</file>
     <file>pics/computer.png</file>
