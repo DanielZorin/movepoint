@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
+<ui version="4.0" >
+ <class>GraphEditor</class>
+ <widget class="QMainWindow" name="GraphEditor" >
+  <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,39 +9,57 @@
     <height>332</height>
    </rect>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitle" >
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+  <property name="styleSheet" >
+   <string notr="true" >QWidget, QMenuBar::item {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);
+}
+
+QLabel, QSlider {
+	background-color: transparent;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>59</y>
+     <width>420</width>
+     <height>252</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout" >
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout" >
       <item>
-       <widget class="QScrollArea" name="scrollArea">
-        <property name="widgetResizable">
+       <widget class="GraphCanvas" name="graphArea" >
+        <property name="widgetResizable" >
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
+        <widget class="QWidget" name="scrollAreaWidgetContents" >
+         <property name="geometry" >
           <rect>
            <x>0</x>
            <y>0</y>
            <width>318</width>
-           <height>235</height>
+           <height>230</height>
           </rect>
          </property>
         </widget>
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="maximumSize">
+       <widget class="QGroupBox" name="groupBox" >
+        <property name="maximumSize" >
          <size>
           <width>100</width>
           <height>16777215</height>
          </size>
         </property>
-        <property name="title">
+        <property name="title" >
          <string>Parameters</string>
         </property>
        </widget>
@@ -51,94 +68,176 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
      <width>420</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile" >
+    <property name="title" >
+     <string>File</string>
+    </property>
+    <addaction name="actionNew_System" />
+    <addaction name="actionOpen_System" />
+    <addaction name="actionSave_System" />
+   </widget>
+   <addaction name="menuFile" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>311</y>
+     <width>420</width>
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionNew_System"/>
-    <addaction name="actionOpen_System"/>
-    <addaction name="actionSave_System"/>
-   </widget>
-   <addaction name="menuFile"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
+  <widget class="QToolBar" name="toolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>22</y>
+     <width>420</width>
+     <height>37</height>
+    </rect>
+   </property>
+   <property name="windowTitle" >
     <string>toolBar</string>
    </property>
-   <attribute name="toolBarArea">
+   <attribute name="toolBarArea" >
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak">
+   <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
-   <addaction name="actionSelect"/>
-   <addaction name="actionVertex"/>
-   <addaction name="actionEdge"/>
+   <addaction name="actionSelect" />
+   <addaction name="actionVertex" />
+   <addaction name="actionEdge" />
   </widget>
-  <action name="actionSelect">
-   <property name="checkable">
+  <action name="actionSelect" >
+   <property name="checkable" >
     <bool>true</bool>
    </property>
-   <property name="icon">
-    <iconset resource="resources.qrc">
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="resources.qrc" >
      <normaloff>:/pics/pics/select.png</normaloff>:/pics/pics/select.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Select</string>
    </property>
   </action>
-  <action name="actionVertex">
-   <property name="checkable">
+  <action name="actionVertex" >
+   <property name="checkable" >
     <bool>true</bool>
    </property>
-   <property name="icon">
-    <iconset resource="resources.qrc">
+   <property name="icon" >
+    <iconset resource="resources.qrc" >
      <normaloff>:/pics/pics/vertex.png</normaloff>:/pics/pics/vertex.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Vertex</string>
    </property>
   </action>
-  <action name="actionEdge">
-   <property name="checkable">
+  <action name="actionEdge" >
+   <property name="checkable" >
     <bool>true</bool>
    </property>
-   <property name="icon">
-    <iconset resource="resources.qrc">
+   <property name="icon" >
+    <iconset resource="resources.qrc" >
      <normaloff>:/pics/pics/edge.png</normaloff>:/pics/pics/edge.png</iconset>
    </property>
-   <property name="text">
+   <property name="text" >
     <string>Edge</string>
    </property>
   </action>
-  <action name="actionNew_System">
-   <property name="text">
+  <action name="actionNew_System" >
+   <property name="text" >
     <string>New System</string>
    </property>
   </action>
-  <action name="actionOpen_System">
-   <property name="text">
+  <action name="actionOpen_System" >
+   <property name="text" >
     <string>Open System</string>
    </property>
   </action>
-  <action name="actionSave_System">
-   <property name="text">
+  <action name="actionSave_System" >
+   <property name="text" >
     <string>Save System</string>
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GraphCanvas</class>
+   <extends>QScrollArea</extends>
+   <header>SchedulerGUI.GraphCanvas</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="resources.qrc" />
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionSelect</sender>
+   <signal>triggered()</signal>
+   <receiver>GraphEditor</receiver>
+   <slot>toggleSelect()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>209</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionVertex</sender>
+   <signal>triggered()</signal>
+   <receiver>GraphEditor</receiver>
+   <slot>toggleVertex()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>209</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEdge</sender>
+   <signal>triggered()</signal>
+   <receiver>GraphEditor</receiver>
+   <slot>toggleEdge()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>209</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>toggleSelect()</slot>
+  <slot>toggleVertex()</slot>
+  <slot>toggleEdge()</slot>
+ </slots>
 </ui>

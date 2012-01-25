@@ -21,8 +21,8 @@ class ScheduleVisualizer(QWidget):
 
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
-        self.setGeometry(0, 0, (70 + self.time * 10)*self.scale, (40 + self.proc * 20)*self.scale )
-        self.setSizePolicy( QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding )
+        self.setGeometry(0, 0, (70 + self.time * 10)*self.scale, (40 + self.proc * 20)*self.scale)
+        self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         self.schedule = None
         self.operation = None
         
