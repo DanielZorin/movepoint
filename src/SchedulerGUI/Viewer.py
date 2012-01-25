@@ -1,11 +1,7 @@
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, qApp
-from PyQt4.QtCore import QTranslator
-import sys, os, pickle, _pickle, re
-from SchedulerGUI.Project import Project
+from PyQt4.QtGui import QDialog, QMainWindow, QIntValidator
 from SchedulerGUI.PreferencesDialog import PreferencesDialog
 from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
 from SchedulerGUI.Windows.ui_Viewer import Ui_Viewer
-from Schedules.Exceptions import SchedulerException
 
 class Viewer(QMainWindow):
     

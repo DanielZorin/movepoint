@@ -71,6 +71,8 @@
     <Compile Include="Profile.py" />
     <Compile Include="RunZTest.py" />
     <Compile Include="SchedulerGUI\ComboBoxDialog.py" />
+    <Compile Include="SchedulerGUI\GraphCanvas.py" />
+    <Compile Include="SchedulerGUI\GraphEditor.py" />
     <Compile Include="SchedulerGUI\MainWindow.py" />
     <Compile Include="SchedulerGUI\NewProjectDialog.py" />
     <Compile Include="SchedulerGUI\PreferencesDialog.py" />

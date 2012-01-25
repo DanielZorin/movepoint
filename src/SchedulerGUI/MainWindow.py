@@ -1,16 +1,14 @@
 from PyQt4 import QtCore
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QInputDialog, QIntValidator, QDoubleValidator, QLineEdit, qApp
-from PyQt4.QtCore import QTranslator, SIGNAL, pyqtSignal
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QIntValidator, QDoubleValidator, QLineEdit, qApp
+from PyQt4.QtCore import QTranslator, SIGNAL
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
 from SchedulerGUI.NewProjectDialog import NewProjectDialog
-from SchedulerGUI.PreferencesDialog import PreferencesDialog
 from SchedulerGUI.SettingsDialog import SettingsDialog
 from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
-from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
-from SchedulerGUI.ScheduleContainer import ScheduleContainer
 from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
 from SchedulerGUI.Viewer import Viewer
+from SchedulerGUI.GraphEditor import GraphEditor
 from SchedulerGUI.Windows.ui_MainWindow import Ui_MainWindow
 from Schedules.Exceptions import SchedulerException
 
@@ -26,6 +24,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.viewer = Viewer()
+        self.graphEditor = GraphEditor()
         self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
         self.title = self.tr("Scheduler GUI")
         self.loadTranslations()
@@ -129,6 +128,9 @@ class MainWindow(QMainWindow):
     
     def LaunchViewer(self):
         self.viewer.show()
+
+    def EditProgram(self):
+        self.graphEditor.show()
 
     def Run(self):
         self.project.method.iteration = 0

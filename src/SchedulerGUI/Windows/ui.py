@@ -32,6 +32,12 @@ if __name__ == "__main__":
     fin.close()
     fout.close()
 
+    fin = open("GraphEditor.ui", "r")
+    fout = open("ui_GraphEditor.py", "w")
+    uic.compileUi(fin, fout, from_imports=True)
+    fin.close()
+    fout.close()
+
     os.system("pyrcc4 -py3 resources.qrc -o resources_rc.py")
     
     if 0 == 1:
