@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Wed Jan 25 17:14:38 2012
+# Created: Sat Jan 28 19:43:19 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,6 +17,7 @@ except AttributeError:
 class Ui_GraphEditor(object):
     def setupUi(self, GraphEditor):
         GraphEditor.setObjectName(_fromUtf8("GraphEditor"))
+        GraphEditor.setWindowModality(QtCore.Qt.ApplicationModal)
         GraphEditor.resize(420, 332)
         GraphEditor.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
 "    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
