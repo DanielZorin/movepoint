@@ -282,6 +282,7 @@ class MainWindow(QMainWindow):
         sys.exit(0)
     
     def loadSchedule(self): 
+        self.graphEditor.setData(self.project.system)
         self.viewer.setData(self.project.method)  
         self.ui.vertices.setText(str(len(self.project.system.schedule.program.vertices)))
         self.ui.edges.setText(str(len(self.project.system.schedule.program.edges)))

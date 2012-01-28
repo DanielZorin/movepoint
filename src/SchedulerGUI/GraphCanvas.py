@@ -26,9 +26,9 @@ class GraphCanvas(QScrollArea):
         
     def paintEvent(self, event):
         paint = QPainter(self.viewport())
-        paint.begin(self)
+        #paint.begin(self)
         paint.setPen(QColor(123, 34, 100))
-        paint.setFont(QtGui.QFont('Decorative', 10*self.scale))
+        paint.setFont(QtGui.QFont('Decorative', 10))
         for task in self.rects:
             paint.fillRect(task, QColor(123, 34, 100))
         paint.end()
@@ -41,6 +41,8 @@ class GraphCanvas(QScrollArea):
 
     def Visualize(self, p):
         self.program = p
+        for v in self.program.vertices:
+            pass
         self.repaint()
         
     def SetColors(self, a, t, d, l):
