@@ -1,4 +1,4 @@
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QIntValidator, QDoubleValidator, QLineEdit, qApp
 from PyQt4.QtCore import QTranslator, SIGNAL
 import sys, os, pickle, _pickle, re
@@ -131,6 +131,9 @@ class MainWindow(QMainWindow):
 
     def EditProgram(self):
         self.graphEditor.show()
+        # Wait until the editor window is closed
+        while self.graphEditor.isVisible():
+            qApp.processEvents()
 
     def Run(self):
         self.project.method.iteration = 0
