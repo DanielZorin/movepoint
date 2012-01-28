@@ -10,6 +10,10 @@ class GraphEditor(QMainWindow):
         self.ui.setupUi(self)
         self.canvas = GraphCanvas(self.ui.graphArea)
 
+    def setData(self, data):
+        self.system = data
+        self.canvas.Visualize(self.system.program)
+
     def toggleSelect(self):
         self.ui.actionSelect.setChecked(True)
         self.ui.actionVertex.setChecked(False)
