@@ -75,6 +75,7 @@ class GraphCanvas(QScrollArea):
             task.versions = [ver]
             self.vertices[v] = task
             self.program.vertices.append(v)
+            self.program._buildData()
             self.repaint()
 
     def mouseMoveEvent(self, e):
@@ -85,6 +86,25 @@ class GraphCanvas(QScrollArea):
 
     def mouseReleaseEvent(self, e):
         self.pressed = False
+
+    def keyPressEvent(self, e):
+        if e.key() == QtCore.Qt.Key_Delete:
+            if self.current != None:
+                v = next(v for v in self.vertices.keys() if self.vertices[v] == self.current)
+                ind = self.program.vertices.index(v)
+                new_edges = []
+                for e in self.program.edges:
+                    if e.source != v and e.destination != v:
+                        new_edges.append(e)
+                    else:
+                        del e
+                self.program.edges = new_edges
+                del self.vertices[v]
+                del self.program.vertices[ind]
+                del self.current
+                self.current = None
+                self.program._buildData()
+                self.repaint()
 
     def Visualize(self, p):
         self.program = p

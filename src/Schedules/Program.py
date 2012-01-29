@@ -25,9 +25,6 @@ class Program(object):
     edges = []
     ''' List of dependencies, i.e. :class:`edges  <Schedules.ProgramEdge.ProgramEdge>` of the graph'''
     
-    versions = []
-    ''' '''
-    
     _dep = {}
     _trans = {}
 
