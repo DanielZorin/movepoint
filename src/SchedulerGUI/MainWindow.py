@@ -134,6 +134,8 @@ class MainWindow(QMainWindow):
         # Wait until the editor window is closed
         while self.graphEditor.isVisible():
             qApp.processEvents()
+        self.project.method.Reset()
+        self.viewer.setData(self.project.method)
 
     def Run(self):
         self.project.method.iteration = 0
