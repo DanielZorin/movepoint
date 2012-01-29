@@ -1,7 +1,7 @@
 import math
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QPoint, QPointF
-from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QColor, QScrollArea
+from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QColor, QScrollArea, QCursor
 from Schedules.ProgramVertex import ProgramVertex
 from Schedules.ProgramEdge import ProgramEdge
 from Core.Version import Version
@@ -32,6 +32,8 @@ class GraphCanvas(QScrollArea):
         self.edges = {}
         self.current = None
         self.pressed = False
+        self.edgeDraw = False
+        self.curEdge = None
         self.state = State.Select
         
     def paintEvent(self, event):
@@ -55,6 +57,11 @@ class GraphCanvas(QScrollArea):
                 paint.setBrush(self.colors["vertex"])
             else:
                 paint.drawEllipse(task)
+
+        if self.edgeDraw:
+            self.drawArrow(paint, self.curEdge[0].x() + self.size / 2, self.curEdge[0].y() + self.size / 2,
+                           QCursor.pos().x() - self.mapToGlobal(self.geometry().topLeft()).x(),
+                           QCursor.pos().y() - self.mapToGlobal(self.geometry().topLeft()).y())
         paint.end()
 
     def mousePressEvent(self, e):
@@ -77,15 +84,37 @@ class GraphCanvas(QScrollArea):
             self.program.vertices.append(v)
             self.program._buildData()
             self.repaint()
+        elif self.state == State.Edge:
+            for v in self.vertices.keys():
+                if self.vertices[v].contains(e.pos()):
+                    self.edgeDraw = True
+                    self.curEdge = []
+                    self.curEdge.append(self.vertices[v])
+                    self.curEdge.append(v)
+                    self.repaint()
 
     def mouseMoveEvent(self, e):
-        if self.state != State.Select or not self.pressed:
+        if self.state == State.Vertex:
             return
-        self.current.moveTo(e.pos().x() - self.size / 2, e.pos().y() - self.size / 2)
-        self.repaint()
+        elif self.state == State.Select:
+            if self.pressed:
+                self.current.moveTo(e.pos().x() - self.size / 2, e.pos().y() - self.size / 2)
+                self.repaint()
+        elif self.state == State.Edge:
+            if self.edgeDraw:
+                self.repaint()
 
     def mouseReleaseEvent(self, e):
         self.pressed = False
+        if self.edgeDraw:
+            for v in self.vertices.keys():
+                if self.vertices[v].contains(e.pos()):
+                    ne = ProgramEdge(self.curEdge[1], v, 1)
+                    self.program.edges.append(ne)
+                    self.program._buildData()
+            self.edgeDraw = False
+            self.curEdge = None     
+            self.repaint()
 
     def keyPressEvent(self, e):
         if e.key() == QtCore.Qt.Key_Delete:
