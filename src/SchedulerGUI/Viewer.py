@@ -85,9 +85,7 @@ class Viewer(QMainWindow):
             for i in range(-diff):
                 op = self.method.trace.getCurrent()
                 self.method.system.schedule.ApplyOperation(op[0].Reverse())
-                print(diff, "minus")
                 self.method.trace.current -= 1
-        print("scrolling", diff, self.method.trace.current)
         self.setData(self.method)
         self.ui.lineEdit.setText(str(self.method.trace.current + 1))
         op = self.method.trace.getCurrent()
