@@ -367,7 +367,6 @@ QLabel, QSlider {
     <property name="title" >
      <string>Project</string>
     </property>
-    <addaction name="actionLoad_New_System" />
     <addaction name="actionGenerate_Random_System" />
    </widget>
    <widget class="QMenu" name="menuExport" >
