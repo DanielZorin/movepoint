@@ -287,7 +287,6 @@ class SimulatedAnnealing(object):
         self.write(op)
         self.multioperation = False
         self.noOperation = False
-        #print(op)
         if op == "AddProcessor":
             proc = list(self.system.schedule.processors)
             proc.sort(key=lambda x: x.reserves)
@@ -367,7 +366,6 @@ class SimulatedAnnealing(object):
                     else:
                         # TODO: this is an experimental implementation of complete cutting
                         self.multioperation = True
-                        self.backup = self.system.schedule.GetCopy()
                         self.lastOperation = MultiOperation()
                         src_pos = 0
                         for s1 in ch:
@@ -418,25 +416,15 @@ class SimulatedAnnealing(object):
                         noOp = True
                     else:
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
-                        try:
-                            src_pos = s.vertices[s1.m.number].index(s1)
-                        except:
-                            print(s)
-                            print(s1)
-                            raise "gfdsagdasgdag"
+                        src_pos = s.vertices[s1.m.number].index(s1)
                     ch = []
                     for d in s.delays:
                         # If the delay is zero, we mustn't move anything there
                         if d[1] == 0:
                             break
                         s2 = d[0]
-                        try:
-                            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)):
-                                ch.append(s2)
-                        except:
-                            print(s)
-                            print(s2)
-                            raise "11111111111"
+                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)):
+                            ch.append(s2)
                         if len(ch) == self.choice_places:
                             break              
                     if len(ch) == 1:
@@ -510,7 +498,6 @@ class SimulatedAnnealing(object):
                 self.noOperation = True
                 return
                     
-            #src_pos = s.vertices[s1.m.number].index(s1)
             self.write(s1.v.number, s1.m.number, src_pos, target_proc, target_pos)
             if s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
                 self.lastOperation = MoveVertex(s1, s1.m, src_pos, target_proc, target_pos)
@@ -526,7 +513,6 @@ class SimulatedAnnealing(object):
         def accept():
             self.write("Accept")
             self.lastOperation.result = True
-            #print(self.lastOperation.Export())
             self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
             best = self.trace.getBest()[1]
             if new_time <= self.system.tdir and new_rel >= self.system.rdir:
@@ -565,12 +551,7 @@ class SimulatedAnnealing(object):
         if self.noOperation:
             return
         
-        try:
-            new_time = self.system.schedule.Interpret()
-        except:
-            print(self.trace.Export())
-            print("LAST: ",self.lastOperation.Export())
-            raise 999
+        new_time = self.system.schedule.Interpret()
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
         

@@ -58,6 +58,7 @@ class GraphCanvas(QScrollArea):
             else:
                 paint.drawEllipse(task)
 
+        paint.setPen(self.colors["line"])
         if self.edgeDraw:
             self.drawArrow(paint, self.curEdge[0].x() + self.size / 2, self.curEdge[0].y() + self.size / 2,
                            QCursor.pos().x() - self.mapToGlobal(self.geometry().topLeft()).x(),
