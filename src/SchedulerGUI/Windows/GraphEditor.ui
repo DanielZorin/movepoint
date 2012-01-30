@@ -13,7 +13,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>MainWindow</string>
+   <string>Program Graph Editor</string>
   </property>
   <property name="styleSheet" >
    <string notr="true" >QWidget, QMenuBar::item {
@@ -118,6 +118,10 @@ QLabel, QSlider {
    <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNew_System" />
+   <addaction name="actionOpen_System" />
+   <addaction name="actionSave_System" />
+   <addaction name="separator" />
    <addaction name="actionSelect" />
    <addaction name="actionVertex" />
    <addaction name="actionEdge" />
@@ -146,7 +150,7 @@ QLabel, QSlider {
      <normaloff>:/pics/pics/vertex.png</normaloff>:/pics/pics/vertex.png</iconset>
    </property>
    <property name="text" >
-    <string>Vertex</string>
+    <string>Add Vertex</string>
    </property>
   </action>
   <action name="actionEdge" >
@@ -158,20 +162,32 @@ QLabel, QSlider {
      <normaloff>:/pics/pics/edge.png</normaloff>:/pics/pics/edge.png</iconset>
    </property>
    <property name="text" >
-    <string>Edge</string>
+    <string>Add Edge</string>
    </property>
   </action>
   <action name="actionNew_System" >
+   <property name="icon" >
+    <iconset resource="resources.qrc" >
+     <normaloff>:/pics/pics/page.png</normaloff>:/pics/pics/page.png</iconset>
+   </property>
    <property name="text" >
     <string>New System</string>
    </property>
   </action>
   <action name="actionOpen_System" >
+   <property name="icon" >
+    <iconset resource="resources.qrc" >
+     <normaloff>:/pics/pics/folder.png</normaloff>:/pics/pics/folder.png</iconset>
+   </property>
    <property name="text" >
     <string>Open System</string>
    </property>
   </action>
   <action name="actionSave_System" >
+   <property name="icon" >
+    <iconset resource="resources.qrc" >
+     <normaloff>:/pics/pics/cd.png</normaloff>:/pics/pics/cd.png</iconset>
+   </property>
    <property name="text" >
     <string>Save System</string>
    </property>

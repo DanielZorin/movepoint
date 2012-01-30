@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Sat Jan 28 19:43:19 2012
+# Created: Mon Jan 30 21:53:21 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -82,15 +82,28 @@ class Ui_GraphEditor(object):
         self.actionEdge.setIcon(icon2)
         self.actionEdge.setObjectName(_fromUtf8("actionEdge"))
         self.actionNew_System = QtGui.QAction(GraphEditor)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/page.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionNew_System.setIcon(icon3)
         self.actionNew_System.setObjectName(_fromUtf8("actionNew_System"))
         self.actionOpen_System = QtGui.QAction(GraphEditor)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/folder.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionOpen_System.setIcon(icon4)
         self.actionOpen_System.setObjectName(_fromUtf8("actionOpen_System"))
         self.actionSave_System = QtGui.QAction(GraphEditor)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/cd.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSave_System.setIcon(icon5)
         self.actionSave_System.setObjectName(_fromUtf8("actionSave_System"))
         self.menuFile.addAction(self.actionNew_System)
         self.menuFile.addAction(self.actionOpen_System)
         self.menuFile.addAction(self.actionSave_System)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.toolBar.addAction(self.actionNew_System)
+        self.toolBar.addAction(self.actionOpen_System)
+        self.toolBar.addAction(self.actionSave_System)
+        self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionSelect)
         self.toolBar.addAction(self.actionVertex)
         self.toolBar.addAction(self.actionEdge)
@@ -102,13 +115,13 @@ class Ui_GraphEditor(object):
         QtCore.QMetaObject.connectSlotsByName(GraphEditor)
 
     def retranslateUi(self, GraphEditor):
-        GraphEditor.setWindowTitle(QtGui.QApplication.translate("GraphEditor", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
+        GraphEditor.setWindowTitle(QtGui.QApplication.translate("GraphEditor", "Program Graph Editor", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("GraphEditor", "Parameters", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("GraphEditor", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("GraphEditor", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSelect.setText(QtGui.QApplication.translate("GraphEditor", "Select", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionVertex.setText(QtGui.QApplication.translate("GraphEditor", "Vertex", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionEdge.setText(QtGui.QApplication.translate("GraphEditor", "Edge", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionVertex.setText(QtGui.QApplication.translate("GraphEditor", "Add Vertex", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEdge.setText(QtGui.QApplication.translate("GraphEditor", "Add Edge", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNew_System.setText(QtGui.QApplication.translate("GraphEditor", "New System", None, QtGui.QApplication.UnicodeUTF8))
         self.actionOpen_System.setText(QtGui.QApplication.translate("GraphEditor", "Open System", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_System.setText(QtGui.QApplication.translate("GraphEditor", "Save System", None, QtGui.QApplication.UnicodeUTF8))
