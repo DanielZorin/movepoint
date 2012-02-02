@@ -34,6 +34,7 @@ class GraphCanvas(QScrollArea):
         self.pressed = False
         self.edgeDraw = False
         self.curEdge = None
+        self.selectedEdge = None
         self.state = State.Select
         
     def paintEvent(self, event):
@@ -43,8 +44,16 @@ class GraphCanvas(QScrollArea):
         paint.setPen(self.colors["line"])
         paint.setFont(QtGui.QFont('Decorative', 10))
         for e in self.program.edges:
-            self.drawArrow(paint, self.vertices[e.source].x() + self.size / 2, self.vertices[e.source].y() + self.size / 2,
+            if e != self.selectedEdge:
+                self.drawArrow(paint, self.vertices[e.source].x() + self.size / 2, self.vertices[e.source].y() + self.size / 2,
                              self.vertices[e.destination].x() + self.size / 2, self.vertices[e.destination].y() + self.size / 2)
+            else:
+                paint.setPen(self.colors["selected"])
+                paint.setBrush(self.colors["selected"])
+                self.drawArrow(paint, self.vertices[e.source].x() + self.size / 2, self.vertices[e.source].y() + self.size / 2,
+                             self.vertices[e.destination].x() + self.size / 2, self.vertices[e.destination].y() + self.size / 2)
+                paint.setPen(self.colors["line"])
+                paint.setBrush(self.colors["line"])
 
         paint.setPen(self.colors["vertex"])
         paint.setBrush(self.colors["vertex"])
@@ -73,6 +82,24 @@ class GraphCanvas(QScrollArea):
                     self.repaint()
                     self.pressed = True
                     return
+            for ed in self.program.edges:
+                a = self.vertices[ed.source].center()
+                b = self.vertices[ed.destination].center()
+                c = e.pos()
+                ab = math.sqrt((a.x() - b.x())**2 + (a.y() - b.y())**2)
+                inner = QtCore.QRect(a, b)
+                if inner.contains(c):
+                    bc = math.sqrt((c.x() - b.x())**2 + (c.y() - b.y())**2)
+                    ac = math.sqrt((a.x() - c.x())**2 + (a.y() - c.y())**2)
+                    p = (ab + bc + ac) / 2.0
+                    area = math.sqrt(p * (p - ab) * (p - ac) * (p - bc))
+                    print(ed, area)
+                    if area < 100:
+                        self.selectedEdge = ed
+                        self.repaint()
+                        self.current = None
+                        return
+            self.selectedEdge = None
             self.current = None
             self.repaint()
             return
