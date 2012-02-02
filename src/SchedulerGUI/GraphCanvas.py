@@ -23,19 +23,20 @@ class GraphCanvas(QScrollArea):
     size = 15
     '''Size of the vertex rectangle'''
 
+    program = None
+    vertices = {}
+    edges = {}
+    selectedVertex = None
+    pressed = False
+    edgeDraw = False
+    curEdge = None
+    selectedEdge = None
+    state = State.Select
+
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
         self.setGeometry(0, 0, 3000, 3000)
         self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        self.program = None
-        self.vertices = {}
-        self.edges = {}
-        self.current = None
-        self.pressed = False
-        self.edgeDraw = False
-        self.curEdge = None
-        self.selectedEdge = None
-        self.state = State.Select
         
     def paintEvent(self, event):
         if not self.program:
@@ -58,7 +59,7 @@ class GraphCanvas(QScrollArea):
         paint.setPen(self.colors["vertex"])
         paint.setBrush(self.colors["vertex"])
         for task in self.vertices.values():
-            if task == self.current:
+            if task == self.selectedVertex:
                 paint.setPen(self.colors["selected"])
                 paint.setBrush(self.colors["selected"])
                 paint.drawEllipse(task)
@@ -78,7 +79,8 @@ class GraphCanvas(QScrollArea):
         if self.state == State.Select:
             for v in self.vertices.keys():
                 if self.vertices[v].contains(e.pos()):
-                    self.current = self.vertices[v]
+                    self.selectedVertex = self.vertices[v]
+                    self.selectedEdge = None
                     self.repaint()
                     self.pressed = True
                     return
@@ -97,10 +99,10 @@ class GraphCanvas(QScrollArea):
                     if area < 100:
                         self.selectedEdge = ed
                         self.repaint()
-                        self.current = None
+                        self.selectedVertex = None
                         return
             self.selectedEdge = None
-            self.current = None
+            self.selectedVertex = None
             self.repaint()
             return
         elif self.state == State.Vertex:
@@ -126,7 +128,7 @@ class GraphCanvas(QScrollArea):
             return
         elif self.state == State.Select:
             if self.pressed:
-                self.current.moveTo(e.pos().x() - self.size / 2, e.pos().y() - self.size / 2)
+                self.selectedVertex.moveTo(e.pos().x() - self.size / 2, e.pos().y() - self.size / 2)
                 self.repaint()
         elif self.state == State.Edge:
             if self.edgeDraw:
@@ -146,8 +148,8 @@ class GraphCanvas(QScrollArea):
 
     def keyPressEvent(self, e):
         if e.key() == QtCore.Qt.Key_Delete:
-            if self.current != None:
-                v = next(v for v in self.vertices.keys() if self.vertices[v] == self.current)
+            if self.selectedVertex != None:
+                v = next(v for v in self.vertices.keys() if self.vertices[v] == self.selectedVertex)
                 ind = self.program.vertices.index(v)
                 new_edges = []
                 for e in self.program.edges:
@@ -158,8 +160,19 @@ class GraphCanvas(QScrollArea):
                 self.program.edges = new_edges
                 del self.vertices[v]
                 del self.program.vertices[ind]
-                del self.current
-                self.current = None
+                del self.selectedVertex
+                self.selectedVertex = None
+                self.program._buildData()
+                self.repaint()
+            if self.selectedEdge != None:
+                new_edges = []
+                for e in self.program.edges:
+                    if e != self.selectedEdge:
+                        new_edges.append(e)
+                    else:
+                        del e
+                self.program.edges = new_edges
+                self.selectedEdge = None
                 self.program._buildData()
                 self.repaint()
 
