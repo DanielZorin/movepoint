@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Mon Jan 30 21:53:21 2012
-#      by: PyQt4 UI code generator 4.8.1
+# Created: Fri Feb  3 17:52:31 2012
+#      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -28,7 +28,6 @@ class Ui_GraphEditor(object):
 "    background-color: transparent;\n"
 "}"))
         self.centralwidget = QtGui.QWidget(GraphEditor)
-        self.centralwidget.setGeometry(QtCore.QRect(0, 59, 420, 252))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
@@ -37,29 +36,23 @@ class Ui_GraphEditor(object):
         self.graphArea = GraphCanvas(self.centralwidget)
         self.graphArea.setWidgetResizable(True)
         self.graphArea.setObjectName(_fromUtf8("graphArea"))
-        self.scrollAreaWidgetContents = QtGui.QWidget(self.graphArea)
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 318, 230))
+        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 232))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.graphArea.setWidget(self.scrollAreaWidgetContents)
         self.horizontalLayout.addWidget(self.graphArea)
-        self.groupBox = QtGui.QGroupBox(self.centralwidget)
-        self.groupBox.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.groupBox.setObjectName(_fromUtf8("groupBox"))
-        self.horizontalLayout.addWidget(self.groupBox)
         self.verticalLayout.addLayout(self.horizontalLayout)
         GraphEditor.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(GraphEditor)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 420, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 420, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
         GraphEditor.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(GraphEditor)
-        self.statusbar.setGeometry(QtCore.QRect(0, 311, 420, 21))
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         GraphEditor.setStatusBar(self.statusbar)
         self.toolBar = QtGui.QToolBar(GraphEditor)
-        self.toolBar.setGeometry(QtCore.QRect(0, 22, 420, 37))
         self.toolBar.setObjectName(_fromUtf8("toolBar"))
         GraphEditor.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionSelect = QtGui.QAction(GraphEditor)
@@ -116,7 +109,6 @@ class Ui_GraphEditor(object):
 
     def retranslateUi(self, GraphEditor):
         GraphEditor.setWindowTitle(QtGui.QApplication.translate("GraphEditor", "Program Graph Editor", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("GraphEditor", "Parameters", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("GraphEditor", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("GraphEditor", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSelect.setText(QtGui.QApplication.translate("GraphEditor", "Select", None, QtGui.QApplication.UnicodeUTF8))
