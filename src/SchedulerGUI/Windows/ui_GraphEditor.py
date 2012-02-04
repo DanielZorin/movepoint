@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Fri Feb  3 17:52:31 2012
-#      by: PyQt4 UI code generator 4.8.4
+# Created: Sat Feb 04 17:26:41 2012
+#      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -36,7 +36,7 @@ class Ui_GraphEditor(object):
         self.graphArea = GraphCanvas(self.centralwidget)
         self.graphArea.setWidgetResizable(True)
         self.graphArea.setObjectName(_fromUtf8("graphArea"))
-        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents = QtGui.QWidget(self.graphArea)
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 232))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.graphArea.setWidget(self.scrollAreaWidgetContents)

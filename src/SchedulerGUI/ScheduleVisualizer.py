@@ -8,34 +8,38 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QPoint, QPointF
 from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QScrollArea
 
-class ScheduleVisualizer(QScrollArea):
+class ScheduleVisualizer(QWidget):
 
     time = 50
     proc = 20
     scale = 1.5
     
+    schedule = None
+    method = None
+    vertices = {}
+    positions = {}
+
     axisColor = None
     taskColor = None
     deliveriesColor = None
     lastopColor = None
 
+    selectedTask = None
+    targetPos = None
+
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
         self.setGeometry(0, 0, (70 + self.time * 10)*self.scale, (40 + self.proc * 20)*self.scale)
         self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        self.schedule = None
-        self.vertices = {}
         
-    def paintEvent(self, event):
-        paint = QPainter()
-        paint.begin(self.viewport())
-        paint.setPen(self.axisColor)
-        paint.setFont(QtGui.QFont('Decorative', 10*self.scale))
-        if self.schedule != None:
+    def paintEvent(self, event):        
+        if self.schedule:
+            paint = QPainter()
+            paint.begin(self)
+            paint.setPen(self.axisColor)
+            paint.setFont(QtGui.QFont('Decorative', 10*self.scale))
             procX = {}
-            taskRects = {}
-            queues = {}
-            #print("=================", self.proc, len(self.schedule.processors))
+
             # Draw processor names and axis
             for i in range(self.proc):  
                 paint.drawText(10*self.scale, (20 + i * 20)*self.scale, str(self.schedule.processors[i].number) + " X " + str(self.schedule.processors[i].reserves))
@@ -44,17 +48,35 @@ class ScheduleVisualizer(QScrollArea):
             
             # Draw tasks
             paint.setPen(self.taskColor)  
+            self.vertices = {}
+            self.positions = {}
             for m in self.schedule.vertices.keys():
+                i = 0
+                prev = None
                 for t in self.schedule.vertices[m]:
                     start = self.schedule.executionTimes[t][0]
                     finish = self.schedule.executionTimes[t][1]
                     task = QtCore.QRect((50 + start * 10)*self.scale, (procX[t.m.number] - 5)*self.scale, (finish - start)*10*self.scale, 10*self.scale)
+                    # TODO: calculate once!
                     self.vertices[t] = task
-                    paint.fillRect(task, self.taskColor)    
+                    if i == 0:
+                        self.positions[(m, i)] = QtCore.QRect(QPoint(50*self.scale, task.y()), task.bottomLeft())
+                    else:
+                        self.positions[(m, i)] = QtCore.QRect(prev.topRight(), task.bottomLeft())
+                    if t != self.selectedTask:
+                        paint.fillRect(task, self.taskColor)
+                    else:
+                        paint.fillRect(task, self.lastopColor)
+                    paint.setPen(self.axisColor)
                     paint.drawRect(task)
-                    taskRects[(t.v.number, t.k.number)] = task
-                    queues[(t.m.number, t.n)] = task
-                
+                    paint.setPen(self.taskColor)
+                    prev = task
+                    i += 1
+                self.positions[(m, i)] = QtCore.QRect(prev.topRight(), QPoint(prev.topRight().x() + 100, prev.bottomRight().y()))
+            
+            if self.targetPos:
+                paint.fillRect(self.positions[self.targetPos], self.lastopColor)
+                    
             # Draw deliveries   
             paint.setPen(QPen(self.deliveriesColor, 2)) 
             for d in self.schedule.deliveryTimes:
@@ -67,38 +89,40 @@ class ScheduleVisualizer(QScrollArea):
                     start = self.schedule.executionTimes[t][0]
                     finish = self.schedule.executionTimes[t][1]   
                     s = str(t.v.number) + " v" + str(t.k.number)
-                    paint.drawText((10 + finish + start - int(len(s)/2))*5*self.scale, (procX[t.m.number]+5)*self.scale, s) 
+                    paint.drawText((10 + finish + start - int(len(s)/2))*5*self.scale, (procX[t.m.number]+5)*self.scale, s)
                    
-        paint.end()
+            paint.end()
  
     def mousePressEvent(self, e):
         for v in self.vertices.keys():
             if self.vertices[v].contains(e.pos()):
-                self.selectedVertex = self.vertices[v]
-                self.selectedEdge = None
+                self.selectedTask = v
                 self.repaint()
                 self.pressed = True
                 return
-        self.selectedEdge = None
-        self.selectedVertex = None
+        self.selectedTask = None
         self.repaint()
 
     def mouseMoveEvent(self, e):
         if self.pressed:
-            self.selectedVertex.moveTo(e.pos().x() - self.size / 2, e.pos().y() - self.size / 2)
+            for p in self.positions.keys():
+                if self.positions[p].contains(e.pos()):
+                    self.targetPos = p
+                    self.repaint()
+                    return
+            self.targetPos = None
             self.repaint()
 
     def mouseReleaseEvent(self, e):
+        if self.pressed and self.targetPos:
+            self.schedule.MoveVertex(self.selectedTask, self.schedule.vertices[self.selectedTask.m].index(self.selectedTask), self.schedule.GetProcessor(self.targetPos[0]), self.targetPos[1])
+            self.proc = self.schedule.GetProcessorsWithoutDoubles()
+            self.time = self.schedule.Interpret()
+            self.ResizeCanvas()
+            self.repaint()
         self.pressed = False
-        if self.edgeDraw:
-            for v in self.vertices.keys():
-                if self.vertices[v].contains(e.pos()):
-                    ne = ProgramEdge(self.curEdge[1], v, 1)
-                    self.program.edges.append(ne)
-                    self.program._buildData()
-            self.edgeDraw = False
-            self.curEdge = None     
-            self.repaint()       
+        self.targetPos = None
+        self.selectedTask = None
     
     def drawArrow(self, paint, x1, y1, x2, y2):
         m = paint.worldMatrix()
@@ -132,18 +156,23 @@ class ScheduleVisualizer(QScrollArea):
         
     def SetScale(self, d):
         self.scale = d
-        self.repaint()
-        self.setGeometry(0, 0, int((70 + self.time * 10)*self.scale), int((40 + self.proc * 20)*self.scale) )        
+        self.ResizeCanvas()
+        self.repaint()      
             
-    def Visualize(self, s):
-        self.schedule = s
+    def Visualize(self, m):
+        self.schedule = m.system.schedule
+        self.method = m
+        # TODO: get rid of this
         self.proc = self.schedule.GetProcessorsWithoutDoubles()
         self.time = self.schedule.Interpret()
+        self.ResizeCanvas()
         self.repaint()
-        self.setGeometry(0, 0, int((70 + self.time * 10)*self.scale), int((40 + self.proc * 20)*self.scale) )
         
     def SetColors(self, a, t, d, l):
         self.axisColor = a
         self.taskColor = t
         self.deliveriesColor = d
         self.lastopColor = l
+
+    def ResizeCanvas(self):
+        self.setGeometry(0, 0, int((70 + self.time * 10)*self.scale), int((40 + self.proc * 20)*self.scale))

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'RandomSystemDialog.ui'
 #
-# Created: Fri Feb  3 17:52:31 2012
-#      by: PyQt4 UI code generator 4.8.4
+# Created: Sat Feb 04 17:26:41 2012
+#      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -34,7 +34,6 @@ class Ui_RandomSystemDialog(object):
         self.centralwidget.setSizePolicy(sizePolicy)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.centralwidget)
-        self.verticalLayout_4.setMargin(0)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)

@@ -15,7 +15,7 @@ class Viewer(QMainWindow):
 
     def setData(self, m):
         self.method = m
-        self.visualizer.Visualize(self.method.system.schedule)
+        self.visualizer.Visualize(self.method)
         self.ui.stepforth.setEnabled(True)
         self.ui.lineEdit.setEnabled(True)
         self.ui.labelTotal.setText(str(self.method.trace.length()))
