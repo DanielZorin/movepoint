@@ -24,6 +24,7 @@ class ScheduleVisualizer(QScrollArea):
         self.setGeometry(0, 0, (70 + self.time * 10)*self.scale, (40 + self.proc * 20)*self.scale)
         self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         self.schedule = None
+        self.vertices = {}
         
     def paintEvent(self, event):
         paint = QPainter()
@@ -46,8 +47,9 @@ class ScheduleVisualizer(QScrollArea):
             for m in self.schedule.vertices.keys():
                 for t in self.schedule.vertices[m]:
                     start = self.schedule.executionTimes[t][0]
-                    finish = self.schedule.executionTimes[t][1]  
+                    finish = self.schedule.executionTimes[t][1]
                     task = QtCore.QRect((50 + start * 10)*self.scale, (procX[t.m.number] - 5)*self.scale, (finish - start)*10*self.scale, 10*self.scale)
+                    self.vertices[t] = task
                     paint.fillRect(task, self.taskColor)    
                     paint.drawRect(task)
                     taskRects[(t.v.number, t.k.number)] = task
@@ -68,7 +70,35 @@ class ScheduleVisualizer(QScrollArea):
                     paint.drawText((10 + finish + start - int(len(s)/2))*5*self.scale, (procX[t.m.number]+5)*self.scale, s) 
                    
         paint.end()
-        
+ 
+    def mousePressEvent(self, e):
+        for v in self.vertices.keys():
+            if self.vertices[v].contains(e.pos()):
+                self.selectedVertex = self.vertices[v]
+                self.selectedEdge = None
+                self.repaint()
+                self.pressed = True
+                return
+        self.selectedEdge = None
+        self.selectedVertex = None
+        self.repaint()
+
+    def mouseMoveEvent(self, e):
+        if self.pressed:
+            self.selectedVertex.moveTo(e.pos().x() - self.size / 2, e.pos().y() - self.size / 2)
+            self.repaint()
+
+    def mouseReleaseEvent(self, e):
+        self.pressed = False
+        if self.edgeDraw:
+            for v in self.vertices.keys():
+                if self.vertices[v].contains(e.pos()):
+                    ne = ProgramEdge(self.curEdge[1], v, 1)
+                    self.program.edges.append(ne)
+                    self.program._buildData()
+            self.edgeDraw = False
+            self.curEdge = None     
+            self.repaint()       
     
     def drawArrow(self, paint, x1, y1, x2, y2):
         m = paint.worldMatrix()
