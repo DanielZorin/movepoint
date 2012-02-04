@@ -12,7 +12,7 @@ class State:
     Vertex = 1
     Edge = 2
 
-class GraphCanvas(QScrollArea):
+class GraphCanvas(QWidget):
         
     colors = {
               "line": QColor(10, 34, 200),
@@ -35,13 +35,12 @@ class GraphCanvas(QScrollArea):
 
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
-        self.setGeometry(0, 0, 3000, 3000)
         self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         
     def paintEvent(self, event):
         if not self.program:
             return
-        paint = QPainter(self.viewport())
+        paint = QPainter(self)
         paint.setPen(self.colors["line"])
         paint.setFont(QtGui.QFont('Decorative', 10))
         for e in self.program.edges:
@@ -109,10 +108,11 @@ class GraphCanvas(QScrollArea):
             task = QtCore.QRect(e.x() - self.size / 2, e.y() - self.size / 2, self.size, self.size)
             v = ProgramVertex(len(self.program.vertices), 1)
             ver = Version(v, 1, 1.0)
-            task.versions = [ver]
+            v.versions = [ver]
             self.vertices[v] = task
             self.program.vertices.append(v)
             self.program._buildData()
+            self.ResizeCanvas()
             self.repaint()
         elif self.state == State.Edge:
             for v in self.vertices.keys():
@@ -129,6 +129,7 @@ class GraphCanvas(QScrollArea):
         elif self.state == State.Select:
             if self.pressed:
                 self.selectedVertex.moveTo(e.pos().x() - self.size / 2, e.pos().y() - self.size / 2)
+                self.ResizeCanvas()
                 self.repaint()
         elif self.state == State.Edge:
             if self.edgeDraw:
@@ -180,15 +181,18 @@ class GraphCanvas(QScrollArea):
         self.program = p
         x = 50
         y = 50
-        max = 40 * int(math.sqrt(len(self.program.vertices)))
+        maxi = 40 * int(math.sqrt(len(self.program.vertices)))
+        maxx = 0
         for v in self.program.vertices:
             task = QtCore.QRect(x - self.size / 2, y - self.size / 2, self.size, self.size)
-            if x < max:
+            if x < maxi:
                 x += 40
+                maxx = x
             else:
                 y += 40
                 x = 50
             self.vertices[v] = task
+        self.ResizeCanvas()
         self.repaint()
  
     def drawArrow(self, paint, x1, y1, x2, y2):
@@ -229,3 +233,13 @@ class GraphCanvas(QScrollArea):
         self.taskColor = t
         self.deliveriesColor = d
         self.lastopColor = l
+
+    def ResizeCanvas(self):
+        maxx = 0
+        maxy = 0
+        for r in self.vertices.values():
+            if r.topRight().x() > maxx:
+                maxx = r.topRight().x()
+            if r.bottomRight().y() > maxy:
+                maxy = r.bottomRight().y()
+        self.setGeometry(0, 0, max(maxx + 50, self.parent().width()), max(maxy + 50, self.parent().height()))

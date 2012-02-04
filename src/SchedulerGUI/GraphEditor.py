@@ -9,6 +9,7 @@ class GraphEditor(QMainWindow):
         self.ui = Ui_GraphEditor()
         self.ui.setupUi(self)
         self.canvas = GraphCanvas(self.ui.graphArea)
+        self.ui.graphArea.setWidget(self.canvas)
 
     def setData(self, data):
         self.system = data

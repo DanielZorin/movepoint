@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Sat Feb 04 17:26:41 2012
+# Created: Sat Feb 04 19:49:04 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,31 +28,34 @@ class Ui_GraphEditor(object):
 "    background-color: transparent;\n"
 "}"))
         self.centralwidget = QtGui.QWidget(GraphEditor)
+        self.centralwidget.setGeometry(QtCore.QRect(0, 59, 420, 252))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.graphArea = GraphCanvas(self.centralwidget)
-        self.graphArea.setWidgetResizable(True)
+        self.graphArea = QtGui.QScrollArea(self.centralwidget)
+        self.graphArea.setWidgetResizable(False)
         self.graphArea.setObjectName(_fromUtf8("graphArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget(self.graphArea)
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 232))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 398, 230))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.graphArea.setWidget(self.scrollAreaWidgetContents)
         self.horizontalLayout.addWidget(self.graphArea)
         self.verticalLayout.addLayout(self.horizontalLayout)
         GraphEditor.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(GraphEditor)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 420, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 420, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
         GraphEditor.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(GraphEditor)
+        self.statusbar.setGeometry(QtCore.QRect(0, 311, 420, 21))
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         GraphEditor.setStatusBar(self.statusbar)
         self.toolBar = QtGui.QToolBar(GraphEditor)
+        self.toolBar.setGeometry(QtCore.QRect(0, 22, 420, 37))
         self.toolBar.setObjectName(_fromUtf8("toolBar"))
         GraphEditor.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionSelect = QtGui.QAction(GraphEditor)
@@ -118,5 +121,4 @@ class Ui_GraphEditor(object):
         self.actionOpen_System.setText(QtGui.QApplication.translate("GraphEditor", "Open System", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_System.setText(QtGui.QApplication.translate("GraphEditor", "Save System", None, QtGui.QApplication.UnicodeUTF8))
 
-from SchedulerGUI.GraphCanvas import GraphCanvas
 from . import resources_rc
