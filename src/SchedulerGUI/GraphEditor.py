@@ -32,3 +32,7 @@ class GraphEditor(QMainWindow):
         self.ui.actionVertex.setChecked(False)
         self.ui.actionEdge.setChecked(True)
         self.canvas.state = State.Edge
+
+    def resizeEvent(self, e):
+        super(QMainWindow, self).resizeEvent(e)
+        self.canvas.ResizeCanvas()
