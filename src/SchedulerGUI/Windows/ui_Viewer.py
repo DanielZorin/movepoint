@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Fri Feb  3 17:52:31 2012
-#      by: PyQt4 UI code generator 4.8.4
+# Created: Sat Feb 04 17:26:41 2012
+#      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -37,6 +37,7 @@ class Ui_Viewer(object):
 "    background-color: transparent;\n"
 "}"))
         self.centralwidget = QtGui.QWidget(Viewer)
+        self.centralwidget.setGeometry(QtCore.QRect(0, 22, 584, 314))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -54,7 +55,7 @@ class Ui_Viewer(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.visualizerArea = ScheduleVisualizer(self.centralwidget)
+        self.visualizerArea = QtGui.QScrollArea(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -63,7 +64,7 @@ class Ui_Viewer(object):
         self.visualizerArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.visualizerArea.setWidgetResizable(False)
         self.visualizerArea.setObjectName(_fromUtf8("visualizerArea"))
-        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents = QtGui.QWidget(self.visualizerArea)
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 452, 221))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -178,7 +179,6 @@ class Ui_Viewer(object):
         self.info.setObjectName(_fromUtf8("info"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.info)
         self.verticalLayout_3.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
-        self.verticalLayout_3.setMargin(0)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         self.label_3 = QtGui.QLabel(self.info)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
@@ -242,7 +242,7 @@ class Ui_Viewer(object):
         self.horizontalLayout_4.addLayout(self.horizontalLayout_3)
         Viewer.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(Viewer)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 584, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 584, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuSchedule = QtGui.QMenu(self.menubar)
         self.menuSchedule.setObjectName(_fromUtf8("menuSchedule"))
@@ -290,5 +290,4 @@ class Ui_Viewer(object):
         self.actionStep_Backward.setText(QtGui.QApplication.translate("Viewer", "Step Backward", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStep_Backward.setShortcut(QtGui.QApplication.translate("Viewer", "PgUp", None, QtGui.QApplication.UnicodeUTF8))
 
-from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
 from . import resources_rc
