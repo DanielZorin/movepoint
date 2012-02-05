@@ -1,7 +1,7 @@
 import math
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QPointF
-from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QColor, QCursor, QDialog, QIntValidator
+from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QColor, QCursor, QDialog, QIntValidator, QTableWidgetItem
 from Schedules.ProgramVertex import ProgramVertex
 from Schedules.ProgramEdge import ProgramEdge
 from Core.Version import Version
@@ -19,21 +19,52 @@ class VertexDialog(QDialog):
         QDialog.__init__(self)
         self.ui = Ui_VertexDialog()
         self.ui.setupUi(self)
+        self.valid = QIntValidator(0, 1000000, self)
+        self.ui.time.setValidator(self.valid)
+        self.ui.versions.verticalHeader().hide()
+        self.ui.versions.horizontalHeader().setStretchLastSection(True)
 
     def Load(self, v):
         self.ui.name.setText(v.name)
         self.ui.time.setText(str(v.time))
+        for ver in v.versions:
+            self.ui.versions.insertRow(0)
+            item = QTableWidgetItem(str(ver.number))
+            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
+            self.ui.versions.setItem(0, 0, item)
+            self.ui.versions.setItem(0, 1, QTableWidgetItem(str(ver.reliability)))
+        height = 0
+        for i in range(self.ui.versions.rowCount()):
+            height += self.ui.versions.rowHeight(i)
+        # Dirty resizing to make the table visible
+        self.resize(self.width(), self.height() + height - self.ui.versions.height())
+
+    def AddVersion(self):
+        self.ui.versions.insertRow(0)
+        item = QTableWidgetItem(str(self.ui.versions.rowCount()))
+        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
+        self.ui.versions.setItem(0, 0, item)
+        self.ui.versions.setItem(0, 1, QTableWidgetItem(str(1.0)))
+
+    def RemoveVersion(self):
+        self.ui.versions.removeRow(self.ui.versions.currentRow())
 
     def SetResult(self, v):
-        v.name = self.ui.name
+        v.name = self.ui.name.text()
         v.time = int(self.ui.time.text())
+        v.versions = []
+        for i in range(self.ui.versions.rowCount()):
+            print(float(self.ui.versions.itemAt(i, 1).text()), self.ui.versions.itemAt(i, 1).text())
+            ver = Version(v, i + 1, float(self.ui.versions.item(i, 1).text()))
+            v.versions.append(ver)
+        v.versions.sort(key=lambda x: x.reliability)
 
 class EdgeDialog(QDialog):
     def __init__(self):
         QDialog.__init__(self)
         self.ui = Ui_EdgeDialog()
         self.ui.setupUi(self)
-        self.valid = QIntValidator(0, 1000000)
+        self.valid = QIntValidator(0, 1000000, self)
         self.ui.volume.setValidator(self.valid)
 
     def Load(self, e):
@@ -41,7 +72,7 @@ class EdgeDialog(QDialog):
         self.ui.volume.setText(str(e.volume))
 
     def SetResult(self, e):
-        e.name = self.ui.name
+        e.name = self.ui.name.text()
         e.volume = int(self.ui.volume.text())
 
 class GraphCanvas(QWidget):
@@ -68,6 +99,7 @@ class GraphCanvas(QWidget):
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
         self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
         
     def paintEvent(self, event):
         if not self.program:
@@ -129,8 +161,8 @@ class GraphCanvas(QWidget):
                     print(ed, area)
                     if area < 100:
                         self.selectedEdge = ed
-                        self.repaint()
                         self.selectedVertex = None
+                        self.repaint()
                         return
             self.selectedEdge = None
             self.selectedVertex = None
@@ -179,6 +211,15 @@ class GraphCanvas(QWidget):
             self.curEdge = None     
             self.repaint()
 
+    def mouseDoubleClickEvent(self, e):
+        if self.selectedVertex != None:
+            v = next(v for v in self.vertices.keys() if self.vertices[v] == self.selectedVertex)
+            self.EditVertex(v)
+            self.repaint()
+        elif self.selectedEdge != None:
+            self.EditEdge(self.selectedEdge)
+            self.repaint()
+
     def keyPressEvent(self, e):
         print(e.key())
         if e.key() == QtCore.Qt.Key_Delete:
@@ -212,9 +253,12 @@ class GraphCanvas(QWidget):
         elif e.key() == QtCore.Qt.Key_Return:
             print ("Enter pressed")
             if self.selectedVertex != None:
+                v = next(v for v in self.vertices.keys() if self.vertices[v] == self.selectedVertex)
+                self.EditVertex(v)
                 self.repaint()
             elif self.selectedEdge != None:
                 self.EditEdge(self.selectedEdge)
+                self.repaint()
 
     def EditEdge(self, e):
         d = EdgeDialog()
