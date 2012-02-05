@@ -75,7 +75,10 @@ class ScheduleVisualizer(QWidget):
                 self.positions[(m, i)] = QtCore.QRect(prev.topRight(), QPoint(prev.topRight().x() + 100, prev.bottomRight().y()))
             
             if self.targetPos:
-                paint.fillRect(self.positions[self.targetPos], self.lastopColor)
+                width = min(self.selectedTask.v.time * 10 * self.scale, self.positions[self.targetPos].width())
+                rect = QtCore.QRect(self.positions[self.targetPos])
+                rect.setWidth(width)
+                paint.fillRect(rect, self.lastopColor)
                     
             # Draw deliveries   
             paint.setPen(QPen(self.deliveriesColor, 2)) 
@@ -118,11 +121,14 @@ class ScheduleVisualizer(QWidget):
             self.schedule.MoveVertex(self.selectedTask, self.schedule.vertices[self.selectedTask.m].index(self.selectedTask), self.schedule.GetProcessor(self.targetPos[0]), self.targetPos[1])
             self.proc = self.schedule.GetProcessorsWithoutDoubles()
             self.time = self.schedule.Interpret()
+            self.targetPos = None
+            self.pressed = False
             self.ResizeCanvas()
             self.repaint()
         self.pressed = False
         self.targetPos = None
         self.selectedTask = None
+        self.repaint()
     
     def drawArrow(self, paint, x1, y1, x2, y2):
         m = paint.worldMatrix()
