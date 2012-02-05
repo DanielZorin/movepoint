@@ -13,7 +13,7 @@
    <string>Edit Vertex</string>
   </property>
   <property name="styleSheet" >
-   <string notr="true" >QWidget, QMenuBar::item {
+   <string notr="true" >QWidget, QMenuBar::item, QHeaderView::section {
 	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                       stop: 0 #c5d8ef, stop: 1 #89a5c3);
 }

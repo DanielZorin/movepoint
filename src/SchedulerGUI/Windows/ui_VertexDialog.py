@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'VertexDialog.ui'
 #
-# Created: Sun Feb 05 16:00:27 2012
+# Created: Sun Feb 05 19:15:15 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_VertexDialog(object):
     def setupUi(self, VertexDialog):
         VertexDialog.setObjectName(_fromUtf8("VertexDialog"))
         VertexDialog.resize(231, 258)
-        VertexDialog.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
+        VertexDialog.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item, QHeaderView::section {\n"
 "    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
 "}\n"

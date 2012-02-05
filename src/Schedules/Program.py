@@ -77,6 +77,27 @@ class Program(object):
         except(ValueError):
             f.close()
             raise SchedulerXmlException(filename)
+
+    def Export(self, dom, root):
+        ''' Exports program to XML by appending children to the root XML element of dom Document'''
+
+        for v in self.vertices:
+            vertex = dom.createElement("vertex")
+            vertex.setAttribute("name", v.name)
+            vertex.setAttribute("number", str(v.number))
+            vertex.setAttribute("complexity", str(v.time))
+            for ver in v.versions:
+                vers = dom.createElement("version")
+                vers.setAttribute("reliability", str(ver.reliability))
+                vertex.appendChild(vers)
+            root.appendChild(vertex)
+        for e in self.edges:
+            edge = dom.createElement("edge")
+            edge.setAttribute("name", e.name)
+            edge.setAttribute("source", str(e.source.number))
+            edge.setAttribute("destination", str(e.destination.number))
+            edge.setAttribute("volume", str(e.volume))
+            root.appendChild(edge)
     
     def CheckCycles(self):
         ''' Checks that there are no cycles in the graph 
