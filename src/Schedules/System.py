@@ -35,6 +35,9 @@ class System(object):
                     "v2":5}
     
     def __init__(self, filename=""):
+        self.Reload(filename)
+ 
+    def Reload(self, filename):    
         if filename == "":
             return
         self.program = Program(filename)
@@ -42,12 +45,12 @@ class System(object):
         # TODO: exception in case of any errors         
         self.schedule = Schedule(self.program, self.processors)
         self.schedule.SetToDefault()
-        
+                   
     def LoadProcessors(self, filename):
         '''Parse the XML with to get the specs of the processors
         
         .. warning:: Describe XML format here'''
-        f = open(filename)
+        f = open(filename, "r")
         dom = xml.dom.minidom.parse(f)
         
         for node in dom.childNodes:
@@ -63,6 +66,21 @@ class System(object):
                         self.processors.append(p)
         f.close()
 
+    def Export(self, filename):
+        f = open(filename, "w")
+        dom = xml.dom.minidom.Document()
+        root = dom.createElement("program")
+        root.setAttribute("tdir", str(self.tdir))
+        root.setAttribute("rdir", str(self.rdir))
+        dom.appendChild(root)
+        self.program.Export(dom, root)
+        for p in self.processors:
+            proc = dom.createElement("processor")
+            proc.setAttribute("speed", str(p.speed))
+            proc.setAttribute("reliability", str(p.reliability))
+            root.appendChild(proc)
+        f.write(dom.toprettyxml())
+        f.close()
             
     def LocalOptimal(self):
         '''Check if the current schedule is local optimal, i.e.

@@ -1,8 +1,9 @@
-from PyQt4.QtGui import QMainWindow
+from PyQt4.QtGui import QMainWindow, QFileDialog
 from SchedulerGUI.Windows.ui_GraphEditor import Ui_GraphEditor
 from SchedulerGUI.GraphCanvas import GraphCanvas, State
 
 class GraphEditor(QMainWindow):
+    xmlfile = None
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -36,3 +37,30 @@ class GraphEditor(QMainWindow):
     def resizeEvent(self, e):
         super(QMainWindow, self).resizeEvent(e)
         self.canvas.ResizeCanvas()
+
+    def New(self):
+        self.system.program.vertices = []
+        self.system.program.edges = []
+        self.system.program._buildData()
+        self.canvas.Clear()
+        self.canvas.Visualize(self.system.program)
+
+    def Open(self):
+        name = QFileDialog.getOpenFileName(filter="*.xml")
+        if name == None or name == '':
+            return
+        self.system.Reload(name)
+        self.canvas.Clear()
+        self.canvas.Visualize(self.system.program)
+        self.xmlfile = name
+
+    def Save(self):
+        if self.xmlfile == None:
+            self.SaveAs()
+        else:
+            self.system.Export(self.xmlfile)
+
+    def SaveAs(self):
+        self.xmlfile = QFileDialog.getSaveFileName(directory=".xml", filter="*.xml")
+        if self.xmlfile != '':
+            self.system.Export(self.xmlfile)

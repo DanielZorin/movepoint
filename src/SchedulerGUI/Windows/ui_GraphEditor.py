@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Sun Feb 05 16:00:27 2012
+# Created: Sun Feb 05 19:15:15 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -92,9 +92,15 @@ class Ui_GraphEditor(object):
         icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/cd.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionSave_System.setIcon(icon5)
         self.actionSave_System.setObjectName(_fromUtf8("actionSave_System"))
+        self.actionSave_System_As = QtGui.QAction(GraphEditor)
+        self.actionSave_System_As.setObjectName(_fromUtf8("actionSave_System_As"))
+        self.actionExit = QtGui.QAction(GraphEditor)
+        self.actionExit.setObjectName(_fromUtf8("actionExit"))
         self.menuFile.addAction(self.actionNew_System)
         self.menuFile.addAction(self.actionOpen_System)
         self.menuFile.addAction(self.actionSave_System)
+        self.menuFile.addAction(self.actionSave_System_As)
+        self.menuFile.addAction(self.actionExit)
         self.menubar.addAction(self.menuFile.menuAction())
         self.toolBar.addAction(self.actionNew_System)
         self.toolBar.addAction(self.actionOpen_System)
@@ -108,6 +114,11 @@ class Ui_GraphEditor(object):
         QtCore.QObject.connect(self.actionSelect, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.toggleSelect)
         QtCore.QObject.connect(self.actionVertex, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.toggleVertex)
         QtCore.QObject.connect(self.actionEdge, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.toggleEdge)
+        QtCore.QObject.connect(self.actionNew_System, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.New)
+        QtCore.QObject.connect(self.actionOpen_System, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.Open)
+        QtCore.QObject.connect(self.actionSave_System, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.Save)
+        QtCore.QObject.connect(self.actionSave_System_As, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.SaveAs)
+        QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL(_fromUtf8("triggered()")), GraphEditor.close)
         QtCore.QMetaObject.connectSlotsByName(GraphEditor)
 
     def retranslateUi(self, GraphEditor):
@@ -115,10 +126,20 @@ class Ui_GraphEditor(object):
         self.menuFile.setTitle(QtGui.QApplication.translate("GraphEditor", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("GraphEditor", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSelect.setText(QtGui.QApplication.translate("GraphEditor", "Select", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSelect.setShortcut(QtGui.QApplication.translate("GraphEditor", "Alt+1", None, QtGui.QApplication.UnicodeUTF8))
         self.actionVertex.setText(QtGui.QApplication.translate("GraphEditor", "Add Vertex", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionVertex.setShortcut(QtGui.QApplication.translate("GraphEditor", "Alt+2", None, QtGui.QApplication.UnicodeUTF8))
         self.actionEdge.setText(QtGui.QApplication.translate("GraphEditor", "Add Edge", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEdge.setShortcut(QtGui.QApplication.translate("GraphEditor", "Alt+3", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNew_System.setText(QtGui.QApplication.translate("GraphEditor", "New System", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNew_System.setShortcut(QtGui.QApplication.translate("GraphEditor", "Ctrl+N", None, QtGui.QApplication.UnicodeUTF8))
         self.actionOpen_System.setText(QtGui.QApplication.translate("GraphEditor", "Open System", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionOpen_System.setShortcut(QtGui.QApplication.translate("GraphEditor", "Ctrl+O", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_System.setText(QtGui.QApplication.translate("GraphEditor", "Save System", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSave_System.setShortcut(QtGui.QApplication.translate("GraphEditor", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSave_System_As.setText(QtGui.QApplication.translate("GraphEditor", "Save System As...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSave_System_As.setShortcut(QtGui.QApplication.translate("GraphEditor", "Ctrl+Shift+S", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExit.setText(QtGui.QApplication.translate("GraphEditor", "Exit", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExit.setShortcut(QtGui.QApplication.translate("GraphEditor", "Ctrl+X", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc

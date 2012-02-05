@@ -54,7 +54,6 @@ class VertexDialog(QDialog):
         v.time = int(self.ui.time.text())
         v.versions = []
         for i in range(self.ui.versions.rowCount()):
-            print(float(self.ui.versions.itemAt(i, 1).text()), self.ui.versions.itemAt(i, 1).text())
             ver = Version(v, i + 1, float(self.ui.versions.item(i, 1).text()))
             v.versions.append(ver)
         v.versions.sort(key=lambda x: x.reliability)
@@ -339,4 +338,13 @@ class GraphCanvas(QWidget):
                 maxx = r.topRight().x()
             if r.bottomRight().y() > maxy:
                 maxy = r.bottomRight().y()
-        self.setGeometry(0, 0, max(maxx + 50, self.parent().width()), max(maxy + 50, self.parent().height()))
+        self.setGeometry(0, 0, max(maxx + 10, self.parent().width()), max(maxy + 10, self.parent().height()))
+
+    def Clear(self):
+        self.vertices = {}
+        self.edges = {}
+        self.selectedVertex = None
+        self.pressed = False
+        self.edgeDraw = False
+        self.curEdge = None
+        self.selectedEdge = None
