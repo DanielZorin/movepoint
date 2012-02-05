@@ -1,16 +1,48 @@
 import math
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QPoint, QPointF
-from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QColor, QScrollArea, QCursor
+from PyQt4.QtCore import QPointF
+from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QColor, QCursor, QDialog, QIntValidator
 from Schedules.ProgramVertex import ProgramVertex
 from Schedules.ProgramEdge import ProgramEdge
 from Core.Version import Version
+from SchedulerGUI.Windows.ui_VertexDialog import Ui_VertexDialog
+from SchedulerGUI.Windows.ui_EdgeDialog import Ui_EdgeDialog
 
 class State:
     ''' Enum representing current editing mode '''
     Select = 0
     Vertex = 1
     Edge = 2
+
+class VertexDialog(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        self.ui = Ui_VertexDialog()
+        self.ui.setupUi(self)
+
+    def Load(self, v):
+        self.ui.name.setText(v.name)
+        self.ui.time.setText(str(v.time))
+
+    def SetResult(self, v):
+        v.name = self.ui.name
+        v.time = int(self.ui.time.text())
+
+class EdgeDialog(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        self.ui = Ui_EdgeDialog()
+        self.ui.setupUi(self)
+        self.valid = QIntValidator(0, 1000000)
+        self.ui.volume.setValidator(self.valid)
+
+    def Load(self, e):
+        self.ui.name.setText(e.name)
+        self.ui.volume.setText(str(e.volume))
+
+    def SetResult(self, e):
+        e.name = self.ui.name
+        e.volume = int(self.ui.volume.text())
 
 class GraphCanvas(QWidget):
         
@@ -148,6 +180,7 @@ class GraphCanvas(QWidget):
             self.repaint()
 
     def keyPressEvent(self, e):
+        print(e.key())
         if e.key() == QtCore.Qt.Key_Delete:
             if self.selectedVertex != None:
                 v = next(v for v in self.vertices.keys() if self.vertices[v] == self.selectedVertex)
@@ -165,7 +198,7 @@ class GraphCanvas(QWidget):
                 self.selectedVertex = None
                 self.program._buildData()
                 self.repaint()
-            if self.selectedEdge != None:
+            elif self.selectedEdge != None:
                 new_edges = []
                 for e in self.program.edges:
                     if e != self.selectedEdge:
@@ -176,6 +209,26 @@ class GraphCanvas(QWidget):
                 self.selectedEdge = None
                 self.program._buildData()
                 self.repaint()
+        elif e.key() == QtCore.Qt.Key_Return:
+            print ("Enter pressed")
+            if self.selectedVertex != None:
+                self.repaint()
+            elif self.selectedEdge != None:
+                self.EditEdge(self.selectedEdge)
+
+    def EditEdge(self, e):
+        d = EdgeDialog()
+        d.Load(e)
+        d.exec_()
+        if d.result() == QDialog.Accepted:
+            d.SetResult(e)
+
+    def EditVertex(self, v):
+        d = VertexDialog()
+        d.Load(v)
+        d.exec_()
+        if d.result() == QDialog.Accepted:
+            d.SetResult(v)
 
     def Visualize(self, p):
         self.program = p

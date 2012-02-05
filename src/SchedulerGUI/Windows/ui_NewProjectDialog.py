@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'NewProjectDialog.ui'
 #
-# Created: Sat Feb 04 19:49:04 2012
+# Created: Sun Feb 05 13:58:46 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,6 +18,14 @@ class Ui_NewProjectDialog(object):
     def setupUi(self, NewProjectDialog):
         NewProjectDialog.setObjectName(_fromUtf8("NewProjectDialog"))
         NewProjectDialog.resize(318, 201)
+        NewProjectDialog.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
+"    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
+"}\n"
+"\n"
+"QLabel, QSlider {\n"
+"    background-color: transparent;\n"
+"}a"))
         NewProjectDialog.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.verticalLayout_2 = QtGui.QVBoxLayout(NewProjectDialog)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))

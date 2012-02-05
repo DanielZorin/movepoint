@@ -30,7 +30,7 @@
 
 QLabel, QSlider {
 	background-color: transparent;
-}</string>
+}a</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
    <property name="geometry" >

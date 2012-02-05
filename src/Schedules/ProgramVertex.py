@@ -15,6 +15,8 @@ class ProgramVertex(object):
     
     versions = None
     '''List of versions of the task. See :class:`~Core.Version.Version` for reference'''
+
+    name = ""
     
     def __init__(self, n, c):
         self.number = n

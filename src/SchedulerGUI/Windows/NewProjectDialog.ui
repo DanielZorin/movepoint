@@ -12,6 +12,16 @@
   <property name="windowTitle" >
    <string>New Project</string>
   </property>
+  <property name="styleSheet" >
+   <string notr="true" >QWidget, QMenuBar::item {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);
+}
+
+QLabel, QSlider {
+	background-color: transparent;
+}a</string>
+  </property>
   <property name="locale" >
    <locale country="UnitedStates" language="English" />
   </property>
