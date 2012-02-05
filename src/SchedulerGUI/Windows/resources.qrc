@@ -1,5 +1,7 @@
 <RCC>
-  <qresource prefix="pics">
+  <qresource prefix="pics" >
+    <file>pics/add.png</file>
+    <file>pics/delete.png</file>
     <file>pics/edge.png</file>
     <file>pics/select.png</file>
     <file>pics/vertex.png</file>

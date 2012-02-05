@@ -16,6 +16,8 @@ class ProgramEdge(object):
     volume = None
     '''Volume of data sent over this edge'''
 
+    name = ""
+
     def __init__(self, src, dst, v):
         self.source = src
         self.destination = dst

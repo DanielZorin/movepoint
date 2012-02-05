@@ -6,7 +6,7 @@ Created on 27.12.2010
 import math
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QPoint, QPointF
-from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QScrollArea
+from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen
 
 class ScheduleVisualizer(QWidget):
 
