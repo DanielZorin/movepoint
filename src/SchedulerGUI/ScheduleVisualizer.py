@@ -5,7 +5,7 @@ Created on 27.12.2010
 '''
 import math
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QPoint, QPointF
+from PyQt4.QtCore import QPoint, QPointF, SIGNAL
 from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen
 
 class ScheduleVisualizer(QWidget):
@@ -118,16 +118,23 @@ class ScheduleVisualizer(QWidget):
 
     def mouseReleaseEvent(self, e):
         if self.pressed and self.targetPos:
-            self.schedule.MoveVertex(self.selectedTask, self.schedule.vertices[self.selectedTask.m].index(self.selectedTask), self.schedule.GetProcessor(self.targetPos[0]), self.targetPos[1])
-            self.proc = self.schedule.GetProcessorsWithoutDoubles()
-            self.time = self.schedule.Interpret()
+            result = self.method.ManualStep("MoveVertex", 
+                                   v = self.selectedTask, 
+                                   n1 = self.schedule.vertices[self.selectedTask.m].index(self.selectedTask), 
+                                   m2 = self.schedule.GetProcessor(self.targetPos[0]), 
+                                   n2 = self.targetPos[1])
+            if result:
+                self.proc = self.schedule.GetProcessorsWithoutDoubles()
+                self.time = self.schedule.Interpret()
+                self.emit(SIGNAL("ManualOperation"))
             self.targetPos = None
             self.pressed = False
+            self.selectedTask = None
             self.ResizeCanvas()
             self.repaint()
+            return
         self.pressed = False
         self.targetPos = None
-        self.selectedTask = None
         self.repaint()
     
     def drawArrow(self, paint, x1, y1, x2, y2):
@@ -181,4 +188,5 @@ class ScheduleVisualizer(QWidget):
         self.lastopColor = l
 
     def ResizeCanvas(self):
-        self.setGeometry(0, 0, int((70 + self.time * 10)*self.scale), int((40 + self.proc * 20)*self.scale))
+        self.setGeometry(0, 0, max(int((70 + self.time * 10)*self.scale), self.parent().width()), 
+                         max(int((40 + self.proc * 20)*self.scale), self.parent().height()))

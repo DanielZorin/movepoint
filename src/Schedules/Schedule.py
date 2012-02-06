@@ -163,7 +163,7 @@ class Schedule(object):
                 new.append(v)
                 tr = self._trans(v)
                 new += tr
-                new += self.vertices[v.m.number][v.n:]
+                new += self.vertices[v.m.number][self.vertices[v.m.number].index(v):]
                 new = list(set(new))
             if len(new) == len(cur):
                 self._succCache[s] = new

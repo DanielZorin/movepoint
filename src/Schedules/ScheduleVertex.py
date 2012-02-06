@@ -25,9 +25,6 @@ class ScheduleVertex(object):
     
     m = None
     ''':class:`~Core.Processor.Processor` object'''
-    
-    n = None
-    '''Number on the processor'''
 
     def __init__(self, v, k, m):
         self.v = v
