@@ -252,12 +252,29 @@ class SimulatedAnnealing(object):
                 print(v, n1, m2, n2)
                 return False
             else:
-                self.lastOperation = MoveVertex(v, v.m, n1, m2, n2)     
+                self.lastOperation = MoveVertex(v, v.m, n1, m2, n2)
+                self.system.schedule.ApplyOperation(self.lastOperation)
+        elif op == "AddProcessor":
+            m = params["m"]
+            self.lastOperation = AddProcessor(m)
+            self.system.schedule.ApplyOperation(self.lastOperation)
+        elif op == "DeleteProcessor":
+            m = params["m"]
+            self.lastOperation = DeleteProcessor(m)
+            self.system.schedule.ApplyOperation(self.lastOperation)
+        elif op == "AddVersion":
+            v = params["v"]
+            newproc = self.system.schedule.AddVersion(v)
+            self.lastOperation = AddVersion(v, newproc, 1, newproc, 2)
+        elif op == "DeleteVersion":
+            v = params["v"]
+            (m1, m2, n1, n2) = self.system.schedule.DeleteVersion(v) 
+            self.lastOperation = DeleteVersion(v, m1, n1, m2, n2)
+        
         cur = self.trace.getLast()[1]
         curTime = cur["time"]
         curRel = cur["reliability"]
         curProc = cur["processors"]
-        self.system.schedule.ApplyOperation(self.lastOperation)
         self.lastOperation.result = True
         new_time = self.system.schedule.Interpret()
         new_rel = self.system.schedule.GetReliability()
