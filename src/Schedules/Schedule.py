@@ -642,9 +642,7 @@ class Schedule(object):
         return False
     
     def CanAddVersions(self):
-        ''':return: True if there is at least one task with two available unused versions
-        
-        .. warning:: Not implemented yet'''
+        ''':return: True if there is at least one task with two available unused versions'''
         for v in self.program.vertices:
             cur = self.currentVersions[v.number]
             if len(v.versions) >= len(cur) + 2:
