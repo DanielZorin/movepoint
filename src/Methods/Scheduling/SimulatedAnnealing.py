@@ -240,7 +240,35 @@ class SimulatedAnnealing(object):
         op = self._chooseOperation()
         self._applyOperation(op)
         self._selectNewSchedule()
-     
+
+    def ManualStep(self, op, **params):
+        ''' Callback for applying operations from the outside of this class, i.e. when the operation is defined by GUI'''
+        if op == "MoveVertex":
+            v = params["v"]
+            n1 = params["n1"]
+            n2 = params["n2"]
+            m2 = params["m2"]
+            if not self.system.schedule.TryMoveVertex(v, n1, m2, n2):
+                print(v, n1, m2, n2)
+                return False
+            else:
+                self.lastOperation = MoveVertex(v, v.m, n1, m2, n2)     
+        cur = self.trace.getLast()[1]
+        curTime = cur["time"]
+        curRel = cur["reliability"]
+        curProc = cur["processors"]
+        self.system.schedule.ApplyOperation(self.lastOperation)
+        self.lastOperation.result = True
+        new_time = self.system.schedule.Interpret()
+        new_rel = self.system.schedule.GetReliability()
+        new_proc = self.system.schedule.GetProcessors()
+        self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
+        best = self.trace.getBest()[1]
+        if new_time <= self.system.tdir and new_rel >= self.system.rdir:
+            if curProc < best["processors"]  or (curProc == best["processors"] and curTime < best["time"]):
+                self.trace.setBest(self.trace.length())
+        return True
+   
     def _chooseRandomKey(self, dict):
         ''' Dict is key:probability. A key is chosen according to this distribution'''
         v = random.random()

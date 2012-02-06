@@ -1,4 +1,5 @@
 from PyQt4.QtGui import QDialog, QMainWindow, QIntValidator
+from PyQt4.QtCore import SIGNAL, QObject
 from SchedulerGUI.PreferencesDialog import PreferencesDialog
 from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
 from SchedulerGUI.Windows.ui_Viewer import Ui_Viewer
@@ -12,6 +13,7 @@ class Viewer(QMainWindow):
         self.visualizer = ScheduleVisualizer(self.ui.visualizerArea)
         self.ui.visualizerArea.setWidget(self.visualizer)
         self.preferences = PreferencesDialog()
+        QObject.connect(self.visualizer, SIGNAL("ManualOperation"), self.Update)
 
     def setData(self, m):
         self.method = m
@@ -38,6 +40,9 @@ class Viewer(QMainWindow):
         else:
             self.ui.stepforth.setEnabled(True)
             self.ui.replay.setEnabled(True)
+
+    def Update(self):
+        self.setData(self.method)
 
     def SelectSchedule(self, s):
         if s == '':
@@ -106,3 +111,7 @@ class Viewer(QMainWindow):
             v *= 3.0
             v += 1.0
         self.visualizer.SetScale(1.5 * v)
+
+    def resizeEvent(self, e):
+        super(QMainWindow, self).resizeEvent(e)
+        self.visualizer.ResizeCanvas()
