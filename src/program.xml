@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<program tdir="50" rdir="0.6">
+<vertex number="1" complexity="5">
+	<version reliability="0.98"/>
+	<version reliability="0.98"/>
+	<version reliability="0.98"/>
+</vertex>
+<vertex number="3" complexity="7">
+	<version reliability="0.98"/>
+	<version reliability="0.98"/>
+	<version reliability="0.98"/>
+</vertex>
+<vertex number="2" complexity="10">
+	<version reliability="0.98"/>
+</vertex>
+<vertex number="4" complexity="6">
+	<version reliability="0.98"/>
+</vertex>
+<vertex number="5" complexity="8">
+	<version reliability="0.98"/>
+</vertex>
+<edge source="1" destination="3" volume="2"/>
+<edge source="2" destination="3" volume="4"/>
+<edge source="3" destination="5" volume="3"/>
+<edge source="4" destination="5" volume="1"/>
+<processor speed="5" reliability="0.99"/>
+</program>
