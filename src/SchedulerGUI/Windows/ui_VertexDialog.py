@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'VertexDialog.ui'
 #
-# Created: Sun Feb 05 19:15:15 2012
-#      by: PyQt4 UI code generator 4.8.1
+# Created: Tue Feb  7 19:54:13 2012
+#      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
 

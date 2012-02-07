@@ -5,8 +5,8 @@ Created on 27.12.2010
 '''
 import math
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QPoint, QPointF, SIGNAL
-from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen
+from PyQt4.QtCore import QPoint, QPointF, SIGNAL, QRect
+from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QImage
 
 class ScheduleVisualizer(QWidget):
 
@@ -26,23 +26,32 @@ class ScheduleVisualizer(QWidget):
 
     selectedTask = None
     targetPos = None
+    pressed = False
 
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
         self.setGeometry(0, 0, (70 + self.time * 10)*self.scale, (40 + self.proc * 20)*self.scale)
         self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        try:
+            _fromUtf8 = QtCore.QString.fromUtf8
+        except AttributeError:
+            _fromUtf8 = lambda s: s
+        self.procicon = QImage(_fromUtf8(":/pics/pics/processor.png"))
+        self.addicon = QImage(_fromUtf8(":/pics/pics/add.png"))
+        self.delicon = QImage(_fromUtf8(":/pics/pics/delete.png"))
         
     def paintEvent(self, event):        
         if self.schedule:
             paint = QPainter()
             paint.begin(self)
             paint.setPen(self.axisColor)
-            paint.setFont(QtGui.QFont('Decorative', 10*self.scale))
+            paint.setFont(QtGui.QFont('Decorative', 9*self.scale))
             procX = {}
 
             # Draw processor names and axis
-            for i in range(self.proc):  
-                paint.drawText(10*self.scale, (20 + i * 20)*self.scale, str(self.schedule.processors[i].number) + " X " + str(self.schedule.processors[i].reserves))
+            for i in range(self.proc):
+                paint.drawImage(QRect(10*self.scale, (10 + i * 20)*self.scale, 24*self.scale, 24*self.scale), self.procicon)  
+                paint.drawText(35*self.scale, (25 + i * 20)*self.scale, str(self.schedule.processors[i].reserves))
                 paint.drawLine(50*self.scale, (20 + i * 20)*self.scale, (50 + self.time * 10)*self.scale, (20 + i * 20)*self.scale)
                 procX[self.schedule.processors[i].number] = 20 + i * 20
             
@@ -67,11 +76,17 @@ class ScheduleVisualizer(QWidget):
                         paint.fillRect(task, self.taskColor)
                     else:
                         paint.fillRect(task, self.lastopColor)
+                        if self.schedule.CanAddVersions(t):
+                            paint.drawImage(QRect(task.topLeft().x(), task.topLeft().y(), 
+                                                  10*self.scale, 10*self.scale), self.addicon)              
+                        if self.schedule.CanDeleteVersions(t):
+                            paint.drawImage(QRect(task.topRight().x() - 10*self.scale, task.topRight().y(), 
+                                                  10*self.scale, 10*self.scale), self.delicon) 
                     paint.setPen(self.axisColor)
                     paint.drawRect(task)
                     paint.setPen(self.taskColor)
                     prev = task
-                    i += 1
+                    i += 1 
                 self.positions[(m, i)] = QtCore.QRect(prev.topRight(), QPoint(prev.topRight().x() + 100, prev.bottomRight().y()))
             
             if self.targetPos:
@@ -91,7 +106,9 @@ class ScheduleVisualizer(QWidget):
                 for t in self.schedule.vertices[m]:
                     start = self.schedule.executionTimes[t][0]
                     finish = self.schedule.executionTimes[t][1]   
-                    s = str(t.v.number) + " v" + str(t.k.number)
+                    s = str(t.v.number)
+                    if t.k.number > 1:
+                       s += " v" + str(t.k.number)
                     paint.drawText((10 + finish + start - int(len(s)/2))*5*self.scale, (procX[t.m.number]+5)*self.scale, s)
                    
             paint.end()

@@ -648,3 +648,17 @@ class Schedule(object):
             if len(v.versions) >= len(cur) + 2:
                 return True
         return False
+
+    def CanDeleteVersions(self, v):
+        ''':return: True if there is at least one task with more than one version '''
+        cur = self.currentVersions[v.v.number]
+        if len(cur) >= 2:
+            return True
+        return False
+    
+    def CanAddVersions(self, v):
+        ''':return: True if there is at least one task with two available unused versions'''
+        cur = self.currentVersions[v.v.number]
+        if len(v.v.versions) >= len(cur) + 2:
+            return True
+        return False
