@@ -171,7 +171,7 @@ class GraphCanvas(QWidget):
             return
         elif self.state == State.Vertex:
             task = QtCore.QRect(e.x() - self.size / 2, e.y() - self.size / 2, self.size, self.size)
-            v = ProgramVertex(len(self.program.vertices), 1)
+            v = ProgramVertex(self.program.GetNumber(), 1)
             ver = Version(v, 1, 1.0)
             v.versions = [ver]
             self.vertices[v] = task

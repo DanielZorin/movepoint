@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>307</width>
-    <height>331</height>
+    <width>248</width>
+    <height>430</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -37,292 +37,441 @@ QLabel, QSlider {
     <rect>
      <x>0</x>
      <y>59</y>
-     <width>307</width>
-     <height>272</height>
+     <width>248</width>
+     <height>371</height>
     </rect>
    </property>
    <property name="styleSheet" >
     <string notr="true" />
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2" >
+    <property name="sizeConstraint" >
+     <enum>QLayout::SetDefaultConstraint</enum>
+    </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" >
+     <layout class="QVBoxLayout" name="verticalLayout" >
+      <property name="sizeConstraint" >
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
       <item>
-       <widget class="QLabel" name="projectname" >
-        <property name="font" >
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text" >
-         <string>Project name</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout" >
+        <item>
+         <widget class="QLabel" name="projectname" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="font" >
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text" >
+           <string>Project name</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="editname" >
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="icon" >
+           <iconset>
+            <normalon>:/pics/pics/page_edit.png</normalon>
+           </iconset>
+          </property>
+          <property name="flat" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>40</width>
+            <height>24</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="editname" >
-        <property name="text" >
-         <string/>
+       <widget class="QGroupBox" name="groupBox" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="icon" >
-         <iconset>
-          <normalon>:/pics/pics/page_edit.png</normalon>
-         </iconset>
-        </property>
-        <property name="flat" >
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer" >
-        <property name="orientation" >
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0" >
+        <property name="maximumSize" >
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>16777215</width>
+          <height>150</height>
          </size>
         </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox" >
-      <property name="title" >
-       <string>Program info</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout" >
-       <item row="0" column="0" >
-        <widget class="QLabel" name="label_3" >
-         <property name="text" >
-          <string>Vertices</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" >
-        <widget class="QLabel" name="vertices" >
-         <property name="text" >
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label_5" >
-         <property name="text" >
-          <string>Edges</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" >
-        <widget class="QLabel" name="edges" >
-         <property name="text" >
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label_7" >
-         <property name="text" >
-          <string>Deadline</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="QLabel" name="tdir" >
-         <property name="minimumSize" >
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-         <property name="text" >
-          <string>0</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label_9" >
-         <property name="text" >
-          <string>Reliability limit</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" >
-        <widget class="QLabel" name="rdir" >
-         <property name="minimumSize" >
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-         <property name="text" >
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label_11" >
-         <property name="text" >
-          <string>Trace length</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" >
-        <widget class="QLabel" name="tracelen" >
-         <property name="text" >
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-       <item rowspan="2" row="0" column="2" >
-        <widget class="QPushButton" name="editprogram" >
-         <property name="text" >
-          <string/>
-         </property>
-         <property name="icon" >
-          <iconset>
-           <normalon>:/pics/pics/computer.png</normalon>
-          </iconset>
-         </property>
-         <property name="iconSize" >
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="flat" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2" >
-        <widget class="QPushButton" name="edittime" >
-         <property name="maximumSize" >
-          <size>
-           <width>16</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text" >
-          <string/>
-         </property>
-         <property name="icon" >
-          <iconset>
-           <normalon>:/pics/pics/page_edit.png</normalon>
-          </iconset>
-         </property>
-         <property name="flat" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2" >
-        <widget class="QPushButton" name="editrel" >
-         <property name="maximumSize" >
-          <size>
-           <width>16</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text" >
-          <string/>
-         </property>
-         <property name="icon" >
-          <iconset resource="resources.qrc" >
-           <normaloff>:/pics/pics/page_edit.png</normaloff>:/pics/pics/page_edit.png</iconset>
-         </property>
-         <property name="flat" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3" >
-        <spacer name="horizontalSpacer_2" >
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2" >
-      <item>
-       <widget class="QLabel" name="label" >
-        <property name="font" >
-         <font>
-          <pointsize>10</pointsize>
-         </font>
+        <property name="title" >
+         <string>Program info</string>
         </property>
-        <property name="text" >
-         <string>Launch search</string>
-        </property>
+        <layout class="QGridLayout" name="gridLayout" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="label_3" >
+           <property name="text" >
+            <string>Vertices</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" >
+          <widget class="QLabel" name="vertices" >
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLabel" name="label_5" >
+           <property name="text" >
+            <string>Edges</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" >
+          <widget class="QLabel" name="edges" >
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" >
+          <widget class="QLabel" name="label_7" >
+           <property name="text" >
+            <string>Deadline</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" >
+          <widget class="QLabel" name="tdir" >
+           <property name="minimumSize" >
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text" >
+            <string>0</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" >
+          <widget class="QLabel" name="label_9" >
+           <property name="text" >
+            <string>Reliability limit</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" >
+          <widget class="QLabel" name="rdir" >
+           <property name="minimumSize" >
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" >
+          <widget class="QLabel" name="label_11" >
+           <property name="text" >
+            <string>Trace length</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" >
+          <widget class="QLabel" name="tracelen" >
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item rowspan="2" row="0" column="2" >
+          <widget class="QPushButton" name="editprogram" >
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normalon>:/pics/pics/computer.png</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="flat" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2" >
+          <widget class="QPushButton" name="edittime" >
+           <property name="maximumSize" >
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normalon>:/pics/pics/page_edit.png</normalon>
+            </iconset>
+           </property>
+           <property name="flat" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2" >
+          <widget class="QPushButton" name="editrel" >
+           <property name="maximumSize" >
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="icon" >
+            <iconset resource="resources.qrc" >
+             <normaloff>:/pics/pics/page_edit.png</normaloff>:/pics/pics/page_edit.png</iconset>
+           </property>
+           <property name="flat" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3" >
+          <spacer name="horizontalSpacer_2" >
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="runbutton" >
-        <property name="text" >
-         <string/>
-        </property>
-        <property name="icon" >
-         <iconset>
-          <normalon>:/pics/pics/play.png</normalon>
-         </iconset>
-        </property>
-        <property name="iconSize" >
+       <layout class="QHBoxLayout" name="horizontalLayout_2" >
+        <item>
+         <widget class="QLabel" name="label" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="font" >
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text" >
+           <string>Launch search</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="runbutton" >
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="icon" >
+           <iconset>
+            <normalon>:/pics/pics/play.png</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize" >
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="flat" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>40</width>
+            <height>32</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="progress" >
+        <property name="maximumSize" >
          <size>
-          <width>24</width>
+          <width>16777215</width>
           <height>24</height>
          </size>
         </property>
-        <property name="flat" >
-         <bool>true</bool>
+        <property name="value" >
+         <number>0</number>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_3" >
-        <property name="orientation" >
-         <enum>Qt::Horizontal</enum>
+       <layout class="QHBoxLayout" name="horizontalLayout_3" >
+        <property name="spacing" >
+         <number>0</number>
         </property>
-        <property name="sizeHint" stdset="0" >
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
+        <property name="rightMargin" >
+         <number>0</number>
         </property>
-       </spacer>
+        <item>
+         <widget class="QLabel" name="label_2" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>16777215</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string>Error list</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="hideerrors" >
+          <property name="maximumSize" >
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="icon" >
+           <iconset resource="resources.qrc" >
+            <normaloff>:/pics/pics/minimize.png</normaloff>:/pics/pics/minimize.png</iconset>
+          </property>
+          <property name="flat" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="showerrors" >
+          <property name="maximumSize" >
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="icon" >
+           <iconset resource="resources.qrc" >
+            <normaloff>:/pics/pics/maximize.png</normaloff>:/pics/pics/maximize.png</iconset>
+          </property>
+          <property name="flat" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="errors" >
+        <property name="showGrid" >
+         <bool>true</bool>
+        </property>
+        <property name="columnCount" >
+         <number>0</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
-    <item>
-     <widget class="QProgressBar" name="progress" >
-      <property name="value" >
-       <number>0</number>
-      </property>
-     </widget>
-    </item>
    </layout>
+   <zorder>progress</zorder>
+   <zorder>errors</zorder>
+   <zorder>verticalLayoutWidget</zorder>
+   <zorder></zorder>
+   <zorder>groupBox</zorder>
+   <zorder>label</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>307</width>
+     <width>248</width>
      <height>22</height>
     </rect>
    </property>
@@ -389,7 +538,7 @@ QLabel, QSlider {
     <rect>
      <x>0</x>
      <y>22</y>
-     <width>307</width>
+     <width>248</width>
      <height>37</height>
     </rect>
    </property>
@@ -893,6 +1042,38 @@ QLabel, QSlider {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>hideerrors</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>HideErrors()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>262</x>
+     <y>336</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>147</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showerrors</sender>
+   <signal>clicked()</signal>
+   <receiver>errors</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>284</x>
+     <y>336</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>151</x>
+     <y>387</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>Exit()</slot>
@@ -923,5 +1104,6 @@ QLabel, QSlider {
   <slot>EditTdir()</slot>
   <slot>EditRdir()</slot>
   <slot>EditProgram()</slot>
+  <slot>HideErrors()</slot>
  </slots>
 </ui>

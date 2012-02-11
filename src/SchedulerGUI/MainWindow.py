@@ -1,5 +1,5 @@
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QIntValidator, QDoubleValidator, QLineEdit, qApp
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
 from PyQt4.QtCore import QTranslator, SIGNAL
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
@@ -105,8 +105,12 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
             return  
         self.projectFile = name
-        self.setWindowTitle(self.project.name + " - " + self.title) 
-        self.EnableRunning()
+        self.setWindowTitle(self.project.name + " - " + self.title)
+        self.graphEditor.setData(self.project.system)
+        if self.LoadErrors():
+            self.EnableRunning()
+        else:
+            self.DisableRunning()
         self.loadSchedule()
         self.ui.projectname.setText(self.project.name)
     
@@ -125,7 +129,12 @@ class MainWindow(QMainWindow):
         self.ui.actionStart.setEnabled(True)
         self.ui.actionReset.setEnabled(True)
         self.ui.actionLaunch_Viewer.setEnabled(True)
-    
+
+    def DisableRunning(self):
+        self.ui.actionStart.setEnabled(False)
+        self.ui.actionReset.setEnabled(False)
+        self.ui.actionLaunch_Viewer.setEnabled(False)   
+
     def LaunchViewer(self):
         self.viewer.show()
 
@@ -134,8 +143,35 @@ class MainWindow(QMainWindow):
         # Wait until the editor window is closed
         while self.graphEditor.isVisible():
             qApp.processEvents()
-        self.project.method.Reset()
-        self.viewer.setData(self.project.method)
+        if self.LoadErrors():
+            self.project.method.Reset()
+            self.viewer.setData(self.project.method)
+            self.EnableRunning()
+        else:
+            self.DisableRunning()
+
+    def LoadErrors(self):
+        self.ui.errors.clear()
+        self.ui.errors.verticalHeader().hide()
+        self.ui.errors.horizontalHeader().hide()
+        self.ui.errors.horizontalHeader().setStretchLastSection(True)
+        self.ui.errors.setColumnCount(2)
+        cycles = self.project.method.system.program.CheckCycles()
+        ok = True
+        for v in cycles:
+            ok = False
+            self.ui.errors.insertRow(0)
+            item = QTableWidgetItem("Error")
+            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            self.ui.errors.setItem(0, 0, item)
+            item2 = QTableWidgetItem("Task " + v.name + " " + str(v.number) + " is in a cycle")
+            item2.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            self.ui.errors.setItem(0, 1, item2)
+        return ok
+
+    def HideErrors(self):
+        self.ui.errors.hide()
+        # TODO: adjust window size
 
     def Run(self):
         self.project.method.iteration = 0
@@ -287,7 +323,6 @@ class MainWindow(QMainWindow):
         sys.exit(0)
     
     def loadSchedule(self): 
-        self.graphEditor.setData(self.project.system)
         self.viewer.setData(self.project.method)  
         self.ui.vertices.setText(str(len(self.project.system.schedule.program.vertices)))
         self.ui.edges.setText(str(len(self.project.system.schedule.program.edges)))

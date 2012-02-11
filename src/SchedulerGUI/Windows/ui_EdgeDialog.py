@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'EdgeDialog.ui'
 #
-# Created: Tue Feb  7 19:54:12 2012
-#      by: PyQt4 UI code generator 4.8.4
+# Created: Sat Feb 11 15:44:39 2012
+#      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
 
