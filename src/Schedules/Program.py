@@ -100,11 +100,20 @@ class Program(object):
             root.appendChild(edge)
     
     def CheckCycles(self):
-        ''' Checks that there are no cycles in the graph 
-        
-        .. warning:: it's not implemented yet'''
-        pass
+        ''' Finds all cycles in the graph '''
+        cycles = []
+        for v in self.vertices:
+            print(v.number, [q.number for q in self._trans[v.number]])
+            if v in self._trans[v.number]:
+                cycles.append(v)
+        return cycles
     
+    def GetNumber(self):
+        nums = [i for i in range(1, len(self.vertices) + 2)]
+        for v in self.vertices:
+            nums.remove(v.number)
+        return nums[0]
+
     def AddVertex(self, v):
         self.vertices.append(v)
         self._buildData()
@@ -143,7 +152,11 @@ class Program(object):
             self._dep[v.number] = res 
             
         for v in self.vertices:
-            cur = [v]
+            cur = []
+            for v2 in self.vertices:
+                if self.FindEdge(v, v2):
+                    if not(v2 in cur):
+                        cur.append(v2)
             new = []
             while True:
                 for v1 in cur:
@@ -154,12 +167,7 @@ class Program(object):
                             if not(v2 in new):
                                 new.append(v2)
                 if new == cur:
-                    # Delete s and all its versions
-                    final = []
-                    for v0 in new:
-                        if v0 != v:
-                            final.append(v0)
-                    self._trans[v.number] = final
+                    self._trans[v.number] = cur
                     break
                 else:
                     cur = []

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Tue Feb  7 19:54:13 2012
-#      by: PyQt4 UI code generator 4.8.4
+# Created: Sat Feb 11 15:44:39 2012
+#      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -63,7 +63,7 @@ class Ui_Viewer(object):
         self.visualizerArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.visualizerArea.setWidgetResizable(False)
         self.visualizerArea.setObjectName(_fromUtf8("visualizerArea"))
-        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents = QtGui.QWidget(self.visualizerArea)
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 452, 221))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -178,7 +178,6 @@ class Ui_Viewer(object):
         self.info.setObjectName(_fromUtf8("info"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.info)
         self.verticalLayout_3.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
-        self.verticalLayout_3.setMargin(0)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         self.label_3 = QtGui.QLabel(self.info)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
