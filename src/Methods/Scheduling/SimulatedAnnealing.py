@@ -248,9 +248,9 @@ class SimulatedAnnealing(object):
             n1 = params["n1"]
             n2 = params["n2"]
             m2 = params["m2"]
-            if not self.system.schedule.TryMoveVertex(v, n1, m2, n2):
-                print(v, n1, m2, n2)
-                return False
+            res = self.system.schedule.TryMoveVertex(v, n1, m2, n2)
+            if res != True:
+                return res
             else:
                 self.lastOperation = MoveVertex(v, v.m, n1, m2, n2)
                 self.system.schedule.ApplyOperation(self.lastOperation)
@@ -319,10 +319,10 @@ class SimulatedAnnealing(object):
         if not self.system.schedule.CanDeleteProcessor():
             ops.pop("DeleteProcessor", True)
             
-        if not self.system.schedule.CanDeleteVersions():
+        if not self.system.schedule.CanDeleteAnyVersions():
             ops.pop("DeleteVersion", True)
             
-        if not self.system.schedule.CanAddVersions():
+        if not self.system.schedule.CanAddAnyVersions():
             ops.pop("AddVersion", True)
                  
         return self._chooseRandomKey(ops)
@@ -422,7 +422,7 @@ class SimulatedAnnealing(object):
                                     target_proc = s.processors[num]
                                     target_pos = random.randint(0, len(s.vertices[s.processors[num]]))                                       
                                     i += 1
-                                    if s.TryMoveVertex(s1, 0, target_proc, target_pos):
+                                    if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
                                         s.MoveVertex(s1, 0, target_proc, target_pos)
                                         self.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                                         flag = False
@@ -468,7 +468,7 @@ class SimulatedAnnealing(object):
                         if d[1] == 0:
                             break
                         s2 = d[0]
-                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)):
+                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
                             ch.append(s2)
                         if len(ch) == self.choice_places:
                             break              
@@ -498,7 +498,7 @@ class SimulatedAnnealing(object):
                         num = s.vertices[s2.m.number].index(s2)
                         src_pos = s.vertices[s1.m.number].index(s1)
                         if s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
-                            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num):
+                            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
                                 ch.append(s2)
                         if len(ch) == self.choice_places:
                             break
@@ -525,7 +525,7 @@ class SimulatedAnnealing(object):
                     for d in s.waiting:
                         s1 = d[0]
                         src_pos = s.vertices[s1.m.number].index(s1)
-                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
+                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
                             ch.append(s1)
                         if len(ch) == self.choice_vertices:
                             break
@@ -544,7 +544,7 @@ class SimulatedAnnealing(object):
                 return
                     
             self.write(s1.v.number, s1.m.number, src_pos, target_proc, target_pos)
-            if s.TryMoveVertex(s1, src_pos, target_proc, target_pos):
+            if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
                 self.lastOperation = MoveVertex(s1, s1.m, src_pos, target_proc, target_pos)
                 s.ApplyOperation(self.lastOperation)
                 self.lastOperation.pos2 = (s1.m, s.vertices[s1.m.number].index(s1))

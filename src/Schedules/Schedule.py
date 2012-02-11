@@ -585,9 +585,10 @@ class Schedule(object):
  
     # TODO: deprecate this method       
     def TryMoveVertex(self, s, n1, m2, n2):
-        '''.. deprecated:: 0.1
+        '''Moves a :class:`~Schedules.ScheduleVertex.ScheduleVertex` s1 to position n on processor m 
         
-        Use MoveVertex'''
+         :return: True if the operation is possible. String with the description of error otherwise'''
+
         if s.m == m2:
         # Same processor
             if n2 > n1:
@@ -599,7 +600,7 @@ class Schedule(object):
                 s2 = self.vertices[s.m.number][n2]
                 # TODO: bug with nonexistent position. Fix it in the algorithm
                 if s2 in self._succ(s) or s2 is None:
-                    return False
+                    return str(s2.v.number) + " depends on " + str(s.v.number)
                 else:
                     return True
             else:
@@ -607,7 +608,7 @@ class Schedule(object):
                 after_s2 = self.vertices[s.m.number][n2:n1]
                 for v in after_s2:
                     if s in self._succ(v):
-                        return False
+                        return str(s.v.number) + " depends on " + str(v.v.number)
                 return True
         else:
         #Different processors
@@ -620,10 +621,10 @@ class Schedule(object):
                 return False
             for v in other_proc[:n2]:
                 if v in succ_s:
-                    return False
+                    return str(v.v.number) + " depends on " + str(s.v.number)
             for v in other_proc[n2:]:
                 if s in self._succ(v):
-                    return False
+                    return str(s.v.number) + " depends on " + str(v.v.number)
             return True
         
     def CanDeleteProcessor(self):
@@ -633,7 +634,7 @@ class Schedule(object):
                 return True
         return False
     
-    def CanDeleteVersions(self):
+    def CanDeleteAnyVersions(self):
         ''':return: True if there is at least one task with more than one version '''
         for v0 in self.vertices.values():
             for v in v0:
@@ -641,7 +642,7 @@ class Schedule(object):
                     return True
         return False
     
-    def CanAddVersions(self):
+    def CanAddAnyVersions(self):
         ''':return: True if there is at least one task with two available unused versions'''
         for v in self.program.vertices:
             cur = self.currentVersions[v.number]

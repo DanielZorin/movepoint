@@ -159,7 +159,6 @@ class GraphCanvas(QWidget):
                     ac = math.sqrt((a.x() - c.x())**2 + (a.y() - c.y())**2)
                     p = (ab + bc + ac) / 2.0
                     area = math.sqrt(p * (p - ab) * (p - ac) * (p - bc))
-                    print(ed, area)
                     if area < 100:
                         self.selectedEdge = ed
                         self.selectedVertex = None
@@ -220,7 +219,6 @@ class GraphCanvas(QWidget):
             self.repaint()
 
     def keyPressEvent(self, e):
-        print(e.key())
         if e.key() == QtCore.Qt.Key_Delete:
             if self.selectedVertex != None:
                 v = next(v for v in self.vertices.keys() if self.vertices[v] == self.selectedVertex)
@@ -234,7 +232,6 @@ class GraphCanvas(QWidget):
                 self.selectedEdge = None
                 self.repaint()
         elif e.key() == QtCore.Qt.Key_Return:
-            print ("Enter pressed")
             if self.selectedVertex != None:
                 v = next(v for v in self.vertices.keys() if self.vertices[v] == self.selectedVertex)
                 self.EditVertex(v)

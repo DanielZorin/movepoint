@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Sat Feb 11 16:34:13 2012
+# Created: Sat Feb 11 16:46:08 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_GraphEditor(object):
     def setupUi(self, GraphEditor):
         GraphEditor.setObjectName(_fromUtf8("GraphEditor"))
         GraphEditor.setWindowModality(QtCore.Qt.ApplicationModal)
-        GraphEditor.resize(420, 332)
+        GraphEditor.resize(427, 312)
         GraphEditor.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
 "    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
@@ -28,7 +28,7 @@ class Ui_GraphEditor(object):
 "    background-color: transparent;\n"
 "}"))
         self.centralwidget = QtGui.QWidget(GraphEditor)
-        self.centralwidget.setGeometry(QtCore.QRect(0, 59, 420, 252))
+        self.centralwidget.setGeometry(QtCore.QRect(0, 59, 427, 253))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
@@ -45,17 +45,13 @@ class Ui_GraphEditor(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         GraphEditor.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(GraphEditor)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 420, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 427, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
         GraphEditor.setMenuBar(self.menubar)
-        self.statusbar = QtGui.QStatusBar(GraphEditor)
-        self.statusbar.setGeometry(QtCore.QRect(0, 311, 420, 21))
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        GraphEditor.setStatusBar(self.statusbar)
         self.toolBar = QtGui.QToolBar(GraphEditor)
-        self.toolBar.setGeometry(QtCore.QRect(0, 22, 420, 37))
+        self.toolBar.setGeometry(QtCore.QRect(0, 22, 427, 37))
         self.toolBar.setObjectName(_fromUtf8("toolBar"))
         GraphEditor.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionSelect = QtGui.QAction(GraphEditor)

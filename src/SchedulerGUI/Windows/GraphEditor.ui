@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>332</height>
+    <width>427</width>
+    <height>312</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -30,8 +30,8 @@ QLabel, QSlider {
     <rect>
      <x>0</x>
      <y>59</y>
-     <width>420</width>
-     <height>252</height>
+     <width>427</width>
+     <height>253</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout" >
@@ -63,7 +63,7 @@ QLabel, QSlider {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>420</width>
+     <width>427</width>
      <height>22</height>
     </rect>
    </property>
@@ -79,22 +79,12 @@ QLabel, QSlider {
    </widget>
    <addaction name="menuFile" />
   </widget>
-  <widget class="QStatusBar" name="statusbar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>311</y>
-     <width>420</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QToolBar" name="toolBar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
      <y>22</y>
-     <width>420</width>
+     <width>427</width>
      <height>37</height>
     </rect>
    </property>

@@ -191,10 +191,12 @@ class ScheduleVisualizer(QWidget):
                                    n1 = self.schedule.vertices[self.selectedTask.m].index(self.selectedTask), 
                                    m2 = self.schedule.GetProcessor(self.targetPos[0]), 
                                    n2 = self.targetPos[1])
-            if result:
+            if result == True:
                 self.proc = self.schedule.GetProcessorsWithoutDoubles()
                 self.time = self.schedule.Interpret()
                 self.emit(SIGNAL("ManualOperation"))
+            else:
+                self.emit(SIGNAL("WrongOperation"), result)
             self.targetPos = None
             self.pressed = False
             self.selectedTask = None
