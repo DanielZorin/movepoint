@@ -103,6 +103,8 @@ class GraphCanvas(QWidget):
     def paintEvent(self, event):
         if not self.program:
             return
+        # TODO: get rid of this call
+        self.ResizeCanvas()
         paint = QPainter(self)
         paint.setPen(self.colors["line"])
         paint.setFont(QtGui.QFont('Decorative', 10))
@@ -173,8 +175,7 @@ class GraphCanvas(QWidget):
             ver = Version(v, 1, 1.0)
             v.versions = [ver]
             self.vertices[v] = task
-            self.program.vertices.append(v)
-            self.program._buildData()
+            self.program.AddVertex(v)
             self.ResizeCanvas()
             self.repaint()
         elif self.state == State.Edge:
@@ -204,8 +205,7 @@ class GraphCanvas(QWidget):
             for v in self.vertices.keys():
                 if self.vertices[v].contains(e.pos()):
                     ne = ProgramEdge(self.curEdge[1], v, 1)
-                    self.program.edges.append(ne)
-                    self.program._buildData()
+                    self.program.AddEdge(ne)
             self.edgeDraw = False
             self.curEdge = None     
             self.repaint()
@@ -224,30 +224,14 @@ class GraphCanvas(QWidget):
         if e.key() == QtCore.Qt.Key_Delete:
             if self.selectedVertex != None:
                 v = next(v for v in self.vertices.keys() if self.vertices[v] == self.selectedVertex)
-                ind = self.program.vertices.index(v)
-                new_edges = []
-                for e in self.program.edges:
-                    if e.source != v and e.destination != v:
-                        new_edges.append(e)
-                    else:
-                        del e
-                self.program.edges = new_edges
                 del self.vertices[v]
-                del self.program.vertices[ind]
+                self.program.DeleteVertex(v)
                 del self.selectedVertex
                 self.selectedVertex = None
-                self.program._buildData()
                 self.repaint()
             elif self.selectedEdge != None:
-                new_edges = []
-                for e in self.program.edges:
-                    if e != self.selectedEdge:
-                        new_edges.append(e)
-                    else:
-                        del e
-                self.program.edges = new_edges
+                self.program.DeleteEdge(self.selectedEdge)
                 self.selectedEdge = None
-                self.program._buildData()
                 self.repaint()
         elif e.key() == QtCore.Qt.Key_Return:
             print ("Enter pressed")
