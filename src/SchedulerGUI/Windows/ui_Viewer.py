@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Sat Feb 11 16:34:14 2012
+# Created: Sat Feb 11 16:46:09 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_Viewer(object):
     def setupUi(self, Viewer):
         Viewer.setObjectName(_fromUtf8("Viewer"))
-        Viewer.resize(584, 336)
+        Viewer.resize(596, 344)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -37,6 +37,7 @@ class Ui_Viewer(object):
 "    background-color: transparent;\n"
 "}"))
         self.centralwidget = QtGui.QWidget(Viewer)
+        self.centralwidget.setGeometry(QtCore.QRect(0, 22, 596, 301))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -241,13 +242,17 @@ class Ui_Viewer(object):
         self.horizontalLayout_4.addLayout(self.horizontalLayout_3)
         Viewer.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(Viewer)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 584, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 596, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuSchedule = QtGui.QMenu(self.menubar)
         self.menuSchedule.setObjectName(_fromUtf8("menuSchedule"))
         self.menuWindow = QtGui.QMenu(self.menubar)
         self.menuWindow.setObjectName(_fromUtf8("menuWindow"))
         Viewer.setMenuBar(self.menubar)
+        self.statusBar = QtGui.QStatusBar(Viewer)
+        self.statusBar.setGeometry(QtCore.QRect(0, 323, 596, 21))
+        self.statusBar.setObjectName(_fromUtf8("statusBar"))
+        Viewer.setStatusBar(self.statusBar)
         self.actionColors = QtGui.QAction(Viewer)
         self.actionColors.setObjectName(_fromUtf8("actionColors"))
         self.actionStep_Forward = QtGui.QAction(Viewer)

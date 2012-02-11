@@ -14,6 +14,7 @@ class Viewer(QMainWindow):
         self.ui.visualizerArea.setWidget(self.visualizer)
         self.preferences = PreferencesDialog()
         QObject.connect(self.visualizer, SIGNAL("ManualOperation"), self.Update)
+        QObject.connect(self.visualizer, SIGNAL("WrongOperation"), self.Statusbar)
 
     def setData(self, m):
         self.method = m
@@ -43,6 +44,9 @@ class Viewer(QMainWindow):
 
     def Update(self):
         self.setData(self.method)
+
+    def Statusbar(self, msg):
+        self.ui.statusBar.showMessage(msg, 5000)
 
     def SelectSchedule(self, s):
         if s == '':
