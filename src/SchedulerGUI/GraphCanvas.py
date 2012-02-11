@@ -79,10 +79,11 @@ class GraphCanvas(QWidget):
     colors = {
               "line": QColor(10, 34, 200),
               "vertex": QColor(123, 34, 100),
-              "selected": QColor(1, 200, 1)
+              "selected": QColor(1, 200, 1),
+              "text": QColor(0, 0, 0)
               }
 
-    size = 15
+    size = 25
     '''Size of the vertex rectangle'''
 
     program = None
@@ -131,6 +132,12 @@ class GraphCanvas(QWidget):
                 paint.setBrush(self.colors["vertex"])
             else:
                 paint.drawEllipse(task)
+
+        paint.setPen(self.colors["text"])
+        for v in self.vertices.keys():
+            task = self.vertices[v]
+            paint.drawText(task.center().x() - 2, task.center().y() + 5, str(v.number))
+            paint.drawText(task.topRight().x(), task.topRight().y() + 5, str(v.name))
 
         paint.setPen(self.colors["line"])
         if self.edgeDraw:

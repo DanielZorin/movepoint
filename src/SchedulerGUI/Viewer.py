@@ -82,7 +82,7 @@ class Viewer(QMainWindow):
         if diff == 0:
             return
         if diff > 0:
-            if self.method.trace.current + diff > self.method.trace.length():
+            if self.method.trace.current + diff >= self.method.trace.length():
                 diff = self.method.trace.length() - self.method.trace.current - 1
             for i in range(diff):
                 self.method.trace.current += 1
