@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="pics" >
+    <file>pics/meenoos.png</file>
     <file>pics/maximize.png</file>
     <file>pics/minimize.png</file>
     <file>pics/processor.png</file>

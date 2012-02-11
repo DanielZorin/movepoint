@@ -103,7 +103,6 @@ class Program(object):
         ''' Finds all cycles in the graph '''
         cycles = []
         for v in self.vertices:
-            print(v.number, [q.number for q in self._trans[v.number]])
             if v in self._trans[v.number]:
                 cycles.append(v)
         return cycles
