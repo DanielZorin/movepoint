@@ -105,6 +105,36 @@ class Program(object):
         .. warning:: it's not implemented yet'''
         pass
     
+    def AddVertex(self, v):
+        self.vertices.append(v)
+        self._buildData()
+
+    def AddEdge(self, e):
+        self.edges.append(e)
+        self._buildData()
+
+    def DeleteVertex(self, v):
+        ind = self.vertices.index(v)
+        new_edges = []
+        for e in self.edges:
+            if e.source != v and e.destination != v:
+                new_edges.append(e)
+            else:
+                del e
+        self.edges = new_edges
+        del self.vertices[ind]
+        self._buildData()
+
+    def DeleteEdge(self, ed):
+        new_edges = []
+        for e in self.edges:
+            if e != ed:
+                new_edges.append(e)
+            else:
+                del e
+        self.edges = new_edges
+        self._buildData()
+
     def _buildData(self):
         for v in self.vertices:
             res = []
