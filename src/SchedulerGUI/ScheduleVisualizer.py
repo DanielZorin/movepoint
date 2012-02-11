@@ -18,6 +18,7 @@ class ScheduleVisualizer(QWidget):
     method = None
     vertices = {}
     positions = {}
+    procrects = {}
 
     axisColor = None
     taskColor = None
@@ -52,8 +53,13 @@ class ScheduleVisualizer(QWidget):
 
             # Draw processor names and axis
             for i in range(self.proc):
-                paint.drawImage(QRect(10*self.scale, (10 + i * 20)*self.scale, 24*self.scale, 24*self.scale), self.procicon)  
-                paint.drawText(35*self.scale, (25 + i * 20)*self.scale, str(self.schedule.processors[i].reserves))
+                paint.drawImage(QRect(15*self.scale, (10 + i * 20)*self.scale, 24*self.scale, 24*self.scale), self.procicon)  
+                paint.drawText(40*self.scale, (25 + i * 20)*self.scale, str(self.schedule.processors[i].reserves))
+                plus = QRect(5*self.scale, (10 + i * 20)*self.scale, 10*self.scale, 10*self.scale)
+                paint.drawImage(plus, self.addicon) 
+                meenoos = QRect(5*self.scale, (20 + i * 20)*self.scale, 10*self.scale, 10*self.scale)
+                paint.drawImage(meenoos, self.delicon)
+                self.procrects[self.schedule.processors[i]] = [plus, meenoos]
                 paint.drawLine(50*self.scale, (20 + i * 20)*self.scale, (50 + self.time * 10)*self.scale, (20 + i * 20)*self.scale)
                 procX[self.schedule.processors[i].number] = 20 + i * 20
 
@@ -163,6 +169,17 @@ class ScheduleVisualizer(QWidget):
                     self.method.ManualStep("DeleteVersion", v = self.selectedTask.v)
                     update()
                     return
+
+        for p in self.procrects.keys():
+            if self.procrects[p][0].contains(e.pos()):
+                self.method.ManualStep("AddProcessor", m = p)
+                update()
+                return
+            if self.procrects[p][1].contains(e.pos()):
+                self.method.ManualStep("DeleteProcessor", m = p)
+                update()
+                return
+
         for v in self.vertices.keys():
             if self.vertices[v].contains(e.pos()):
                 self.selectedTask = v
