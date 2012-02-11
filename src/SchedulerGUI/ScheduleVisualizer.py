@@ -54,9 +54,30 @@ class ScheduleVisualizer(QWidget):
                 paint.drawText(35*self.scale, (25 + i * 20)*self.scale, str(self.schedule.processors[i].reserves))
                 paint.drawLine(50*self.scale, (20 + i * 20)*self.scale, (50 + self.time * 10)*self.scale, (20 + i * 20)*self.scale)
                 procX[self.schedule.processors[i].number] = 20 + i * 20
-            
+
+            # Draw timeline
+            tdir = self.method.system.tdir
+            paint.drawLine(50*self.scale, self.height() - 15, (50 + tdir * 10)*self.scale, self.height() - 15)
+            paint.drawLine(50*self.scale, 10 * self.scale, 50*self.scale, self.height() - 10)
+            t = 0
+            paint.setFont(QtGui.QFont('Decorative', 8))
+            while t < tdir + 10:
+                paint.drawLine((50 + t * 10)*self.scale, self.height() - 20, (50 + t * 10)*self.scale, self.height() - 10)
+                paint.drawText((50 + t * 10 + 1)*self.scale, self.height() - 5, str(t))
+                t += 10
+
+            paint.setPen(self.lastopColor) 
+            paint.drawLine((50 + tdir * 10)*self.scale, 10 * self.scale, (50 + tdir * 10)*self.scale, self.height() - 10)
+            if self.selectedTask:
+                t = self.selectedTask
+                start = self.schedule.executionTimes[t][0]
+                finish = self.schedule.executionTimes[t][1]
+                paint.drawText((50 + start * 10)*self.scale, self.height() - 16, str(start))
+                paint.drawText((50 + finish * 10)*self.scale, self.height() - 16, str(finish))
+
             # Draw tasks
             paint.setPen(self.taskColor)  
+            paint.setFont(QtGui.QFont('Decorative', 9*self.scale))
             self.vertices = {}
             self.positions = {}
             for m in self.schedule.vertices.keys():
