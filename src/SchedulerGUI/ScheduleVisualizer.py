@@ -25,6 +25,8 @@ class ScheduleVisualizer(QWidget):
     lastopColor = None
 
     selectedTask = None
+    addrect = None
+    delrect = None
     targetPos = None
     pressed = False
 
@@ -38,7 +40,7 @@ class ScheduleVisualizer(QWidget):
             _fromUtf8 = lambda s: s
         self.procicon = QImage(_fromUtf8(":/pics/pics/processor.png"))
         self.addicon = QImage(_fromUtf8(":/pics/pics/add.png"))
-        self.delicon = QImage(_fromUtf8(":/pics/pics/delete.png"))
+        self.delicon = QImage(_fromUtf8(":/pics/pics/meenoos.png"))
         
     def paintEvent(self, event):        
         if self.schedule:
@@ -98,11 +100,13 @@ class ScheduleVisualizer(QWidget):
                     else:
                         paint.fillRect(task, self.lastopColor)
                         if self.schedule.CanAddVersions(t):
-                            paint.drawImage(QRect(task.topLeft().x(), task.topLeft().y(), 
-                                                  10*self.scale, 10*self.scale), self.addicon)              
+                            self.addrect = QRect(task.topLeft().x(), task.topLeft().y(), 
+                                                  10*self.scale, 10*self.scale)
+                            paint.drawImage(self.addrect, self.addicon)              
                         if self.schedule.CanDeleteVersions(t):
-                            paint.drawImage(QRect(task.topRight().x() - 10*self.scale, task.topRight().y(), 
-                                                  10*self.scale, 10*self.scale), self.delicon) 
+                            self.delrect = QRect(task.topRight().x() - 10*self.scale, task.topRight().y(), 
+                                                  10*self.scale, 10*self.scale)
+                            paint.drawImage(self.delrect, self.delicon)
                     paint.setPen(self.axisColor)
                     paint.drawRect(task)
                     paint.setPen(self.taskColor)
@@ -135,6 +139,30 @@ class ScheduleVisualizer(QWidget):
             paint.end()
  
     def mousePressEvent(self, e):
+        def update():
+            self.proc = self.schedule.GetProcessorsWithoutDoubles()
+            self.time = self.schedule.Interpret()
+            self.targetPos = None
+            self.pressed = False
+            self.selectedTask = None
+            self.addrect = None
+            self.delrect = None
+            self.emit(SIGNAL("ManualOperation"))
+            self.ResizeCanvas()
+            self.repaint()
+            return
+
+        if self.selectedTask:
+            if self.addrect:
+                if self.addrect.contains(e.pos()):
+                    self.method.ManualStep("AddVersion", v = self.selectedTask.v)
+                    update()
+                    return
+            if self.delrect:
+                if self.delrect.contains(e.pos()):
+                    self.method.ManualStep("DeleteVersion", v = self.selectedTask.v)
+                    update()
+                    return
         for v in self.vertices.keys():
             if self.vertices[v].contains(e.pos()):
                 self.selectedTask = v
@@ -142,6 +170,8 @@ class ScheduleVisualizer(QWidget):
                 self.pressed = True
                 return
         self.selectedTask = None
+        self.addrect = None
+        self.delrect = None
         self.repaint()
 
     def mouseMoveEvent(self, e):
@@ -168,6 +198,8 @@ class ScheduleVisualizer(QWidget):
             self.targetPos = None
             self.pressed = False
             self.selectedTask = None
+            self.addrect = None
+            self.delrect = None
             self.ResizeCanvas()
             self.repaint()
             return
