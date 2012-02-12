@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'NewProjectDialog.ui'
 #
-# Created: Sun Feb 12 15:15:54 2012
+# Created: Sun Feb 12 16:48:57 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_NewProjectDialog(object):
     def setupUi(self, NewProjectDialog):
         NewProjectDialog.setObjectName(_fromUtf8("NewProjectDialog"))
-        NewProjectDialog.resize(318, 201)
+        NewProjectDialog.resize(305, 148)
         NewProjectDialog.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
 "    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
@@ -51,25 +51,6 @@ class Ui_NewProjectDialog(object):
         self.OpenSystem.setObjectName(_fromUtf8("OpenSystem"))
         self.horizontalLayout_2.addWidget(self.OpenSystem)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.label_2 = QtGui.QLabel(NewProjectDialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.verticalLayout.addWidget(self.label_2)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        self.lineEditConfig = QtGui.QLineEdit(NewProjectDialog)
-        self.lineEditConfig.setEnabled(True)
-        self.lineEditConfig.setReadOnly(True)
-        self.lineEditConfig.setObjectName(_fromUtf8("lineEditConfig"))
-        self.horizontalLayout_3.addWidget(self.lineEditConfig)
-        self.OpenConfig = QtGui.QPushButton(NewProjectDialog)
-        self.OpenConfig.setObjectName(_fromUtf8("OpenConfig"))
-        self.horizontalLayout_3.addWidget(self.OpenConfig)
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.label_3 = QtGui.QLabel(NewProjectDialog)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.verticalLayout.addWidget(self.label_3)
@@ -100,7 +81,6 @@ class Ui_NewProjectDialog(object):
 
         self.retranslateUi(NewProjectDialog)
         QtCore.QObject.connect(self.OpenSystem, QtCore.SIGNAL(_fromUtf8("clicked()")), NewProjectDialog.LoadSystem)
-        QtCore.QObject.connect(self.OpenConfig, QtCore.SIGNAL(_fromUtf8("clicked()")), NewProjectDialog.LoadConfig)
         QtCore.QObject.connect(self.OK, QtCore.SIGNAL(_fromUtf8("clicked()")), NewProjectDialog.accept)
         QtCore.QObject.connect(self.Cancel, QtCore.SIGNAL(_fromUtf8("clicked()")), NewProjectDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(NewProjectDialog)
@@ -109,8 +89,6 @@ class Ui_NewProjectDialog(object):
         NewProjectDialog.setWindowTitle(QtGui.QApplication.translate("NewProjectDialog", "New Project", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("NewProjectDialog", "Load system:", None, QtGui.QApplication.UnicodeUTF8))
         self.OpenSystem.setText(QtGui.QApplication.translate("NewProjectDialog", "Open...", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("NewProjectDialog", "Load config file:", None, QtGui.QApplication.UnicodeUTF8))
-        self.OpenConfig.setText(QtGui.QApplication.translate("NewProjectDialog", "Open...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("NewProjectDialog", "Project name:", None, QtGui.QApplication.UnicodeUTF8))
         self.OK.setText(QtGui.QApplication.translate("NewProjectDialog", "OK", None, QtGui.QApplication.UnicodeUTF8))
         self.Cancel.setText(QtGui.QApplication.translate("NewProjectDialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))

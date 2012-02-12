@@ -22,16 +22,9 @@ class NewProjectDialog(QDialog):
         if self.ui.ProjectName.text() == "":
             ff = os.path.basename(name)
             self.ui.ProjectName.setText(ff[:ff.find(".")])
-    
-    def LoadConfig(self):
-        name = QFileDialog.getOpenFileName()
-        self.ui.lineEditConfig.setText(name)
         
     def GetSystem(self):
         return self.ui.lineEditSystem.text()
-    
-    def GetConfig(self):
-        return self.ui.lineEditConfig.text()
     
     def GetName(self):
         return self.ui.ProjectName.text()

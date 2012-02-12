@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>318</width>
-    <height>201</height>
+    <width>305</width>
+    <height>148</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -58,40 +58,6 @@ QLabel, QSlider {
        </item>
        <item>
         <widget class="QPushButton" name="OpenSystem" >
-         <property name="text" >
-          <string>Open...</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text" >
-        <string>Load config file:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3" >
-       <item>
-        <widget class="QLineEdit" name="lineEditConfig" >
-         <property name="enabled" >
-          <bool>true</bool>
-         </property>
-         <property name="readOnly" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="OpenConfig" >
          <property name="text" >
           <string>Open...</string>
          </property>
@@ -162,22 +128,6 @@ QLabel, QSlider {
     <hint type="sourcelabel" >
      <x>340</x>
      <y>70</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>OpenConfig</sender>
-   <signal>clicked()</signal>
-   <receiver>NewProjectDialog</receiver>
-   <slot>LoadConfig()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>340</x>
-     <y>155</y>
     </hint>
     <hint type="destinationlabel" >
      <x>199</x>

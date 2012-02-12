@@ -16,13 +16,11 @@ class Project(object):
     name = None
     graph = {}
     
-    def __init__(self, s=None, m=None, name=""):
-        if s != None and m != None:
-            # TODO: m can be None
+    def __init__(self, s=None, name=""):
+        if s != None:
             self.system = System(s)
             # TODO: think how to implement other methods
             self.method = SimulatedAnnealing(self.system)
-            self.method.LoadConfig(m)
         self.name = name
         
     def Serialize(self, filename):
