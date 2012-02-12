@@ -1,0 +1,200 @@
+<ui version="4.0" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="windowModality" >
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>352</width>
+    <height>295</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle" >
+   <string>Scheduler GUI</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="resources.qrc" >
+    <normaloff>:/pics/pics/star.png</normaloff>:/pics/pics/star.png</iconset>
+  </property>
+  <property name="styleSheet" >
+   <string notr="true" >QWidget, QMenuBar::item {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);
+}
+
+QLabel, QSlider {
+	background-color: transparent;
+}a</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>22</y>
+     <width>352</width>
+     <height>273</height>
+    </rect>
+   </property>
+   <widget class="QPushButton" name="loadnew" >
+    <property name="geometry" >
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>New Project...</string>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >
+      <normaloff>:/pics/pics/page.png</normaloff>:/pics/pics/page.png</iconset>
+    </property>
+    <property name="flat" >
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label" >
+    <property name="geometry" >
+     <rect>
+      <x>220</x>
+      <y>10</y>
+      <width>121</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Welcome to Scheduler GUI, a program for fast and reliable scheduling for multiprocessors!</string>
+    </property>
+    <property name="wordWrap" >
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="loadopen" >
+    <property name="geometry" >
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Open Project...</string>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >
+      <normaloff>:/pics/pics/folder.png</normaloff>:/pics/pics/folder.png</iconset>
+    </property>
+    <property name="flat" >
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="recent" >
+    <property name="geometry" >
+     <rect>
+      <x>120</x>
+      <y>100</y>
+      <width>111</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="styleSheet" >
+     <string notr="true" >QListView {
+border : 0px;
+}</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>352</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>loadnew</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>LoadNew()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>157</x>
+     <y>103</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>180</x>
+     <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loadopen</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>LoadOpen()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>85</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>182</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>recent</sender>
+   <signal>itemPressed(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>LoadRecent(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>175</x>
+     <y>197</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>175</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>LoadNew()</slot>
+  <slot>LoadOpen()</slot>
+  <slot>LoadRecent(QListWidgetItem*)</slot>
+ </slots>
+</ui>
