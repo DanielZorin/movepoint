@@ -10,6 +10,7 @@ from Core.NVP import NVP
 from Core.Reserve import Reserve
 from Schedules.ScheduleVertex import ScheduleVertex
 from Schedules.Exceptions import SchedulerTypeException
+import xml.dom.minidom
 
 class Schedule(object):
     '''Represents a schedule for a certain program. A schedule is a set of quadruples
@@ -68,6 +69,24 @@ class Schedule(object):
             proc += "\n"
             res += proc
         return res
+
+    def ExportXml(self):
+        dom = xml.dom.minidom.Document()
+        root = dom.createElement("schedule")
+        dom.appendChild(root)
+        for p in self.vertices.keys():
+            proc = dom.createElement("processor")
+            proc.setAttribute("reserves", str(self.GetProcessor(p).reserves))
+            i = 1
+            for v in self.vertices[p]:
+                vert = dom.createElement("task")
+                vert.setAttribute("id", str(v.v.number))
+                vert.setAttribute("version", str(v.k.number))
+                vert.setAttribute("position", str(i))
+                proc.appendChild(vert)
+                i += 1
+            root.appendChild(proc)
+        return dom.toprettyxml()
     
     def SetToDefault(self):    
         ''' Places each vertex on a new processor'''

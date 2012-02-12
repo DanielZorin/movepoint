@@ -459,12 +459,7 @@ QLabel, QSlider {
      </layout>
     </item>
    </layout>
-   <zorder>progress</zorder>
-   <zorder>errors</zorder>
-   <zorder>verticalLayoutWidget</zorder>
    <zorder></zorder>
-   <zorder>groupBox</zorder>
-   <zorder>label</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
@@ -501,9 +496,10 @@ QLabel, QSlider {
    </widget>
    <widget class="QMenu" name="menuWindow" >
     <property name="title" >
-     <string>Window</string>
+     <string>Tools</string>
     </property>
     <addaction name="actionLanguage" />
+    <addaction name="actionSettings_2" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
     <property name="title" >
@@ -511,12 +507,6 @@ QLabel, QSlider {
     </property>
     <addaction name="actionContents" />
     <addaction name="actionAbout" />
-   </widget>
-   <widget class="QMenu" name="menuProject" >
-    <property name="title" >
-     <string>Project</string>
-    </property>
-    <addaction name="actionGenerate_Random_System" />
    </widget>
    <widget class="QMenu" name="menuExport" >
     <property name="title" >
@@ -527,7 +517,6 @@ QLabel, QSlider {
     <addaction name="actionGenerate_Code" />
    </widget>
    <addaction name="menuFile" />
-   <addaction name="menuProject" />
    <addaction name="menuMethod" />
    <addaction name="menuWindow" />
    <addaction name="menuExport" />
@@ -715,6 +704,11 @@ QLabel, QSlider {
   <action name="actionGenerate_Code" >
    <property name="text" >
     <string>Generate Code...</string>
+   </property>
+  </action>
+  <action name="actionSettings_2" >
+   <property name="text" >
+    <string>Settings...</string>
    </property>
   </action>
  </widget>
@@ -1074,6 +1068,38 @@ QLabel, QSlider {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionResult</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ExportSchedule()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>137</x>
+     <y>215</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionGenerate_Code</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>GenerateCode()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>137</x>
+     <y>215</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>Exit()</slot>
@@ -1105,5 +1131,7 @@ QLabel, QSlider {
   <slot>EditRdir()</slot>
   <slot>EditProgram()</slot>
   <slot>HideErrors()</slot>
+  <slot>ExportSchedule()</slot>
+  <slot>GenerateCode()</slot>
  </slots>
 </ui>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Feb 11 16:46:09 2012
+# Created: Sun Feb 12 13:39:15 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -226,8 +226,6 @@ class Ui_MainWindow(object):
         self.menuWindow.setObjectName(_fromUtf8("menuWindow"))
         self.menuHelp = QtGui.QMenu(self.menubar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
-        self.menuProject = QtGui.QMenu(self.menubar)
-        self.menuProject.setObjectName(_fromUtf8("menuProject"))
         self.menuExport = QtGui.QMenu(self.menubar)
         self.menuExport.setObjectName(_fromUtf8("menuExport"))
         MainWindow.setMenuBar(self.menubar)
@@ -292,6 +290,8 @@ class Ui_MainWindow(object):
         self.actionResult.setObjectName(_fromUtf8("actionResult"))
         self.actionGenerate_Code = QtGui.QAction(MainWindow)
         self.actionGenerate_Code.setObjectName(_fromUtf8("actionGenerate_Code"))
+        self.actionSettings_2 = QtGui.QAction(MainWindow)
+        self.actionSettings_2.setObjectName(_fromUtf8("actionSettings_2"))
         self.menuFile.addAction(self.actionNew_Project)
         self.menuFile.addAction(self.actionOpen_Project)
         self.menuFile.addAction(self.actionSave_Project)
@@ -304,14 +304,13 @@ class Ui_MainWindow(object):
         self.menuMethod.addAction(self.actionSettings)
         self.menuMethod.addAction(self.actionLaunch_Viewer)
         self.menuWindow.addAction(self.actionLanguage)
+        self.menuWindow.addAction(self.actionSettings_2)
         self.menuHelp.addAction(self.actionContents)
         self.menuHelp.addAction(self.actionAbout)
-        self.menuProject.addAction(self.actionGenerate_Random_System)
         self.menuExport.addAction(self.actionTrace)
         self.menuExport.addAction(self.actionResult)
         self.menuExport.addAction(self.actionGenerate_Code)
         self.menubar.addAction(self.menuFile.menuAction())
-        self.menubar.addAction(self.menuProject.menuAction())
         self.menubar.addAction(self.menuMethod.menuAction())
         self.menubar.addAction(self.menuWindow.menuAction())
         self.menubar.addAction(self.menuExport.menuAction())
@@ -345,6 +344,8 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.editprogram, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditProgram)
         QtCore.QObject.connect(self.hideerrors, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.HideErrors)
         QtCore.QObject.connect(self.showerrors, QtCore.SIGNAL(_fromUtf8("clicked()")), self.errors.show)
+        QtCore.QObject.connect(self.actionResult, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportSchedule)
+        QtCore.QObject.connect(self.actionGenerate_Code, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.GenerateCode)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -365,9 +366,8 @@ class Ui_MainWindow(object):
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Error list", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuMethod.setTitle(QtGui.QApplication.translate("MainWindow", "Method", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuWindow.setTitle(QtGui.QApplication.translate("MainWindow", "Window", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuWindow.setTitle(QtGui.QApplication.translate("MainWindow", "Tools", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuProject.setTitle(QtGui.QApplication.translate("MainWindow", "Project", None, QtGui.QApplication.UnicodeUTF8))
         self.menuExport.setTitle(QtGui.QApplication.translate("MainWindow", "Export", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("MainWindow", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
@@ -399,5 +399,6 @@ class Ui_MainWindow(object):
         self.actionTrace.setText(QtGui.QApplication.translate("MainWindow", "Trace...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionResult.setText(QtGui.QApplication.translate("MainWindow", "Result...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionGenerate_Code.setText(QtGui.QApplication.translate("MainWindow", "Generate Code...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSettings_2.setText(QtGui.QApplication.translate("MainWindow", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc
