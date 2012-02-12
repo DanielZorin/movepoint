@@ -6,7 +6,7 @@ Created on 27.12.2010
 import math
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QPoint, QPointF, SIGNAL, QRect
-from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QImage
+from PyQt4.QtGui import QWidget, QPainter, QPainterPath, QPen, QImage, QColor
 
 class ScheduleVisualizer(QWidget):
 
@@ -20,10 +20,12 @@ class ScheduleVisualizer(QWidget):
     positions = {}
     procrects = {}
 
-    axisColor = None
-    taskColor = None
-    deliveriesColor = None
-    lastopColor = None
+    colors = {
+              "axis": QColor(168, 34, 3),
+              "task": QColor(168, 134, 50),
+              "delivery": QColor(100, 0, 255),
+              "select": QColor(255, 0, 0)
+              }    
 
     selectedTask = None
     addrect = None
@@ -47,7 +49,7 @@ class ScheduleVisualizer(QWidget):
         if self.schedule:
             paint = QPainter()
             paint.begin(self)
-            paint.setPen(self.axisColor)
+            paint.setPen(self.colors["axis"])
             paint.setFont(QtGui.QFont('Decorative', 9*self.scale))
             procX = {}
 
@@ -74,7 +76,7 @@ class ScheduleVisualizer(QWidget):
                 paint.drawText((50 + t * 10 + 1)*self.scale, self.height() - 5, str(t))
                 t += 10
 
-            paint.setPen(self.lastopColor) 
+            paint.setPen(self.colors["select"]) 
             paint.drawLine((50 + tdir * 10)*self.scale, 10 * self.scale, (50 + tdir * 10)*self.scale, self.height() - 10)
             if self.selectedTask:
                 t = self.selectedTask
@@ -84,7 +86,7 @@ class ScheduleVisualizer(QWidget):
                 paint.drawText((50 + finish * 10)*self.scale, self.height() - 16, str(finish))
 
             # Draw tasks
-            paint.setPen(self.taskColor)  
+            paint.setPen(self.colors["task"])  
             paint.setFont(QtGui.QFont('Decorative', 9*self.scale))
             self.vertices = {}
             self.positions = {}
@@ -102,9 +104,9 @@ class ScheduleVisualizer(QWidget):
                     else:
                         self.positions[(m, i)] = QtCore.QRect(prev.topRight(), task.bottomLeft())
                     if t != self.selectedTask:
-                        paint.fillRect(task, self.taskColor)
+                        paint.fillRect(task, self.colors["task"])
                     else:
-                        paint.fillRect(task, self.lastopColor)
+                        paint.fillRect(task, self.colors["select"])
                         if self.schedule.CanAddVersions(t):
                             self.addrect = QRect(task.topLeft().x(), task.topLeft().y(), 
                                                   10*self.scale, 10*self.scale)
@@ -113,9 +115,9 @@ class ScheduleVisualizer(QWidget):
                             self.delrect = QRect(task.topRight().x() - 10*self.scale, task.topRight().y(), 
                                                   10*self.scale, 10*self.scale)
                             paint.drawImage(self.delrect, self.delicon)
-                    paint.setPen(self.axisColor)
+                    paint.setPen(self.colors["axis"])
                     paint.drawRect(task)
-                    paint.setPen(self.taskColor)
+                    paint.setPen(self.colors["task"])
                     prev = task
                     i += 1 
                 self.positions[(m, i)] = QtCore.QRect(prev.topRight(), QPoint(prev.topRight().x() + 100, prev.bottomRight().y()))
@@ -124,15 +126,15 @@ class ScheduleVisualizer(QWidget):
                 width = min(self.selectedTask.v.time * 10 * self.scale, self.positions[self.targetPos].width())
                 rect = QtCore.QRect(self.positions[self.targetPos])
                 rect.setWidth(width)
-                paint.fillRect(rect, self.lastopColor)
+                paint.fillRect(rect, self.colors["select"])
                     
             # Draw deliveries   
-            paint.setPen(QPen(self.deliveriesColor, 2)) 
+            paint.setPen(QPen(self.colors["delivery"], 2)) 
             for d in self.schedule.deliveryTimes:
                 self.drawArrow(paint, (50 + d[2] * 10)*self.scale, procX[d[0].number]*self.scale, (50 + d[3] * 10)*self.scale, procX[d[1].number]*self.scale)
             
             # Draw captions
-            paint.setPen(self.axisColor)    
+            paint.setPen(self.colors["axis"])    
             for m in self.schedule.vertices.keys():
                 for t in self.schedule.vertices[m]:
                     start = self.schedule.executionTimes[t][0]
@@ -271,10 +273,10 @@ class ScheduleVisualizer(QWidget):
         self.repaint()
         
     def SetColors(self, a, t, d, l):
-        self.axisColor = a
-        self.taskColor = t
-        self.deliveriesColor = d
-        self.lastopColor = l
+        self.colors["axis"] = a
+        self.colors["task"] = t
+        self.colors["delivery"] = d
+        self.colors["select"] = l
 
     def ResizeCanvas(self):
         self.setGeometry(0, 0, max(int((70 + self.time * 10)*self.scale), self.parent().width()), 

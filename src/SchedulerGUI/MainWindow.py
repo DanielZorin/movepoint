@@ -1,5 +1,5 @@
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QListWidgetItem, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
 from PyQt4.QtCore import QTranslator, SIGNAL
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
@@ -9,60 +9,92 @@ from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
 from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
 from SchedulerGUI.Viewer import Viewer
 from SchedulerGUI.GraphEditor import GraphEditor
-from SchedulerGUI.Windows.ui_MainWindow import Ui_MainWindow
 from Schedules.Exceptions import SchedulerException
+from SchedulerGUI.Windows.ui_MainWindowInitial import Ui_MainWindow as SplashScreen
+from SchedulerGUI.Windows.ui_MainWindow import Ui_MainWindow
 
 class MainWindow(QMainWindow):
     
     project = None
     projectFile = None
+    recentfiles = []
     
+    currentLanguage = "English"
     projFilter = ""
+
+    splash = True
     
     def __init__(self):
         QMainWindow.__init__(self)
+        self.ui = SplashScreen()
+        self.ui.setupUi(self)
+        self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
+        self.title = self.tr("Scheduler GUI")
+        self.loadTranslations()
+        self.loadIniFile()
+ 
+    def loadIniFile(self):
+        if "scheduler.ini" in os.listdir("."):
+            try:
+                f = open("scheduler.ini", "rb")
+                settings = pickle.load(f)
+                self.recentfiles = settings["recent"]
+                self.currentLanguage = settings["language"]
+                f.close()
+            except:
+                pass
+            for p in self.recentfiles:
+                self.ui.recent.addItem(p[1])
+            self.Translate(self.currentLanguage)
+ 
+    def writeIniFile(self):
+        f = open("scheduler.ini", "wb")
+        settings = {}
+        settings["recent"] = self.recentfiles
+        settings["language"] = self.currentLanguage
+        pickle.dump(settings, f)
+        f.close()          
+                    
+    def closeEvent(self, e):
+        self.writeIniFile()
+        e.accept()
+
+    def LoadMainWindow(self):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.viewer = Viewer()
         self.graphEditor = GraphEditor()
-        self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
-        self.title = self.tr("Scheduler GUI")
-        self.loadTranslations()
-        self.setPreferences()
         QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
-    
-    def __del__(self):
-        ''''f = open("scheduler.ini", "wb")
-        settings = {}
-        settings["file"] = self.projectFile
-        settings["preferences"] = self.preferences.Serialize()
-        pickle.dump(settings, f)
-        f.close()'''
-        pass
-    
-    def setPreferences(self):
-        # TODO: it's necessary to think how the default preferences are set.
-        if "scheduler.ini" in os.listdir("."):
-            #try:
-            f = open("scheduler.ini", "rb")
-            settings = pickle.load(f)
-            self.viewer.preferences.Deserialize(settings["preferences"])
-            self.projectFile = settings["file"]
-            self.OpenProjectFromFile(self.projectFile)
-            self.viewer.UpdatePreferences()
-            f.close()
-            # Temporary, until the language is saved in .ini file
-            self.currentLanguage = "English"  
-            #except:
-            #    self.loadDefaultPreferences()
-        else:
-            self.loadDefaultPreferences()
-            
-    def loadDefaultPreferences(self):
-        self.viewer.preferences.setColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))
-        self.viewer.visualizer.SetColors(QColor(168, 34, 3), QColor(168, 134, 50), QColor(100, 0, 255), QColor(255, 0, 0))      
-        self.project = Project() 
-        self.currentLanguage = "English"
+        self.splash = False
+
+    def LoadNew(self):
+        self.newproject = NewProjectDialog()
+        self.newproject.exec_()
+        if self.newproject.result() == QDialog.Accepted:
+            try:
+                self.project = Project(self.newproject.GetSystem(), self.newproject.GetConfig(), self.newproject.GetName())     
+            except SchedulerException as e:
+                QMessageBox.critical(self, "An error occured", e.message)
+                return  
+            self.LoadMainWindow()
+            self.setWindowTitle(self.project.name + " - " + self.title) 
+            self.EnableRunning()
+            self.loadSchedule()
+            self.ui.projectname.setText(self.project.name)
+
+    def LoadOpen(self):
+        name = QFileDialog.getOpenFileName(filter=self.projFilter)
+        if name == None or name == '':
+            return
+        self.LoadMainWindow()
+        self.OpenProjectFromFile(name)
+
+    def LoadRecent(self, item):
+        for p in self.recentfiles:
+            if p[1] == item.text():
+                self.LoadMainWindow()
+                self.OpenProjectFromFile(p[0])
+                return                
     
     def loadTranslations(self):
         q = os.curdir
@@ -103,7 +135,7 @@ class MainWindow(QMainWindow):
             self.project.Deserialize(name)
         except _pickle.UnpicklingError:
             QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
-            return  
+            return
         self.projectFile = name
         self.setWindowTitle(self.project.name + " - " + self.title)
         self.graphEditor.setData(self.project.system)
@@ -113,6 +145,7 @@ class MainWindow(QMainWindow):
             self.DisableRunning()
         self.loadSchedule()
         self.ui.projectname.setText(self.project.name)
+        self.AddToRecent(name, self.project.name)
     
     def SaveProject(self):
         if self.projectFile == None:
@@ -124,7 +157,23 @@ class MainWindow(QMainWindow):
         self.projectFile = QFileDialog.getSaveFileName(directory=self.project.name + ".proj", filter=self.projFilter)
         if self.projectFile != '':
             self.project.Serialize(self.projectFile)
-    
+            self.AddToRecent(self.projectFile, self.project.name)
+ 
+    def AddToRecent(self, f, name):
+        newrecent = []
+        toadd = True
+        for p in self.recentfiles:
+            if p[0] == f:
+                newrecent = [p] + newrecent
+                toadd = False
+            else:
+                newrecent.append(p)
+        if toadd:
+            newrecent = [[f, name]] + newrecent
+            if len(newrecent) > 5:
+                newrecent = newrecent[:-1]
+        self.recentfiles = newrecent
+            
     def EnableRunning(self):
         self.ui.actionStart.setEnabled(True)
         self.ui.actionReset.setEnabled(True)
@@ -294,18 +343,19 @@ class MainWindow(QMainWindow):
         dialog.exec_()
         selected = self.languages[dialog.combo.currentIndex()]
         self.currentLanguage = selected
-        self.Translate("Translations\Scheduler_" + selected + ".qm")
+        self.Translate(selected)
     
     def Translate(self, lang):
         # TODO: add all strings from various files
         translator = QTranslator(qApp)
-        translator.load(lang)
+        translator.load("Translations\Scheduler_" + lang + ".qm")
         qApp.installTranslator(translator)
-        self.ui.retranslateUi(self)   
-        self.viewer.preferences.ui.retranslateUi(self.viewer.preferences)
-        self.viewer.ui.retranslateUi(self.viewer) 
-        self.loadSchedule()    
-        self.setWindowTitle(self.project.name + " - " + self.tr(self.title))     
+        self.ui.retranslateUi(self)
+        if not self.splash:
+            self.viewer.preferences.ui.retranslateUi(self.viewer.preferences)
+            self.viewer.ui.retranslateUi(self.viewer) 
+            self.loadSchedule()    
+            self.setWindowTitle(self.project.name + " - " + self.tr(self.title))     
     
     def ExportTrace(self):
         tracefile = QFileDialog.getSaveFileName(directory=self.project.name + ".trace")
@@ -330,6 +380,7 @@ class MainWindow(QMainWindow):
 
     def Exit(self):
         #Quits program
+        self.writeIniFile()
         sys.exit(0)
     
     def loadSchedule(self): 

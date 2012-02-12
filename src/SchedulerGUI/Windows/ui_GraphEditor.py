@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'GraphEditor.ui'
 #
-# Created: Sun Feb 12 13:39:15 2012
+# Created: Sun Feb 12 15:15:54 2012
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
