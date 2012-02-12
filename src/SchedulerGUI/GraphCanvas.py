@@ -105,7 +105,7 @@ class GraphCanvas(QWidget):
         if not self.program:
             return
         # TODO: get rid of this call
-        self.ResizeCanvas()
+        #self.ResizeCanvas()
         paint = QPainter(self)
         paint.setPen(self.colors["line"])
         paint.setFont(QtGui.QFont('Decorative', 10))

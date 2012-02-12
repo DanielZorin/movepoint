@@ -314,6 +314,16 @@ class MainWindow(QMainWindow):
             f.write(self.project.method.trace.Export())
             f.close()
 
+    def ExportSchedule(self):
+        file = QFileDialog.getSaveFileName(directory=self.project.name + "-result.xml")
+        if file != '':
+            f = open(file, "w")
+            f.write(self.project.system.schedule.ExportXml())
+            f.close()
+
+    def GenerateCode(self):
+        pass
+
     def About(self):
         #Calls about box
         QMessageBox.about(self, "About this program", "Scheduler GUI.\nAuthor: Daniel A. Zorin\njuan@lvk.cs.msu.su")
