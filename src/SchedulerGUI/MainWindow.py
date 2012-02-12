@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
         self.newproject.exec_()
         if self.newproject.result() == QDialog.Accepted:
             try:
-                self.project = Project(self.newproject.GetSystem(), self.newproject.GetConfig(), self.newproject.GetName())     
+                self.project = Project(self.newproject.GetSystem(), self.newproject.GetName())     
             except SchedulerException as e:
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
@@ -119,7 +119,7 @@ class MainWindow(QMainWindow):
         self.newproject.exec_()
         if self.newproject.result() == QDialog.Accepted:
             try:
-                self.project = Project(self.newproject.GetSystem(), self.newproject.GetConfig(), self.newproject.GetName())     
+                self.project = Project(self.newproject.GetSystem(), self.newproject.GetName())     
             except SchedulerException as e:
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
