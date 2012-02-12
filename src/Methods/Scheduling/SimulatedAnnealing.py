@@ -177,6 +177,7 @@ class SimulatedAnnealing(object):
         The class is not picklable because f1, f2, f3 are lambda functions.
         Therefore, all necessaary information is stored in the following dictionary.'''
         return {
+        "trace": self.trace,
         "opt_reliability": self.opt_reliability,
         "opt_time": self.opt_time,
         "choice_vertices": self.choice_vertices,
@@ -191,6 +192,7 @@ class SimulatedAnnealing(object):
         
     def Deserialize(self, dict):
         '''Deserializes the class from a dictionary of parameters'''
+        self.trace = dict["trace"]
         self.opt_reliability = dict["opt_reliability"]
         self.opt_time = dict["opt_time"]
         self.choice_vertices = dict["choice_vertices"]
