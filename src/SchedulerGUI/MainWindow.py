@@ -78,7 +78,11 @@ class MainWindow(QMainWindow):
                 return  
             self.LoadMainWindow()
             self.setWindowTitle(self.project.name + " - " + self.title) 
-            self.EnableRunning()
+            self.graphEditor.setData(self.project.system)
+            if self.LoadErrors():
+                self.EnableRunning()
+            else:
+                self.DisableRunning()
             self.loadSchedule()
             self.ui.projectname.setText(self.project.name)
 
@@ -93,6 +97,7 @@ class MainWindow(QMainWindow):
         for p in self.recentfiles:
             if p[1] == item.text():
                 self.LoadMainWindow()
+                # TODO: delete list item if the file can't be opened
                 self.OpenProjectFromFile(p[0])
                 return                
     
@@ -119,7 +124,11 @@ class MainWindow(QMainWindow):
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
             self.setWindowTitle(self.project.name + " - " + self.title) 
-            self.EnableRunning()
+            self.graphEditor.setData(self.project.system)
+            if self.LoadErrors():
+                self.EnableRunning()
+            else:
+                self.DisableRunning()
             self.loadSchedule()
             self.ui.projectname.setText(self.project.name)
     
@@ -145,17 +154,21 @@ class MainWindow(QMainWindow):
             self.DisableRunning()
         self.loadSchedule()
         self.ui.projectname.setText(self.project.name)
+        self.graphEditor.LoadPositions(self.project.graph)
         self.AddToRecent(name, self.project.name)
     
     def SaveProject(self):
         if self.projectFile == None:
             self.SaveProjectAs()
         else:
+            self.project.graph = self.graphEditor.SavePositions()
             self.project.Serialize(self.projectFile)
+            self.AddToRecent(self.projectFile, self.project.name)
     
     def SaveProjectAs(self):
         self.projectFile = QFileDialog.getSaveFileName(directory=self.project.name + ".proj", filter=self.projFilter)
         if self.projectFile != '':
+            self.project.graph = self.graphEditor.SavePositions()
             self.project.Serialize(self.projectFile)
             self.AddToRecent(self.projectFile, self.project.name)
  
@@ -164,7 +177,7 @@ class MainWindow(QMainWindow):
         toadd = True
         for p in self.recentfiles:
             if p[0] == f:
-                newrecent = [p] + newrecent
+                newrecent = [[p[0], name]] + newrecent
                 toadd = False
             else:
                 newrecent.append(p)

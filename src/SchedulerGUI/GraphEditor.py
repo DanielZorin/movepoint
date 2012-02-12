@@ -38,6 +38,14 @@ class GraphEditor(QMainWindow):
         super(QMainWindow, self).resizeEvent(e)
         self.canvas.ResizeCanvas()
 
+    def LoadPositions(self, lst):
+        self.canvas.vertices = lst
+        self.canvas.ResizeCanvas()
+        self.canvas.repaint()
+
+    def SavePositions(self):
+        return self.canvas.vertices
+
     def New(self):
         self.system.program.vertices = []
         self.system.program.edges = []

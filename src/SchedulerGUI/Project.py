@@ -14,6 +14,7 @@ class Project(object):
     system = None
     method = None
     name = None
+    graph = {}
     
     def __init__(self, s=None, m=None, name=""):
         if s != None and m != None:
@@ -31,6 +32,7 @@ class Project(object):
         dict = {"name": self.name, 
                 "system": self.system,
                 "method": self.method.Serialize(),
+                "graph": self.graph,
                 # This is a very weird bug. Somehow processors aren't saved as a part of system.
                 # Without this system.processors is []
                 "proc": self.system.processors}
@@ -47,6 +49,7 @@ class Project(object):
         self.system.processors = dict["proc"]
         self.method = SimulatedAnnealing(self.system)
         self.method.Deserialize(dict["method"])
+        self.graph = dict["graph"]
     
     def Step(self):
         self.method.Step()
