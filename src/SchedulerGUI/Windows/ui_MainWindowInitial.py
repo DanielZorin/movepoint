@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'MainWindowInitial.ui'
 #
-# Created: Sun Feb 12 18:28:20 2012
-#      by: PyQt4 UI code generator 4.8.1
+# Created: Tue Feb 14 19:48:58 2012
+#      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -24,8 +24,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QtCore.QSize(318, 270))
-        MainWindow.setMaximumSize(QtCore.QSize(318, 270))
+        MainWindow.setMinimumSize(QtCore.QSize(0, 0))
+        MainWindow.setMaximumSize(QtCore.QSize(16777215, 16777215))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/star.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)

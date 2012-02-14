@@ -77,14 +77,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
             self.LoadMainWindow()
-            self.setWindowTitle(self.project.name + " - " + self.title) 
-            self.graphEditor.setData(self.project.system)
-            if self.LoadErrors():
-                self.EnableRunning()
-            else:
-                self.DisableRunning()
-            self.loadSchedule()
-            self.ui.projectname.setText(self.project.name)
+            self.setupProject()
 
     def LoadOpen(self):
         name = QFileDialog.getOpenFileName(filter=self.projFilter)
@@ -96,9 +89,20 @@ class MainWindow(QMainWindow):
     def LoadRecent(self, item):
         for p in self.recentfiles:
             if p[1] == item.text():
+                name = p[0]
+                self.project = Project()
+                try:
+                    self.project.Deserialize(name)
+                except: #_pickle.UnpicklingError:
+                    QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
+                    self.recentfiles = [p for p in self.recentfiles if p[0] != name]
+                    for p in self.recentfiles:
+                        self.ui.recent.addItem(p[1])
+                    return
                 self.LoadMainWindow()
-                # TODO: delete list item if the file can't be opened
-                self.OpenProjectFromFile(p[0])
+                self.projectFile = name
+                self.setupProject()
+                self.AddToRecent(name, self.project.name)
                 return                
     
     def loadTranslations(self):
@@ -123,14 +127,7 @@ class MainWindow(QMainWindow):
             except SchedulerException as e:
                 QMessageBox.critical(self, "An error occured", e.message)
                 return  
-            self.setWindowTitle(self.project.name + " - " + self.title) 
-            self.graphEditor.setData(self.project.system)
-            if self.LoadErrors():
-                self.EnableRunning()
-            else:
-                self.DisableRunning()
-            self.loadSchedule()
-            self.ui.projectname.setText(self.project.name)
+            self.setupProject()
     
     def OpenProject(self):
         name = QFileDialog.getOpenFileName(filter=self.projFilter)
@@ -146,15 +143,7 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
             return
         self.projectFile = name
-        self.setWindowTitle(self.project.name + " - " + self.title)
-        self.graphEditor.setData(self.project.system)
-        if self.LoadErrors():
-            self.EnableRunning()
-        else:
-            self.DisableRunning()
-        self.loadSchedule()
-        self.ui.projectname.setText(self.project.name)
-        self.graphEditor.LoadPositions(self.project.graph)
+        self.setupProject()
         self.AddToRecent(name, self.project.name)
     
     def SaveProject(self):
@@ -171,6 +160,17 @@ class MainWindow(QMainWindow):
             self.project.graph = self.graphEditor.SavePositions()
             self.project.Serialize(self.projectFile)
             self.AddToRecent(self.projectFile, self.project.name)
+
+    def setupProject(self):
+        self.setWindowTitle(self.project.name + " - " + self.title)
+        self.graphEditor.setData(self.project.system)
+        if self.LoadErrors():
+            self.EnableRunning()
+        else:
+            self.DisableRunning()
+        self.loadSchedule()
+        self.ui.projectname.setText(self.project.name)
+        self.graphEditor.LoadPositions(self.project.graph)
  
     def AddToRecent(self, f, name):
         newrecent = []
