@@ -16,7 +16,7 @@ class NewProjectDialog(QDialog):
         self.ui.setupUi(self)
         
     def LoadSystem(self):
-        name = QFileDialog.getOpenFileName()
+        name = QFileDialog.getOpenFileName(filter="*.xml")
         self.ui.lineEditSystem.setText(name)
         print(self.ui.ProjectName.text())
         if self.ui.ProjectName.text() == "":

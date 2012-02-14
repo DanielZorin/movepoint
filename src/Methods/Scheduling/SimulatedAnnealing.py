@@ -51,6 +51,7 @@ class SimulatedAnnealing(object):
     numberOfIterations = 0
     ''' Number of iteration is 10 * number of vertices '''
     
+    # TODO: default values
     f1 = None
     f2 = None
     f3 = None
@@ -417,22 +418,20 @@ class SimulatedAnnealing(object):
                         src_pos = 0
                         for s1 in ch:
                             flag = True
-                            i = 0
-                            while flag:
-                                num = random.randint(0, len(s.processors)-1)
-                                if s.processors[num] != proc:
-                                    target_proc = s.processors[num]
-                                    target_pos = random.randint(0, len(s.vertices[s.processors[num]]))                                       
-                                    i += 1
+                            for num in [n for n in s.vertices.keys() if n != proc.number]:
+                                target_proc = s.GetProcessor(num)
+                                print(num)
+                                for i in range(len(s.vertices[num])):
+                                    target_pos = i
                                     if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
                                         s.MoveVertex(s1, 0, target_proc, target_pos)
-                                        self.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
+                                        self.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
                                         flag = False
-                                    if i > 100:
-                                        #self.noOperation = True
-                                        return
-                                        flag = False
-                            src_pos += 1
+                                        break
+                                if not flag:
+                                    break
+                            if flag:
+                                src_pos += 1
                         return           
                 # Move the task with the highest delay
                 else:
@@ -494,8 +493,8 @@ class SimulatedAnnealing(object):
                         s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
                     ch = []
                     timelimit = s.endtimes[s1] - s1.m.GetTime(s1.v.time)
-                    for d in s.vertices:
-                        s2 = d
+                    for d in s.waiting:
+                        s2 = d[0]
                         proc = s2.m
                         num = s.vertices[s2.m.number].index(s2)
                         src_pos = s.vertices[s1.m.number].index(s1)
@@ -504,15 +503,16 @@ class SimulatedAnnealing(object):
                                 ch.append(s2)
                         if len(ch) == self.choice_places:
                             break
-                    if len(ch) == 1:
-                        s2 = ch[0]
-                    elif len(ch) == 0:
+                    if len(ch) == 0:
                         s2 = None
                         noOp = True
                     else:
-                        s2 = ch[random.randint(0, len(ch)-1)]
-                    target_proc = s2.m
-                    target_pos = s.vertices[s2.m.number].index(s2)
+                        if len(ch) == 1:
+                            s2 = ch[0]
+                        else:
+                            s2 = ch[random.randint(0, len(ch)-1)]
+                        target_proc = s2.m
+                        target_pos = s.vertices[s2.m.number].index(s2)
                 # Idle strategy
                 else:
                     if len(s.delays) == 0:

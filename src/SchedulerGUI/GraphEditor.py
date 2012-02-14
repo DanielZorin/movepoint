@@ -39,6 +39,9 @@ class GraphEditor(QMainWindow):
         self.canvas.ResizeCanvas()
 
     def LoadPositions(self, lst):
+        if lst == {}:
+            # TODO: dirty
+            return
         self.canvas.vertices = lst
         self.canvas.ResizeCanvas()
         self.canvas.repaint()
