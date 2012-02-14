@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>182</width>
-    <height>209</height>
+    <height>255</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -15,6 +15,18 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize" >
+   <size>
+    <width>182</width>
+    <height>255</height>
+   </size>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>182</width>
+    <height>255</height>
+   </size>
+  </property>
   <property name="windowTitle" >
    <string>Preferences</string>
   </property>
@@ -22,128 +34,190 @@
    <locale country="UnitedStates" language="English" />
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2" >
+   <property name="sizeConstraint" >
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout" >
      <property name="sizeConstraint" >
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <item>
-      <widget class="QGroupBox" name="groupBox" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QTabWidget" name="tabWidget" >
+       <property name="currentIndex" >
+        <number>0</number>
        </property>
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize" >
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="title" >
-        <string>Colors</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3" >
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_7" >
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6" >
+       <widget class="QWidget" name="tab" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>156</width>
+          <height>175</height>
+         </rect>
+        </property>
+        <attribute name="title" >
+         <string>Viewer</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_4" >
+         <item>
+          <widget class="QGroupBox" name="groupBox" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title" >
+            <string>Colors</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_3" >
             <item>
-             <widget class="QLabel" name="label" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text" >
-               <string>Axis</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_2" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text" >
-               <string>Tasks</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_3" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text" >
-               <string>Deliveries</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_4" >
-              <property name="sizePolicy" >
-               <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text" >
-               <string>Last operation</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_7" >
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_6" >
+                <item>
+                 <widget class="QLabel" name="label" >
+                  <property name="sizePolicy" >
+                   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize" >
+                   <size>
+                    <width>16777215</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                  <property name="text" >
+                   <string>Axis</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_2" >
+                  <property name="sizePolicy" >
+                   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize" >
+                   <size>
+                    <width>16777215</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                  <property name="text" >
+                   <string>Tasks</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_3" >
+                  <property name="sizePolicy" >
+                   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize" >
+                   <size>
+                    <width>16777215</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                  <property name="text" >
+                   <string>Deliveries</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_4" >
+                  <property name="sizePolicy" >
+                   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize" >
+                   <size>
+                    <width>16777215</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                  <property name="text" >
+                   <string>Selection</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_4" >
+                <item>
+                 <widget class="QPushButton" name="axis" >
+                  <property name="text" >
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="tasks" >
+                  <property name="text" >
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="deliveries" >
+                  <property name="text" >
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="lastop" >
+                  <property name="text" >
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
             </item>
            </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_4" >
-            <item>
-             <widget class="QPushButton" name="axis" >
-              <property name="text" >
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="tasks" >
-              <property name="text" >
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="deliveries" >
-              <property name="text" >
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="lastop" >
-              <property name="text" >
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>156</width>
+          <height>175</height>
+         </rect>
+        </property>
+        <attribute name="title" >
+         <string>Graph Editor</string>
+        </attribute>
+       </widget>
       </widget>
      </item>
      <item>
@@ -190,18 +264,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>deliveries</sender>
    <signal>clicked()</signal>
    <receiver>PreferencesDialog</receiver>
-   <slot>Cancel()</slot>
+   <slot>DeliveriesColor()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>133</x>
-     <y>196</y>
+     <x>142</x>
+     <y>110</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>95</x>
-     <y>112</y>
+     <x>90</x>
+     <y>104</y>
     </hint>
    </hints>
   </connection>
@@ -222,14 +296,30 @@
    </hints>
   </connection>
   <connection>
-   <sender>deliveries</sender>
+   <sender>pushButton_2</sender>
    <signal>clicked()</signal>
    <receiver>PreferencesDialog</receiver>
-   <slot>DeliveriesColor()</slot>
+   <slot>Cancel()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>133</x>
+     <y>196</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>95</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lastop</sender>
+   <signal>clicked()</signal>
+   <receiver>PreferencesDialog</receiver>
+   <slot>LastOpColor()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>142</x>
-     <y>110</y>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel" >
      <x>90</x>
@@ -246,22 +336,6 @@
     <hint type="sourcelabel" >
      <x>142</x>
      <y>79</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>90</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lastop</sender>
-   <signal>clicked()</signal>
-   <receiver>PreferencesDialog</receiver>
-   <slot>LastOpColor()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>142</x>
-     <y>141</y>
     </hint>
     <hint type="destinationlabel" >
      <x>90</x>
