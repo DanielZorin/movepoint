@@ -211,6 +211,7 @@ class MainWindow(QMainWindow):
             self.EnableRunning()
         else:
             self.DisableRunning()
+            self.viewer.hide()
 
     def LoadErrors(self):
         self.ui.errors.clear()
