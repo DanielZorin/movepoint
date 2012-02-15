@@ -402,7 +402,7 @@ class SimulatedAnnealing(object):
                         if f < mini:
                             mini = f
                             proc = m
-                    ch = s.vertices[proc.number]
+                    ch = [v for v in s.vertices[proc.number]]
                     if self.completeCutting == False:
                         s1 = ch[random.randint(0, len(ch)-1)]
                         while True:
@@ -420,8 +420,7 @@ class SimulatedAnnealing(object):
                             flag = True
                             for num in [n for n in s.vertices.keys() if n != proc.number]:
                                 target_proc = s.GetProcessor(num)
-                                print(num)
-                                for i in range(len(s.vertices[num])):
+                                for i in range(len(s.vertices[num]) + 1):
                                     target_pos = i
                                     if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
                                         s.MoveVertex(s1, 0, target_proc, target_pos)
@@ -431,7 +430,8 @@ class SimulatedAnnealing(object):
                                 if not flag:
                                     break
                             if flag:
-                                src_pos += 1
+                                raise "Error"
+                                break
                         return           
                 # Move the task with the highest delay
                 else:
