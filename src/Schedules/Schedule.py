@@ -590,8 +590,6 @@ class Schedule(object):
         if s.m == m2:
         # Same processor
             del self.vertices[s.m.number][n1]
-            if n2 > n1:
-                n2 -= 1
             self.vertices[s.m.number].insert(n2, s)
             return True
         else:
