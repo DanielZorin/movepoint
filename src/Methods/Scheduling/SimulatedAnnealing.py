@@ -280,12 +280,17 @@ class SimulatedAnnealing(object):
         new_time = self.system.schedule.Interpret()
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
-        # TODO: destroy the tail of the trace
+        self.trace.deleteTail()
         self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
-        best = self.trace.getBest()[1]
-        if new_time <= self.system.tdir and new_rel >= self.system.rdir:
-            if curProc < best["processors"]  or (curProc == best["processors"] and curTime < best["time"]):
-                self.trace.setBest(self.trace.length())
+        best = self.trace.ops[0][1]
+        bestindex = 0
+        for i in range(1, self.trace.length()):
+            cur = self.trace.ops[i][1]
+            if cur["time"] <= self.system.tdir and cur["reliability"] >= self.system.rdir:
+                if cur["processors"] < best["processors"] or (cur["processors"] == best["processors"] and cur["time"] < best["time"]):
+                    bestindex = i
+                    best = cur
+        self.trace.setBest(bestindex)
         return True
    
     def _chooseRandomKey(self, dict):
@@ -563,7 +568,7 @@ class SimulatedAnnealing(object):
             best = self.trace.getBest()[1]
             if new_time <= self.system.tdir and new_rel >= self.system.rdir:
                 if curProc < best["processors"]  or (curProc == best["processors"] and curTime < best["time"]):
-                    self.trace.setBest(self.trace.length())
+                    self.trace.setBest(self.trace.length() - 1)
                     self.write("BEST SOLUTION:", self.trace.getLast()[1])
             
         def refuse():  

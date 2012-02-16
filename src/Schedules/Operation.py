@@ -104,6 +104,9 @@ class Trace:
     def length(self):
         return len(self.ops)
 
+    def deleteTail(self):
+        self.ops = self.ops[:self.current + 1]
+
     def clear(self):
         self.ops = []
 
