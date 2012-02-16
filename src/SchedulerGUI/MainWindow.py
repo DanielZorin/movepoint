@@ -191,11 +191,13 @@ class MainWindow(QMainWindow):
         self.ui.actionStart.setEnabled(True)
         self.ui.actionReset.setEnabled(True)
         self.ui.actionLaunch_Viewer.setEnabled(True)
+        self.ui.runbutton.setEnabled(True) 
 
     def DisableRunning(self):
         self.ui.actionStart.setEnabled(False)
         self.ui.actionReset.setEnabled(False)
-        self.ui.actionLaunch_Viewer.setEnabled(False)   
+        self.ui.actionLaunch_Viewer.setEnabled(False)
+        self.ui.runbutton.setEnabled(False) 
 
     def LaunchViewer(self):
         self.viewer.show()

@@ -22,7 +22,7 @@ class Viewer(QMainWindow):
         self.ui.stepforth.setEnabled(True)
         self.ui.lineEdit.setEnabled(True)
         self.ui.labelTotal.setText(str(self.method.trace.length()))
-        self.ui.lineEdit.setText(str(self.method.trace.length()))
+        self.ui.lineEdit.setText(str(self.method.trace.current + 1))
         self.validator = QIntValidator(1, self.method.trace.length(), self)
         self.ui.lineEdit.setValidator(self.validator)
         op = self.method.trace.getCurrent()
@@ -53,7 +53,10 @@ class Viewer(QMainWindow):
             return
         # TODO: check why the validator doesn't work sometimes
         n = int(s)
-        self.ScrollTrace(n - self.method.trace.current)
+        self.ScrollTrace(n - 1 - self.method.trace.current)
+
+    def ShowBest(self):
+        self.ScrollTrace(self.method.trace.best - self.method.trace.current)
 
     def Colors(self):
         self.preferences.exec_()

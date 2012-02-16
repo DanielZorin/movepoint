@@ -21,6 +21,7 @@ class Project(object):
             self.system = System(s)
             # TODO: think how to implement other methods
             self.method = SimulatedAnnealing(self.system)
+            self.method.Reset()
         self.name = name
         
     def Serialize(self, filename):
@@ -48,6 +49,7 @@ class Project(object):
         self.method = SimulatedAnnealing(self.system)
         self.method.Deserialize(dict["method"])
         self.graph = dict["graph"]
+        self.system.schedule.Consistency()
     
     def Step(self):
         self.method.Step()
