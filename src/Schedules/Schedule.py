@@ -59,7 +59,16 @@ class Schedule(object):
             s = ScheduleVertex(v, v.versions[0], p)
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
-        
+    
+    def Consistency(self):
+        # TODO: super beedlowcode
+        for m in self.vertices.keys():
+            for s in self.vertices[m]:
+                if s.v.number in self.currentVersions:
+                    self.currentVersions[s.v.number].append(s)
+                else:
+                    self.currentVersions[s.v.number] = [s] 
+               
     def __str__(self):
         res = "Schedule: \n"
         for k in self.vertices.keys():

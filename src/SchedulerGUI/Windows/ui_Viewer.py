@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Tue Feb 14 19:48:59 2012
+# Created: Thu Feb 16 14:16:48 2012
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,7 +37,6 @@ class Ui_Viewer(object):
 "    background-color: transparent;\n"
 "}"))
         self.centralwidget = QtGui.QWidget(Viewer)
-        self.centralwidget.setGeometry(QtCore.QRect(0, 22, 596, 301))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -243,7 +242,7 @@ class Ui_Viewer(object):
         self.horizontalLayout_4.addLayout(self.horizontalLayout_3)
         Viewer.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(Viewer)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 596, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 596, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuSchedule = QtGui.QMenu(self.menubar)
         self.menuSchedule.setObjectName(_fromUtf8("menuSchedule"))
@@ -251,7 +250,6 @@ class Ui_Viewer(object):
         self.menuWindow.setObjectName(_fromUtf8("menuWindow"))
         Viewer.setMenuBar(self.menubar)
         self.statusBar = QtGui.QStatusBar(Viewer)
-        self.statusBar.setGeometry(QtCore.QRect(0, 323, 596, 21))
         self.statusBar.setObjectName(_fromUtf8("statusBar"))
         Viewer.setStatusBar(self.statusBar)
         self.actionColors = QtGui.QAction(Viewer)
@@ -260,8 +258,11 @@ class Ui_Viewer(object):
         self.actionStep_Forward.setObjectName(_fromUtf8("actionStep_Forward"))
         self.actionStep_Backward = QtGui.QAction(Viewer)
         self.actionStep_Backward.setObjectName(_fromUtf8("actionStep_Backward"))
+        self.actionShow_Best = QtGui.QAction(Viewer)
+        self.actionShow_Best.setObjectName(_fromUtf8("actionShow_Best"))
         self.menuSchedule.addAction(self.actionStep_Forward)
         self.menuSchedule.addAction(self.actionStep_Backward)
+        self.menuSchedule.addAction(self.actionShow_Best)
         self.menuWindow.addAction(self.actionColors)
         self.menubar.addAction(self.menuSchedule.menuAction())
         self.menubar.addAction(self.menuWindow.menuAction())
@@ -275,6 +276,8 @@ class Ui_Viewer(object):
         QtCore.QObject.connect(self.replay, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.Replay)
         QtCore.QObject.connect(self.rewind, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.Rewind)
         QtCore.QObject.connect(self.verticalSlider, QtCore.SIGNAL(_fromUtf8("sliderMoved(int)")), Viewer.Scale)
+        QtCore.QObject.connect(self.lineEdit, QtCore.SIGNAL(_fromUtf8("textEdited(QString)")), Viewer.SelectSchedule)
+        QtCore.QObject.connect(self.actionShow_Best, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.ShowBest)
         QtCore.QMetaObject.connectSlotsByName(Viewer)
 
     def retranslateUi(self, Viewer):
@@ -294,5 +297,7 @@ class Ui_Viewer(object):
         self.actionStep_Forward.setShortcut(QtGui.QApplication.translate("Viewer", "PgDown", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStep_Backward.setText(QtGui.QApplication.translate("Viewer", "Step Backward", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStep_Backward.setShortcut(QtGui.QApplication.translate("Viewer", "PgUp", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionShow_Best.setText(QtGui.QApplication.translate("Viewer", "Show Best", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionShow_Best.setShortcut(QtGui.QApplication.translate("Viewer", "Home", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc

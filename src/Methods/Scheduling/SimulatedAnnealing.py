@@ -76,8 +76,6 @@ class SimulatedAnnealing(object):
         self.system = system
         self.numberOfIterations = len(self.system.program.vertices) * 10
         self.temperature = 0
-        self.system.schedule.SetToDefault()
-        self._prepare()
         logging.basicConfig(level=logging.DEBUG)
         self.logger = logging.getLogger('SimulatedAnnealing')
     
@@ -282,6 +280,7 @@ class SimulatedAnnealing(object):
         new_time = self.system.schedule.Interpret()
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
+        # TODO: destroy the tail of the trace
         self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
         best = self.trace.getBest()[1]
         if new_time <= self.system.tdir and new_rel >= self.system.rdir:
