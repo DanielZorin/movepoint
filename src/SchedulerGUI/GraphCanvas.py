@@ -96,6 +96,8 @@ class GraphCanvas(QWidget):
     selectedEdge = None
     state = State.Select
 
+    changed = False
+
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
         self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -182,6 +184,7 @@ class GraphCanvas(QWidget):
             v.versions = [ver]
             self.vertices[v] = task
             self.program.AddVertex(v)
+            self.changed = True
             self.ResizeCanvas()
             self.repaint()
         elif self.state == State.Edge:
@@ -213,7 +216,8 @@ class GraphCanvas(QWidget):
                     ne = ProgramEdge(self.curEdge[1], v, 1)
                     self.program.AddEdge(ne)
             self.edgeDraw = False
-            self.curEdge = None     
+            self.curEdge = None 
+            self.changed = True    
             self.repaint()
 
     def mouseDoubleClickEvent(self, e):
@@ -233,10 +237,12 @@ class GraphCanvas(QWidget):
                 self.program.DeleteVertex(v)
                 del self.selectedVertex
                 self.selectedVertex = None
+                self.changed = True
                 self.repaint()
             elif self.selectedEdge != None:
                 self.program.DeleteEdge(self.selectedEdge)
                 self.selectedEdge = None
+                self.changed = True
                 self.repaint()
         elif e.key() == QtCore.Qt.Key_Return:
             if self.selectedVertex != None:
@@ -253,6 +259,7 @@ class GraphCanvas(QWidget):
         d.exec_()
         if d.result() == QDialog.Accepted:
             d.SetResult(e)
+            self.changed = True
 
     def EditVertex(self, v):
         d = VertexDialog()
@@ -260,6 +267,7 @@ class GraphCanvas(QWidget):
         d.exec_()
         if d.result() == QDialog.Accepted:
             d.SetResult(v)
+            self.changed = True
 
     def Visualize(self, p):
         self.program = p

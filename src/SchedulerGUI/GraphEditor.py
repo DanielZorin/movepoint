@@ -55,6 +55,7 @@ class GraphEditor(QMainWindow):
         self.system.program._buildData()
         self.canvas.Clear()
         self.canvas.Visualize(self.system.program)
+        self.canvas.changed = True
 
     def Open(self):
         name = QFileDialog.getOpenFileName(filter="*.xml")
@@ -63,6 +64,7 @@ class GraphEditor(QMainWindow):
         self.system.Reload(name)
         self.canvas.Clear()
         self.canvas.Visualize(self.system.program)
+        self.canvas.changed = True
         self.xmlfile = name
 
     def Save(self):

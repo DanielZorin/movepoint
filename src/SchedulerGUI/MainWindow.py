@@ -209,13 +209,14 @@ class MainWindow(QMainWindow):
         # Wait until the editor window is closed
         while self.graphEditor.isVisible():
             qApp.processEvents()
-        if self.LoadErrors():
-            self.project.method.Reset()
-            self.viewer.setData(self.project.method)
-            self.EnableRunning()
-        else:
-            self.DisableRunning()
-            self.viewer.hide()
+        if self.graphEditor.canvas.changed:
+            if self.LoadErrors():
+                self.project.method.Reset()
+                self.loadSchedule()
+                self.EnableRunning()
+            else:
+                self.DisableRunning()
+                self.viewer.hide()
 
     def LoadErrors(self):
         self.ui.errors.clear()
