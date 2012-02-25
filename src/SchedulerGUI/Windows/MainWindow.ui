@@ -491,7 +491,6 @@ QLabel, QSlider {
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionLanguage"/>
     <addaction name="actionSettings"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -882,22 +881,6 @@ QLabel, QSlider {
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>Parameters()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>365</x>
-     <y>211</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionLanguage</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>ChangeLanguage()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

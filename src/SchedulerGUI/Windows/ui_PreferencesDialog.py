@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'PreferencesDialog.ui'
 #
-# Created: Sat Feb 25 20:48:15 2012
+# Created: Sat Feb 25 21:35:17 2012
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,14 +17,14 @@ except AttributeError:
 class Ui_PreferencesDialog(object):
     def setupUi(self, PreferencesDialog):
         PreferencesDialog.setObjectName(_fromUtf8("PreferencesDialog"))
-        PreferencesDialog.resize(182, 255)
+        PreferencesDialog.resize(270, 255)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(PreferencesDialog.sizePolicy().hasHeightForWidth())
         PreferencesDialog.setSizePolicy(sizePolicy)
-        PreferencesDialog.setMinimumSize(QtCore.QSize(182, 255))
-        PreferencesDialog.setMaximumSize(QtCore.QSize(182, 255))
+        PreferencesDialog.setMinimumSize(QtCore.QSize(270, 255))
+        PreferencesDialog.setMaximumSize(QtCore.QSize(270, 255))
         PreferencesDialog.setStyleSheet(_fromUtf8("QWidget, QMenuBar::item {\n"
 "    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                      stop: 0 #c5d8ef, stop: 1 #89a5c3);\n"
@@ -41,11 +41,13 @@ class Ui_PreferencesDialog(object):
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtGui.QTabWidget(PreferencesDialog)
+        self.tabWidget.setElideMode(QtCore.Qt.ElideNone)
+        self.tabWidget.setUsesScrollButtons(False)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
-        self.horizontalLayout_4 = QtGui.QHBoxLayout(self.tab)
-        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.verticalLayout_8 = QtGui.QVBoxLayout(self.tab)
+        self.verticalLayout_8.setObjectName(_fromUtf8("verticalLayout_8"))
         self.groupBox = QtGui.QGroupBox(self.tab)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -118,12 +120,15 @@ class Ui_PreferencesDialog(object):
         self.verticalLayout_4.addWidget(self.lastop)
         self.horizontalLayout_7.addLayout(self.verticalLayout_4)
         self.horizontalLayout_3.addLayout(self.horizontalLayout_7)
-        self.horizontalLayout_4.addWidget(self.groupBox)
+        self.verticalLayout_8.addWidget(self.groupBox)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_8.addItem(spacerItem)
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.tab_2)
+        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         self.groupBox_2 = QtGui.QGroupBox(self.tab_2)
-        self.groupBox_2.setGeometry(QtCore.QRect(10, 10, 141, 121))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -182,7 +187,23 @@ class Ui_PreferencesDialog(object):
         self.verticalLayout_5.addWidget(self.selection)
         self.horizontalLayout_8.addLayout(self.verticalLayout_5)
         self.horizontalLayout_5.addLayout(self.horizontalLayout_8)
+        self.verticalLayout_3.addWidget(self.groupBox_2)
+        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_3.addItem(spacerItem1)
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
+        self.tab_3 = QtGui.QWidget()
+        self.tab_3.setObjectName(_fromUtf8("tab_3"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.tab_3)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.languages = QtGui.QComboBox(self.tab_3)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.languages.setFont(font)
+        self.languages.setObjectName(_fromUtf8("languages"))
+        self.verticalLayout_2.addWidget(self.languages)
+        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem2)
+        self.tabWidget.addTab(self.tab_3, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
@@ -197,7 +218,7 @@ class Ui_PreferencesDialog(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(PreferencesDialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), PreferencesDialog.OK)
         QtCore.QObject.connect(self.deliveries, QtCore.SIGNAL(_fromUtf8("clicked()")), PreferencesDialog.DeliveriesColor)
         QtCore.QObject.connect(self.axis, QtCore.SIGNAL(_fromUtf8("clicked()")), PreferencesDialog.AxisColor)
@@ -222,6 +243,7 @@ class Ui_PreferencesDialog(object):
         self.label_6.setText(QtGui.QApplication.translate("PreferencesDialog", "Edge", None, QtGui.QApplication.UnicodeUTF8))
         self.label_7.setText(QtGui.QApplication.translate("PreferencesDialog", "Selection", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("PreferencesDialog", "Graph Editor", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("PreferencesDialog", "Language", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("PreferencesDialog", "OK", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_2.setText(QtGui.QApplication.translate("PreferencesDialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 
