@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Viewer.ui'
 #
-# Created: Thu Feb 16 14:16:48 2012
+# Created: Sat Feb 25 20:48:16 2012
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -246,8 +246,6 @@ class Ui_Viewer(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuSchedule = QtGui.QMenu(self.menubar)
         self.menuSchedule.setObjectName(_fromUtf8("menuSchedule"))
-        self.menuWindow = QtGui.QMenu(self.menubar)
-        self.menuWindow.setObjectName(_fromUtf8("menuWindow"))
         Viewer.setMenuBar(self.menubar)
         self.statusBar = QtGui.QStatusBar(Viewer)
         self.statusBar.setObjectName(_fromUtf8("statusBar"))
@@ -263,12 +261,9 @@ class Ui_Viewer(object):
         self.menuSchedule.addAction(self.actionStep_Forward)
         self.menuSchedule.addAction(self.actionStep_Backward)
         self.menuSchedule.addAction(self.actionShow_Best)
-        self.menuWindow.addAction(self.actionColors)
         self.menubar.addAction(self.menuSchedule.menuAction())
-        self.menubar.addAction(self.menuWindow.menuAction())
 
         self.retranslateUi(Viewer)
-        QtCore.QObject.connect(self.actionColors, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.Colors)
         QtCore.QObject.connect(self.actionStep_Backward, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.StepBackward)
         QtCore.QObject.connect(self.actionStep_Forward, QtCore.SIGNAL(_fromUtf8("triggered()")), Viewer.StepForward)
         QtCore.QObject.connect(self.stepback, QtCore.SIGNAL(_fromUtf8("clicked()")), Viewer.StepBackward)
@@ -291,7 +286,6 @@ class Ui_Viewer(object):
         self.label.setText(QtGui.QApplication.translate("Viewer", "Processors:", None, QtGui.QApplication.UnicodeUTF8))
         self.labelproc.setText(QtGui.QApplication.translate("Viewer", "0", None, QtGui.QApplication.UnicodeUTF8))
         self.menuSchedule.setTitle(QtGui.QApplication.translate("Viewer", "Schedule", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuWindow.setTitle(QtGui.QApplication.translate("Viewer", "Window", None, QtGui.QApplication.UnicodeUTF8))
         self.actionColors.setText(QtGui.QApplication.translate("Viewer", "Colors...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStep_Forward.setText(QtGui.QApplication.translate("Viewer", "Step Forward", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStep_Forward.setShortcut(QtGui.QApplication.translate("Viewer", "PgDown", None, QtGui.QApplication.UnicodeUTF8))

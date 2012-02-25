@@ -271,12 +271,6 @@ class ScheduleVisualizer(QWidget):
         self.time = self.schedule.Interpret()
         self.ResizeCanvas()
         self.repaint()
-        
-    def SetColors(self, a, t, d, l):
-        self.colors["axis"] = a
-        self.colors["task"] = t
-        self.colors["delivery"] = d
-        self.colors["select"] = l
 
     def ResizeCanvas(self):
         self.setGeometry(0, 0, max(int((70 + self.time * 10)*self.scale), self.parent().width()), 

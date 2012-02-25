@@ -5,6 +5,7 @@ import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
 from SchedulerGUI.NewProjectDialog import NewProjectDialog
 from SchedulerGUI.SettingsDialog import SettingsDialog
+from SchedulerGUI.PreferencesDialog import PreferencesDialog
 from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
 from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
 from SchedulerGUI.Viewer import Viewer
@@ -64,6 +65,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.viewer = Viewer()
         self.graphEditor = GraphEditor()
+        self.settings = PreferencesDialog(self.viewer.visualizer.colors, self.graphEditor.canvas.colors)
         QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
         self.splash = False
 
@@ -339,13 +341,18 @@ class MainWindow(QMainWindow):
         r = float(r)
         self.project.SetRdir(r)  
             
-    def Settings(self):
+    def Parameters(self):
         data = self.project.method.Serialize()
         d = SettingsDialog(data)
         d.exec_()
         if d.result() == QDialog.Accepted:
             self.project.method.Deserialize(d.data)
-    
+ 
+    def Settings(self):
+        self.settings.exec_()
+        if self.settings.result() == QDialog.Accepted:
+            pass
+               
     def GenerateRandomSystem(self):
         d = RandomSystemDialog()
         d.exec_()

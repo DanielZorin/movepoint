@@ -476,14 +476,7 @@ QLabel, QSlider
     <addaction name="actionStep_Backward"/>
     <addaction name="actionShow_Best"/>
    </widget>
-   <widget class="QMenu" name="menuWindow">
-    <property name="title">
-     <string>Window</string>
-    </property>
-    <addaction name="actionColors"/>
-   </widget>
    <addaction name="menuSchedule"/>
-   <addaction name="menuWindow"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionColors">
@@ -520,22 +513,6 @@ QLabel, QSlider
   <include location="resources.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>actionColors</sender>
-   <signal>triggered()</signal>
-   <receiver>Viewer</receiver>
-   <slot>Colors()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>167</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>actionStep_Backward</sender>
    <signal>triggered()</signal>
