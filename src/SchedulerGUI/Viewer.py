@@ -41,6 +41,7 @@ class Viewer(QMainWindow):
             self.ui.replay.setEnabled(True)
 
     def Update(self):
+        # TODO: change mainwindow too
         self.setData(self.method)
 
     def Statusbar(self, msg):
