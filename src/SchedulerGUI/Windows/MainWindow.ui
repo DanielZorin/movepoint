@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,21 +10,21 @@
     <height>430</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Scheduler GUI</string>
   </property>
-  <property name="windowIcon" >
-   <iconset resource="resources.qrc" >
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
     <normaloff>:/pics/pics/star.png</normaloff>:/pics/pics/star.png</iconset>
   </property>
-  <property name="styleSheet" >
-   <string notr="true" >QWidget, QMenuBar::item {
+  <property name="styleSheet">
+   <string notr="true">QWidget, QMenuBar::item {
 	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                       stop: 0 #c5d8ef, stop: 1 #89a5c3);
 }
@@ -32,80 +33,72 @@ QLabel, QSlider {
 	background-color: transparent;
 }a</string>
   </property>
-  <widget class="QWidget" name="centralwidget" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>59</y>
-     <width>320</width>
-     <height>371</height>
-    </rect>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
-   <property name="styleSheet" >
-    <string notr="true" />
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2" >
-    <property name="sizeConstraint" >
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="sizeConstraint">
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout" >
-      <property name="sizeConstraint" >
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="sizeConstraint">
        <enum>QLayout::SetFixedSize</enum>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" >
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="projectname" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <widget class="QLabel" name="projectname">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize" >
+          <property name="maximumSize">
            <size>
             <width>16777215</width>
             <height>24</height>
            </size>
           </property>
-          <property name="font" >
+          <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Project name</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="editname" >
-          <property name="maximumSize" >
+         <widget class="QPushButton" name="editname">
+          <property name="maximumSize">
            <size>
             <width>16777215</width>
             <height>24</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string/>
           </property>
-          <property name="icon" >
+          <property name="icon">
            <iconset>
             <normalon>:/pics/pics/page_edit.png</normalon>
            </iconset>
           </property>
-          <property name="flat" >
+          <property name="flat">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer" >
-          <property name="orientation" >
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0" >
+          <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
             <height>24</height>
@@ -116,176 +109,176 @@ QLabel, QSlider {
        </layout>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox" >
-        <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+       <widget class="QGroupBox" name="groupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize" >
+        <property name="maximumSize">
          <size>
           <width>16777215</width>
           <height>150</height>
          </size>
         </property>
-        <property name="title" >
+        <property name="title">
          <string>Program info</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout" >
-         <item row="0" column="0" >
-          <widget class="QLabel" name="label_3" >
-           <property name="text" >
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
             <string>Vertices</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1" >
-          <widget class="QLabel" name="vertices" >
-           <property name="text" >
+         <item row="0" column="1">
+          <widget class="QLabel" name="vertices">
+           <property name="text">
             <string>0</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="label_5" >
-           <property name="text" >
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
             <string>Edges</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1" >
-          <widget class="QLabel" name="edges" >
-           <property name="text" >
+         <item row="1" column="1">
+          <widget class="QLabel" name="edges">
+           <property name="text">
             <string>0</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="label_7" >
-           <property name="text" >
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
             <string>Deadline</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1" >
-          <widget class="QLabel" name="tdir" >
-           <property name="minimumSize" >
+         <item row="2" column="1">
+          <widget class="QLabel" name="tdir">
+           <property name="minimumSize">
             <size>
              <width>24</width>
              <height>24</height>
             </size>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>0</string>
            </property>
-           <property name="alignment" >
+           <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" >
-          <widget class="QLabel" name="label_9" >
-           <property name="text" >
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
             <string>Reliability limit</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1" >
-          <widget class="QLabel" name="rdir" >
-           <property name="minimumSize" >
+         <item row="3" column="1">
+          <widget class="QLabel" name="rdir">
+           <property name="minimumSize">
             <size>
              <width>24</width>
              <height>24</height>
             </size>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>0</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" >
-          <widget class="QLabel" name="label_11" >
-           <property name="text" >
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
             <string>Trace length</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1" >
-          <widget class="QLabel" name="tracelen" >
-           <property name="text" >
+         <item row="4" column="1">
+          <widget class="QLabel" name="tracelen">
+           <property name="text">
             <string>0</string>
            </property>
           </widget>
          </item>
-         <item rowspan="2" row="0" column="2" >
-          <widget class="QPushButton" name="editprogram" >
-           <property name="text" >
+         <item row="0" column="2" rowspan="2">
+          <widget class="QPushButton" name="editprogram">
+           <property name="text">
             <string/>
            </property>
-           <property name="icon" >
+           <property name="icon">
             <iconset>
              <normalon>:/pics/pics/computer.png</normalon>
             </iconset>
            </property>
-           <property name="iconSize" >
+           <property name="iconSize">
             <size>
              <width>32</width>
              <height>32</height>
             </size>
            </property>
-           <property name="flat" >
+           <property name="flat">
             <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item row="2" column="2" >
-          <widget class="QPushButton" name="edittime" >
-           <property name="maximumSize" >
+         <item row="2" column="2">
+          <widget class="QPushButton" name="edittime">
+           <property name="maximumSize">
             <size>
              <width>16</width>
              <height>16777215</height>
             </size>
            </property>
-           <property name="text" >
+           <property name="text">
             <string/>
            </property>
-           <property name="icon" >
+           <property name="icon">
             <iconset>
              <normalon>:/pics/pics/page_edit.png</normalon>
             </iconset>
            </property>
-           <property name="flat" >
+           <property name="flat">
             <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item row="3" column="2" >
-          <widget class="QPushButton" name="editrel" >
-           <property name="maximumSize" >
+         <item row="3" column="2">
+          <widget class="QPushButton" name="editrel">
+           <property name="maximumSize">
             <size>
              <width>16</width>
              <height>16777215</height>
             </size>
            </property>
-           <property name="text" >
+           <property name="text">
             <string/>
            </property>
-           <property name="icon" >
-            <iconset resource="resources.qrc" >
+           <property name="icon">
+            <iconset resource="resources.qrc">
              <normaloff>:/pics/pics/page_edit.png</normaloff>:/pics/pics/page_edit.png</iconset>
            </property>
-           <property name="flat" >
+           <property name="flat">
             <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item row="0" column="3" >
-          <spacer name="horizontalSpacer_2" >
-           <property name="orientation" >
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
              <height>20</height>
@@ -297,64 +290,64 @@ QLabel, QSlider {
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" >
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLabel" name="label" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <widget class="QLabel" name="label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize" >
+          <property name="maximumSize">
            <size>
             <width>16777215</width>
             <height>32</height>
            </size>
           </property>
-          <property name="font" >
+          <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Launch search</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="runbutton" >
-          <property name="maximumSize" >
+         <widget class="QPushButton" name="runbutton">
+          <property name="maximumSize">
            <size>
             <width>16777215</width>
             <height>32</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string/>
           </property>
-          <property name="icon" >
+          <property name="icon">
            <iconset>
             <normalon>:/pics/pics/play.png</normalon>
            </iconset>
           </property>
-          <property name="iconSize" >
+          <property name="iconSize">
            <size>
             <width>24</width>
             <height>24</height>
            </size>
           </property>
-          <property name="flat" >
+          <property name="flat">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_3" >
-          <property name="orientation" >
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0" >
+          <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
             <height>32</height>
@@ -365,81 +358,81 @@ QLabel, QSlider {
        </layout>
       </item>
       <item>
-       <widget class="QProgressBar" name="progress" >
-        <property name="maximumSize" >
+       <widget class="QProgressBar" name="progress">
+        <property name="maximumSize">
          <size>
           <width>16777215</width>
           <height>24</height>
          </size>
         </property>
-        <property name="value" >
+        <property name="value">
          <number>0</number>
         </property>
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3" >
-        <property name="spacing" >
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
          <number>0</number>
         </property>
-        <property name="rightMargin" >
+        <property name="rightMargin">
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_2" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <widget class="QLabel" name="label_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize" >
+          <property name="maximumSize">
            <size>
             <width>16777215</width>
             <height>16</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Error list</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="hideerrors" >
-          <property name="maximumSize" >
+         <widget class="QPushButton" name="hideerrors">
+          <property name="maximumSize">
            <size>
             <width>16</width>
             <height>16</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string/>
           </property>
-          <property name="icon" >
-           <iconset resource="resources.qrc" >
+          <property name="icon">
+           <iconset resource="resources.qrc">
             <normaloff>:/pics/pics/minimize.png</normaloff>:/pics/pics/minimize.png</iconset>
           </property>
-          <property name="flat" >
+          <property name="flat">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="showerrors" >
-          <property name="maximumSize" >
+         <widget class="QPushButton" name="showerrors">
+          <property name="maximumSize">
            <size>
             <width>16</width>
             <height>16</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string/>
           </property>
-          <property name="icon" >
-           <iconset resource="resources.qrc" >
+          <property name="icon">
+           <iconset resource="resources.qrc">
             <normaloff>:/pics/pics/maximize.png</normaloff>:/pics/pics/maximize.png</iconset>
           </property>
-          <property name="flat" >
+          <property name="flat">
            <bool>true</bool>
           </property>
          </widget>
@@ -447,11 +440,11 @@ QLabel, QSlider {
        </layout>
       </item>
       <item>
-       <widget class="QTableWidget" name="errors" >
-        <property name="showGrid" >
+       <widget class="QTableWidget" name="errors">
+        <property name="showGrid">
          <bool>true</bool>
         </property>
-        <property name="columnCount" >
+        <property name="columnCount">
          <number>0</number>
         </property>
        </widget>
@@ -461,259 +454,251 @@ QLabel, QSlider {
    </layout>
    <zorder></zorder>
   </widget>
-  <widget class="QMenuBar" name="menubar" >
-   <property name="geometry" >
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>320</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
-   <property name="styleSheet" >
-    <string notr="true" />
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
-   <widget class="QMenu" name="menuFile" >
-    <property name="title" >
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNew_Project" />
-    <addaction name="actionOpen_Project" />
-    <addaction name="actionSave_Project" />
-    <addaction name="actionSave_Project_As" />
-    <addaction name="separator" />
-    <addaction name="actionExit" />
+    <addaction name="actionNew_Project"/>
+    <addaction name="actionOpen_Project"/>
+    <addaction name="actionSave_Project"/>
+    <addaction name="actionSave_Project_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuMethod" >
-    <property name="title" >
+   <widget class="QMenu" name="menuMethod">
+    <property name="title">
      <string>Method</string>
     </property>
-    <addaction name="actionStart" />
-    <addaction name="actionReset" />
-    <addaction name="actionLoad_New_Method" />
-    <addaction name="actionSettings" />
-    <addaction name="actionLaunch_Viewer" />
+    <addaction name="actionStart"/>
+    <addaction name="actionReset"/>
+    <addaction name="actionLoad_New_Method"/>
+    <addaction name="actionParameters"/>
+    <addaction name="actionLaunch_Viewer"/>
    </widget>
-   <widget class="QMenu" name="menuWindow" >
-    <property name="title" >
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionLanguage" />
-    <addaction name="actionSettings_2" />
+    <addaction name="actionLanguage"/>
+    <addaction name="actionSettings"/>
    </widget>
-   <widget class="QMenu" name="menuHelp" >
-    <property name="title" >
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionContents" />
-    <addaction name="actionAbout" />
+    <addaction name="actionContents"/>
+    <addaction name="actionAbout"/>
    </widget>
-   <widget class="QMenu" name="menuExport" >
-    <property name="title" >
+   <widget class="QMenu" name="menuExport">
+    <property name="title">
      <string>Export</string>
     </property>
-    <addaction name="actionTrace" />
-    <addaction name="actionResult" />
-    <addaction name="actionGenerate_Code" />
+    <addaction name="actionTrace"/>
+    <addaction name="actionResult"/>
+    <addaction name="actionGenerate_Code"/>
    </widget>
-   <addaction name="menuFile" />
-   <addaction name="menuMethod" />
-   <addaction name="menuWindow" />
-   <addaction name="menuExport" />
-   <addaction name="menuHelp" />
+   <addaction name="menuFile"/>
+   <addaction name="menuMethod"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuExport"/>
+   <addaction name="menuHelp"/>
   </widget>
-  <widget class="QToolBar" name="toolBar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>22</y>
-     <width>320</width>
-     <height>37</height>
-    </rect>
-   </property>
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
     <string>toolBar</string>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNew_Project" />
-   <addaction name="actionOpen_Project" />
-   <addaction name="actionSave_Project" />
-   <addaction name="actionLaunch_Viewer" />
-   <addaction name="actionStart" />
+   <addaction name="actionNew_Project"/>
+   <addaction name="actionOpen_Project"/>
+   <addaction name="actionSave_Project"/>
+   <addaction name="actionLaunch_Viewer"/>
+   <addaction name="actionStart"/>
   </widget>
-  <action name="actionExit" >
-   <property name="text" >
+  <action name="actionExit">
+   <property name="text">
     <string>Exit</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+X</string>
    </property>
   </action>
-  <action name="actionAbout" >
-   <property name="text" >
+  <action name="actionAbout">
+   <property name="text">
     <string>About Scheduler</string>
    </property>
   </action>
-  <action name="actionNew_Project" >
-   <property name="icon" >
+  <action name="actionNew_Project">
+   <property name="icon">
     <iconset>
      <normalon>:/pics/pics/page.png</normalon>
     </iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>New Project</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="actionOpen_Project" >
-   <property name="icon" >
+  <action name="actionOpen_Project">
+   <property name="icon">
     <iconset>
      <normalon>:/pics/pics/folder.png</normalon>
     </iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Open Project</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionSave_Project" >
-   <property name="icon" >
+  <action name="actionSave_Project">
+   <property name="icon">
     <iconset>
      <normalon>:/pics/pics/cd.png</normalon>
     </iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Save Project</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionSave_Project_As" >
-   <property name="text" >
+  <action name="actionSave_Project_As">
+   <property name="text">
     <string>Save Project As...</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="actionStart" >
-   <property name="enabled" >
+  <action name="actionStart">
+   <property name="enabled">
     <bool>true</bool>
    </property>
-   <property name="icon" >
+   <property name="icon">
     <iconset>
      <normalon>:/pics/pics/play.png</normalon>
     </iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Run</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>F5</string>
    </property>
   </action>
-  <action name="actionSettings" >
-   <property name="text" >
-    <string>Settings...</string>
+  <action name="actionParameters">
+   <property name="text">
+    <string>Parameters...</string>
    </property>
   </action>
-  <action name="actionContents" >
-   <property name="text" >
+  <action name="actionContents">
+   <property name="text">
     <string>Contents...</string>
    </property>
   </action>
-  <action name="actionAbout_Scheduler" >
-   <property name="text" >
+  <action name="actionAbout_Scheduler">
+   <property name="text">
     <string>About Scheduler</string>
    </property>
   </action>
-  <action name="actionReset" >
-   <property name="enabled" >
+  <action name="actionReset">
+   <property name="enabled">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Reset</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>F10</string>
    </property>
   </action>
-  <action name="actionChange_name" >
-   <property name="text" >
+  <action name="actionChange_name">
+   <property name="text">
     <string>Change Name...</string>
    </property>
   </action>
-  <action name="actionLoad_New_System" >
-   <property name="text" >
+  <action name="actionLoad_New_System">
+   <property name="text">
     <string>Load New System...</string>
    </property>
   </action>
-  <action name="actionLoad_New_Method" >
-   <property name="text" >
+  <action name="actionLoad_New_Method">
+   <property name="text">
     <string>Load New Method...</string>
    </property>
   </action>
-  <action name="actionGenerate_Random_System" >
-   <property name="text" >
+  <action name="actionGenerate_Random_System">
+   <property name="text">
     <string>Generate Random System</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>Alt+R</string>
    </property>
   </action>
-  <action name="actionLanguage" >
-   <property name="text" >
+  <action name="actionLanguage">
+   <property name="text">
     <string>Language...</string>
    </property>
   </action>
-  <action name="actionChange_Limits" >
-   <property name="text" >
+  <action name="actionChange_Limits">
+   <property name="text">
     <string>Change Limits...</string>
    </property>
   </action>
-  <action name="actionLaunch_Viewer" >
-   <property name="icon" >
+  <action name="actionLaunch_Viewer">
+   <property name="icon">
     <iconset>
      <normalon>:/pics/pics/chart.png</normalon>
     </iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Launch Viewer</string>
    </property>
   </action>
-  <action name="actionTrace" >
-   <property name="text" >
+  <action name="actionTrace">
+   <property name="text">
     <string>Trace...</string>
    </property>
   </action>
-  <action name="actionResult" >
-   <property name="text" >
+  <action name="actionResult">
+   <property name="text">
     <string>Result...</string>
    </property>
   </action>
-  <action name="actionGenerate_Code" >
-   <property name="text" >
+  <action name="actionGenerate_Code">
+   <property name="text">
     <string>Generate Code...</string>
    </property>
   </action>
-  <action name="actionSettings_2" >
-   <property name="text" >
+  <action name="actionSettings">
+   <property name="text">
     <string>Settings...</string>
    </property>
   </action>
  </widget>
  <resources>
-  <include location="resources.qrc" />
+  <include location="resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -722,11 +707,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>Exit()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>399</x>
      <y>299</y>
     </hint>
@@ -738,11 +723,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>About()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>409</x>
      <y>322</y>
     </hint>
@@ -754,11 +739,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>NewProject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>409</x>
      <y>322</y>
     </hint>
@@ -770,11 +755,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>OpenProject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>409</x>
      <y>322</y>
     </hint>
@@ -786,11 +771,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>SaveProject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>337</x>
      <y>164</y>
     </hint>
@@ -802,11 +787,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>SaveProjectAs()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>337</x>
      <y>164</y>
     </hint>
@@ -818,11 +803,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>Run()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>337</x>
      <y>164</y>
     </hint>
@@ -834,11 +819,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>ResetSchedule()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>328</x>
      <y>155</y>
     </hint>
@@ -850,11 +835,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>GenerateRandomSystem()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>365</x>
      <y>211</y>
     </hint>
@@ -866,11 +851,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>LoadSystem()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>365</x>
      <y>211</y>
     </hint>
@@ -882,27 +867,27 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>LoadMethod()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>365</x>
      <y>211</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>actionSettings</sender>
+   <sender>actionParameters</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>Settings()</slot>
+   <slot>Parameters()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>365</x>
      <y>211</y>
     </hint>
@@ -914,11 +899,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>ChangeLanguage()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>365</x>
      <y>211</y>
     </hint>
@@ -930,11 +915,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>LaunchViewer()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>365</x>
      <y>231</y>
     </hint>
@@ -946,11 +931,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>ExportTrace()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>189</x>
      <y>57</y>
     </hint>
@@ -962,11 +947,11 @@ QLabel, QSlider {
    <receiver>actionStart</receiver>
    <slot>trigger()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>115</x>
      <y>273</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
@@ -978,11 +963,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>EditName()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>122</x>
      <y>80</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>153</x>
      <y>165</y>
     </hint>
@@ -994,11 +979,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>EditTdir()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>124</x>
      <y>181</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>153</x>
      <y>165</y>
     </hint>
@@ -1010,11 +995,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>EditRdir()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>124</x>
      <y>211</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>153</x>
      <y>165</y>
     </hint>
@@ -1026,11 +1011,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>EditProgram()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>142</x>
      <y>143</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>153</x>
      <y>165</y>
     </hint>
@@ -1042,11 +1027,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>HideErrors()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>262</x>
      <y>336</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>147</x>
      <y>213</y>
     </hint>
@@ -1058,11 +1043,11 @@ QLabel, QSlider {
    <receiver>errors</receiver>
    <slot>show()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>284</x>
      <y>336</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>151</x>
      <y>387</y>
     </hint>
@@ -1074,11 +1059,11 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>ExportSchedule()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>137</x>
      <y>215</y>
     </hint>
@@ -1090,13 +1075,29 @@ QLabel, QSlider {
    <receiver>MainWindow</receiver>
    <slot>GenerateCode()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>137</x>
      <y>215</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSettings</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>Settings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>214</y>
     </hint>
    </hints>
   </connection>
@@ -1133,5 +1134,6 @@ QLabel, QSlider {
   <slot>HideErrors()</slot>
   <slot>ExportSchedule()</slot>
   <slot>GenerateCode()</slot>
+  <slot>Parameters()</slot>
  </slots>
 </ui>

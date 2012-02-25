@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Thu Feb 16 14:16:47 2012
+# Created: Sat Feb 25 20:48:15 2012
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,7 +35,6 @@ class Ui_MainWindow(object):
 "    background-color: transparent;\n"
 "}a"))
         self.centralwidget = QtGui.QWidget(MainWindow)
-        self.centralwidget.setGeometry(QtCore.QRect(0, 59, 320, 371))
         self.centralwidget.setStyleSheet(_fromUtf8(""))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.centralwidget)
@@ -215,7 +214,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 320, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 320, 21))
         self.menubar.setStyleSheet(_fromUtf8(""))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
@@ -230,7 +229,6 @@ class Ui_MainWindow(object):
         self.menuExport.setObjectName(_fromUtf8("menuExport"))
         MainWindow.setMenuBar(self.menubar)
         self.toolBar = QtGui.QToolBar(MainWindow)
-        self.toolBar.setGeometry(QtCore.QRect(0, 22, 320, 37))
         self.toolBar.setObjectName(_fromUtf8("toolBar"))
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionExit = QtGui.QAction(MainWindow)
@@ -258,8 +256,8 @@ class Ui_MainWindow(object):
         self.actionStart.setEnabled(True)
         self.actionStart.setIcon(icon4)
         self.actionStart.setObjectName(_fromUtf8("actionStart"))
-        self.actionSettings = QtGui.QAction(MainWindow)
-        self.actionSettings.setObjectName(_fromUtf8("actionSettings"))
+        self.actionParameters = QtGui.QAction(MainWindow)
+        self.actionParameters.setObjectName(_fromUtf8("actionParameters"))
         self.actionContents = QtGui.QAction(MainWindow)
         self.actionContents.setObjectName(_fromUtf8("actionContents"))
         self.actionAbout_Scheduler = QtGui.QAction(MainWindow)
@@ -290,8 +288,8 @@ class Ui_MainWindow(object):
         self.actionResult.setObjectName(_fromUtf8("actionResult"))
         self.actionGenerate_Code = QtGui.QAction(MainWindow)
         self.actionGenerate_Code.setObjectName(_fromUtf8("actionGenerate_Code"))
-        self.actionSettings_2 = QtGui.QAction(MainWindow)
-        self.actionSettings_2.setObjectName(_fromUtf8("actionSettings_2"))
+        self.actionSettings = QtGui.QAction(MainWindow)
+        self.actionSettings.setObjectName(_fromUtf8("actionSettings"))
         self.menuFile.addAction(self.actionNew_Project)
         self.menuFile.addAction(self.actionOpen_Project)
         self.menuFile.addAction(self.actionSave_Project)
@@ -301,10 +299,10 @@ class Ui_MainWindow(object):
         self.menuMethod.addAction(self.actionStart)
         self.menuMethod.addAction(self.actionReset)
         self.menuMethod.addAction(self.actionLoad_New_Method)
-        self.menuMethod.addAction(self.actionSettings)
+        self.menuMethod.addAction(self.actionParameters)
         self.menuMethod.addAction(self.actionLaunch_Viewer)
         self.menuWindow.addAction(self.actionLanguage)
-        self.menuWindow.addAction(self.actionSettings_2)
+        self.menuWindow.addAction(self.actionSettings)
         self.menuHelp.addAction(self.actionContents)
         self.menuHelp.addAction(self.actionAbout)
         self.menuExport.addAction(self.actionTrace)
@@ -333,7 +331,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionGenerate_Random_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.GenerateRandomSystem)
         QtCore.QObject.connect(self.actionLoad_New_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadSystem)
         QtCore.QObject.connect(self.actionLoad_New_Method, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadMethod)
-        QtCore.QObject.connect(self.actionSettings, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Settings)
+        QtCore.QObject.connect(self.actionParameters, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Parameters)
         QtCore.QObject.connect(self.actionLanguage, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ChangeLanguage)
         QtCore.QObject.connect(self.actionLaunch_Viewer, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LaunchViewer)
         QtCore.QObject.connect(self.actionTrace, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportTrace)
@@ -346,6 +344,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.showerrors, QtCore.SIGNAL(_fromUtf8("clicked()")), self.errors.show)
         QtCore.QObject.connect(self.actionResult, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportSchedule)
         QtCore.QObject.connect(self.actionGenerate_Code, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.GenerateCode)
+        QtCore.QObject.connect(self.actionSettings, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Settings)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -383,7 +382,7 @@ class Ui_MainWindow(object):
         self.actionSave_Project_As.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Shift+S", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStart.setText(QtGui.QApplication.translate("MainWindow", "Run", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStart.setShortcut(QtGui.QApplication.translate("MainWindow", "F5", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionParameters.setText(QtGui.QApplication.translate("MainWindow", "Parameters...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionContents.setText(QtGui.QApplication.translate("MainWindow", "Contents...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout_Scheduler.setText(QtGui.QApplication.translate("MainWindow", "About Scheduler", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReset.setText(QtGui.QApplication.translate("MainWindow", "Reset", None, QtGui.QApplication.UnicodeUTF8))
@@ -399,6 +398,6 @@ class Ui_MainWindow(object):
         self.actionTrace.setText(QtGui.QApplication.translate("MainWindow", "Trace...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionResult.setText(QtGui.QApplication.translate("MainWindow", "Result...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionGenerate_Code.setText(QtGui.QApplication.translate("MainWindow", "Generate Code...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings_2.setText(QtGui.QApplication.translate("MainWindow", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc

@@ -1,6 +1,5 @@
-from PyQt4.QtGui import QDialog, QMainWindow, QIntValidator
+from PyQt4.QtGui import QMainWindow, QIntValidator
 from PyQt4.QtCore import SIGNAL, QObject
-from SchedulerGUI.PreferencesDialog import PreferencesDialog
 from SchedulerGUI.ScheduleVisualizer import ScheduleVisualizer
 from SchedulerGUI.Windows.ui_Viewer import Ui_Viewer
 
@@ -12,7 +11,6 @@ class Viewer(QMainWindow):
         self.ui.setupUi(self)
         self.visualizer = ScheduleVisualizer(self.ui.visualizerArea)
         self.ui.visualizerArea.setWidget(self.visualizer)
-        self.preferences = PreferencesDialog()
         QObject.connect(self.visualizer, SIGNAL("ManualOperation"), self.Update)
         QObject.connect(self.visualizer, SIGNAL("WrongOperation"), self.Statusbar)
 
@@ -57,17 +55,6 @@ class Viewer(QMainWindow):
 
     def ShowBest(self):
         self.ScrollTrace(self.method.trace.best - self.method.trace.current)
-
-    def Colors(self):
-        self.preferences.exec_()
-        if self.preferences.result() == QDialog.Accepted:
-            self.UpdatePreferences()
-            
-    def UpdatePreferences(self):
-        self.visualizer.SetColors(self.preferences.axisColor, 
-                                  self.preferences.taskColor,
-                                  self.preferences.deliveriesColor,
-                                  self.preferences.lastopColor)  
         
     def StepForward(self):
         self.ScrollTrace(1)
