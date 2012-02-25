@@ -19,8 +19,8 @@ class MainWindow(QMainWindow):
     project = None
     projectFile = None
     recentfiles = []
-    
     currentLanguage = "English"
+    otherSettings = {}
     projFilter = ""
 
     splash = True
@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
                 settings = pickle.load(f)
                 self.recentfiles = settings["recent"]
                 self.currentLanguage = settings["language"]
+                self.otherSettings = settings
                 f.close()
             except:
                 pass
@@ -53,6 +54,8 @@ class MainWindow(QMainWindow):
         settings = {}
         settings["recent"] = self.recentfiles
         settings["language"] = self.currentLanguage
+        settings["viewer"] = self.viewer.visualizer.colors
+        settings["graphEditor"] = self.graphEditor.canvas.colors
         pickle.dump(settings, f)
         f.close()          
                     
@@ -65,6 +68,8 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.viewer = Viewer()
         self.graphEditor = GraphEditor()
+        self.viewer.visualizer.colors = self.otherSettings["viewer"]
+        self.graphEditor.canvas.colors = self.otherSettings["graphEditor"]
         self.settings = PreferencesDialog(self.viewer.visualizer.colors, self.graphEditor.canvas.colors)
         QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
         self.splash = False
