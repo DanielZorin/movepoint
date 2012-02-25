@@ -12,7 +12,7 @@ class PreferencesDialog(QDialog):
     graphEditor = {}
     viewer = {}
     
-    def __init__(self, vi, ge):
+    def __init__(self, vi, ge, lang, curlang):
         QDialog.__init__(self)
         self.ui = Ui_PreferencesDialog()
         self.ui.setupUi(self)
@@ -24,7 +24,13 @@ class PreferencesDialog(QDialog):
         self.ui.lastop.setStyleSheet("background-color: " + self.viewer["select"].name())  
         self.ui.vertex.setStyleSheet("background-color: " + self.graphEditor["vertex"].name())
         self.ui.edge.setStyleSheet("background-color: " + self.graphEditor["line"].name())
-        self.ui.selection.setStyleSheet("background-color: " + self.graphEditor["selected"].name()) 
+        self.ui.selection.setStyleSheet("background-color: " + self.graphEditor["selected"].name())
+        i = 0
+        for s in lang:
+            self.ui.languages.addItem(s)
+            if s == curlang:
+                self.ui.languages.setCurrentIndex(i)
+            i += 1
                 
     def AxisColor(self):
         color = QColorDialog.getColor()

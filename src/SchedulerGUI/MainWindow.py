@@ -1,5 +1,5 @@
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QColor, QListWidgetItem, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
+from PyQt4 import QtCore
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
 from PyQt4.QtCore import QTranslator, SIGNAL
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
@@ -7,7 +7,6 @@ from SchedulerGUI.NewProjectDialog import NewProjectDialog
 from SchedulerGUI.SettingsDialog import SettingsDialog
 from SchedulerGUI.PreferencesDialog import PreferencesDialog
 from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
-from SchedulerGUI.ComboBoxDialog import ComboBoxDialog
 from SchedulerGUI.Viewer import Viewer
 from SchedulerGUI.GraphEditor import GraphEditor
 from Schedules.Exceptions import SchedulerException
@@ -70,7 +69,9 @@ class MainWindow(QMainWindow):
         self.graphEditor = GraphEditor()
         self.viewer.visualizer.colors = self.otherSettings["viewer"]
         self.graphEditor.canvas.colors = self.otherSettings["graphEditor"]
-        self.settings = PreferencesDialog(self.viewer.visualizer.colors, self.graphEditor.canvas.colors)
+        self.settings = PreferencesDialog(self.viewer.visualizer.colors, 
+                                          self.graphEditor.canvas.colors,
+                                          self.languages, self.currentLanguage)
         QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
         self.splash = False
 
@@ -122,7 +123,7 @@ class MainWindow(QMainWindow):
             m = tsfile.match(s)
             if m != None:
                 res.append(m.group(1))
-                #os.system("lrelease Translations/" + s + " -qm Translations/" + s.replace(".ts", ".qm"))
+                #os.system("lrelease ./Translations/" + s + " -qm ./Translations/" + s.replace(".ts", ".qm"))
         self.languages = res
 
     def NewProject(self):
@@ -357,7 +358,10 @@ class MainWindow(QMainWindow):
     def Settings(self):
         self.settings.exec_()
         if self.settings.result() == QDialog.Accepted:
-            pass
+            selected = self.languages[self.settings.ui.languages.currentIndex()]
+            if self.currentLanguage != selected:
+                self.currentLanguage = selected
+                self.Translate(selected)
                
     def GenerateRandomSystem(self):
         d = RandomSystemDialog()
@@ -366,13 +370,6 @@ class MainWindow(QMainWindow):
             params = d.GetResult()
             self.project.GenerateRandomSystem(params)
             self.loadSchedule()
-
-    def ChangeLanguage(self):
-        dialog = ComboBoxDialog(self.languages, self.currentLanguage)
-        dialog.exec_()
-        selected = self.languages[dialog.combo.currentIndex()]
-        self.currentLanguage = selected
-        self.Translate(selected)
     
     def Translate(self, lang):
         # TODO: add all strings from various files
@@ -381,9 +378,10 @@ class MainWindow(QMainWindow):
         qApp.installTranslator(translator)
         self.ui.retranslateUi(self)
         if not self.splash:
-            self.viewer.preferences.ui.retranslateUi(self.viewer.preferences)
+            self.settings.ui.retranslateUi(self.settings)
             self.viewer.ui.retranslateUi(self.viewer) 
-            self.loadSchedule()    
+            self.graphEditor.ui.retranslateUi(self.graphEditor) 
+            self.loadSchedule()  
             self.setWindowTitle(self.project.name + " - " + self.tr(self.title))     
     
     def ExportTrace(self):

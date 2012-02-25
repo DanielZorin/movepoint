@@ -70,7 +70,6 @@
     <Compile Include="Methods\__init__.py" />
     <Compile Include="Profile.py" />
     <Compile Include="RunZTest.py" />
-    <Compile Include="SchedulerGUI\ComboBoxDialog.py" />
     <Compile Include="SchedulerGUI\GraphCanvas.py" />
     <Compile Include="SchedulerGUI\GraphEditor.py" />
     <Compile Include="SchedulerGUI\MainWindow.py" />

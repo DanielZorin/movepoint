@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Feb 25 20:48:15 2012
+# Created: Sat Feb 25 21:35:17 2012
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -301,7 +301,6 @@ class Ui_MainWindow(object):
         self.menuMethod.addAction(self.actionLoad_New_Method)
         self.menuMethod.addAction(self.actionParameters)
         self.menuMethod.addAction(self.actionLaunch_Viewer)
-        self.menuWindow.addAction(self.actionLanguage)
         self.menuWindow.addAction(self.actionSettings)
         self.menuHelp.addAction(self.actionContents)
         self.menuHelp.addAction(self.actionAbout)
@@ -332,7 +331,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionLoad_New_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadSystem)
         QtCore.QObject.connect(self.actionLoad_New_Method, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadMethod)
         QtCore.QObject.connect(self.actionParameters, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Parameters)
-        QtCore.QObject.connect(self.actionLanguage, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ChangeLanguage)
         QtCore.QObject.connect(self.actionLaunch_Viewer, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LaunchViewer)
         QtCore.QObject.connect(self.actionTrace, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportTrace)
         QtCore.QObject.connect(self.runbutton, QtCore.SIGNAL(_fromUtf8("clicked()")), self.actionStart.trigger)
