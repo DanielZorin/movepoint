@@ -70,7 +70,7 @@ class MultiOperation:
         self.ops.append(op)
     def Reverse(self):
         res = MultiOperation()
-        for op in self.ops:
+        for op in self.ops[::-1]:
             res.Add(op.Reverse())
         return res
 

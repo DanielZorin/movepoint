@@ -1,5 +1,7 @@
 <RCC>
-  <qresource prefix="pics" >
+  <qresource prefix="pics">
+    <file>pics/graph.png</file>
+    <file>pics/settings.png</file>
     <file>pics/meenoos.png</file>
     <file>pics/maximize.png</file>
     <file>pics/minimize.png</file>
