@@ -260,9 +260,6 @@ class MainWindow(QMainWindow):
     def ResetSchedule(self):
         self.project.ResetSchedule()
         self.loadSchedule()
-    
-    def ChangeScale(self, value):
-        self.visualizer.SetScale(1.0 + float(value) / 100.0)
         
     def LoadSystem(self):
         s = QFileDialog.getOpenFileName()

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Feb 25 21:35:17 2012
+# Created: Tue Feb 28 18:32:42 2012
 #      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -115,7 +115,7 @@ class Ui_MainWindow(object):
         self.editprogram = QtGui.QPushButton(self.groupBox)
         self.editprogram.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/computer.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/graph.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.editprogram.setIcon(icon2)
         self.editprogram.setIconSize(QtCore.QSize(32, 32))
         self.editprogram.setFlat(True)
@@ -289,7 +289,15 @@ class Ui_MainWindow(object):
         self.actionGenerate_Code = QtGui.QAction(MainWindow)
         self.actionGenerate_Code.setObjectName(_fromUtf8("actionGenerate_Code"))
         self.actionSettings = QtGui.QAction(MainWindow)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSettings.setIcon(icon11)
         self.actionSettings.setObjectName(_fromUtf8("actionSettings"))
+        self.actionEdit_Program_Graph = QtGui.QAction(MainWindow)
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8(":/pics/pics/graph.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionEdit_Program_Graph.setIcon(icon12)
+        self.actionEdit_Program_Graph.setObjectName(_fromUtf8("actionEdit_Program_Graph"))
         self.menuFile.addAction(self.actionNew_Project)
         self.menuFile.addAction(self.actionOpen_Project)
         self.menuFile.addAction(self.actionSave_Project)
@@ -301,6 +309,7 @@ class Ui_MainWindow(object):
         self.menuMethod.addAction(self.actionLoad_New_Method)
         self.menuMethod.addAction(self.actionParameters)
         self.menuMethod.addAction(self.actionLaunch_Viewer)
+        self.menuMethod.addAction(self.actionEdit_Program_Graph)
         self.menuWindow.addAction(self.actionSettings)
         self.menuHelp.addAction(self.actionContents)
         self.menuHelp.addAction(self.actionAbout)
@@ -315,8 +324,12 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionNew_Project)
         self.toolBar.addAction(self.actionOpen_Project)
         self.toolBar.addAction(self.actionSave_Project)
+        self.toolBar.addSeparator()
+        self.toolBar.addAction(self.actionEdit_Program_Graph)
         self.toolBar.addAction(self.actionLaunch_Viewer)
+        self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionStart)
+        self.toolBar.addAction(self.actionSettings)
 
         self.retranslateUi(MainWindow)
         QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Exit)
@@ -337,12 +350,13 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.editname, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditName)
         QtCore.QObject.connect(self.edittime, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditTdir)
         QtCore.QObject.connect(self.editrel, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditRdir)
-        QtCore.QObject.connect(self.editprogram, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.EditProgram)
+        QtCore.QObject.connect(self.editprogram, QtCore.SIGNAL(_fromUtf8("clicked()")), self.actionEdit_Program_Graph.trigger)
         QtCore.QObject.connect(self.hideerrors, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.HideErrors)
         QtCore.QObject.connect(self.showerrors, QtCore.SIGNAL(_fromUtf8("clicked()")), self.errors.show)
         QtCore.QObject.connect(self.actionResult, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportSchedule)
         QtCore.QObject.connect(self.actionGenerate_Code, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.GenerateCode)
         QtCore.QObject.connect(self.actionSettings, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Settings)
+        QtCore.QObject.connect(self.actionEdit_Program_Graph, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.EditProgram)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -362,7 +376,7 @@ class Ui_MainWindow(object):
         self.label.setText(QtGui.QApplication.translate("MainWindow", "Launch search", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Error list", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuMethod.setTitle(QtGui.QApplication.translate("MainWindow", "Method", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuMethod.setTitle(QtGui.QApplication.translate("MainWindow", "Project", None, QtGui.QApplication.UnicodeUTF8))
         self.menuWindow.setTitle(QtGui.QApplication.translate("MainWindow", "Tools", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.menuExport.setTitle(QtGui.QApplication.translate("MainWindow", "Export", None, QtGui.QApplication.UnicodeUTF8))
@@ -378,7 +392,7 @@ class Ui_MainWindow(object):
         self.actionSave_Project.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_Project_As.setText(QtGui.QApplication.translate("MainWindow", "Save Project As...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_Project_As.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Shift+S", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionStart.setText(QtGui.QApplication.translate("MainWindow", "Run", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStart.setText(QtGui.QApplication.translate("MainWindow", "Launch Search", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStart.setShortcut(QtGui.QApplication.translate("MainWindow", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.actionParameters.setText(QtGui.QApplication.translate("MainWindow", "Parameters...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionContents.setText(QtGui.QApplication.translate("MainWindow", "Contents...", None, QtGui.QApplication.UnicodeUTF8))
@@ -387,15 +401,19 @@ class Ui_MainWindow(object):
         self.actionReset.setShortcut(QtGui.QApplication.translate("MainWindow", "F10", None, QtGui.QApplication.UnicodeUTF8))
         self.actionChange_name.setText(QtGui.QApplication.translate("MainWindow", "Change Name...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionLoad_New_System.setText(QtGui.QApplication.translate("MainWindow", "Load New System...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionLoad_New_Method.setText(QtGui.QApplication.translate("MainWindow", "Load New Method...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionLoad_New_Method.setText(QtGui.QApplication.translate("MainWindow", "Load New Parameters...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionGenerate_Random_System.setText(QtGui.QApplication.translate("MainWindow", "Generate Random System", None, QtGui.QApplication.UnicodeUTF8))
         self.actionGenerate_Random_System.setShortcut(QtGui.QApplication.translate("MainWindow", "Alt+R", None, QtGui.QApplication.UnicodeUTF8))
         self.actionLanguage.setText(QtGui.QApplication.translate("MainWindow", "Language...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionChange_Limits.setText(QtGui.QApplication.translate("MainWindow", "Change Limits...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionLaunch_Viewer.setText(QtGui.QApplication.translate("MainWindow", "Launch Viewer", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionLaunch_Viewer.setShortcut(QtGui.QApplication.translate("MainWindow", "F2", None, QtGui.QApplication.UnicodeUTF8))
         self.actionTrace.setText(QtGui.QApplication.translate("MainWindow", "Trace...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionResult.setText(QtGui.QApplication.translate("MainWindow", "Result...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionGenerate_Code.setText(QtGui.QApplication.translate("MainWindow", "Generate Code...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSettings.setShortcut(QtGui.QApplication.translate("MainWindow", "F12", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEdit_Program_Graph.setText(QtGui.QApplication.translate("MainWindow", "Edit Program Graph", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEdit_Program_Graph.setShortcut(QtGui.QApplication.translate("MainWindow", "F3", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc
