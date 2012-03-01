@@ -77,7 +77,6 @@
     <Compile Include="SchedulerGUI\PreferencesDialog.py" />
     <Compile Include="SchedulerGUI\Project.py" />
     <Compile Include="SchedulerGUI\RandomSystemDialog.py" />
-    <Compile Include="SchedulerGUI\ScheduleContainer.py" />
     <Compile Include="SchedulerGUI\ScheduleVisualizer.py" />
     <Compile Include="SchedulerGUI\SettingsDialog.py" />
     <Compile Include="SchedulerGUI\Viewer.py" />
