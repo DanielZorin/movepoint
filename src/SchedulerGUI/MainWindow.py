@@ -82,7 +82,7 @@ class MainWindow(QMainWindow):
             try:
                 self.project = Project(self.newproject.GetSystem(), self.newproject.GetName())     
             except SchedulerException as e:
-                QMessageBox.critical(self, "An error occured", e.message)
+                QMessageBox.critical(self, self.tr("An error occured"), e.message)
                 return  
             self.LoadMainWindow()
             self.setupProject()
@@ -102,7 +102,7 @@ class MainWindow(QMainWindow):
                 try:
                     self.project.Deserialize(name)
                 except: #_pickle.UnpicklingError:
-                    QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
+                    QMessageBox.critical(self, self.tr("An error occured"), self.tr("File is not a valid project file: ") + name)
                     self.recentfiles = [p for p in self.recentfiles if p[0] != name]
                     for p in self.recentfiles:
                         self.ui.recent.addItem(p[1])
@@ -148,7 +148,7 @@ class MainWindow(QMainWindow):
         try:
             self.project.Deserialize(name)
         except _pickle.UnpicklingError:
-            QMessageBox.critical(self, "An error occured", "File is not a valid project file: " + name)
+            QMessageBox.critical(self, self.tr("An error occured"), self.tr("File is not a valid project file: ") + name)
             return
         self.projectFile = name
         self.setupProject()
@@ -235,10 +235,10 @@ class MainWindow(QMainWindow):
         for v in cycles:
             ok = False
             self.ui.errors.insertRow(0)
-            item = QTableWidgetItem("Error")
+            item = QTableWidgetItem(self.tr("Error"))
             item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.ui.errors.setItem(0, 0, item)
-            item2 = QTableWidgetItem("Task " + v.name + " " + str(v.number) + " is in a cycle")
+            item2 = QTableWidgetItem(self.tr("Task ") + v.name + " " + str(v.number) + self.tr(" is in a cycle"))
             item2.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.ui.errors.setItem(0, 1, item2)
         return ok
@@ -267,7 +267,7 @@ class MainWindow(QMainWindow):
             try:
                 self.project.ChangeSystem(s)
             except SchedulerException as e:
-                QMessageBox.critical(self, "An error occured", e.message)
+                QMessageBox.critical(self, self.tr("An error occured"), e.message)
                 return  
             self.EnableRunning()
             self.loadSchedule()
@@ -280,7 +280,7 @@ class MainWindow(QMainWindow):
             try:
                 self.project.ChangeMethod(s)
             except SchedulerException as e:
-                QMessageBox.critical(self, "An error occured", e.message)
+                QMessageBox.critical(self, self.tr("An error occured"), e.message)
                 return
     
     def EditName(self):
