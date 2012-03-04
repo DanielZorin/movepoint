@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     os.system("pyrcc4 -py3 resources.qrc -o resources_rc.py")
     
-    if 0 == 1:
+    if 1 == 1:
         os.chdir("..")
         os.system("pylupdate4 SchedulerGUI.pro")
         
