@@ -39,6 +39,8 @@ class System(object):
  
     def Reload(self, filename):    
         if filename == "":
+            self.program = Program()
+            self.schedule = Schedule(self.program, [Processor(0, 0.9, 5)])
             return
         self.program = Program(filename)
         self.LoadProcessors(filename)

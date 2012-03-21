@@ -38,6 +38,10 @@ class GraphEditor(QMainWindow):
         super(QMainWindow, self).resizeEvent(e)
         self.canvas.ResizeCanvas()
 
+    def showEvent(self, e):
+        super(QMainWindow, self).showEvent(e)
+        self.canvas.ResizeCanvas()
+
     def LoadPositions(self, lst):
         if lst == {}:
             # TODO: dirty

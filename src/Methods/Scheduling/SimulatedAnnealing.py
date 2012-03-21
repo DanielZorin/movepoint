@@ -74,7 +74,7 @@ class SimulatedAnnealing(object):
     def __init__(self, system):
         self.iteration = 0
         self.system = system
-        self.numberOfIterations = len(self.system.program.vertices) * 10
+        self.numberOfIterations = len(self.system.program.vertices) * 10 + 1
         self.temperature = 0
         logging.basicConfig(level=logging.DEBUG)
         self.logger = logging.getLogger('SimulatedAnnealing')

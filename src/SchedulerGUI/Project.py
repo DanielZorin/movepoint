@@ -16,12 +16,12 @@ class Project(object):
     name = None
     graph = {}
     
-    def __init__(self, s=None, name=""):
-        if s != None:
-            self.system = System(s)
-            # TODO: think how to implement other methods
-            self.method = SimulatedAnnealing(self.system)
-            self.method.Reset()
+    def __init__(self, s="", name=""):
+        self.system = System(s)
+        # TODO: think how to implement other methods
+        self.method = SimulatedAnnealing(self.system)
+        self.method.LoadConfig("config.xml")
+        self.method.Reset()
         self.name = name
         
     def Serialize(self, filename):

@@ -249,6 +249,7 @@ class MainWindow(QMainWindow):
 
     def Run(self):
         self.project.method.iteration = 0
+        self.project.method.numberOfIterations = len(self.project.system.program.vertices) * 10
         while self.project.method.iteration < self.project.method.numberOfIterations:
             self.project.method.Step()
             print(self.project.method.iteration)
