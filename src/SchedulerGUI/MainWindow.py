@@ -104,6 +104,7 @@ class MainWindow(QMainWindow):
                 except: #_pickle.UnpicklingError:
                     QMessageBox.critical(self, self.tr("An error occured"), self.tr("File is not a valid project file: ") + name)
                     self.recentfiles = [p for p in self.recentfiles if p[0] != name]
+                    self.ui.recent.clear()
                     for p in self.recentfiles:
                         self.ui.recent.addItem(p[1])
                     return
@@ -170,7 +171,7 @@ class MainWindow(QMainWindow):
             self.AddToRecent(self.projectFile, self.project.name)
 
     def setupProject(self):
-        self.setWindowTitle(self.project.name + " - " + self.title)
+        self.setWindowTitle(self.project.name + " - " + self.tr(self.title))
         self.graphEditor.setData(self.project.system)
         if self.LoadErrors():
             self.EnableRunning()

@@ -64,10 +64,7 @@ class Schedule(object):
         # TODO: super beedlowcode
         for m in self.vertices.keys():
             for s in self.vertices[m]:
-                if s.v.number in self.currentVersions:
-                    self.currentVersions[s.v.number].append(s)
-                else:
-                    self.currentVersions[s.v.number] = [s] 
+                self.currentVersions[s.v.number] = [s] 
                
     def __str__(self):
         res = "Schedule: \n"
