@@ -8,3 +8,4 @@ glob:doc/res.bat
 glob:doc/source/conf.py
 glob:src/SRGM/projects/*
 glob:src/SRGMGUI/projects/*
+glob:src/build/*

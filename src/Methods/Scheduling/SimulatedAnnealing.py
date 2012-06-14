@@ -36,12 +36,6 @@ class SimulatedAnnealing(object):
     choice_places = 5
     ''' Maximum number of places among which the parameters for "MoveVertex" are chosen '''
     
-    cut_processor = 0.5
-    ''' Probability of the special operation "Cut processor" '''
-    
-    new_processor = 0.5
-    ''' Probability of the special operation "Cut processor" '''
-    
     strategies = {}
     ''' Used strategies for MoveVertex and their probabilities '''
     
@@ -51,25 +45,15 @@ class SimulatedAnnealing(object):
     numberOfIterations = 0
     ''' Number of iteration is 10 * number of vertices '''
     
-    # TODO: default values
-    f1 = None
-    f2 = None
-    f3 = None
-    ''' Threshold functions (see the paper) '''
-    
     lastOperation = VoidOperation()
     ''' Here we keep the info about the last operation. It's used in GUI '''
     
     trace = Trace()
-
-    completeCutting = True
-    ''' Turns on experimental feature: cut processors completely '''
     
     writeLog = False
     ''' Debug feature: print debug information '''
     
     multioperation = False
-    noOperation = False
 
     def __init__(self, system):
         self.iteration = 0
@@ -134,35 +118,11 @@ class SimulatedAnnealing(object):
                             self.choice_vertices = int(n.getAttribute("n"))
                         elif n.nodeName == "choice-places":
                             self.choice_places = int(n.getAttribute("n"))
-                        elif n.nodeName == "cut-processor":
-                            self.choice_vertice = float(n.getAttribute("p"))
-                        elif n.nodeName == "new-processor":
-                            self.choice_vertice = float(n.getAttribute("p"))
                             
                     # Parse strategies
                     lim = list(filter(lambda node: node.nodeName == "strategies", list(c.childNodes)))[0]  
                     self.strategies = LoadPrioritiesList(lim)
-                          
-                    # Parse thresholds
-                    threshold = list(filter(lambda node: node.nodeName == "thresholds", list(c.childNodes)))[0]
-                    for n in threshold.childNodes:
-                        if n.nodeName == "threshold":
-                            id = n.getAttribute("id")
-                            type = n.getAttribute("type")
-                            # TODO: if some threshold function needs more parameters,
-                            # we'll have to implement a more complicated parser here
-                            param = float(n.getAttribute("param"))
-                            if type == "linear":
-                                th = Threshold(type=type, a=-param/self.numberOfIterations, b=1)
-                            else:
-                                # Implement other types here
-                                pass
-                            if id == "1":
-                                self.f1 = th
-                            elif id == "2":
-                                self.f2 = th
-                            elif id == "3":
-                                self.f3 = th     
+                              
             f.close()
             
         except IOError:
@@ -181,13 +141,8 @@ class SimulatedAnnealing(object):
         "opt_time": self.opt_time,
         "choice_vertices": self.choice_vertices,
         "choice_places":self.choice_places,
-        "cut_processor":self.cut_processor,
-        "new_processor":self.new_processor,
         "strategies":self.strategies,
-        "numberOfIterations":self.numberOfIterations,
-        "f1":(self.f1.type, self.f1.params),
-        "f2":(self.f2.type, self.f2.params),
-        "f3":(self.f3.type, self.f3.params)}
+        "numberOfIterations":self.numberOfIterations}
         
     def Deserialize(self, dict):
         '''Deserializes the class from a dictionary of parameters'''
@@ -196,13 +151,8 @@ class SimulatedAnnealing(object):
         self.opt_time = dict["opt_time"]
         self.choice_vertices = dict["choice_vertices"]
         self.choice_places = dict["choice_places"]
-        self.cut_processor = dict["cut_processor"]
-        self.new_processor = dict["new_processor"]
         self.strategies = dict["strategies"]
         self.numberOfIterations = dict["numberOfIterations"]
-        self.f1 = Threshold(type=dict["f1"][0], cachedparams=dict["f1"][1])
-        self.f2 = Threshold(type=dict["f2"][0], cachedparams=dict["f2"][1])
-        self.f3 = Threshold(type=dict["f3"][0], cachedparams=dict["f3"][1])
     
     def Reset(self):
         ''' Resets the method to the zero iteration'''
@@ -333,232 +283,225 @@ class SimulatedAnnealing(object):
             ops.pop("AddVersion", True)
                  
         return self._chooseRandomKey(ops)
+
+    def DoAddProcessor(self):
+        proc = list(self.system.schedule.processors)
+        proc.sort(key=lambda x: x.reserves)
+        total = sum([p.reserves for p in proc])
+        dict = {}
+        for p in proc:
+            dict[p] = float(p.reserves)/float(total)
+        m = self._chooseRandomKey(dict)
+        self.lastOperation = AddProcessor(m)
+        self.system.schedule.ApplyOperation(self.lastOperation)
+        self.write(m)
+
+    def DoDeleteProcessor(self):
+        proc = list(self.system.schedule.processors)
+        proc.sort(key=lambda x: x.reserves)
+        total = sum([p.reserves for p in list(filter(lambda p: p.reserves > 1, proc))])
+        dict = {}
+        for p in proc:
+            if p.reserves > 1:
+                dict[p] = float(p.reserves)/float(total)
+        if len(dict.keys()) > 0:
+            m = self._chooseRandomKey(dict)
+            self.lastOperation = DeleteProcessor(m)
+            self.system.schedule.ApplyOperation(self.lastOperation)
+            self.write(m)
+        else:
+            raise "Error"   
+        
+    def DoAddVersion(self):
+        vers = list(filter(lambda v: len(v.versions) >= len(self.system.schedule.FindAllVertices(v=v)) + 2, \
+            self.system.schedule.program.vertices))
+        vers.sort(key=lambda v: len(v.versions))
+        if len(vers) != 0:
+            newproc = self.system.schedule.AddVersion(vers[0])
+            self.lastOperation = AddVersion(vers[0], newproc, 1, newproc, 2)
+            self.write(vers[0].number)
+        else:
+            raise "Error"
     
+    def DoDeleteVersion(self):
+        vers = list(filter(lambda v: len(self.system.schedule.FindAllVertices(v=v)) > 1, \
+            self.system.schedule.program.vertices))
+        vers.sort(key=lambda v: len(v.versions))
+        if len(vers) != 0:
+            (m1, m2, n1, n2) = self.system.schedule.DeleteVersion(vers[len(vers)-1]) 
+            self.lastOperation = DeleteVersion(vers[len(vers)-1], m1, n1, m2, n2)
+            self.write(vers[len(vers)-1].number)
+        else:
+            raise "Error"  
+
+    def CutProcessor(self):
+        s = self.system.schedule
+        mini = len(s.program.vertices)
+        proc = None
+        for m in s.processors:
+            f = len(s.vertices[m.number])
+            if f < mini:
+                mini = f
+                proc = m
+        ch = [v for v in s.vertices[proc.number]]
+        self.multioperation = True
+        self.lastOperation = MultiOperation()
+        src_pos = 0
+        for s1 in ch:
+            flag = True
+            for num in [n for n in s.vertices.keys() if n != proc.number]:
+                target_proc = s.GetProcessor(num)
+                for i in range(len(s.vertices[num]) + 1):
+                    target_pos = i
+                    if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
+                        s.MoveVertex(s1, 0, target_proc, target_pos)
+                        self.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
+                        flag = False
+                        break
+                if not flag:
+                    break
+            if flag:
+                raise "Error"
+                break
+        return   
+    
+    def IdleStrategy(self):
+        s = self.system.schedule
+        while True:
+            if len(s.delays) == 0:
+                keys = [m for m in s.vertices.keys()]
+                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+                s2 = proc[random.randint(0, len(proc)-1)]
+            else:
+                s2 = s.delays[min(random.randint(0, self.choice_places), len(s.delays)-1)][0]
+            target_proc = s2.m
+            target_pos = s.vertices[s2.m.number].index(s2)
+            ch = []
+            for d in s.waiting:
+                s1 = d[0]
+                src_pos = s.vertices[s1.m.number].index(s1)
+                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                    ch.append(s1)
+                if len(ch) == self.choice_vertices:
+                    break
+            if len(ch) == 1:
+                s1 = ch[0]
+            elif len(ch) == 0:
+                continue
+            else:
+                s1 = ch[random.randint(0, len(ch)-1)]
+            src_pos = s.vertices[s1.m.number].index(s1)
+            break
+
+        return s1, src_pos, target_proc, target_pos
+
+    def DelayStrategy(self):
+        s = self.system.schedule
+        while True:
+            if len(s.waiting) == 0:
+                keys = [m for m in s.vertices.keys()]
+                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+                s1 = proc[random.randint(0, len(proc)-1)]
+            else:
+                s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
+        
+            src_pos = s.vertices[s1.m.number].index(s1)
+            ch = []
+            timelimit = s.endtimes[s1] - s1.m.GetTime(s1.v.time)
+            for d in s.waiting:
+                s2 = d[0]
+                proc = s2.m
+                num = s.vertices[s2.m.number].index(s2)         
+                if s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
+                    if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
+                        ch.append(s2)
+                if len(ch) == self.choice_places:
+                    break
+            if len(ch) == 0:
+                continue
+            else:
+                if len(ch) == 1:
+                    s2 = ch[0]
+                else:
+                    s2 = ch[random.randint(0, len(ch)-1)]
+                target_proc = s2.m
+                target_pos = s.vertices[s2.m.number].index(s2)
+                break
+
+        return s1, src_pos, target_proc, target_pos
+
+    def MixedStrategy(self):
+        s = self.system.schedule
+        while True:
+            # TODO: what should we do if there are no delays? Maybe stop the algorithm?
+            if len(s.waiting) == 0:
+                keys = [m for m in s.vertices.keys()]
+                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+                s1 = proc[random.randint(0, len(proc)-1)]
+            else:
+                s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
+                src_pos = s.vertices[s1.m.number].index(s1)
+            ch = []
+            for d in s.delays:
+                # If the delay is zero, we mustn't move anything there
+                if d[1] == 0:
+                    break
+                s2 = d[0]
+                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
+                    ch.append(s2)
+                if len(ch) == self.choice_places:
+                    break              
+            if len(ch) == 1:
+                s2 = ch[0]
+            elif len(ch) == 0:
+                continue
+            else:
+                s2 = ch[random.randint(0, len(ch)-1)]
+            target_proc = s2.m
+            target_pos = s.vertices[s2.m.number].index(s2)
+            break
+
+        return s1, src_pos, target_proc, target_pos
+
+    def DoMoveVertex(self):
+        s = self.system.schedule
+        r = random.random()
+        # TODO: think about a better way to select a strategy
+        if r < self.strategies["mixed"]:
+            s1, src_pos, target_proc, target_pos = self.MixedStrategy()
+        elif r < self.strategies["mixed"] + self.strategies["delay"]:
+            s1, src_pos, target_proc, target_pos = self.DelayStrategy()
+        else:
+            s1, src_pos, target_proc, target_pos = self.IdleStrategy()
+                    
+        self.write(s1.v.number, s1.m.number, src_pos, target_proc, target_pos)
+        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+            self.lastOperation = MoveVertex(s1, s1.m, src_pos, target_proc, target_pos)
+            s.ApplyOperation(self.lastOperation)
+            self.lastOperation.pos2 = (s1.m, s.vertices[s1.m.number].index(s1))
+        else:
+            print ([p for p in ch])
+            for p in ch:
+                print (s.TryMoveVertex(s1, p.m, p.n))
+            raise "Something went wrong"          
+                         
     # Selects parameters for the operation and applies it whenever possible
     def _applyOperation(self, op):
         self.write(op)
         self.multioperation = False
-        self.noOperation = False
         if op == "AddProcessor":
-            proc = list(self.system.schedule.processors)
-            proc.sort(key=lambda x: x.reserves)
-            total = sum([p.reserves for p in proc])
-            dict = {}
-            for p in proc:
-                dict[p] = float(p.reserves)/float(total)
-            m = self._chooseRandomKey(dict)
-            self.lastOperation = AddProcessor(m)
-            self.system.schedule.ApplyOperation(self.lastOperation)
-            self.write(m)
+            self.DoAddProcessor()
         elif op == "DeleteProcessor":
-            proc = list(self.system.schedule.processors)
-            proc.sort(key=lambda x: x.reserves)
-            total = sum([p.reserves for p in list(filter(lambda p: p.reserves > 1, proc))])
-            dict = {}
-            for p in proc:
-                if p.reserves > 1:
-                    dict[p] = float(p.reserves)/float(total)
-            if len(dict.keys()) > 0:
-                m = self._chooseRandomKey(dict)
-                self.lastOperation = DeleteProcessor(m)
-                self.system.schedule.ApplyOperation(self.lastOperation)
-                self.write(m)
-            else:
-                raise "Error"
-                
+            self.DoDeleteProcessor()              
         elif op == "AddVersion":
-            vers = list(filter(lambda v: len(v.versions) >= len(self.system.schedule.FindAllVertices(v=v)) + 2, \
-                self.system.schedule.program.vertices))
-            vers.sort(key=lambda v: len(v.versions))
-            if len(vers) != 0:
-                newproc = self.system.schedule.AddVersion(vers[0])
-                self.lastOperation = AddVersion(vers[0], newproc, 1, newproc, 2)
-                self.write(vers[0].number)
-            else:
-                raise "Error"
+            self.DoAddVersion()
         elif op == "DeleteVersion":
-            vers = list(filter(lambda v: len(self.system.schedule.FindAllVertices(v=v)) > 1, \
-                self.system.schedule.program.vertices))
-            vers.sort(key=lambda v: len(v.versions))
-            if len(vers) != 0:
-                (m1, m2, n1, n2) = self.system.schedule.DeleteVersion(vers[len(vers)-1]) 
-                self.lastOperation = DeleteVersion(vers[len(vers)-1], m1, n1, m2, n2)
-                self.write(vers[len(vers)-1].number)
-            else:
-                raise "Error"
-                
+            self.DoDeleteVersion()        
         elif op == "MoveVertex":
-            s = self.system.schedule
-            s1 = None
-            src_proc = None
-            src_pos = None
-            target_proc = None
-            target_pos = None
-            move_delay = False
-            noOp = False
-            if self.trace.getLast()[1]["time"]  < self.system.tdir:
-                # Cut from a certain processor
-                if random.random() < self.cut_processor and self.trace.getLast()[1]["processors"] > 1:
-                    mini = len(s.program.vertices)
-                    proc = None
-                    for m in s.processors:
-                        f = len(s.vertices[m.number])
-                        if f < mini:
-                            mini = f
-                            proc = m
-                    ch = [v for v in s.vertices[proc.number]]
-                    if self.completeCutting == False:
-                        s1 = ch[random.randint(0, len(ch)-1)]
-                        while True:
-                            num = random.randint(0, len(s.processors)-1)
-                            if s.processors[num] != proc:
-                                target_proc = s.processors[num]
-                                target_pos = len(s.vertices[s.processors[num]])
-                                break
-                    else:
-                        # TODO: this is an experimental implementation of complete cutting
-                        self.multioperation = True
-                        self.lastOperation = MultiOperation()
-                        src_pos = 0
-                        for s1 in ch:
-                            flag = True
-                            for num in [n for n in s.vertices.keys() if n != proc.number]:
-                                target_proc = s.GetProcessor(num)
-                                for i in range(len(s.vertices[num]) + 1):
-                                    target_pos = i
-                                    if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
-                                        s.MoveVertex(s1, 0, target_proc, target_pos)
-                                        self.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
-                                        flag = False
-                                        break
-                                if not flag:
-                                    break
-                            if flag:
-                                raise "Error"
-                                break
-                        return           
-                # Move the task with the highest delay
-                else:
-                    move_delay = True
-            else:    
-                # New processor
-                if random.random() < self.new_processor:
-                    if len(s.delays) > 0:
-                        s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
-                        src_proc = s1.m.number
-                        src_pos = s.vertices[src_proc].index(s1)
-                    else:
-                        keys = [m for m in s.vertices.keys()]
-                        proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                        src_pos = random.randint(0, len(proc)-1)
-                        s1 = proc[src_pos]
-                    target_proc = None
-                    target_pos = 1
-                else:
-                    move_delay = True
-            if move_delay:
-                r = random.random()
-                # TODO: think about a better way to select a strategy
-                #Mixed strategy
-                if r < self.strategies["mixed"]:
-                    # TODO: what should we do if there are no delays? Maybe stop the algorithm?
-                    if len(s.waiting) == 0:
-                        noOp = True
-                    else:
-                        s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
-                        src_pos = s.vertices[s1.m.number].index(s1)
-                    ch = []
-                    for d in s.delays:
-                        # If the delay is zero, we mustn't move anything there
-                        if d[1] == 0:
-                            break
-                        s2 = d[0]
-                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
-                            ch.append(s2)
-                        if len(ch) == self.choice_places:
-                            break              
-                    if len(ch) == 1:
-                        s2 = ch[0]
-                    elif len(ch) == 0:
-                        noOp = True
-                        s2 = None
-                    else:
-                        s2 = ch[random.randint(0, len(ch)-1)]
-                    if s2:
-                        target_proc = s2.m
-                        target_pos = s.vertices[s2.m.number].index(s2)
-                # Delay strategy
-                elif r < self.strategies["mixed"] + self.strategies["delay"]:
-                    if len(s.waiting) == 0:
-                        keys = [m for m in s.vertices.keys()]
-                        proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                        s1 = proc[random.randint(0, len(proc)-1)]
-                    else:
-                        s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
-                    ch = []
-                    timelimit = s.endtimes[s1] - s1.m.GetTime(s1.v.time)
-                    for d in s.waiting:
-                        s2 = d[0]
-                        proc = s2.m
-                        num = s.vertices[s2.m.number].index(s2)
-                        src_pos = s.vertices[s1.m.number].index(s1)
-                        if s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
-                            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
-                                ch.append(s2)
-                        if len(ch) == self.choice_places:
-                            break
-                    if len(ch) == 0:
-                        s2 = None
-                        noOp = True
-                    else:
-                        if len(ch) == 1:
-                            s2 = ch[0]
-                        else:
-                            s2 = ch[random.randint(0, len(ch)-1)]
-                        target_proc = s2.m
-                        target_pos = s.vertices[s2.m.number].index(s2)
-                # Idle strategy
-                else:
-                    if len(s.delays) == 0:
-                        keys = [m for m in s.vertices.keys()]
-                        proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                        s2 = proc[random.randint(0, len(proc)-1)]
-                    else:
-                        s2 = s.delays[min(random.randint(0,self.choice_places), len(s.delays)-1)][0]
-                    target_proc = s2.m
-                    target_pos = s.vertices[s2.m.number].index(s2)
-                    ch = []
-                    for d in s.waiting:
-                        s1 = d[0]
-                        src_pos = s.vertices[s1.m.number].index(s1)
-                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
-                            ch.append(s1)
-                        if len(ch) == self.choice_vertices:
-                            break
-                    if len(ch) == 1:
-                        s1 = ch[0]
-                    elif len(ch) == 0:
-                        s1 = None
-                        noOp = True
-                    else:
-                        s1 = ch[random.randint(0, len(ch)-1)]
-                    if s1:
-                        src_pos = s.vertices[s1.m.number].index(s1)
-            
-            if noOp:
-                self.noOperation = True
-                return
-                    
-            self.write(s1.v.number, s1.m.number, src_pos, target_proc, target_pos)
-            if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
-                self.lastOperation = MoveVertex(s1, s1.m, src_pos, target_proc, target_pos)
-                s.ApplyOperation(self.lastOperation)
-                self.lastOperation.pos2 = (s1.m, s.vertices[s1.m.number].index(s1))
+            if self.trace.getLast()[1]["time"]  < self.system.tdir and self.trace.getLast()[1]["processors"] > 1:
+                self.CutProcessor()
             else:
-                print ([p for p in ch])
-                for p in ch:
-                    print (s.TryMoveVertex(s1, p.m, p.n))
-                raise "Something went wrong"
+                self.DoMoveVertex()
     
     def _selectNewSchedule(self):
         def accept():
@@ -575,32 +518,6 @@ class SimulatedAnnealing(object):
             self.write("Refuse")
             self.lastOperation.result = False
             self.system.schedule.ApplyOperation(self.lastOperation.Reverse())
-            
-        def choose(f1, f2, f3):
-            self.write(f1(self.temperature), f2(self.temperature), f3(self.temperature))
-            if (curTime > new_time) and (curRel < new_rel):
-                if random.random() < f1(self.temperature):
-                    accept()
-                else:
-                    refuse()
-            elif (curTime > new_time) and not (curRel < new_rel):
-                if random.random() < f2(self.temperature):
-                    accept()
-                else:
-                    refuse()
-            elif not (curTime > new_time) and (curRel < new_rel):
-                if random.random() < f2(self.temperature):
-                    accept()
-                else:
-                    refuse()
-            elif not (curTime > new_time) and not (curRel < new_rel):
-                if random.random() < f3(self.temperature):
-                    accept()
-                else:
-                    refuse()              
-
-        if self.noOperation:
-            return
         
         new_time = self.system.schedule.Interpret()
         new_rel = self.system.schedule.GetReliability()
@@ -610,20 +527,11 @@ class SimulatedAnnealing(object):
         curTime = cur["time"]
         curRel = cur["reliability"]
         curProc = cur["processors"]
-
-        # Thresholds are implemented as described in the paper
-        # The code might look a bit redundant, but it's easier to relate implementation with the
-        # theoretical description.
-        '''if curProc > new_proc:
-            choose(lambda x: 1, self.f1.f, self.f2.f)
-        elif curProc == new_proc:
-            choose(self.f1.f, self.f2.f, self.f3.f)
-        elif curProc < new_proc:
-            choose(self.f2.f, self.f3.f, lambda x: 0)'''
         
         self.write("Old: ", curTime, curRel, curProc)    
         self.write("New: ", new_time, new_rel, new_proc)   
         if (curProc > new_proc) or (curTime > new_time) or (curRel < new_rel):
             accept()
         else:
+            # TODO: implement temperature
             refuse()
