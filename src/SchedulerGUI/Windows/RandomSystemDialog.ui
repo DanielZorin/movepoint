@@ -311,6 +311,5 @@
  </connections>
  <slots>
   <slot>LoadSystem()</slot>
-  <slot>LoadConfig()</slot>
  </slots>
 </ui>

@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{74733d23-9d25-4715-ac74-dbbc01fac17a}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Temperatures.py</StartupFile>
+    <StartupFile>SchedulerGUI-launch.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

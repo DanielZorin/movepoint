@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'VertexDialog.ui'
-#
-# Created: Thu Mar  1 15:58:30 2012
-#      by: PyQt4 UI code generator 4.8.4
-#
-# WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
@@ -102,7 +94,6 @@ class Ui_VertexDialog(object):
         self.versions.setShowGrid(True)
         self.versions.setColumnCount(2)
         self.versions.setObjectName(_fromUtf8("versions"))
-        self.versions.setColumnCount(2)
         self.versions.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.versions.setHorizontalHeaderItem(0, item)
@@ -133,8 +124,10 @@ class Ui_VertexDialog(object):
         self.namelabel.setText(QtGui.QApplication.translate("VertexDialog", "Name:", None, QtGui.QApplication.UnicodeUTF8))
         self.timelabel.setText(QtGui.QApplication.translate("VertexDialog", "Execution Time:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("VertexDialog", "Versions:", None, QtGui.QApplication.UnicodeUTF8))
-        self.versions.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("VertexDialog", "Version", None, QtGui.QApplication.UnicodeUTF8))
-        self.versions.horizontalHeaderItem(1).setText(QtGui.QApplication.translate("VertexDialog", "Reliability", None, QtGui.QApplication.UnicodeUTF8))
+        item = self.versions.horizontalHeaderItem(0)
+        item.setText(QtGui.QApplication.translate("VertexDialog", "Version", None, QtGui.QApplication.UnicodeUTF8))
+        item = self.versions.horizontalHeaderItem(1)
+        item.setText(QtGui.QApplication.translate("VertexDialog", "Reliability", None, QtGui.QApplication.UnicodeUTF8))
         self.OK.setText(QtGui.QApplication.translate("VertexDialog", "OK", None, QtGui.QApplication.UnicodeUTF8))
         self.Cancel.setText(QtGui.QApplication.translate("VertexDialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 
