@@ -25,7 +25,6 @@ for i in range(1,11):
         ss = System("program.xml")
         ss.GenerateRandom({"n":i*10, "t1":2, "t2":5, "v1":1, "v2":2, "tdir":2, "rdir":3})
         s = SimulatedAnnealing(ss)
-        s.LoadConfig("config.xml")
         s.Start()
         t1 = time.clock() - t0
         n = i*10

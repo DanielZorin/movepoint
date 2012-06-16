@@ -61,43 +61,6 @@ class RandomSimulatedAnnealing(object):
                 res.append(str(s))
             print(" ".join(res))
             
-    def LoadConfig(self, filename):
-        def LoadPrioritiesList(node):
-            tmp = {}
-            for att in node.attributes.keys():
-                tmp[att] = float(node.getAttribute(att))
-            sum = 0.0
-            for s in tmp.values():
-                sum += s
-            for s in tmp.keys():
-                tmp[s] /= sum
-            return tmp
-        
-        try:
-            f = open(filename)
-            dom = xml.dom.minidom.parse(f)
-        
-            for c in dom.childNodes:
-                if c.tagName == "config":
-                    # Parse priorities
-                    pr = list(filter(lambda node: node.nodeName == "priorities", list(c.childNodes)))[0]
-                    opt_rel = list(filter(lambda node: node.nodeName == "opt-reliability", list(pr.childNodes)))[0]
-                    opt_time = list(filter(lambda node: node.nodeName == "opt-time", list(pr.childNodes)))[0]
-                    tmp = list(filter(lambda node: node.nodeName == "time-normal", list(opt_rel.childNodes)))[0]
-                    self.opt_reliability["time-normal"] = LoadPrioritiesList(tmp)
-                    tmp = list(filter(lambda node: node.nodeName == "time-exceed", list(opt_rel.childNodes)))[0]
-                    self.opt_reliability["time-exceed"] = LoadPrioritiesList(tmp)
-                    tmp = list(filter(lambda node: node.nodeName == "time-normal", list(opt_time.childNodes)))[0]
-                    self.opt_time["time-normal"] = LoadPrioritiesList(tmp)
-                    tmp = list(filter(lambda node: node.nodeName == "time-exceed", list(opt_time.childNodes)))[0]
-                    self.opt_time["time-exceed"] = LoadPrioritiesList(tmp)   
-            f.close()
-        except IOError:
-            raise SchedulerFileException(filename)
-        except(xml.parsers.expat.ExpatError, ValueError):
-            f.close()
-            raise SchedulerXmlException(filename)
-            
     def ChangeSystem(self, s):
         self.system = s
       
