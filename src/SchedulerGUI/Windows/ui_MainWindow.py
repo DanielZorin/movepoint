@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'MainWindow.ui'
-#
-# Created: Thu Mar  1 15:58:29 2012
-#      by: PyQt4 UI code generator 4.8.4
-#
-# WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
@@ -35,6 +27,7 @@ class Ui_MainWindow(object):
 "    background-color: transparent;\n"
 "}a"))
         self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget.setGeometry(QtCore.QRect(0, 59, 320, 371))
         self.centralwidget.setStyleSheet(_fromUtf8(""))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.centralwidget)
@@ -169,7 +162,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.progress = QtGui.QProgressBar(self.centralwidget)
         self.progress.setMaximumSize(QtCore.QSize(16777215, 24))
-        self.progress.setProperty(_fromUtf8("value"), 0)
+        self.progress.setProperty("value", 0)
         self.progress.setObjectName(_fromUtf8("progress"))
         self.verticalLayout.addWidget(self.progress)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
@@ -208,13 +201,12 @@ class Ui_MainWindow(object):
         self.errors.setShowGrid(True)
         self.errors.setColumnCount(0)
         self.errors.setObjectName(_fromUtf8("errors"))
-        self.errors.setColumnCount(0)
         self.errors.setRowCount(0)
         self.verticalLayout.addWidget(self.errors)
         self.verticalLayout_2.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 320, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 320, 22))
         self.menubar.setStyleSheet(_fromUtf8(""))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
@@ -229,6 +221,7 @@ class Ui_MainWindow(object):
         self.menuExport.setObjectName(_fromUtf8("menuExport"))
         MainWindow.setMenuBar(self.menubar)
         self.toolBar = QtGui.QToolBar(MainWindow)
+        self.toolBar.setGeometry(QtCore.QRect(0, 22, 320, 37))
         self.toolBar.setObjectName(_fromUtf8("toolBar"))
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionExit = QtGui.QAction(MainWindow)
@@ -306,7 +299,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionExit)
         self.menuMethod.addAction(self.actionStart)
         self.menuMethod.addAction(self.actionReset)
-        self.menuMethod.addAction(self.actionLoad_New_Method)
         self.menuMethod.addAction(self.actionParameters)
         self.menuMethod.addAction(self.actionLaunch_Viewer)
         self.menuMethod.addAction(self.actionEdit_Program_Graph)
@@ -342,7 +334,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionReset, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ResetSchedule)
         QtCore.QObject.connect(self.actionGenerate_Random_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.GenerateRandomSystem)
         QtCore.QObject.connect(self.actionLoad_New_System, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadSystem)
-        QtCore.QObject.connect(self.actionLoad_New_Method, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LoadMethod)
         QtCore.QObject.connect(self.actionParameters, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.Parameters)
         QtCore.QObject.connect(self.actionLaunch_Viewer, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.LaunchViewer)
         QtCore.QObject.connect(self.actionTrace, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.ExportTrace)

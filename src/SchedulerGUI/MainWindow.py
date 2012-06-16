@@ -286,9 +286,6 @@ class MainWindow(QMainWindow):
             t, r = self.project.GetLimits()
             self.setLimits(t, r)
     
-    def LoadMethod(self):
-        pass
-    
     def EditName(self):
         self.lineedit = QLineEdit(self.ui.projectname.parentWidget())
         self.lineedit.setGeometry(self.ui.projectname.geometry())
@@ -352,11 +349,38 @@ class MainWindow(QMainWindow):
         self.project.SetRdir(r)  
             
     def Parameters(self):
-        data = self.project.GetMethodSettings()
+        data = self.GetMethodSettings()
         d = SettingsDialog(data, self)
         d.exec_()
         if d.result() == QDialog.Accepted:
-            self.project.UpdateMethodSettings(d.data)
+            self.UpdateMethodSettings(d.data)
+
+    def GetMethodSettings(self):
+        ''' Returns a dictionary of method settings with appropriate naming'''
+        return [
+        [self.tr("Number of iterations"),self.project.method.numberOfIterations],
+        [self.tr("Strategy"),self.project.method.strategies],
+        [self.tr("Temperature function"),self.project.method.threshold],
+        [self.tr("Vertices limit"), self.project.method.choice_vertices],
+        [self.tr("Positions limit"),self.project.method.choice_places],
+        [self.tr("Operation probabilities: optimize reliability"), 
+            {self.tr("Deadline not violated"): self.project.method.opt_reliability["time-normal"],
+             self.tr("Deadline violated"): self.project.method.opt_reliability["time-exceed"]}],
+        [self.tr("Operation probabilities: optimize time"), 
+            {self.tr("Deadline not violated"): self.project.method.opt_time["time-normal"],
+             self.tr("Deadline violated"): self.project.method.opt_time["time-exceed"]}]]
+        
+    def UpdateMethodSettings(self, dict):
+        '''Deserializes the class from a dictionary of parameters'''
+        self.project.method.opt_reliability["time-normal"] = dict[5][1][self.tr("Deadline not violated")]
+        self.project.method.opt_reliability["time-exceed"] = dict[5][1][self.tr("Deadline violated")]
+        self.project.method.opt_time["time-normal"] = dict[6][1][self.tr("Deadline not violated")]
+        self.project.method.opt_time["time-exceed"] = dict[6][1][self.tr("Deadline violated")]
+        self.project.method.choice_vertices = dict[3][1]
+        self.project.method.choice_places = dict[4][1]
+        self.project.method.strategies = dict[1][1]
+        self.project.method.threshold = dict[2][1]
+        self.project.method.numberOfIterations = dict[0][1]
  
     def Settings(self):
         self.settings.exec_()

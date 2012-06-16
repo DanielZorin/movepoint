@@ -4,13 +4,12 @@ Created on 15.12.2010
 @author: juan
 '''
 
-from PyQt4.QtCore import QObject
 from Schedules.System import System
 from Methods.Scheduling.SimulatedAnnealing import SimulatedAnnealing
 from Methods.Scheduling.RandomSimulatedAnnealing import RandomSimulatedAnnealing
 import pickle
 
-class Project(QObject):
+class Project(object):
     
     system = None
     method = None
@@ -18,7 +17,6 @@ class Project(QObject):
     graph = {}
     
     def __init__(self, s="", name=""):
-        QObject.__init__(self)
         self.system = System(s)
         # TODO: think how to implement other methods
         self.method = SimulatedAnnealing(self.system)
@@ -49,33 +47,6 @@ class Project(QObject):
         self.graph = dict["graph"]
         self.system.schedule.Consistency()
 
-    def GetMethodSettings(self):
-        ''' Returns a dictionary of method settings with appropriate naming'''
-        return [
-        [self.tr("Number of iterations"),self.method.numberOfIterations],
-        [self.tr("Strategy"),self.method.strategies],
-        [self.tr("Temperature function"),self.method.threshold],
-        [self.tr("Vertices limit"), self.method.choice_vertices],
-        [self.tr("Positions limit"),self.method.choice_places],
-        [self.tr("Operation probabilities: optimize reliability"), 
-            {self.tr("Deadline not violated"): self.method.opt_reliability["time-normal"],
-             self.tr("Deadline violated"): self.method.opt_reliability["time-exceed"]}],
-        [self.tr("Operation probabilities: optimize time"), 
-            {self.tr("Deadline not violated"): self.method.opt_time["time-normal"],
-             self.tr("Deadline violated"): self.method.opt_time["time-exceed"]}]]
-        
-    def UpdateMethodSettings(self, dict):
-        '''Deserializes the class from a dictionary of parameters'''
-        self.method.opt_reliability["time-normal"] = dict[5][1][self.tr("Deadline not violated")]
-        self.method.opt_reliability["time-exceed"] = dict[5][1][self.tr("Deadline violated")]
-        self.method.opt_time["time-normal"] = dict[6][1][self.tr("Deadline not violated")]
-        self.method.opt_time["time-exceed"] = dict[6][1][self.tr("Deadline violated")]
-        self.method.choice_vertices = dict[3][1]
-        self.method.choice_places = dict[4][1]
-        self.method.strategies = dict[1][1]
-        self.method.threshold = dict[2][1]
-        self.method.numberOfIterations = dict[0][1]
-    
     def Step(self):
         self.method.Step()
         
