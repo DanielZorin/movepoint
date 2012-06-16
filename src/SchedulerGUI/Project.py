@@ -20,7 +20,6 @@ class Project(object):
         self.system = System(s)
         # TODO: think how to implement other methods
         self.method = SimulatedAnnealing(self.system)
-        self.method.LoadConfig("config.xml")
         self.method.Reset()
         self.name = name
         
@@ -90,9 +89,6 @@ class Project(object):
     def ChangeSystem(self, s):
         self.system = System(s)
         self.method.ChangeSystem(self.system)
-    
-    def ChangeMethod(self, s):
-        self.method.LoadConfig(s)
     
     def ChangeName(self, n):
         self.name = n

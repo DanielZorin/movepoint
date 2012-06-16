@@ -9,7 +9,7 @@ from Schedules.Threshold import Threshold
 from Schedules.Operation import *
 from Methods.Scheduling.Exceptions import SchedulerFileException, SchedulerXmlException
 import xml.dom.minidom
-import random
+import random, math
 import logging
 
 class SimulatedAnnealing(object):
@@ -23,11 +23,10 @@ class SimulatedAnnealing(object):
     iteration = 0
     ''' Current iteration (see Simulated Annealing) '''
     
-    temperature = 0
-    ''' Current temperature (see Simulated Annealing) '''
-    
-    opt_reliability = { "time-normal":{}, "time-exceed":{} }
-    opt_time = { "time-normal":{}, "time-exceed":{} }
+    opt_reliability = { "time-normal":{"AddVersion":0.5, "AddProcessor":0.33, "MoveVertex":0.16}, 
+                        "time-exceed":{"AddVersion":0.33, "AddProcessor":0.5, "MoveVertex":0.16} }
+    opt_time = { "time-normal":{"DeleteVersion":0.33, "DeleteProcessor":0.5, "MoveVertex":0.5}, 
+                 "time-exceed":{"DeleteVersion":0.5, "DeleteProcessor":0.33, "MoveVertex":0.5} }
     ''' Operation priorities (dictionary operation_name:priority) '''
     
     choice_vertices = 5
@@ -38,6 +37,8 @@ class SimulatedAnnealing(object):
     
     strategies = [["Idle time reduction", "Delay reduction", "Mixed"], 0]
     ''' Used strategies for MoveVertex and their probabilities '''
+
+    threshold = [["Bolzmann", "Cauchy", "Combined"], 0]
     
     oldSchedule = None
     ''' Current approximation. A copy is saved here, and all changes are applied to the original '''
@@ -59,7 +60,6 @@ class SimulatedAnnealing(object):
         self.iteration = 0
         self.system = system
         self.numberOfIterations = len(self.system.program.vertices) * 10 + 1
-        self.temperature = 0
         logging.basicConfig(level=logging.DEBUG)
         self.logger = logging.getLogger('SimulatedAnnealing')
     
@@ -76,56 +76,6 @@ class SimulatedAnnealing(object):
         self.numberOfIterations = len(self.system.program.vertices) * 10
         self.system = s
         self._prepare()
-        
-    def LoadConfig(self, filename):
-        ''' Loads the config from XML
-        
-        .. warning:: Describe the format here'''
-        def LoadPrioritiesList(node):
-            tmp = {}
-            for att in node.attributes.keys():
-                tmp[att] = float(node.getAttribute(att))
-            sum = 0.0
-            for s in tmp.values():
-                sum += s
-            for s in tmp.keys():
-                tmp[s] /= sum
-            return tmp
-        
-        try:
-            f = open(filename)
-            dom = xml.dom.minidom.parse(f)
-        
-            for c in dom.childNodes:
-                if c.tagName == "config":
-                    # Parse priorities
-                    pr = list(filter(lambda node: node.nodeName == "priorities", list(c.childNodes)))[0]
-                    opt_rel = list(filter(lambda node: node.nodeName == "opt-reliability", list(pr.childNodes)))[0]
-                    opt_time = list(filter(lambda node: node.nodeName == "opt-time", list(pr.childNodes)))[0]
-                    tmp = list(filter(lambda node: node.nodeName == "time-normal", list(opt_rel.childNodes)))[0]
-                    self.opt_reliability["time-normal"] = LoadPrioritiesList(tmp)
-                    tmp = list(filter(lambda node: node.nodeName == "time-exceed", list(opt_rel.childNodes)))[0]
-                    self.opt_reliability["time-exceed"] = LoadPrioritiesList(tmp)
-                    tmp = list(filter(lambda node: node.nodeName == "time-normal", list(opt_time.childNodes)))[0]
-                    self.opt_time["time-normal"] = LoadPrioritiesList(tmp)
-                    tmp = list(filter(lambda node: node.nodeName == "time-exceed", list(opt_time.childNodes)))[0]
-                    self.opt_time["time-exceed"] = LoadPrioritiesList(tmp)
-                    
-                    # Parse limits
-                    lim = list(filter(lambda node: node.nodeName == "limits", list(c.childNodes)))[0]
-                    for n in lim.childNodes:
-                        if n.nodeName == "choice-vertices":
-                            self.choice_vertices = int(n.getAttribute("n"))
-                        elif n.nodeName == "choice-places":
-                            self.choice_places = int(n.getAttribute("n"))
-                              
-            f.close()
-            
-        except IOError:
-            raise SchedulerFileException(filename)
-        except(ValueError):
-            f.close()
-            raise SchedulerXmlException(filename)
       
     def Serialize(self):
         ''' Serializes this class.
@@ -138,6 +88,7 @@ class SimulatedAnnealing(object):
         "choice_vertices": self.choice_vertices,
         "choice_places":self.choice_places,
         "strategies":self.strategies,
+        "threshold":self.threshold,
         "numberOfIterations":self.numberOfIterations}
         
     def Deserialize(self, dict):
@@ -148,6 +99,7 @@ class SimulatedAnnealing(object):
         self.choice_vertices = dict["choice_vertices"]
         self.choice_places = dict["choice_places"]
         self.strategies = dict["strategies"]
+        self.threshold = dict["threshold"]
         self.numberOfIterations = dict["numberOfIterations"]
     
     def Reset(self):
@@ -167,6 +119,7 @@ class SimulatedAnnealing(object):
         
     def Start(self):
         ''' Runs the algorithm with the given number of iterations'''
+        self.iteration = 0
         while self.iteration < self.numberOfIterations:
             #print(self.iteration)
             self.Step()
@@ -183,7 +136,6 @@ class SimulatedAnnealing(object):
         self.write("---------------------------")
         self.write("iteration ", self.iteration)
         self.lastOperation = VoidOperation()
-        self.temperature += 1
         op = self._chooseOperation()
         self._applyOperation(op)
         self._selectNewSchedule()
@@ -515,6 +467,23 @@ class SimulatedAnnealing(object):
             self.write("Refuse")
             self.lastOperation.result = False
             self.system.schedule.ApplyOperation(self.lastOperation.Reverse())
+
+        def checkThreshold():
+            r = random.random()
+            if self.threshold[1] == 0:
+                #Bolzmann
+                t = 100 / math.log(1 + self.iteration)
+            elif self.threshold[1] == 1:
+                #Cauchy
+                t = 100 / (1 + self.iteration)
+            else:
+                #Combine
+                t = 100 * math.log(1 + self.iteration) / (1 + self.iteration)
+            threshold = math.exp(-1 / t)
+            if r > threshold:
+                accept()
+            else:
+                refuse()
         
         new_time = self.system.schedule.Interpret()
         new_rel = self.system.schedule.GetReliability()
@@ -530,5 +499,4 @@ class SimulatedAnnealing(object):
         if (curProc > new_proc) or (curTime > new_time) or (curRel < new_rel):
             accept()
         else:
-            # TODO: implement temperature
-            refuse()
+            checkThreshold()
