@@ -180,6 +180,16 @@ class MainWindow(QMainWindow):
         self.loadSchedule()
         self.ui.projectname.setText(self.project.name)
         self.graphEditor.LoadPositions(self.project.graph)
+
+    def loadSchedule(self): 
+        self.viewer.setData(self.project.method)  
+        self.ui.vertices.setText(str(len(self.project.system.schedule.program.vertices)))
+        self.ui.edges.setText(str(len(self.project.system.schedule.program.edges)))
+        self.ui.tracelen.setText(str(self.project.method.trace.length()))
+        t, r = self.project.GetLimits()
+        self.ui.tdir.setText(str(t))
+        self.ui.rdir.setText('{:f}'.format(r)[:10])
+        return
  
     def AddToRecent(self, f, name):
         newrecent = []
@@ -277,13 +287,7 @@ class MainWindow(QMainWindow):
             self.setLimits(t, r)
     
     def LoadMethod(self):
-        s = QFileDialog.getOpenFileName()
-        if s != '':
-            try:
-                self.project.ChangeMethod(s)
-            except SchedulerException as e:
-                QMessageBox.critical(self, self.tr("An error occured"), e.message)
-                return
+        pass
     
     def EditName(self):
         self.lineedit = QLineEdit(self.ui.projectname.parentWidget())
@@ -348,11 +352,11 @@ class MainWindow(QMainWindow):
         self.project.SetRdir(r)  
             
     def Parameters(self):
-        data = self.project.method.Serialize()
+        data = self.project.GetMethodSettings()
         d = SettingsDialog(data, self)
         d.exec_()
         if d.result() == QDialog.Accepted:
-            self.project.method.Deserialize(d.data)
+            self.project.UpdateMethodSettings(d.data)
  
     def Settings(self):
         self.settings.exec_()
@@ -408,13 +412,3 @@ class MainWindow(QMainWindow):
         #Quits program
         self.writeIniFile()
         sys.exit(0)
-    
-    def loadSchedule(self): 
-        self.viewer.setData(self.project.method)  
-        self.ui.vertices.setText(str(len(self.project.system.schedule.program.vertices)))
-        self.ui.edges.setText(str(len(self.project.system.schedule.program.edges)))
-        self.ui.tracelen.setText(str(self.project.method.trace.length()))
-        t, r = self.project.GetLimits()
-        self.ui.tdir.setText(str(t))
-        self.ui.rdir.setText('{:f}'.format(r)[:10])
-        return
