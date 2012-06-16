@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{74733d23-9d25-4715-ac74-dbbc01fac17a}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>SchedulerGUI-launch.py</StartupFile>
+    <StartupFile>Temperatures.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -51,6 +51,7 @@
     <Compile Include="Core\Version.py" />
     <Compile Include="Core\__init__.py" />
     <Compile Include="ExeBuild.py" />
+    <Compile Include="Temperatures.py" />
     <Compile Include="SchedulerGUI-launch.py" />
     <Compile Include="Methods\ParetoOptimization\FullIteration.py" />
     <Compile Include="Methods\ParetoOptimization\Genetic.py" />
