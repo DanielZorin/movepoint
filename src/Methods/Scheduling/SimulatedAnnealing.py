@@ -61,7 +61,6 @@ class SimulatedAnnealing(object):
         self.system = system
         self.numberOfIterations = len(self.system.program.vertices) * 10 + 1
         logging.basicConfig(level=logging.DEBUG)
-        self.logger = logging.getLogger('SimulatedAnnealing')
     
     def write(self, *text):
         ''' Print debug information'''
@@ -69,38 +68,14 @@ class SimulatedAnnealing(object):
             res = []
             for s in text:
                 res.append(str(s))
-            self.logger.debug(" ".join(res))
+            logger = logging.getLogger('SimulatedAnnealing')
+            logger.debug(" ".join(res))
     
     def ChangeSystem(self, s):
         ''' Replace the system'''
         self.numberOfIterations = len(self.system.program.vertices) * 10
         self.system = s
         self._prepare()
-      
-    def Serialize(self):
-        ''' Serializes this class.
-        The class is not picklable because f1, f2, f3 are lambda functions.
-        Therefore, all necessaary information is stored in the following dictionary.'''
-        return {
-        "trace": self.trace,
-        "opt_reliability": self.opt_reliability,
-        "opt_time": self.opt_time,
-        "choice_vertices": self.choice_vertices,
-        "choice_places":self.choice_places,
-        "strategies":self.strategies,
-        "threshold":self.threshold,
-        "numberOfIterations":self.numberOfIterations}
-        
-    def Deserialize(self, dict):
-        '''Deserializes the class from a dictionary of parameters'''
-        self.trace = dict["trace"]
-        self.opt_reliability = dict["opt_reliability"]
-        self.opt_time = dict["opt_time"]
-        self.choice_vertices = dict["choice_vertices"]
-        self.choice_places = dict["choice_places"]
-        self.strategies = dict["strategies"]
-        self.threshold = dict["threshold"]
-        self.numberOfIterations = dict["numberOfIterations"]
     
     def Reset(self):
         ''' Resets the method to the zero iteration'''
