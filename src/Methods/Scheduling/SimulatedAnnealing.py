@@ -20,7 +20,7 @@ class SimulatedAnnealing(object):
     system = None
     ''' System, program and schedule to optimize'''
     
-    iteration = 0
+    iteration = 1
     ''' Current iteration (see Simulated Annealing) '''
     
     opt_reliability = { "time-normal":{"AddVersion":0.5, "AddProcessor":0.33, "MoveVertex":0.16}, 
@@ -57,10 +57,11 @@ class SimulatedAnnealing(object):
     multioperation = False
 
     def __init__(self, system):
-        self.iteration = 0
+        self.iteration = 1
         self.system = system
         self.numberOfIterations = len(self.system.program.vertices) * 10 + 1
         logging.basicConfig(level=logging.DEBUG)
+        self._prepare()
     
     def write(self, *text):
         ''' Print debug information'''
@@ -80,6 +81,7 @@ class SimulatedAnnealing(object):
     def Reset(self):
         ''' Resets the method to the zero iteration'''
         self.system.schedule.SetToDefault()
+        self.numberOfIterations = 10 * len(self.system.program.vertices)
         self._prepare()
     
     def _prepare(self):
@@ -94,8 +96,8 @@ class SimulatedAnnealing(object):
         
     def Start(self):
         ''' Runs the algorithm with the given number of iterations'''
-        self.iteration = 0
-        while self.iteration < self.numberOfIterations:
+        self.iteration = 1
+        while self.iteration <= self.numberOfIterations:
             #print(self.iteration)
             self.Step()
             self.iteration += 1
@@ -356,7 +358,9 @@ class SimulatedAnnealing(object):
 
     def MixedStrategy(self):
         s = self.system.schedule
-        while True:
+        i = 0
+        while i < 100:
+            i += 1
             # TODO: what should we do if there are no delays? Maybe stop the algorithm?
             if len(s.waiting) == 0:
                 keys = [m for m in s.vertices.keys()]
@@ -366,6 +370,16 @@ class SimulatedAnnealing(object):
                 s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
                 src_pos = s.vertices[s1.m.number].index(s1)
             ch = []
+            if len(s.delays) == 0:
+                keys = [m for m in s.vertices.keys()]
+                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+                s2 = proc[random.randint(0, len(proc)-1)]
+                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
+                    target_proc = s2.m
+                    target_pos = s.vertices[s2.m.number].index(s2)
+                    break
+                else:
+                    continue
             for d in s.delays:
                 # If the delay is zero, we mustn't move anything there
                 if d[1] == 0:

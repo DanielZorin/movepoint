@@ -9,3 +9,4 @@ glob:doc/source/conf.py
 glob:src/SRGM/projects/*
 glob:src/SRGMGUI/projects/*
 glob:src/build/*
+glob:src/results/*
