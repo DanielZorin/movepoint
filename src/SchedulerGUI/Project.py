@@ -25,8 +25,6 @@ class Project(object):
         self.name = name
         
     def Serialize(self, filename):
-        # SimulatedAnnealing can't be serialized because it has undefined Threshold field
-        # However, it's possible to make a config dump in SimulatedAnnelaing and serialize it.
         fn = open(filename, "wb")
         dict = {"name": self.name, 
                 "system": self.system,

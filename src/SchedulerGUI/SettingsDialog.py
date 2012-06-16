@@ -3,7 +3,7 @@ Created on 09.01.2011
 
 @author: juan
 '''
-from PyQt4.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QGroupBox, QLabel, QLineEdit, QScrollArea, QWidget, QPushButton, QIntValidator, QDoubleValidator
+from PyQt4.QtGui import QDialog, QVBoxLayout, QHBoxLayout, QGroupBox, QLabel, QLineEdit, QScrollArea, QWidget, QPushButton, QIntValidator, QDoubleValidator, QComboBox
 from PyQt4.QtCore import Qt, QObject, SIGNAL
      
 class SettingsDialog(QDialog):
@@ -11,8 +11,9 @@ class SettingsDialog(QDialog):
     data = {}
     ui = {}
     
-    def __init__(self, config):
+    def __init__(self, config, parent):
         QDialog.__init__(self)
+        self.setStyleSheet(parent.styleSheet())
         self.setWindowTitle("Method Settings")
         self.data = config             
         self.ui = {}
@@ -60,6 +61,20 @@ class SettingsDialog(QDialog):
                 hbox.addWidget(edit)
                 l.addLayout(hbox)
                 ui[k] = (edit, label, hbox, val)
+            elif t == type(list()):
+                hbox = QHBoxLayout()
+                label = QLabel(k)
+                edit = QComboBox()
+                i = 0
+                for s in config[k][0]:
+                    edit.addItem(s)
+                    if i == config[k][1]:
+                        edit.setCurrentIndex(i)
+                    i += 1
+                hbox.addWidget(label)
+                hbox.addWidget(edit)
+                l.addLayout(hbox)
+                ui[k] = (edit, label, hbox)
         # Parse composite members
         for k in lst:
             t = type(config[k])
@@ -81,6 +96,17 @@ class SettingsDialog(QDialog):
                 res[k] = int(ui[k][0].text())
             elif t == type(float()):
                 res[k] = float(ui[k][0].text())
+            elif t == type(list()):
+                lst = []
+                i = 0
+                cur = 0
+                while i < ui[k][0].count():
+                    s = ui[k][0].itemText(i)
+                    if s == ui[k][0].currentText():
+                        cur = i
+                    lst.append(s)
+                    i += 1
+                res[k] = [lst, cur]
             elif t == type(dict()):
                 res[k] = self._getData(config[k], ui[k])
         return res

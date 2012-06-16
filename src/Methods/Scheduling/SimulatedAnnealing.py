@@ -36,7 +36,7 @@ class SimulatedAnnealing(object):
     choice_places = 5
     ''' Maximum number of places among which the parameters for "MoveVertex" are chosen '''
     
-    strategies = {}
+    strategies = [["Idle time reduction", "Delay reduction", "Mixed"], 0]
     ''' Used strategies for MoveVertex and their probabilities '''
     
     oldSchedule = None
@@ -118,10 +118,6 @@ class SimulatedAnnealing(object):
                             self.choice_vertices = int(n.getAttribute("n"))
                         elif n.nodeName == "choice-places":
                             self.choice_places = int(n.getAttribute("n"))
-                            
-                    # Parse strategies
-                    lim = list(filter(lambda node: node.nodeName == "strategies", list(c.childNodes)))[0]  
-                    self.strategies = LoadPrioritiesList(lim)
                               
             f.close()
             
@@ -411,8 +407,9 @@ class SimulatedAnnealing(object):
             for d in s.waiting:
                 s2 = d[0]
                 proc = s2.m
-                num = s.vertices[s2.m.number].index(s2)         
-                if s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
+                num = s.vertices[s2.m.number].index(s2) 
+                # TODO: wtf?        
+                if True: #s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
                     if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
                         ch.append(s2)
                 if len(ch) == self.choice_places:
@@ -445,6 +442,7 @@ class SimulatedAnnealing(object):
             for d in s.delays:
                 # If the delay is zero, we mustn't move anything there
                 if d[1] == 0:
+                    # TODO: change
                     break
                 s2 = d[0]
                 if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
@@ -466,10 +464,9 @@ class SimulatedAnnealing(object):
     def DoMoveVertex(self):
         s = self.system.schedule
         r = random.random()
-        # TODO: think about a better way to select a strategy
-        if r < self.strategies["mixed"]:
+        if self.strategies[1] == 2:
             s1, src_pos, target_proc, target_pos = self.MixedStrategy()
-        elif r < self.strategies["mixed"] + self.strategies["delay"]:
+        elif self.strategies[1] == 1:
             s1, src_pos, target_proc, target_pos = self.DelayStrategy()
         else:
             s1, src_pos, target_proc, target_pos = self.IdleStrategy()

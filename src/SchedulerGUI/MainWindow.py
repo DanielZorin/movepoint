@@ -349,7 +349,7 @@ class MainWindow(QMainWindow):
             
     def Parameters(self):
         data = self.project.method.Serialize()
-        d = SettingsDialog(data)
+        d = SettingsDialog(data, self)
         d.exec_()
         if d.result() == QDialog.Accepted:
             self.project.method.Deserialize(d.data)
