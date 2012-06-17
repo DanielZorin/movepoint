@@ -357,6 +357,7 @@ class SimulatedAnnealing(object):
         return s1, src_pos, target_proc, target_pos
 
     def _findVertexToMove(self):
+        s = self.system.schedule
         keys = [m for m in s.vertices.keys()]
         for m1 in keys:
             for s1 in s.vertices[m1]:
