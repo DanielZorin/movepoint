@@ -292,67 +292,63 @@ class SimulatedAnnealing(object):
     
     def IdleStrategy(self):
         s = self.system.schedule
-        while True:
-            if len(s.delays) == 0:
-                keys = [m for m in s.vertices.keys()]
-                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                s2 = proc[random.randint(0, len(proc)-1)]
-            else:
-                s2 = s.delays[min(random.randint(0, self.choice_places), len(s.delays)-1)][0]
-            target_proc = s2.m
-            target_pos = s.vertices[s2.m.number].index(s2)
-            ch = []
-            for d in s.waiting:
-                s1 = d[0]
-                src_pos = s.vertices[s1.m.number].index(s1)
-                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
-                    ch.append(s1)
-                if len(ch) == self.choice_vertices:
-                    break
-            if len(ch) == 1:
-                s1 = ch[0]
-            elif len(ch) == 0:
-                continue
-            else:
-                s1 = ch[random.randint(0, len(ch)-1)]
+        if len(s.delays) == 0:
+            keys = [m for m in s.vertices.keys()]
+            proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+            s2 = proc[random.randint(0, len(proc)-1)]
+        else:
+            s2 = s.delays[min(random.randint(0, self.choice_places), len(s.delays)-1)][0]
+        target_proc = s2.m
+        target_pos = s.vertices[s2.m.number].index(s2)
+        ch = []
+        for d in s.waiting:
+            s1 = d[0]
             src_pos = s.vertices[s1.m.number].index(s1)
-            break
+            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                ch.append(s1)
+            if len(ch) == self.choice_vertices:
+                break
+        if len(ch) == 1:
+            s1 = ch[0]
+        elif len(ch) == 0:
+            return self._findVertexToMove()
+        else:
+            s1 = ch[random.randint(0, len(ch)-1)]
+        src_pos = s.vertices[s1.m.number].index(s1)
 
         return s1, src_pos, target_proc, target_pos
 
     def DelayStrategy(self):
         s = self.system.schedule
-        while True:
-            if len(s.waiting) == 0:
-                keys = [m for m in s.vertices.keys()]
-                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                s1 = proc[random.randint(0, len(proc)-1)]
-            else:
-                s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
+        if len(s.waiting) == 0:
+            keys = [m for m in s.vertices.keys()]
+            proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
+            s1 = proc[random.randint(0, len(proc)-1)]
+        else:
+            s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
         
-            src_pos = s.vertices[s1.m.number].index(s1)
-            ch = []
-            timelimit = s.endtimes[s1] - s1.m.GetTime(s1.v.time)
-            for d in s.waiting:
-                s2 = d[0]
-                proc = s2.m
-                num = s.vertices[s2.m.number].index(s2) 
-                # TODO: wtf?        
-                if True: #s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
-                    if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
-                        ch.append(s2)
-                if len(ch) == self.choice_places:
-                    break
-            if len(ch) == 0:
-                continue
-            else:
-                if len(ch) == 1:
-                    s2 = ch[0]
-                else:
-                    s2 = ch[random.randint(0, len(ch)-1)]
-                target_proc = s2.m
-                target_pos = s.vertices[s2.m.number].index(s2)
+        src_pos = s.vertices[s1.m.number].index(s1)
+        ch = []
+        timelimit = s.endtimes[s1] - s1.m.GetTime(s1.v.time)
+        for d in s.waiting:
+            s2 = d[0]
+            proc = s2.m
+            num = s.vertices[s2.m.number].index(s2) 
+            # TODO: wtf?        
+            if True: #s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
+                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
+                    ch.append(s2)
+            if len(ch) == self.choice_places:
                 break
+        if len(ch) == 0:
+            return self._findVertexToMove()
+        else:
+            if len(ch) == 1:
+                s2 = ch[0]
+            else:
+                s2 = ch[random.randint(0, len(ch)-1)]
+            target_proc = s2.m
+            target_pos = s.vertices[s2.m.number].index(s2)
 
         return s1, src_pos, target_proc, target_pos
 
