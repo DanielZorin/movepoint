@@ -358,9 +358,7 @@ class SimulatedAnnealing(object):
 
     def MixedStrategy(self):
         s = self.system.schedule
-        i = 0
-        while i < 100:
-            i += 1
+        while True:
             # TODO: what should we do if there are no delays? Maybe stop the algorithm?
             if len(s.waiting) == 0:
                 keys = [m for m in s.vertices.keys()]
@@ -368,7 +366,7 @@ class SimulatedAnnealing(object):
                 s1 = proc[random.randint(0, len(proc)-1)]
             else:
                 s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
-                src_pos = s.vertices[s1.m.number].index(s1)
+            src_pos = s.vertices[s1.m.number].index(s1)
             ch = []
             if len(s.delays) == 0:
                 keys = [m for m in s.vertices.keys()]
@@ -384,7 +382,7 @@ class SimulatedAnnealing(object):
                 # If the delay is zero, we mustn't move anything there
                 if d[1] == 0:
                     # TODO: change
-                    break
+                    pass
                 s2 = d[0]
                 if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
                     ch.append(s2)
@@ -464,10 +462,10 @@ class SimulatedAnnealing(object):
                 t = 100 / math.log(1 + self.iteration)
             elif self.threshold[1] == 1:
                 #Cauchy
-                t = 100 / (1 + self.iteration)
+                t = 100.0 / float(1 + self.iteration)
             else:
                 #Combine
-                t = 100 * math.log(1 + self.iteration) / (1 + self.iteration)
+                t = 100.0 * math.log(1 + self.iteration) / (1 + self.iteration)
             threshold = math.exp(-1 / t)
             if r > threshold:
                 accept()

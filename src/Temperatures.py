@@ -4,6 +4,7 @@ from SchedulerGUI.Project import Project
 def run(p, v, i, strategy, threshold):  
     p.method.strategies[1] = strategy
     p.method.threshold[1] = threshold
+    p.method.Reset()
     p.method.Start()
     p.Serialize("temperature_test_" + str(v) + "_vertices_" + p.method.strategies[0][strategy] + "_" + \
         p.method.threshold[0][threshold] + "_" + str(i) + ".proj")
