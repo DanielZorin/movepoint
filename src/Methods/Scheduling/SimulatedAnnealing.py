@@ -361,13 +361,13 @@ class SimulatedAnnealing(object):
         keys = [m for m in s.vertices.keys()]
         for m1 in keys:
             for s1 in s.vertices[m1]:
+                src_pos = s.vertices[m1].index(s1)
                 for m2 in keys:
                     for i in range(len(s.vertices[m2])):
                         s2 = s.vertices[m2][i]
                         if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, i) == True:
                             target_proc = s2.m
                             target_pos = s.vertices[s2.m.number].index(s2)
-                            src_pos = s.vertices[s1.m.number].index(s1)
                             return s1, src_pos, target_proc, target_pos
 
     def MixedStrategy(self):
