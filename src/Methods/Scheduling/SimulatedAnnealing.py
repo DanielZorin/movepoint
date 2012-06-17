@@ -356,48 +356,48 @@ class SimulatedAnnealing(object):
 
         return s1, src_pos, target_proc, target_pos
 
+    def _findVertexToMove(self):
+        keys = [m for m in s.vertices.keys()]
+        for m1 in keys:
+            for s1 in s.vertices[m1]:
+                for m2 in keys:
+                    for i in range(len(s.vertices[m2])):
+                        s2 = s.vertices[m2][i]
+                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, i) == True:
+                            target_proc = s2.m
+                            target_pos = s.vertices[s2.m.number].index(s2)
+                            src_pos = s.vertices[s1.m.number].index(s1)
+                            return s1, src_pos, target_proc, target_pos
+
     def MixedStrategy(self):
         s = self.system.schedule
-        while True:
-            # TODO: what should we do if there are no delays? Maybe stop the algorithm?
-            if len(s.waiting) == 0:
-                keys = [m for m in s.vertices.keys()]
-                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                s1 = proc[random.randint(0, len(proc)-1)]
-            else:
-                s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
-            src_pos = s.vertices[s1.m.number].index(s1)
-            ch = []
-            if len(s.delays) == 0:
-                keys = [m for m in s.vertices.keys()]
-                proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-                s2 = proc[random.randint(0, len(proc)-1)]
-                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
-                    target_proc = s2.m
-                    target_pos = s.vertices[s2.m.number].index(s2)
-                    break
-                else:
-                    continue
-            for d in s.delays:
-                # If the delay is zero, we mustn't move anything there
-                if d[1] == 0:
-                    # TODO: change
-                    pass
-                s2 = d[0]
-                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
-                    ch.append(s2)
-                if len(ch) == self.choice_places:
-                    break              
-            if len(ch) == 1:
-                s2 = ch[0]
-            elif len(ch) == 0:
-                continue
-            else:
-                s2 = ch[random.randint(0, len(ch)-1)]
-            target_proc = s2.m
-            target_pos = s.vertices[s2.m.number].index(s2)
-            break
-
+        # TODO: what should we do if there are no delays? Maybe stop the algorithm?
+        if len(s.waiting) == 0:
+            return self._findVertexToMove()
+        else:
+            s1 = s.waiting[min(random.randint(0,self.choice_vertices), len(s.waiting)-1)][0]
+        src_pos = s.vertices[s1.m.number].index(s1)
+        ch = []
+        if len(s.delays) == 0:
+            return self._findVertexToMove()
+        for d in s.delays:
+            # If the delay is zero, we mustn't move anything there
+            if d[1] == 0:
+                # TODO: change
+                pass
+            s2 = d[0]
+            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
+                ch.append(s2)
+            if len(ch) == self.choice_places:
+                break              
+        if len(ch) == 1:
+            s2 = ch[0]
+        elif len(ch) == 0:
+            return self._findVertexToMove()
+        else:
+            s2 = ch[random.randint(0, len(ch)-1)]
+        target_proc = s2.m
+        target_pos = s.vertices[s2.m.number].index(s2)
         return s1, src_pos, target_proc, target_pos
 
     def DoMoveVertex(self):
