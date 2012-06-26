@@ -35,9 +35,8 @@ class Schedule(object):
     
     currentVersions = {}
     
-    # TODO: rename: delays -> idletimes, waiting -> delays
+    idletimes = []
     delays = []
-    waiting = []
     endtimes = []
     
     # These arrays are filled during the interpretation.
@@ -310,10 +309,10 @@ class Schedule(object):
         edges = []
         # Waiting time of each vertex
         delays = {}
-        self.delays = []
+        self.idletimes = []
         # point of time when a certain task is over. Used to calculate waiting time
         endTimes = {}
-        self.waiting = []
+        self.delays = []
         self.executionTimes = {}
         self.deliveryTimes = []
         for e in self.program.edges:
@@ -413,7 +412,7 @@ class Schedule(object):
                     if CheckReady(sortedTasks[m][0]):
                         working[m] = ["working", proc.GetTime(sortedTasks[m][0].Task().time)]
                         self.executionTimes[sortedTasks[m][0]] = (time, time + proc.GetTime(sortedTasks[m][0].Task().time))
-                        self.delays.append([sortedTasks[m][0],delays[sortedTasks[m][0]]])
+                        self.idletimes.append([sortedTasks[m][0],delays[sortedTasks[m][0]]])
                     else:
                         working[m] = ["waiting"]
                         delays[sortedTasks[m][0]] += 1
@@ -450,7 +449,7 @@ class Schedule(object):
                 print(self)
                 raise "Can't calculate time. Possibly an infinite loop occurred"
         
-        self.delays = sorted(self.delays, key=lambda x: x[1])
+        self.idletimes = sorted(self.idletimes, key=lambda x: x[1])
         # Calculate waiting time for each task
         for m in self.processors:
             for v in self.vertices[m.number]:
@@ -460,8 +459,8 @@ class Schedule(object):
                 for v0 in dep:
                     if start - endTimes[v0] > tmp:
                         tmp = start - endTimes[v0]
-                self.waiting.append([v, tmp])
-        self.waiting = sorted(self.waiting, key=lambda x: x[1])
+                self.delays.append([v, tmp])
+        self.delays = sorted(self.delays, key=lambda x: x[1])
         self.endtimes = endTimes
         return time
     
