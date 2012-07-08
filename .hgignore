@@ -1,0 +1,12 @@
+glob:*.pyc
+glob:src/SchedulerGUI/build/*
+glob:*.qm
+glob:doc/Makefile
+glob:doc/build/doctrees/*
+glob:doc/build/*
+glob:doc/res.bat
+glob:doc/source/conf.py
+glob:src/SRGM/projects/*
+glob:src/SRGMGUI/projects/*
+glob:src/build/*
+glob:src/results/*
