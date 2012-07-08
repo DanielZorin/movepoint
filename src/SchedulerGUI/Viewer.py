@@ -72,20 +72,7 @@ class Viewer(QMainWindow):
     def ScrollTrace(self, diff):
         if diff == 0:
             return
-        if diff > 0:
-            if self.method.trace.current + diff >= self.method.trace.length():
-                diff = self.method.trace.length() - self.method.trace.current - 1
-            for i in range(diff):
-                self.method.trace.current += 1
-                op = self.method.trace.getCurrent()
-                self.method.system.schedule.ApplyOperation(op[0])
-        if diff < 0:
-            if self.method.trace.current + diff < 0:
-                diff = -self.method.trace.current
-            for i in range(-diff):
-                op = self.method.trace.getCurrent()
-                self.method.system.schedule.ApplyOperation(op[0].Reverse())
-                self.method.trace.current -= 1
+        self.method.ScrollTrace(diff)
         self.setData(self.method)
         self.ui.lineEdit.setText(str(self.method.trace.current + 1))
         op = self.method.trace.getCurrent()

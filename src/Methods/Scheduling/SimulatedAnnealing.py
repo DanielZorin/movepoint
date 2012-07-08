@@ -117,6 +117,25 @@ class SimulatedAnnealing(object):
         self._applyOperation(op)
         self._selectNewSchedule()
 
+    def ScrollTrace(self, diff):
+        ''' Scrolls diff operations along the trace'''
+        if diff == 0:
+            return
+        if diff > 0:
+            if self.trace.current + diff >= self.trace.length():
+                diff = self.trace.length() - self.trace.current - 1
+            for i in range(diff):
+                self.trace.current += 1
+                op = self.trace.getCurrent()
+                self.system.schedule.ApplyOperation(op[0])
+        if diff < 0:
+            if self.trace.current + diff < 0:
+                diff = -self.trace.current
+            for i in range(-diff):
+                op = self.trace.getCurrent()
+                self.system.schedule.ApplyOperation(op[0].Reverse())
+                self.trace.current -= 1
+
     def ManualStep(self, op, **params):
         ''' Callback for applying operations from the outside of this class, i.e. when the operation is defined by GUI'''
         if op == "MoveVertex":
@@ -335,7 +354,7 @@ class SimulatedAnnealing(object):
             proc = s2.m
             num = s.vertices[s2.m.number].index(s2) 
             # TODO: wtf?        
-            if True: #s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
+            if s.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
                 if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
                     ch.append(s2)
             if len(ch) == self.choice_places:
