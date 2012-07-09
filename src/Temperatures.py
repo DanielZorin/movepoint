@@ -6,8 +6,8 @@ def run(p, v, i, strategy, threshold):
     p.method.threshold[1] = threshold
     p.method.Reset()
     p.method.Start()
-    p.Serialize("temperature_test_" + str(v) + "_vertices_" + p.method.strategies[0][strategy] + "_" + \
-        p.method.threshold[0][threshold] + "_" + str(i) + ".proj")
+    p.Serialize("results/temperature_test_" + str(v) + "_vertices_" + str(i) + "_" + \
+        p.method.strategies[0][strategy] + "_" + p.method.threshold[0][threshold]  + ".proj")
     return p.method.trace.getBest()[1]
 
 p = Project("program.xml", "temperature test") 
