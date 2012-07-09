@@ -31,7 +31,8 @@ class Project(object):
                 "graph": self.graph,
                 # This is a very weird bug. Somehow processors aren't saved as a part of system.
                 # Without this system.processors is []
-                "proc": self.system.processors}
+                "proc": self.system.processors,
+                "trace":self.method.trace}
         pickle.dump(dict, fn)
         fn.close()
     
@@ -44,6 +45,7 @@ class Project(object):
         self.system.program._buildData()
         self.system.processors = dict["proc"]
         self.method = dict["method"]
+        self.method.trace = dict["trace"]
         self.graph = dict["graph"]
         self.system.schedule.Consistency()
 
