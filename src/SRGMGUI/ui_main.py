@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Apr 22 21:44:57 2011
-#      by: PyQt4 UI code generator 4.8.1
+# Created: Wed Jul 11 20:19:08 2012
+#      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -19,7 +19,6 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(820, 453)
         self.centralwidget = QtGui.QWidget(MainWindow)
-        self.centralwidget.setGeometry(QtCore.QRect(0, 22, 820, 410))
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.comboBox = QtGui.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(20, 30, 221, 31))
@@ -102,7 +101,7 @@ class Ui_MainWindow(object):
         self.pushButton = QtGui.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(260, 30, 101, 31))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.graph = Graph(self.centralwidget)
+        self.graph = QtGui.QWidget(self.centralwidget)
         self.graph.setGeometry(QtCore.QRect(440, 110, 300, 300))
         self.graph.setObjectName(_fromUtf8("graph"))
         self.label_11 = QtGui.QLabel(self.graph)
@@ -135,7 +134,7 @@ class Ui_MainWindow(object):
         self.line_2.setObjectName(_fromUtf8("line_2"))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 820, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 820, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -143,7 +142,6 @@ class Ui_MainWindow(object):
         self.menuEdit.setObjectName(_fromUtf8("menuEdit"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setGeometry(QtCore.QRect(0, 432, 820, 21))
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         self.actionExit = QtGui.QAction(MainWindow)
@@ -249,4 +247,3 @@ class Ui_MainWindow(object):
         self.actionSetup_data_selection.setText(QtGui.QApplication.translate("MainWindow", "Setup data selection", None, QtGui.QApplication.UnicodeUTF8))
         self.actionBatch_data_load.setText(QtGui.QApplication.translate("MainWindow", "Batch data load", None, QtGui.QApplication.UnicodeUTF8))
 
-from Graph import Graph
