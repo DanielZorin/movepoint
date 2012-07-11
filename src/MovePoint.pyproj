@@ -131,6 +131,7 @@
     <Compile Include="Tests\SimpleTest.py" />
     <Compile Include="Tests\ZTest.py" />
     <Compile Include="Tests\__init__.py" />
+    <Compile Include="tmp.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SchedulerGUI\Windows\MainWindow.ui" />
