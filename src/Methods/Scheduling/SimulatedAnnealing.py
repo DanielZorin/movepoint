@@ -56,6 +56,8 @@ class SimulatedAnnealing(object):
     
     multioperation = False
 
+    initialTemperature = 100.0
+
     def __init__(self, system):
         self.iteration = 1
         self.system = system
@@ -473,13 +475,13 @@ class SimulatedAnnealing(object):
             r = random.random()
             if self.threshold[1] == 0:
                 #Bolzmann
-                t = 100 / math.log(1 + self.iteration)
+                t = self.initialTemperature / math.log(1 + self.iteration)
             elif self.threshold[1] == 1:
                 #Cauchy
-                t = 100.0 / float(1 + self.iteration)
+                t = self.initialTemperature / float(1 + self.iteration)
             else:
-                #Combine
-                t = 100.0 * math.log(1 + self.iteration) / (1 + self.iteration)
+                #Combined
+                t = self.initialTemperature * math.log(1 + self.iteration) / (1 + self.iteration)
             threshold = math.exp(-1 / t)
             if r > threshold:
                 accept()
