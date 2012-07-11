@@ -52,6 +52,7 @@
     <Compile Include="Core\__init__.py" />
     <Compile Include="csv.py" />
     <Compile Include="ExeBuild.py" />
+    <Compile Include="SRGMGUI-launch.py" />
     <Compile Include="Temperatures.py" />
     <Compile Include="SchedulerGUI-launch.py" />
     <Compile Include="Methods\ParetoOptimization\FullIteration.py" />
@@ -105,7 +106,6 @@
     <Compile Include="Schedules\__init__.py" />
     <Compile Include="SRGMGUI\AddDataDialog.py" />
     <Compile Include="SRGMGUI\Graph.py" />
-    <Compile Include="SRGMGUI\main.py" />
     <Compile Include="SRGMGUI\MainWindow.py" />
     <Compile Include="SRGMGUI\Project.py" />
     <Compile Include="SRGMGUI\ProjectDialog.py" />
