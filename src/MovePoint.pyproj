@@ -50,7 +50,6 @@
     <Compile Include="Core\TestingData.py" />
     <Compile Include="Core\Version.py" />
     <Compile Include="Core\__init__.py" />
-    <Compile Include="csv.py" />
     <Compile Include="ExeBuild.py" />
     <Compile Include="SRGMGUI-launch.py" />
     <Compile Include="Temperatures.py" />
@@ -131,7 +130,6 @@
     <Compile Include="Tests\SimpleTest.py" />
     <Compile Include="Tests\ZTest.py" />
     <Compile Include="Tests\__init__.py" />
-    <Compile Include="tmp.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SchedulerGUI\Windows\MainWindow.ui" />
