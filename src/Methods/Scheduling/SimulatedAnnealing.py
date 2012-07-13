@@ -39,6 +39,10 @@ class SimulatedAnnealing(object):
     ''' Used strategies for MoveVertex and their probabilities '''
 
     threshold = [["Bolzmann", "Cauchy", "Combined"], 0]
+    '''Temperature function'''
+
+    raiseTemperature = [["Yes", "No"], 0]
+    ''' Raise temperature temporarily'''
     
     oldSchedule = None
     ''' Current approximation. A copy is saved here, and all changes are applied to the original '''
@@ -465,6 +469,7 @@ class SimulatedAnnealing(object):
                 if curProc < best["processors"]  or (curProc == best["processors"] and curTime < best["time"]):
                     self.trace.setBest(self.trace.length() - 1)
                     self.write("BEST SOLUTION:", self.trace.getLast()[1])
+
             
         def refuse():  
             self.write("Refuse")
@@ -473,15 +478,18 @@ class SimulatedAnnealing(object):
 
         def checkThreshold():
             r = random.random()
+            number = self.iteration
+            if self.raiseTemperature[1] == 0:
+                number = number - self.trace.best
             if self.threshold[1] == 0:
                 #Bolzmann
-                t = self.initialTemperature / math.log(1 + self.iteration)
+                t = self.initialTemperature / math.log(1 + number)
             elif self.threshold[1] == 1:
                 #Cauchy
-                t = self.initialTemperature / float(1 + self.iteration)
-            else:
+                t = self.initialTemperature / float(1 + number)
+            elif self.threshold[1] == 2:
                 #Combined
-                t = self.initialTemperature * math.log(1 + self.iteration) / (1 + self.iteration)
+                t = self.initialTemperature * math.log(1 + number) / (1 + number)
             threshold = math.exp(-1 / t)
             if r > threshold:
                 accept()
