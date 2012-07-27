@@ -17,25 +17,25 @@ def run(p, v, i, strategy, threshold, raising):
 
 # Run tests with all strategies and temperature functions
 p = Project("program.xml", "temperature test") 
-for v in [10,20,30,40,50]:
+for v in [30]:
     res = ""
     for i in range(100):       
         p.GenerateRandomSystem({"n":v, "t1":2, "t2":6, "v1":1, "v2":2, "tdir":2, "rdir":2})
         print (v, i)
+        res += str(i) + ";"
         for s in [0, 1, 2]:
-            res += str(i) + ";"
             for t in [0, 1, 2]:
                 for r in [0, 1]:
                     try:
-                        best = run(p, v, i, s, t)
-                        res += str(best["processors"]) + ";" + str(best["time"]) + ";"
+                        best = run(p, v, i, s, t, r)
+                        res += str(best["processors"]) + ";"
                     except:
-                        res += "ERROR;ERROR;"
+                        res += "ERROR;"
         res += "\n"
     f = open("results_temperature_raise_" + str(v) + ".txt", "w")
     f.write(res)
     f.close()
-
+exit(0)
 # Compare temperatures with each other
 p1 = Project("program.xml", "temperature test")
 p2 = Project("program.xml", "temperature test")
