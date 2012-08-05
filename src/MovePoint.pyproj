@@ -51,6 +51,7 @@
     <Compile Include="Core\Version.py" />
     <Compile Include="Core\__init__.py" />
     <Compile Include="ExeBuild.py" />
+    <Compile Include="Methods\Scheduling\MethodWrapper.py" />
     <Compile Include="SRGMGUI-launch.py" />
     <Compile Include="Temperatures.py" />
     <Compile Include="SchedulerGUI-launch.py" />

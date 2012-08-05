@@ -5,6 +5,7 @@ Created on 15.12.2010
 '''
 
 from Schedules.System import System
+from Methods.Scheduling.MethodWrapper import MethodWrapper
 from Methods.Scheduling.SimulatedAnnealing import SimulatedAnnealing
 from Methods.Scheduling.RandomSimulatedAnnealing import RandomSimulatedAnnealing
 import pickle
@@ -18,8 +19,8 @@ class Project(object):
     
     def __init__(self, s="", name=""):
         self.system = System(s)
-        # TODO: think how to implement other methods
-        self.method = SimulatedAnnealing(self.system)
+        self.method = MethodWrapper(self.system)
+        self.method.algorithm = SimulatedAnnealing(self.method)
         self.method.Reset()
         self.name = name
         
