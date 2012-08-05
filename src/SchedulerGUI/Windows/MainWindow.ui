@@ -362,6 +362,20 @@ QLabel, QSlider {
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QComboBox" name="comboBox" >
+          <item>
+           <property name="text" >
+            <string>Simulated Annealing</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>Genetics</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -488,6 +502,14 @@ QLabel, QSlider {
     <property name="title" >
      <string>Project</string>
     </property>
+    <widget class="QMenu" name="menuAlgorithm" >
+     <property name="title" >
+      <string>Algorithm</string>
+     </property>
+     <addaction name="actionAnnealing" />
+     <addaction name="actionGenetics" />
+    </widget>
+    <addaction name="menuAlgorithm" />
     <addaction name="actionStart" />
     <addaction name="actionReset" />
     <addaction name="actionParameters" />
@@ -734,6 +756,25 @@ QLabel, QSlider {
    </property>
    <property name="shortcut" >
     <string>F3</string>
+   </property>
+  </action>
+  <action name="actionAnnealing" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Simulated Annealing</string>
+   </property>
+  </action>
+  <action name="actionGenetics" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Genetics</string>
    </property>
   </action>
  </widget>
@@ -1125,6 +1166,54 @@ QLabel, QSlider {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAnnealing</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>SetAnnealing()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>159</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionGenetics</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>SetGenetics()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>159</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ChangeAlgorithm()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>272</x>
+     <y>273</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>159</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>Exit()</slot>
@@ -1159,5 +1248,8 @@ QLabel, QSlider {
   <slot>ExportSchedule()</slot>
   <slot>GenerateCode()</slot>
   <slot>Parameters()</slot>
+  <slot>SetAnnealing()</slot>
+  <slot>SetGenetics()</slot>
+  <slot>ChangeAlgorithm()</slot>
  </slots>
 </ui>
