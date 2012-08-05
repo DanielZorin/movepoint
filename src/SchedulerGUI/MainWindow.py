@@ -258,6 +258,22 @@ class MainWindow(QMainWindow):
         self.ui.errors.hide()
         # TODO: adjust window size
 
+    def ChangeAlgorithm(self, index):
+        if index == 0:
+            self.SetAnnealing()
+        else:
+            self.SetGenetics()
+
+    def SetAnnealing(self):
+        self.ui.actionAnnealing.setChecked(True)
+        self.ui.actionGenetics.setChecked(False)
+        self.ui.comboBox.setCurrentIndex(0)
+
+    def SetGenetics(self):
+        self.ui.actionAnnealing.setChecked(False)
+        self.ui.actionGenetics.setChecked(True)
+        self.ui.comboBox.setCurrentIndex(1)
+
     def Run(self):
         self.project.method.iteration = 1
         self.project.method.numberOfIterations = len(self.project.system.program.vertices) * 10
