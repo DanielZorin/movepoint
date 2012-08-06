@@ -129,7 +129,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="31"/>
+        <location filename="MainWindow.py" line="32"/>
         <source>Scheduler projects (*.proj *.prj)</source>
         <translation>スケジューラのプロジェクト(*.proj *.prj)</translation>
     </message>
@@ -169,7 +169,7 @@
         <translation type="obsolete">前オペレーション</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="390"/>
+        <location filename="Windows/ui_MainWindow.py" line="396"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
@@ -184,207 +184,207 @@
         <translation type="obsolete">ウィンドウ</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="394"/>
+        <location filename="Windows/ui_MainWindow.py" line="401"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="391"/>
+        <location filename="Windows/ui_MainWindow.py" line="397"/>
         <source>Project</source>
         <translation type="unfinished">プロジェクト</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="397"/>
+        <location filename="Windows/ui_MainWindow.py" line="404"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="398"/>
+        <location filename="Windows/ui_MainWindow.py" line="405"/>
         <source>Ctrl+X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="412"/>
+        <location filename="Windows/ui_MainWindow.py" line="419"/>
         <source>About Scheduler</source>
         <translation>このプログラムについて</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="400"/>
+        <location filename="Windows/ui_MainWindow.py" line="407"/>
         <source>New Project</source>
         <translation>新プロジェクト</translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="401"/>
+        <location filename="Windows/ui_MainWindow.py" line="408"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="402"/>
+        <location filename="Windows/ui_MainWindow.py" line="409"/>
         <source>Open Project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="403"/>
+        <location filename="Windows/ui_MainWindow.py" line="410"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="404"/>
+        <location filename="Windows/ui_MainWindow.py" line="411"/>
         <source>Save Project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="405"/>
+        <location filename="Windows/ui_MainWindow.py" line="412"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="406"/>
+        <location filename="Windows/ui_MainWindow.py" line="413"/>
         <source>Save Project As...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="407"/>
+        <location filename="Windows/ui_MainWindow.py" line="414"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="409"/>
+        <location filename="Windows/ui_MainWindow.py" line="416"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="427"/>
+        <location filename="Windows/ui_MainWindow.py" line="434"/>
         <source>Settings...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="411"/>
+        <location filename="Windows/ui_MainWindow.py" line="418"/>
         <source>Contents...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="413"/>
+        <location filename="Windows/ui_MainWindow.py" line="420"/>
         <source>Reset</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="414"/>
+        <location filename="Windows/ui_MainWindow.py" line="421"/>
         <source>F10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="415"/>
+        <location filename="Windows/ui_MainWindow.py" line="422"/>
         <source>Change Name...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="416"/>
+        <location filename="Windows/ui_MainWindow.py" line="423"/>
         <source>Load New System...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="418"/>
+        <location filename="Windows/ui_MainWindow.py" line="425"/>
         <source>Generate Random System</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="419"/>
+        <location filename="Windows/ui_MainWindow.py" line="426"/>
         <source>Alt+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="420"/>
+        <location filename="Windows/ui_MainWindow.py" line="427"/>
         <source>Language...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="421"/>
+        <location filename="Windows/ui_MainWindow.py" line="428"/>
         <source>Change Limits...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="396"/>
+        <location filename="Windows/ui_MainWindow.py" line="403"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="422"/>
+        <location filename="Windows/ui_MainWindow.py" line="429"/>
         <source>Launch Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="374"/>
+        <location filename="Windows/ui_MainWindow.py" line="380"/>
         <source>Project name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="375"/>
+        <location filename="Windows/ui_MainWindow.py" line="381"/>
         <source>Program info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="376"/>
+        <location filename="Windows/ui_MainWindow.py" line="382"/>
         <source>Vertices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="385"/>
+        <location filename="Windows/ui_MainWindow.py" line="391"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="378"/>
+        <location filename="Windows/ui_MainWindow.py" line="384"/>
         <source>Edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="380"/>
+        <location filename="Windows/ui_MainWindow.py" line="386"/>
         <source>Deadline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="382"/>
+        <location filename="Windows/ui_MainWindow.py" line="388"/>
         <source>Reliability limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="384"/>
+        <location filename="Windows/ui_MainWindow.py" line="390"/>
         <source>Trace length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="386"/>
+        <location filename="Windows/ui_MainWindow.py" line="392"/>
         <source>Launch search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="389"/>
+        <location filename="Windows/ui_MainWindow.py" line="395"/>
         <source>Error list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="393"/>
+        <location filename="Windows/ui_MainWindow.py" line="400"/>
         <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="395"/>
+        <location filename="Windows/ui_MainWindow.py" line="402"/>
         <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="424"/>
+        <location filename="Windows/ui_MainWindow.py" line="431"/>
         <source>Trace...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="425"/>
+        <location filename="Windows/ui_MainWindow.py" line="432"/>
         <source>Result...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="426"/>
+        <location filename="Windows/ui_MainWindow.py" line="433"/>
         <source>Generate Code...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -404,128 +404,138 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="296"/>
+        <location filename="MainWindow.py" line="310"/>
         <source>An error occured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="152"/>
+        <location filename="MainWindow.py" line="164"/>
         <source>File is not a valid project file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="249"/>
+        <location filename="MainWindow.py" line="261"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="252"/>
+        <location filename="MainWindow.py" line="264"/>
         <source>Task </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="252"/>
+        <location filename="MainWindow.py" line="264"/>
         <source> is in a cycle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="408"/>
+        <location filename="Windows/ui_MainWindow.py" line="415"/>
         <source>Launch Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="410"/>
+        <location filename="Windows/ui_MainWindow.py" line="417"/>
         <source>Parameters...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="417"/>
+        <location filename="Windows/ui_MainWindow.py" line="424"/>
         <source>Load New Parameters...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="423"/>
+        <location filename="Windows/ui_MainWindow.py" line="430"/>
         <source>F2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="428"/>
+        <location filename="Windows/ui_MainWindow.py" line="435"/>
         <source>F12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="429"/>
+        <location filename="Windows/ui_MainWindow.py" line="436"/>
         <source>Edit Program Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="430"/>
+        <location filename="Windows/ui_MainWindow.py" line="437"/>
         <source>F3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="375"/>
+        <location filename="MainWindow.py" line="389"/>
         <source>Number of iterations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="376"/>
+        <location filename="MainWindow.py" line="390"/>
         <source>Strategy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="377"/>
+        <location filename="MainWindow.py" line="391"/>
         <source>Temperature function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="379"/>
+        <location filename="MainWindow.py" line="393"/>
         <source>Vertices limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="380"/>
+        <location filename="MainWindow.py" line="394"/>
         <source>Positions limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="381"/>
+        <location filename="MainWindow.py" line="395"/>
         <source>Operation probabilities: optimize reliability</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="392"/>
+        <location filename="MainWindow.py" line="406"/>
         <source>Deadline not violated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="393"/>
+        <location filename="MainWindow.py" line="407"/>
         <source>Deadline violated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="384"/>
+        <location filename="MainWindow.py" line="398"/>
         <source>Operation probabilities: optimize time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="378"/>
+        <location filename="MainWindow.py" line="392"/>
         <source>Raise temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="431"/>
+        <location filename="Windows/ui_MainWindow.py" line="438"/>
         <source>Simulated Annealing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="432"/>
+        <location filename="Windows/ui_MainWindow.py" line="439"/>
         <source>Genetics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Windows/ui_MainWindow.py" line="392"/>
+        <location filename="Windows/ui_MainWindow.py" line="398"/>
         <source>Algorithm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_MainWindow.py" line="399"/>
+        <source>Time Computation Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_MainWindow.py" line="440"/>
+        <source>default</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

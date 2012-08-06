@@ -29,6 +29,7 @@
     <Folder Include="Methods\ParetoOptimization" />
     <Folder Include="Methods\Scheduling" />
     <Folder Include="Core" />
+    <Folder Include="plugins" />
     <Folder Include="SchedulerGUI" />
     <Folder Include="SchedulerGUI\Windows" />
     <Folder Include="SRGMGUI" />
@@ -52,6 +53,9 @@
     <Compile Include="Core\__init__.py" />
     <Compile Include="ExeBuild.py" />
     <Compile Include="Methods\Scheduling\MethodWrapper.py" />
+    <Compile Include="plugins\FibreChannel.py" />
+    <Compile Include="plugins\__init__.py" />
+    <Compile Include="Schedules\SimpleInterpreter.py" />
     <Compile Include="SRGMGUI-launch.py" />
     <Compile Include="Temperatures.py" />
     <Compile Include="SchedulerGUI-launch.py" />

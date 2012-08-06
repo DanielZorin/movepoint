@@ -509,6 +509,13 @@ QLabel, QSlider {
      <addaction name="actionAnnealing" />
      <addaction name="actionGenetics" />
     </widget>
+    <widget class="QMenu" name="menuPlugins" >
+     <property name="title" >
+      <string>Time Computation Method</string>
+     </property>
+     <addaction name="actionDefault" />
+    </widget>
+    <addaction name="menuPlugins" />
     <addaction name="menuAlgorithm" />
     <addaction name="actionStart" />
     <addaction name="actionReset" />
@@ -775,6 +782,11 @@ QLabel, QSlider {
    </property>
    <property name="text" >
     <string>Genetics</string>
+   </property>
+  </action>
+  <action name="actionDefault" >
+   <property name="text" >
+    <string>default</string>
    </property>
   </action>
  </widget>
