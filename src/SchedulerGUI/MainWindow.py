@@ -1,7 +1,7 @@
 from PyQt4 import QtCore
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QAction, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
 from PyQt4.QtCore import QTranslator, SIGNAL
-import sys, os, pickle, _pickle, re
+import sys, os, pickle, _pickle, re, imp
 from SchedulerGUI.Project import Project
 from SchedulerGUI.NewProjectDialog import NewProjectDialog
 from SchedulerGUI.SettingsDialog import SettingsDialog
@@ -21,6 +21,7 @@ class MainWindow(QMainWindow):
     currentLanguage = "English"
     otherSettings = {}
     projFilter = ""
+    interpreterPlugins = {}
 
     splash = True
     
@@ -74,6 +75,7 @@ class MainWindow(QMainWindow):
                                           self.languages, self.currentLanguage)
         QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
         self.splash = False
+        self.loadPlugins()
 
     def LoadNew(self):
         self.newproject = NewProjectDialog()
@@ -126,6 +128,20 @@ class MainWindow(QMainWindow):
                 res.append(m.group(1))
                 #os.system("lrelease ./Translations/" + s + " -qm ./Translations/" + s.replace(".ts", ".qm"))
         self.languages = res
+
+    def loadPlugins(self):
+        sys.path.append(os.curdir + os.sep + "plugins")
+        for s in os.listdir("plugins"):
+            # TODO: check errors
+            if s.endswith(".py"):
+                plugin = __import__(s[:-3])
+                if "pluginMain" in dir(plugin):
+                    pluginClass = plugin.pluginMain()
+                    name = pluginClass.GetName()
+                    action = QAction(name, self)
+                    self.ui.menuPlugins.addAction(action)
+                else:
+                    print("pluginMain not found in " + s)
 
     def NewProject(self):
         self.newproject = NewProjectDialog()
