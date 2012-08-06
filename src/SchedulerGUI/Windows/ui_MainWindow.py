@@ -317,7 +317,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionExit)
         self.menuAlgorithm.addAction(self.actionAnnealing)
         self.menuAlgorithm.addAction(self.actionGenetics)
-        self.menuPlugins.addAction(self.actionDefault)
         self.menuMethod.addAction(self.menuPlugins.menuAction())
         self.menuMethod.addAction(self.menuAlgorithm.menuAction())
         self.menuMethod.addAction(self.actionStart)

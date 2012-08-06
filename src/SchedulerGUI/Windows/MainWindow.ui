@@ -513,7 +513,6 @@ QLabel, QSlider {
      <property name="title" >
       <string>Time Computation Method</string>
      </property>
-     <addaction name="actionDefault" />
     </widget>
     <addaction name="menuPlugins" />
     <addaction name="menuAlgorithm" />

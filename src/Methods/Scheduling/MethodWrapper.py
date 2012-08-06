@@ -31,6 +31,8 @@ class MethodWrapper(object):
     algorithm = None
     '''The actual algorithm instance'''
 
+    interpreter = None
+
     def __init__(self, system):
         self.iteration = 1
         self.system = system
@@ -52,7 +54,7 @@ class MethodWrapper(object):
     def _prepare(self):
         self.trace.clear()
         self.lastOperation = VoidOperation()
-        data = {"time":self.system.schedule.Interpret(),
+        data = {"time":self.interpreter.Interpret(self.system.schedule),
                 "reliability":self.system.schedule.GetReliability(),
                 "processors":self.system.schedule.GetProcessors()
                 }
@@ -132,7 +134,7 @@ class MethodWrapper(object):
         curRel = cur["reliability"]
         curProc = cur["processors"]
         self.lastOperation.result = True
-        new_time = self.system.schedule.Interpret()
+        new_time = interpreter.Interpret(self.system.schedule)
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
         self.trace.deleteTail()

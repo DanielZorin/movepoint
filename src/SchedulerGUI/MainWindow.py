@@ -1,7 +1,7 @@
 from PyQt4 import QtCore
-from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QMainWindow, QAction, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
+from PyQt4.QtGui import QFileDialog, QDialog, QActionGroup, QMessageBox, QMainWindow, QAction, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
 from PyQt4.QtCore import QTranslator, SIGNAL
-import sys, os, pickle, _pickle, re, imp
+import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
 from SchedulerGUI.NewProjectDialog import NewProjectDialog
 from SchedulerGUI.SettingsDialog import SettingsDialog
@@ -131,15 +131,24 @@ class MainWindow(QMainWindow):
 
     def loadPlugins(self):
         sys.path.append(os.curdir + os.sep + "plugins")
+        plugins = QActionGroup(self)
+        plugins.setExclusive(True)
         for s in os.listdir("plugins"):
-            # TODO: check errors
+            # TODO: check all errors
             if s.endswith(".py"):
                 plugin = __import__(s[:-3])
                 if "pluginMain" in dir(plugin):
                     pluginClass = plugin.pluginMain()
                     name = pluginClass.GetName()
                     action = QAction(name, self)
+                    action.setCheckable(True)
+                    plugins.addAction(action)
                     self.ui.menuPlugins.addAction(action)
+                    self.interpreterPlugins[action] = pluginClass
+                    # TODO: load from .ini file
+                    if name == "FibreChannel":
+                        action.setChecked(True)
+                        self.project.method.interpreter = pluginClass
                 else:
                     print("pluginMain not found in " + s)
 
