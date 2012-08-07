@@ -68,17 +68,40 @@ class Schedule(object):
 
     def ExportXml(self):
         dom = xml.dom.minidom.Document()
-        root = dom.createElement("schedule")
+        root = dom.createElement("system")
+        root.setAttribute("rt", "0")
         dom.appendChild(root)
         for p in self.vertices.keys():
             proc = dom.createElement("processor")
             proc.setAttribute("reserves", str(self.GetProcessor(p).reserves))
+            proc.setAttribute("id", "processor_" + str(p))
             i = 1
             for v in self.vertices[p]:
                 vert = dom.createElement("task")
-                vert.setAttribute("id", str(v.v.number))
-                vert.setAttribute("version", str(v.k.number))
-                vert.setAttribute("position", str(i))
+                vert.setAttribute("id", "task_" + str(v.v.number) + "_version_" + str(v.k.number))
+                vert.setAttribute("time", str(v.v.time))
+                vert.setAttribute("dirtime", str(v.v.time))
+                vert.setAttribute("num", str(i))
+                vert.setAttribute("link", "nolink")
+                datavol = 0
+                succ = self.program.FindAllEdges(v.v, None)
+                if len(succ) > 0:
+                    datavol = succ[0].volume
+                vert.setAttribute("datavol", str(datavol))
+                prev = self._dep(v)
+                next = []
+                for fol in [fol.source for fol in self.program.FindAllEdges(None, v.v)]:
+                    next += self.currentVersions[fol]
+
+                for x in prev:
+                    previtem = dom.createElement("prev")
+                    previtem.setAttribute("id", "task_" + str(x.v.number) + "_version_" + str(x.k.number))
+                    vert.appendChild(previtem)
+
+                for x in next:
+                    nextitem = dom.createElement("next")
+                    nextitem.setAttribute("id", "task_" + str(x.v.number) + "_version_" + str(x.k.number))
+                    vert.appendChild(nextitem)
                 proc.appendChild(vert)
                 i += 1
             root.appendChild(proc)
