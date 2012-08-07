@@ -83,6 +83,16 @@ class Schedule(object):
                 i += 1
             root.appendChild(proc)
         return dom.toprettyxml()
+
+    def ExportCode(self):
+        res = ""
+        for k in self.vertices.keys():
+            proc = "Processor " + str(k) + ": \n"
+            for v in self.vertices[k]:
+                proc += str(v.v.number) + " -- "
+            proc += "\n"
+            res += proc
+        return res
     
     def SetToDefault(self):    
         ''' Places each vertex on a new processor'''
