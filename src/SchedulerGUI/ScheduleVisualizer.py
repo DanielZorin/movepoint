@@ -80,8 +80,8 @@ class ScheduleVisualizer(QWidget):
             paint.drawLine((50 + tdir * 10)*self.scale, 10 * self.scale, (50 + tdir * 10)*self.scale, self.height() - 10)
             if self.selectedTask:
                 t = self.selectedTask
-                start = self.schedule.executionTimes[t][0]
-                finish = self.schedule.executionTimes[t][1]
+                start = self.method.interpreter.executionTimes[t][0]
+                finish = self.method.interpreter.executionTimes[t][1]
                 paint.drawText((50 + start * 10)*self.scale, self.height() - 16, str(start))
                 paint.drawText((50 + finish * 10)*self.scale, self.height() - 16, str(finish))
 
@@ -94,8 +94,8 @@ class ScheduleVisualizer(QWidget):
                 i = 0
                 prev = None
                 for t in self.schedule.vertices[m]:
-                    start = self.schedule.executionTimes[t][0]
-                    finish = self.schedule.executionTimes[t][1]
+                    start = self.method.interpreter.executionTimes[t][0]
+                    finish = self.method.interpreter.executionTimes[t][1]
                     task = QtCore.QRect((50 + start * 10)*self.scale, (procX[t.m.number] - 5)*self.scale, (finish - start)*10*self.scale, 10*self.scale)
                     # TODO: calculate once!
                     self.vertices[t] = task
@@ -130,15 +130,15 @@ class ScheduleVisualizer(QWidget):
                     
             # Draw deliveries   
             paint.setPen(QPen(self.colors["delivery"], 2)) 
-            for d in self.schedule.deliveryTimes:
+            for d in self.method.interpreter.deliveryTimes:
                 self.drawArrow(paint, (50 + d[2] * 10)*self.scale, procX[d[0].number]*self.scale, (50 + d[3] * 10)*self.scale, procX[d[1].number]*self.scale)
             
             # Draw captions
             paint.setPen(self.colors["axis"])    
             for m in self.schedule.vertices.keys():
                 for t in self.schedule.vertices[m]:
-                    start = self.schedule.executionTimes[t][0]
-                    finish = self.schedule.executionTimes[t][1]   
+                    start = self.method.interpreter.executionTimes[t][0]
+                    finish = self.method.interpreter.executionTimes[t][1]   
                     s = str(t.v.number)
                     if t.k.number > 1:
                        s += " v" + str(t.k.number)
@@ -268,7 +268,7 @@ class ScheduleVisualizer(QWidget):
         self.method = m
         # TODO: get rid of this
         self.proc = self.schedule.GetProcessorsWithoutDoubles()
-        self.time = self.schedule.Interpret()
+        self.time = self.method.interpreter.Interpret(self.schedule)
         self.ResizeCanvas()
         self.repaint()
 

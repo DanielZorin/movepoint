@@ -221,8 +221,7 @@ class Schedule(object):
             if p.number == n:
                 return p
         raise "None"
-    def Interpret(self):
-        return 100
+
     '''Main features of a schedule: time, reliability, size'''
     def GetReliability(self):
         ''' Calculates reliability of the system as a product of the reliability 

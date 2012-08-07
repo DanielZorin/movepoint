@@ -12,6 +12,9 @@ class SimpleInterpreter:
     def __init__(self):
         pass
 
+    def GetName(self):
+        return "Default"
+
     def Interpret(self, schedule):
         ''' Returns the time of schedule execution assuming that data delivery begins as soon as the task ends'''
         def FindReadyTask(l, parsed):
@@ -27,6 +30,7 @@ class SimpleInterpreter:
                     return s
             raise "FindReadyTask: Error"
         
+        return 0
         parsed = []
         notparsed = []
         for v in self.vertices.values():
