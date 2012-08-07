@@ -5,6 +5,7 @@ Created on 10.11.2010
 '''
 
 from Schedules.Operation import *
+from Schedules.SimpleInterpreter import SimpleInterpreter
 import logging
 
 class MethodWrapper(object):
@@ -31,7 +32,8 @@ class MethodWrapper(object):
     algorithm = None
     '''The actual algorithm instance'''
 
-    interpreter = None
+    # TODO: find a better solution
+    interpreter = SimpleInterpreter()
 
     def __init__(self, system):
         self.iteration = 1

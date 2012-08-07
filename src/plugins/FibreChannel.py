@@ -194,7 +194,7 @@ class FibreChannelInterpreter:
         for m in schedule.processors:
             for v in schedule.vertices[m.number]:
                 start = endTimes[v] - v.m.GetTime(v.v.time)
-                dep = self._dep(v)
+                dep = schedule._dep(v)
                 tmp = 0
                 for v0 in dep:
                     if start - endTimes[v0] > tmp:

@@ -10,6 +10,7 @@ from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
 from SchedulerGUI.Viewer import Viewer
 from SchedulerGUI.GraphEditor import GraphEditor
 from Schedules.Exceptions import SchedulerException
+from Schedules.SimpleInterpreter import SimpleInterpreter
 from SchedulerGUI.Windows.ui_MainWindowInitial import Ui_MainWindow as SplashScreen
 from SchedulerGUI.Windows.ui_MainWindow import Ui_MainWindow
 
@@ -133,6 +134,13 @@ class MainWindow(QMainWindow):
         sys.path.append(os.curdir + os.sep + "plugins")
         plugins = QActionGroup(self)
         plugins.setExclusive(True)
+        simple = SimpleInterpreter()
+        action = QAction(simple.GetName(), self)
+        plugins.addAction(action)
+        action.setCheckable(True)
+        action.setChecked(True)
+        self.interpreterPlugins[action] = simple
+        self.ui.menuPlugins.addAction(action)
         for s in os.listdir("plugins"):
             # TODO: check all errors
             if s.endswith(".py"):
@@ -142,13 +150,14 @@ class MainWindow(QMainWindow):
                     name = pluginClass.GetName()
                     action = QAction(name, self)
                     action.setCheckable(True)
+                    QtCore.QObject.connect(action, SIGNAL("triggered()"), self.ChangeInterpreter)
                     plugins.addAction(action)
                     self.ui.menuPlugins.addAction(action)
-                    self.interpreterPlugins[action] = pluginClass
+                    self.interpreterPlugins[action] = pluginClass()
                     # TODO: load from .ini file
-                    if name == "FibreChannel":
+                    if name == "!!FibreChannel":
                         action.setChecked(True)
-                        self.project.method.interpreter = pluginClass
+                        self.project.method.interpreter = self.interpreterPlugins[action]
                 else:
                     print("pluginMain not found in " + s)
 
@@ -288,6 +297,9 @@ class MainWindow(QMainWindow):
             self.SetAnnealing()
         else:
             self.SetGenetics()
+
+    def ChangeInterpreter(self):
+        self.project.method.interpreter = self.interpreterPlugins[self.sender()]
 
     def SetAnnealing(self):
         self.ui.actionAnnealing.setChecked(True)
