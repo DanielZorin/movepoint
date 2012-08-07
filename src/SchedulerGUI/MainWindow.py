@@ -481,7 +481,11 @@ class MainWindow(QMainWindow):
             f.close()
 
     def GenerateCode(self):
-        pass
+        file = QFileDialog.getSaveFileName(directory=self.project.name + ".cpp")
+        if file != '':
+            f = open(file, "w")
+            f.write(self.project.system.schedule.ExportCode())
+            f.close()
 
     def About(self):
         #Calls about box
