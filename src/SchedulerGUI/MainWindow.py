@@ -404,7 +404,14 @@ class MainWindow(QMainWindow):
         self.rlineedit.hide()
         r = float(r)
         self.project.SetRdir(r)  
-            
+ 
+    def PluginSettings(self):
+        data = self.project.method.interpreter.GetSettings()
+        d = SettingsDialog(data, self)
+        d.exec_()
+        if d.result() == QDialog.Accepted:
+            self.project.method.interpreter.UpdateSettings(d.data)
+                   
     def Parameters(self):
         data = self.algorithmSettings.GetMethodSettings(self.project)
         d = SettingsDialog(data, self)

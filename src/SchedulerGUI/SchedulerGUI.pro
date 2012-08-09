@@ -1,5 +1,8 @@
 SOURCES = MainWindow.py \
 AlgorithmSettings.py \
+..\plugins\FibreChannel.py \
+..\plugins\Bus.py \
+..\Schedules\SimpleInterpreter.py \
 Windows\ui_MainWindow.py \
 Windows\ui_MainWindowInitial.py \
 Windows\ui_NewProjectDialog.py \
