@@ -1,4 +1,5 @@
 SOURCES = MainWindow.py \
+AlgorithmSettings.py \
 Windows\ui_MainWindow.py \
 Windows\ui_MainWindowInitial.py \
 Windows\ui_NewProjectDialog.py \

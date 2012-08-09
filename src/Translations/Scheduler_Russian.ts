@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="ru_RU" sourcelanguage="">
+<!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<defaultcodec></defaultcodec>
+<context>
+    <name>AlgorithmSettings</name>
+    <message>
+        <location filename="AlgorithmSettings.py" line="37"/>
+        <source>Number of iterations</source>
+        <translation>Число итерация</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="10"/>
+        <source>Strategy</source>
+        <translation>Стратегия</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="11"/>
+        <source>Temperature function</source>
+        <translation>Закон понижения температуры</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="12"/>
+        <source>Raise temperature</source>
+        <translation>Поднятие температуры</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="13"/>
+        <source>Vertices limit</source>
+        <translation>Лимит вершин</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="14"/>
+        <source>Positions limit</source>
+        <translation>Лимит позиций</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="15"/>
+        <source>Operation probabilities: optimize reliability</source>
+        <translation>Вероятности операция: оптимизация надежности</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="26"/>
+        <source>Deadline not violated</source>
+        <translation>Директивный срок не нарушен</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="27"/>
+        <source>Deadline violated</source>
+        <translation>Директивный срок нарушен</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="18"/>
+        <source>Operation probabilities: optimize time</source>
+        <translation>Вероятности операций: оптимизация времени</translation>
+    </message>
+</context>
 <context>
     <name>EdgeDialog</name>
     <message>
@@ -129,7 +183,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="32"/>
+        <location filename="MainWindow.py" line="34"/>
         <source>Scheduler projects (*.proj *.prj)</source>
         <translation>Проекты планировщика (*.proj *.prj)</translation>
     </message>
@@ -434,27 +488,27 @@
         <translation>Открыть проект...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="317"/>
+        <location filename="MainWindow.py" line="339"/>
         <source>An error occured</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="171"/>
+        <location filename="MainWindow.py" line="188"/>
         <source>File is not a valid project file: </source>
         <translation>Файл проекта некорректен:</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="268"/>
+        <location filename="MainWindow.py" line="285"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="271"/>
+        <location filename="MainWindow.py" line="288"/>
         <source>Task </source>
         <translation>Задание</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="271"/>
+        <location filename="MainWindow.py" line="288"/>
         <source> is in a cycle</source>
         <translation>входит в цикл</translation>
     </message>
@@ -494,79 +548,29 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="396"/>
-        <source>Number of iterations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="397"/>
-        <source>Strategy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="398"/>
-        <source>Temperature function</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="400"/>
-        <source>Vertices limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="401"/>
-        <source>Positions limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="402"/>
-        <source>Operation probabilities: optimize reliability</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="413"/>
-        <source>Deadline not violated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="414"/>
-        <source>Deadline violated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="405"/>
-        <source>Operation probabilities: optimize time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="399"/>
-        <source>Raise temperature</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="Windows/ui_MainWindow.py" line="437"/>
         <source>Simulated Annealing</source>
-        <translation type="unfinished"></translation>
+        <translation>Имитация отжига</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="438"/>
         <source>Genetics</source>
-        <translation type="unfinished"></translation>
+        <translation>Генетический алгоритм</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="397"/>
         <source>Algorithm</source>
-        <translation type="unfinished"></translation>
+        <translation>Алгоритм</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="398"/>
         <source>Time Computation Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Метод оценки времени</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="439"/>
         <source>default</source>
-        <translation type="unfinished"></translation>
+        <translation>Стандартный</translation>
     </message>
 </context>
 <context>

@@ -7,7 +7,7 @@ Created on 15.12.2010
 from Schedules.System import System
 from Methods.Scheduling.MethodWrapper import MethodWrapper
 from Methods.Scheduling.SimulatedAnnealing import SimulatedAnnealing
-from Methods.Scheduling.RandomSimulatedAnnealing import RandomSimulatedAnnealing
+from Methods.Scheduling.Genetics import Genetics
 import pickle
 
 class Project(object):
@@ -16,11 +16,15 @@ class Project(object):
     method = None
     name = None
     graph = {}
+    annealing = None
+    genetics = None
     
     def __init__(self, s="", name=""):
         self.system = System(s)
         self.method = MethodWrapper(self.system)
-        self.method.algorithm = SimulatedAnnealing(self.method)
+        self.annealing = SimulatedAnnealing(self.method)
+        self.genetics = Genetics(self.method)
+        self.method.algorithm = self.annealing
         self.method.Reset()
         self.name = name
         
@@ -48,8 +52,17 @@ class Project(object):
         self.method = dict["method"]
         self.method.trace = dict["trace"]
         self.graph = dict["graph"]
+        # TODO: get rid of this
         self.system.schedule.Consistency()
+        # TODO: temporary workaround
+        if isinstance(self.method.algorithm, SimulatedAnnealing):
+            self.annealing = self.method.algorithm
+        else:
+            self.genetics = self.method.algorithm
 
+    def UsesAnnealing(self):
+        return True if self.annealing == self.method.algorithm else False
+    
     def Step(self):
         self.method.Step()
         

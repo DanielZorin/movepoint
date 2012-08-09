@@ -13,6 +13,7 @@ from Schedules.Exceptions import SchedulerException
 from Schedules.SimpleInterpreter import SimpleInterpreter
 from SchedulerGUI.Windows.ui_MainWindowInitial import Ui_MainWindow as SplashScreen
 from SchedulerGUI.Windows.ui_MainWindow import Ui_MainWindow
+from SchedulerGUI.AlgorithmSettings import AlgorithmSettings
 
 class MainWindow(QMainWindow):
     
@@ -77,6 +78,7 @@ class MainWindow(QMainWindow):
         QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
         self.splash = False
         self.loadPlugins()
+        self.algorithmSettings = AlgorithmSettings()
 
     def LoadNew(self):
         self.newproject = NewProjectDialog()
@@ -305,11 +307,13 @@ class MainWindow(QMainWindow):
         self.ui.actionAnnealing.setChecked(True)
         self.ui.actionGenetics.setChecked(False)
         self.ui.comboBox.setCurrentIndex(0)
+        self.project.method.algorithm = self.project.annealing
 
     def SetGenetics(self):
         self.ui.actionAnnealing.setChecked(False)
         self.ui.actionGenetics.setChecked(True)
         self.ui.comboBox.setCurrentIndex(1)
+        self.project.method.algorithm = self.project.genetics
 
     def Run(self):
         self.project.method.iteration = 1
@@ -402,40 +406,11 @@ class MainWindow(QMainWindow):
         self.project.SetRdir(r)  
             
     def Parameters(self):
-        data = self.GetMethodSettings()
+        data = self.algorithmSettings.GetMethodSettings(self.project)
         d = SettingsDialog(data, self)
         d.exec_()
         if d.result() == QDialog.Accepted:
-            self.UpdateMethodSettings(d.data)
-
-    def GetMethodSettings(self):
-        ''' Returns a dictionary of method settings with appropriate naming'''
-        return [
-        [self.tr("Number of iterations"), self.project.method.numberOfIterations],
-        [self.tr("Strategy"), self.project.method.strategies],
-        [self.tr("Temperature function"), self.project.method.threshold],
-        [self.tr("Raise temperature"), self.project.method.raiseTemperature],
-        [self.tr("Vertices limit"), self.project.method.choice_vertices],
-        [self.tr("Positions limit"), self.project.method.choice_places],
-        [self.tr("Operation probabilities: optimize reliability"), 
-            {self.tr("Deadline not violated"): self.project.method.opt_reliability["time-normal"],
-             self.tr("Deadline violated"): self.project.method.opt_reliability["time-exceed"]}],
-        [self.tr("Operation probabilities: optimize time"), 
-            {self.tr("Deadline not violated"): self.project.method.opt_time["time-normal"],
-             self.tr("Deadline violated"): self.project.method.opt_time["time-exceed"]}]]
-        
-    def UpdateMethodSettings(self, dict):
-        '''Deserializes the class from a dictionary of parameters'''
-        self.project.method.opt_reliability["time-normal"] = dict[6][1][self.tr("Deadline not violated")]
-        self.project.method.opt_reliability["time-exceed"] = dict[6][1][self.tr("Deadline violated")]
-        self.project.method.opt_time["time-normal"] = dict[7][1][self.tr("Deadline not violated")]
-        self.project.method.opt_time["time-exceed"] = dict[7][1][self.tr("Deadline violated")]
-        self.project.method.choice_vertices = dict[4][1]
-        self.project.method.choice_places = dict[5][1]
-        self.project.method.strategies = dict[1][1]
-        self.project.method.threshold = dict[2][1]
-        self.project.method.raiseTemperature = dict[3][1]
-        self.project.method.numberOfIterations = dict[0][1]
+            self.algorithmSettings.UpdateMethodSettings(d.data, self.project)
  
     def Settings(self):
         self.settings.exec_()
