@@ -90,8 +90,8 @@ class Schedule(object):
                 vert.setAttribute("datavol", str(datavol))
                 prev = self._dep(v)
                 next = []
-                for fol in [fol.source for fol in self.program.FindAllEdges(None, v.v)]:
-                    next += self.currentVersions[fol]
+                for fol in [fol.destination for fol in self.program.FindAllEdges(v.v, None)]:
+                    next += self.currentVersions[fol.number]
 
                 for x in prev:
                     previtem = dom.createElement("prev")

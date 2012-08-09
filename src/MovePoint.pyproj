@@ -52,10 +52,12 @@
     <Compile Include="Core\Version.py" />
     <Compile Include="Core\__init__.py" />
     <Compile Include="ExeBuild.py" />
+    <Compile Include="Methods\Scheduling\Genetics.py" />
     <Compile Include="Methods\Scheduling\MethodWrapper.py" />
     <Compile Include="plugins\Bus.py" />
     <Compile Include="plugins\FibreChannel.py" />
     <Compile Include="plugins\__init__.py" />
+    <Compile Include="SchedulerGUI\AlgorithmSettings.py" />
     <Compile Include="Schedules\SimpleInterpreter.py" />
     <Compile Include="SRGMGUI-launch.py" />
     <Compile Include="Temperatures.py" />
@@ -72,7 +74,6 @@
     <Compile Include="Methods\ParetoOptimization\SPEA2.py" />
     <Compile Include="Methods\ParetoOptimization\VEGA.py" />
     <Compile Include="Methods\ParetoOptimization\__init__.py" />
-    <Compile Include="Methods\Scheduling\ExampleMethod.py" />
     <Compile Include="Methods\Scheduling\Exceptions.py" />
     <Compile Include="Methods\Scheduling\Interface.py" />
     <Compile Include="Methods\Scheduling\RandomSimulatedAnnealing.py" />
