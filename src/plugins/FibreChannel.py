@@ -8,6 +8,8 @@ class FibreChannelInterpreter:
     executionTimes = {}
     deliveryTimes = []
 
+    dummy = 0
+
     def __init__(self):
         pass
 
@@ -203,6 +205,24 @@ class FibreChannelInterpreter:
         self.delays = sorted(self.delays, key=lambda x: x[1])
         self.endtimes = endTimes
         return time
+
+    def GetSettings(self):
+        # importing here to allow using the class without Qt
+        from PyQt4.QtCore import QObject
+        class Translator(QObject):
+            def __init__(self, parent):
+                QObject.__init__(self)
+                self.parent = parent
+            def getTranslatedSettings(self):
+                return [
+                [self.tr("Channel speed"), self.parent.dummy]
+                        ]
+        t = Translator(self)
+        return t.getTranslatedSettings()
+
+    def UpdateSettings(self, dict):
+        # importing here to allow using the class without Qt
+        self.dummy = dict[0][1]
 
 def pluginMain():
     return FibreChannelInterpreter

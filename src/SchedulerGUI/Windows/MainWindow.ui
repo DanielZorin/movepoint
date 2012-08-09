@@ -515,10 +515,11 @@ QLabel, QSlider {
      </property>
     </widget>
     <addaction name="menuPlugins" />
+    <addaction name="actionPluginSettings" />
     <addaction name="menuAlgorithm" />
+    <addaction name="actionParameters" />
     <addaction name="actionStart" />
     <addaction name="actionReset" />
-    <addaction name="actionParameters" />
     <addaction name="actionLaunch_Viewer" />
     <addaction name="actionEdit_Program_Graph" />
    </widget>
@@ -655,7 +656,7 @@ QLabel, QSlider {
   </action>
   <action name="actionParameters" >
    <property name="text" >
-    <string>Parameters...</string>
+    <string>Algorithm Parameters...</string>
    </property>
   </action>
   <action name="actionContents" >
@@ -786,6 +787,11 @@ QLabel, QSlider {
   <action name="actionDefault" >
    <property name="text" >
     <string>default</string>
+   </property>
+  </action>
+  <action name="actionPluginSettings" >
+   <property name="text" >
+    <string>Time Computation Parameters...</string>
    </property>
   </action>
  </widget>
@@ -1225,6 +1231,22 @@ QLabel, QSlider {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionPluginSettings</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>PluginSettings()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>159</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>Exit()</slot>
@@ -1262,5 +1284,6 @@ QLabel, QSlider {
   <slot>SetAnnealing()</slot>
   <slot>SetGenetics()</slot>
   <slot>ChangeAlgorithm()</slot>
+  <slot>PluginSettings()</slot>
  </slots>
 </ui>

@@ -309,6 +309,8 @@ class Ui_MainWindow(object):
         self.actionGenetics.setObjectName(_fromUtf8("actionGenetics"))
         self.actionDefault = QtGui.QAction(MainWindow)
         self.actionDefault.setObjectName(_fromUtf8("actionDefault"))
+        self.actionPluginSettings = QtGui.QAction(MainWindow)
+        self.actionPluginSettings.setObjectName(_fromUtf8("actionPluginSettings"))
         self.menuFile.addAction(self.actionNew_Project)
         self.menuFile.addAction(self.actionOpen_Project)
         self.menuFile.addAction(self.actionSave_Project)
@@ -318,10 +320,11 @@ class Ui_MainWindow(object):
         self.menuAlgorithm.addAction(self.actionAnnealing)
         self.menuAlgorithm.addAction(self.actionGenetics)
         self.menuMethod.addAction(self.menuPlugins.menuAction())
+        self.menuMethod.addAction(self.actionPluginSettings)
         self.menuMethod.addAction(self.menuAlgorithm.menuAction())
+        self.menuMethod.addAction(self.actionParameters)
         self.menuMethod.addAction(self.actionStart)
         self.menuMethod.addAction(self.actionReset)
-        self.menuMethod.addAction(self.actionParameters)
         self.menuMethod.addAction(self.actionLaunch_Viewer)
         self.menuMethod.addAction(self.actionEdit_Program_Graph)
         self.menuWindow.addAction(self.actionSettings)
@@ -373,6 +376,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionAnnealing, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.SetAnnealing)
         QtCore.QObject.connect(self.actionGenetics, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.SetGenetics)
         QtCore.QObject.connect(self.comboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.ChangeAlgorithm)
+        QtCore.QObject.connect(self.actionPluginSettings, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.PluginSettings)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -414,7 +418,7 @@ class Ui_MainWindow(object):
         self.actionSave_Project_As.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Shift+S", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStart.setText(QtGui.QApplication.translate("MainWindow", "Launch Search", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStart.setShortcut(QtGui.QApplication.translate("MainWindow", "F5", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionParameters.setText(QtGui.QApplication.translate("MainWindow", "Parameters...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionParameters.setText(QtGui.QApplication.translate("MainWindow", "Algorithm Parameters...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionContents.setText(QtGui.QApplication.translate("MainWindow", "Contents...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout_Scheduler.setText(QtGui.QApplication.translate("MainWindow", "About Scheduler", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReset.setText(QtGui.QApplication.translate("MainWindow", "Reset", None, QtGui.QApplication.UnicodeUTF8))
@@ -438,5 +442,6 @@ class Ui_MainWindow(object):
         self.actionAnnealing.setText(QtGui.QApplication.translate("MainWindow", "Simulated Annealing", None, QtGui.QApplication.UnicodeUTF8))
         self.actionGenetics.setText(QtGui.QApplication.translate("MainWindow", "Genetics", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDefault.setText(QtGui.QApplication.translate("MainWindow", "default", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionPluginSettings.setText(QtGui.QApplication.translate("MainWindow", "Time Computation Parameters...", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc
