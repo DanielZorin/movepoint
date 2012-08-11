@@ -1,4 +1,3 @@
-# TODO: make it working
 class SimpleInterpreter:
     idletimes = []
     delays = []
