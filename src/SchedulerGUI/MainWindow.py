@@ -1,5 +1,5 @@
 from PyQt4 import QtCore
-from PyQt4.QtGui import QFileDialog, QDialog, QActionGroup, QMessageBox, QMainWindow, QAction, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
+from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QActionGroup, QMessageBox, QMainWindow, QAction, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
 from PyQt4.QtCore import QTranslator, SIGNAL
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
@@ -302,10 +302,17 @@ class MainWindow(QMainWindow):
             self.SetGenetics()
 
     def ChangeInterpreter(self):
-        # TODO: prompt reset
-        self.project.method.interpreter = self.interpreterPlugins[self.sender()]
-        self.project.method.Reset()
-        self.loadSchedule()
+        res = QMessageBox.question(self, self.tr("Warning!"), self.tr("This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?"), QMessageBox.Ok | QMessageBox.Cancel)
+        if res == QMessageBox.Ok:
+            self.project.method.interpreter = self.interpreterPlugins[self.sender()]
+            self.project.method.Reset()
+            self.loadSchedule()
+        else:
+            # Set the selector back
+            for k in self.interpreterPlugins.keys():
+                if self.interpreterPlugins[k] == self.project.method.interpreter:
+                    k.setChecked(True)
+                    return
 
     def SetAnnealing(self):
         self.ui.actionAnnealing.setChecked(True)
