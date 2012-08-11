@@ -39,11 +39,11 @@ class BusInterpreter:
         # Status of each processor and remaining time
         working = {}
         # List of current deliveries
-        deliveries = []
+        delivery = None
         # List of pending deliveries
         deliveryQueue = []
-        # Status of the port of each processor (busy=True/ready=False)
-        portStatus = {}
+        # Status of the bus (busy=True/ready=False)
+        busBusy = False
         # List of all pairs that cause delivery data between processors
         edges = []
         # Waiting time of each vertex
@@ -67,7 +67,6 @@ class BusInterpreter:
             m = proc.number
             sortedTasks[m] = [v for v in schedule.vertices[m]]
             working[m] = None
-            portStatus[m] = False
             if len(sortedTasks[m]) > 0:
                 first = sortedTasks[m][0]
                 if len(schedule._dep(first)) == 0:
@@ -80,43 +79,21 @@ class BusInterpreter:
                 # TODO: this is a bug. Empty processors shouldn't exist
                 working[m] = ["ready"]
         while True:
-            # Print debug information
-            '''
-            print("Time = ", time)
-            for m in schedule.processors:
-                print("Processor ", m.number, " ", working[m][0])
-                if working[m][0] == "working":
-                    print(sortedTasks[m][0].v.number)
-                    print(" ", working[m][1], " seconds left")
-                print("port is ", portStatus[m])
-            print("Deliveries: ")
-            for d in deliveries:
-                print("From: ", d[0].m, " To: ", d[1].m,  d[2], " seconds left") 
-            for d in deliveryQueue:
-                print(d) 
-            for e in edges:
-                print("Edge ", e[0].v.number, " ", e[1].v.number, " ", e[3])   
-            print("------------------------------------")   
-            '''
-                
             time += 1
             
-            # Advance all deliveries
-            deliv2 = []
-            for d in deliveries:
+            # Advance the delivery
+            if delivery:
+                d = delivery
                 if d[2] > 0:
                     d[2] -= 1
-                    deliv2.append(d)
                 else:
                     for e in edges:
                         if (e[0] == d[0]) and (e[1] == d[1]):
                             # The delivery is over. We add the info about it to deliveryTimes
                             e[3] = True
                             self.deliveryTimes.append((e[0].m, e[1].m, time - e[2], time))
-                    portStatus[d[0].m] = False
-                    portStatus[d[1].m] = False
-                        
-            deliveries = deliv2
+                    busBusy = False
+                    delivery = None
             
             # Advance all tasks by 1 quantum
             for proc in schedule.processors:
@@ -133,7 +110,8 @@ class BusInterpreter:
                             if e[0] == sortedTasks[m][0]:
                                 tmp.append([e[1], e[2]])
                         if len(tmp) > 0:
-                            deliveryQueue.append([sortedTasks[m][0], tmp])
+                            new = [sortedTasks[m][0], tmp]
+                            deliveryQueue.append(new)
                         # Delete the complete task and start a new one
                         donetasks.append(sortedTasks[m][0])
                         endTimes[sortedTasks[m][0]] = time
@@ -158,23 +136,13 @@ class BusInterpreter:
                         delays[sortedTasks[m][0]] += 1
                 
             # Start deliveries
-            deliv2 = []
-            for e in deliveryQueue:
-                b = True
-                if portStatus[e[0].m.number] == True:
-                    b = False
+            if not busBusy and len(deliveryQueue) > 0:
+                # Append: source, destination, length
+                busBusy = True
+                e = deliveryQueue[0]
                 for d in e[1]:
-                    if portStatus[d[0].m.number] == True:
-                        b = False
-                if b:
-                    # Append: source, destination, length
-                    portStatus[e[0].m.number] = True
-                    for d in e[1]:
-                        deliveries.append([e[0], d[0], e[0].m.GetDeliveryTime(d[0].m, d[1])-1])
-                        portStatus[d[0].m.number] = True
-                else:
-                    deliv2.append(e)
-            deliveryQueue = deliv2              
+                    delivery = [e[0], d[0], e[0].m.GetDeliveryTime(d[0].m, d[1])-1]
+                deliveryQueue = deliveryQueue[1:]             
             
             # If all processors are "ready", stop interpretation
             b = True
@@ -194,7 +162,7 @@ class BusInterpreter:
         for m in schedule.processors:
             for v in schedule.vertices[m.number]:
                 start = endTimes[v] - v.m.GetTime(v.v.time)
-                dep = self._dep(v)
+                dep = schedule._dep(v)
                 tmp = 0
                 for v0 in dep:
                     if start - endTimes[v0] > tmp:
