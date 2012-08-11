@@ -143,6 +143,7 @@ class MainWindow(QMainWindow):
         action.setChecked(True)
         self.interpreterPlugins[action] = simple
         self.ui.menuPlugins.addAction(action)
+        QtCore.QObject.connect(action, SIGNAL("triggered()"), self.ChangeInterpreter)
         for s in os.listdir("plugins"):
             # TODO: check all errors
             if s.endswith(".py"):
@@ -301,7 +302,10 @@ class MainWindow(QMainWindow):
             self.SetGenetics()
 
     def ChangeInterpreter(self):
+        # TODO: prompt reset
         self.project.method.interpreter = self.interpreterPlugins[self.sender()]
+        self.project.method.Reset()
+        self.loadSchedule()
 
     def SetAnnealing(self):
         self.ui.actionAnnealing.setChecked(True)
