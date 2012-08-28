@@ -477,3 +477,41 @@ class Schedule(object):
         if len(v.v.versions) >= len(cur) + 2:
             return True
         return False
+
+    ''' Auxiliary functions for genetic algorithm '''
+    def Randomize(self):
+        '''Make a random schedule'''
+        #TODO: randomize versions and processors too
+        self.vertices = {}
+        self.processors = []
+        self.emptyprocessors = []
+        count = random.randint(1, len(self.program.vertices))
+        keys = []
+        procs = {}
+        for i in range(count):
+            p = self._getProcessor()
+            self.vertices[p.number] = []
+            keys.append(p.number)
+            procs[p.number] = p
+
+        # Use fictional processor number -1 to check correctness of the schedule.
+        fict = Processor(-1)
+        self.vertices[-1] = []
+        for v in self.program.vertices:
+            s = ScheduleVertex(v, v.versions[0], fict)
+            self.currentVersions[v.number] = [s]
+            self.vertices[-1] = [s]
+            self._succCache = {}
+            while True:
+                m = random.randint(1, count)
+                n = random.randint(0, len(self.vertices[m]))
+                if self.TryMoveVertex(s, 0, procs[m], n):
+                    self.MoveVertex(s, 0, procs[m], n)
+                    break
+
+        del self.vertices[-1]
+
+    def ReplaceProcessor(self, p, tasks):
+        ''' Replaces the list of vertices on p with tasks, moving other vertices accordingly. 
+        Used for crossover in genetic algorithm.'''
+        
