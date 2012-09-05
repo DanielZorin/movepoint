@@ -299,6 +299,10 @@ class Schedule(object):
         elif isinstance(op, MultiOperation):
             for o in op.ops:
                 self.ApplyOperation(o)
+        elif isinstance(op, Replacement):
+            self.vertices = op.old[0]
+            self.processors = op.old[1]
+            self.Consistency()
     
     def AddProcessor(self, m):
         ''' Adds a reserve to processor m
@@ -518,6 +522,8 @@ class Schedule(object):
                 if self.TryMoveVertex(s, 0, procs[m], n) == True:
                     self.MoveVertex(s, 0, procs[m], n)
                     break
+        for m in self.processors:
+            self._delEmptyProc(m)
 
     def ReplaceProcessor(self, p, tasks):
         ''' Replaces the list of vertices on p with tasks, moving other vertices accordingly. 
