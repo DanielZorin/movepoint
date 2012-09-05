@@ -59,6 +59,8 @@ class Project(object):
             self.annealing = self.method.algorithm
         else:
             self.genetics = self.method.algorithm
+        self.annealing.data = self.method
+        self.genetics.data = self.method
 
     def UsesAnnealing(self):
         return True if self.annealing == self.method.algorithm else False

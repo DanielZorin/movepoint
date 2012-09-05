@@ -195,7 +195,7 @@ class SimpleInterpreter:
             
             # TODO: this is an old workaround used for debugging. Beware.
             if time > 10000:
-                print(self)
+                print(schedule)
                 raise "Can't calculate time. Possibly an infinite loop occurred"
         
         self.idletimes = sorted(self.idletimes, key=lambda x: x[1])

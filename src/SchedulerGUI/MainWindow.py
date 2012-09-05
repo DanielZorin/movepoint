@@ -325,6 +325,7 @@ class MainWindow(QMainWindow):
         self.ui.actionGenetics.setChecked(True)
         self.ui.comboBox.setCurrentIndex(1)
         self.project.method.algorithm = self.project.genetics
+        self.project.genetics.Prepare()
 
     def Run(self):
         self.project.method.iteration = 1

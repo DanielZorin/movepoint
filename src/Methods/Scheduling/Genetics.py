@@ -22,7 +22,6 @@ class Genetics(object):
     def __init__(self, data):
         self.data = data
         logging.basicConfig(level=logging.DEBUG)
-        self.createPopulation()
     
     def write(self, *text):
         ''' Print debug information'''
@@ -32,15 +31,20 @@ class Genetics(object):
                 res.append(str(s))
             logger = logging.getLogger('Genetics')
             logger.debug(" ".join(res))
-            
+           
+    def Prepare(self):
+        self.createPopulation()
+             
     def Step(self):
         ''' Makes a single iteration of the algorithm'''
+        print ("step")
         self.rank()
         self.crossover()
         self.selection()
         self.mutation()
 
     def createPopulation(self):
+        self.population = []
         for i in range(self.populationSize):
             self.data.system.schedule.Randomize()
             time = self.data.interpreter.Interpret(self.data.system.schedule)
@@ -60,10 +64,11 @@ class Genetics(object):
             else:
                 # Ranking by the number of processors. Solutions with equal number are ranked by time
                 rank = x[2][2] * self.data.system.tdir + x[2][0]
+            return rank
         self.population = sorted(self.population, key=rankfunc, reverse=True)
 
     def crossover(self):
-        for i in range(self.populationSize / 2):
+        for i in range(int(self.populationSize / 2)):
             pass
 
     def selection(self):

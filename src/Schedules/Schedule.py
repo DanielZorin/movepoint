@@ -10,7 +10,7 @@ from Core.NVP import NVP
 from Core.Reserve import Reserve
 from Schedules.ScheduleVertex import ScheduleVertex
 from Schedules.Exceptions import SchedulerTypeException
-import xml.dom.minidom
+import xml.dom.minidom, random
 
 class Schedule(object):
     '''Represents a schedule for a certain program. A schedule is a set of quadruples
@@ -497,7 +497,17 @@ class Schedule(object):
         # Use fictional processor number -1 to check correctness of the schedule.
         fict = Processor(-1)
         self.vertices[-1] = []
-        for v in self.program.vertices:
+        verts = self.program.vertices
+        backup = [[v for v in self.program.vertices], [e for e in self.program.edges]]
+        self.program.vertices = []
+        self.program.edges = []
+        for v in verts:
+            self.program.vertices.append(v)
+            self.program.edges = []
+            for e in backup[1]:
+                if e.source in self.program.vertices and e.destination in self.program.vertices:
+                    self.program.edges.append(e)
+            self.program._buildData()
             s = ScheduleVertex(v, v.versions[0], fict)
             self.currentVersions[v.number] = [s]
             self.vertices[-1] = [s]
@@ -505,11 +515,9 @@ class Schedule(object):
             while True:
                 m = random.randint(1, count)
                 n = random.randint(0, len(self.vertices[m]))
-                if self.TryMoveVertex(s, 0, procs[m], n):
+                if self.TryMoveVertex(s, 0, procs[m], n) == True:
                     self.MoveVertex(s, 0, procs[m], n)
                     break
-
-        del self.vertices[-1]
 
     def ReplaceProcessor(self, p, tasks):
         ''' Replaces the list of vertices on p with tasks, moving other vertices accordingly. 
