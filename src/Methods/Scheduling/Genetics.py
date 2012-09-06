@@ -37,7 +37,6 @@ class Genetics(object):
              
     def Step(self):
         ''' Makes a single iteration of the algorithm'''
-        print ("step")
         self.rank()
         self.crossover()
         self.selection()
@@ -66,11 +65,27 @@ class Genetics(object):
                 # Ranking by the number of processors. Solutions with equal number are ranked by time
                 rank = x[1]["processors"] * self.data.system.tdir + x[1]["time"]
             return rank
-        self.population = sorted(self.population, key=rankfunc, reverse=True)
+        self.population = sorted(self.population, key=rankfunc, reverse=False)
 
     def crossover(self):
+        def mate(mate1, mate2):
+            keys = [k for k in mate1[0][0].keys()]
+            proc = random.randint(0, len(keys) - 1)
+            proc = mate1[0][0][keys[proc]]
+            s.Deserialize(mate2[0])
+            s.ReplaceProcessor(proc)
+            time = self.data.interpreter.Interpret(s)
+            rel = s.GetReliability()
+            proc = s.GetProcessors()
+            self.population.append([s.Serialize(),
+                                    {"time":time, "reliability":rel, "processors":proc}])
+
+        s = self.data.system.schedule
         for i in range(int(self.populationSize / 2)):
-            pass
+            m1 = self.population[i]
+            m2 = self.population[i + 1]
+            mate(m1, m2)
+            mate(m2, m1)
 
     def selection(self):
         self.rank()
@@ -80,9 +95,9 @@ class Genetics(object):
         new_time = cur["time"]
         new_rel = cur["reliability"]
         new_proc = cur["processors"]
-        if new_time <= self.data.system.tdir and new_rel >= self.data.system.rdir:
-            if new_proc < best["processors"]  or (new_proc == best["processors"] and new_time < best["time"]):
-                self.data.trace.addStep(Replacement(self.data.trace.getLast()[0].new, self.population[0][0]), self.population[0][1])
+        #if new_time <= self.data.system.tdir and new_rel >= self.data.system.rdir:
+        #    if new_proc < best["processors"]  or (new_proc == best["processors"] and new_time < best["time"]):
+        self.data.trace.addStep(Replacement(self.data.trace.getLast()[0].new, self.population[0][0]), self.population[0][1])
 
     def mutation(self):
         pass
