@@ -58,6 +58,7 @@ class Schedule(object):
         self.processors = d[1]
         self.emptyprocessors = d[2]
         self.currentVersions = d[3]
+        self.Consistency()
 
     def Consistency(self):
         # TODO: super beedlowcode
@@ -533,7 +534,58 @@ class Schedule(object):
         for m in self.processors:
             self._delEmptyProc(m)
 
-    def ReplaceProcessor(self, p, tasks):
-        ''' Replaces the list of vertices on p with tasks, moving other vertices accordingly. 
+    def ReplaceProcessor(self, tasks):
+        ''' Replaces the list of vertices on some processor with tasks, moving other vertices accordingly. 
         Used for crossover in genetic algorithm.'''
-        
+        oldverts = self.vertices
+        self.processors = []
+        self.emptyprocessors = []
+        self.vertices = {}
+        self.currentVersions = {}
+        p = self._getProcessor()
+        fict = Processor(-1)
+        spare = self._getProcessor()
+        self.vertices[p.number] = []
+        self.vertices[-1] = []
+        self.vertices[spare.number] = []
+        backup = [[v for v in self.program.vertices], [e for e in self.program.edges]]
+        self.program.vertices = []
+        self.program.edges = []
+        for t in tasks:
+            self.vertices[p.number].append(ScheduleVertex(t.v, t.v.versions[0], p))
+            self.program.vertices.append(t.v)
+        self.Consistency()
+        for e in backup[1]:
+            if e.source in self.program.vertices and e.destination in self.program.vertices:
+                self.program.edges.append(e)
+        for m in oldverts.keys():
+            p = self._getProcessor()
+            self.vertices[p.number] = []
+            i = 0
+            for v in oldverts[m]:
+                if [t for t in tasks if t.v == v.v] == []:
+                    self.program.vertices.append(v.v)
+                    self.program.edges = []
+                    for e in backup[1]:
+                        if e.source in self.program.vertices and e.destination in self.program.vertices:
+                            self.program.edges.append(e)
+                    self.program._buildData()
+                    s = ScheduleVertex(v.v, v.v.versions[0], fict)
+                    self.currentVersions[v.v.number] = [s]
+                    self.vertices[-1] = [s]
+                    self._succCache = {}
+                    if self.TryMoveVertex(s, 0, p, i) == True:
+                        self.MoveVertex(s, 0, p, i)
+                    else:
+                        if len(self.vertices[spare.number]) == 0:
+                            self.MoveVertex(s, 0, spare, 0)
+                        else:
+                            for i in range(len(self.vertices[spare.number])):
+                                if self.TryMoveVertex(s, 0, spare, i) == True:
+                                    self.MoveVertex(s, 0, spare, i)
+                                    break
+                    self.emptyprocessors = []
+                    i += 1         
+        for m in self.processors:
+            self._delEmptyProc(m)
+        self.Consistency()
