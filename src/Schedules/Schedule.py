@@ -50,6 +50,15 @@ class Schedule(object):
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
     
+    def Serialize(self):
+        return [self.vertices, self.processors, self.emptyprocessors, self.currentVersions]
+
+    def Deserialize(self, d):
+        self.vertices = d[0]
+        self.processors = d[1]
+        self.emptyprocessors = d[2]
+        self.currentVersions = d[3]
+
     def Consistency(self):
         # TODO: super beedlowcode
         for m in self.vertices.keys():
@@ -300,8 +309,7 @@ class Schedule(object):
             for o in op.ops:
                 self.ApplyOperation(o)
         elif isinstance(op, Replacement):
-            self.vertices = op.old[0]
-            self.processors = op.old[1]
+            self.Deserialize(op.new)
             self.Consistency()
     
     def AddProcessor(self, m):

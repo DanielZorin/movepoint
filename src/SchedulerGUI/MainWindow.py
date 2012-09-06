@@ -373,7 +373,7 @@ class MainWindow(QMainWindow):
         #self.ui.editname.show()
         self.lineedit.hide() 
         self.project.ChangeName(s)
-        self.setWindowTitle(self.project.name + " - " + self.title) 
+        self.setWindowTitle(self.project.name + " - " + self.tr("Scheduler GUI")) 
 
     def EditTdir(self):
         self.tlineedit = QLineEdit(self.ui.tdir.parentWidget())
@@ -458,7 +458,7 @@ class MainWindow(QMainWindow):
             self.viewer.ui.retranslateUi(self.viewer) 
             self.graphEditor.ui.retranslateUi(self.graphEditor) 
             self.loadSchedule()  
-            self.setWindowTitle(self.project.name + " - " + self.tr(self.title))     
+            self.setWindowTitle(self.project.name + " - " + self.tr("Scheduler GUI"))     
     
     def ExportTrace(self):
         tracefile = QFileDialog.getSaveFileName(directory=self.project.name + ".trace")
