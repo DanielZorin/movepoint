@@ -60,6 +60,7 @@
     <Compile Include="SchedulerGUI\AlgorithmSettings.py" />
     <Compile Include="Schedules\SimpleInterpreter.py" />
     <Compile Include="SRGMGUI-launch.py" />
+    <Compile Include="Strategies.py" />
     <Compile Include="Temperatures.py" />
     <Compile Include="SchedulerGUI-launch.py" />
     <Compile Include="Methods\ParetoOptimization\FullIteration.py" />

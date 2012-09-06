@@ -51,6 +51,7 @@ class Schedule(object):
             self.currentVersions[v.number] = [s]
     
     def Serialize(self):
+        self.Consistency()
         return [self.vertices, self.processors, self.emptyprocessors, self.currentVersions]
 
     def Deserialize(self, d):
@@ -64,7 +65,14 @@ class Schedule(object):
         # TODO: super beedlowcode
         for m in self.vertices.keys():
             for s in self.vertices[m]:
-                self.currentVersions[s.v.number] = [s] 
+                self.currentVersions[s.v.number] = [s]
+        for m in self.processors:
+            self._delEmptyProc(m)
+        proc = []
+        for m in self.processors:
+            if m.number in self.vertices:
+                proc.append(m)
+        self.processors = proc 
                
     def __str__(self):
         res = "Schedule: \n"
@@ -179,6 +187,8 @@ class Schedule(object):
         return p
     
     def _delEmptyProc(self, p):
+        if not p.number in self.vertices:
+            return
         if self.vertices[p.number]:
             return
         del self.vertices[p.number]
@@ -585,7 +595,7 @@ class Schedule(object):
                                     self.MoveVertex(s, 0, spare, i)
                                     break
                     self.emptyprocessors = []
-                    i += 1         
+                    i += 1   
         for m in self.processors:
             self._delEmptyProc(m)
         self.Consistency()
