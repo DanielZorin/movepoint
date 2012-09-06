@@ -329,13 +329,12 @@ class MainWindow(QMainWindow):
 
     def Run(self):
         self.project.method.iteration = 1
-        self.project.method.numberOfIterations = len(self.project.system.program.vertices) * 10
         while self.project.method.iteration <= self.project.method.numberOfIterations:
             self.project.method.Step()
             print(self.project.method.iteration)
             self.project.method.iteration += 1
             #self.ui.progress.setValue(self.project.method.iteration)
-            self.emit(SIGNAL("step"), self.project.method.iteration)
+            self.emit(SIGNAL("step"), self.project.method.iteration / self.project.method.numberOfIterations * 100)
         self.loadSchedule()
         
     def ResetSchedule(self):

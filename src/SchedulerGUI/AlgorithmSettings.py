@@ -37,7 +37,7 @@ class AlgorithmSettings(QObject):
         [self.tr("Number of iterations"), method.numberOfIterations]
                 ]
         
-    def UpdateAnnealingSettings(self, dict, method, algorithm):
+    def UpdateGeneticsSettings(self, dict, method, algorithm):
         method.numberOfIterations = dict[0][1]
 
     def GetMethodSettings(self, project):

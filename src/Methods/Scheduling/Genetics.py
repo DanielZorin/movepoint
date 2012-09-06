@@ -17,7 +17,7 @@ class Genetics(object):
 
     population = []
     populationSize = 20
-    mutationProbability = 0.1
+    mutationProbability = 0.4
 
     def __init__(self, data):
         self.data = data
@@ -41,6 +41,7 @@ class Genetics(object):
         self.crossover()
         self.selection()
         self.mutation()
+        self.data.system.schedule.Deserialize(self.data.trace.getLast()[0].new)
 
     def createPopulation(self):
         self.population = []
@@ -90,14 +91,40 @@ class Genetics(object):
     def selection(self):
         self.rank()
         self.population = self.population[:self.populationSize]
-        best = self.data.trace.getLast()[1]
+        last = self.data.trace.getLast()[1]
+        best = self.data.trace.getBest()[1]
         cur = self.population[0][1]
         new_time = cur["time"]
         new_rel = cur["reliability"]
         new_proc = cur["processors"]
-        #if new_time <= self.data.system.tdir and new_rel >= self.data.system.rdir:
-        #    if new_proc < best["processors"]  or (new_proc == best["processors"] and new_time < best["time"]):
-        self.data.trace.addStep(Replacement(self.data.trace.getLast()[0].new, self.population[0][0]), self.population[0][1])
+        if new_time <= self.data.system.tdir and new_rel >= self.data.system.rdir:
+            if new_proc < last["processors"] or new_time < last["time"]:
+                self.data.trace.addStep(Replacement(self.data.trace.getLast()[0].new, self.population[0][0]), self.population[0][1])
+            if new_proc < best["processors"] or (new_proc == best["processors"] and new_time < best["time"]):
+                self.data.trace.setBest(self.data.trace.length() - 1)
 
     def mutation(self):
-        pass
+        newpopulation = []
+        for c in self.population:
+            if random.random() < self.mutationProbability:
+                self.data.system.schedule.Deserialize(c[0])
+                s = self.data.system.schedule
+                keys = [m for m in s.vertices.keys()]
+                while True:
+                    m1 = keys[random.randint(0, len(keys) - 1)]
+                    m2 = keys[random.randint(0, len(keys) - 1)]
+                    n1 = random.randint(0, len(s.vertices[m1]) - 1)
+                    n2 = random.randint(0, len(s.vertices[m2]))
+                    s1 = s.vertices[m1][n1]
+                    if (m1 != m2) or (n1 != n2):
+                        if s.TryMoveVertex(s1, n1, s.vertices[m2][0].m, n2) == True:
+                            s.MoveVertex(s1, n1, s.vertices[m2][0].m, n2)
+                            break
+                time = self.data.interpreter.Interpret(s)
+                rel = s.GetReliability()
+                proc = s.GetProcessors()
+                newpopulation.append([s.Serialize(),
+                                        {"time":time, "reliability":rel, "processors":proc}])
+            else:
+                newpopulation.append(c)
+        self.population = newpopulation
