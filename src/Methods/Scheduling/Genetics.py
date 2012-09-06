@@ -45,27 +45,26 @@ class Genetics(object):
 
     def createPopulation(self):
         self.population = []
-        backup = [self.data.system.schedule.vertices, self.data.system.schedule.processors]
+        backup = self.data.system.schedule.Serialize()
         for i in range(self.populationSize):
             self.data.system.schedule.Randomize()
             time = self.data.interpreter.Interpret(self.data.system.schedule)
             rel = self.data.system.schedule.GetReliability()
             proc = self.data.system.schedule.GetProcessors()
-            self.population.append([self.data.system.schedule.vertices,
-                                    self.data.system.schedule.processors,
+            self.population.append([self.data.system.schedule.Serialize(),
                                     {"time":time, "reliability":rel, "processors":proc}])
-        self.data.trace.addStep(Replacement(backup, [self.population[0][0], self.population[0][1]]), self.population[0][2])
+        self.data.trace.addStep(Replacement(backup, self.population[0][0]), self.population[0][1])
 
     def rank(self):
         def rankfunc(x):
             rank = 0
             # TODO: add reliability here too
-            if x[2]["time"] > self.data.system.tdir:
+            if x[1]["time"] > self.data.system.tdir:
                 # TODO: a bit dirty
                 rank = self.data.system.tdir * len(self.data.system.program.vertices) * 10
             else:
                 # Ranking by the number of processors. Solutions with equal number are ranked by time
-                rank = x[2]["processors"] * self.data.system.tdir + x[2]["time"]
+                rank = x[1]["processors"] * self.data.system.tdir + x[1]["time"]
             return rank
         self.population = sorted(self.population, key=rankfunc, reverse=True)
 
@@ -76,7 +75,14 @@ class Genetics(object):
     def selection(self):
         self.rank()
         self.population = self.population[:self.populationSize]
-        self.data.trace.addStep(Replacement(self.data.trace.getLast()[0].new, [self.population[0][0], self.population[0][1]]), self.population[0][2])
+        best = self.data.trace.getLast()[1]
+        cur = self.population[0][1]
+        new_time = cur["time"]
+        new_rel = cur["reliability"]
+        new_proc = cur["processors"]
+        if new_time <= self.data.system.tdir and new_rel >= self.data.system.rdir:
+            if new_proc < best["processors"]  or (new_proc == best["processors"] and new_time < best["time"]):
+                self.data.trace.addStep(Replacement(self.data.trace.getLast()[0].new, self.population[0][0]), self.population[0][1])
 
     def mutation(self):
         pass

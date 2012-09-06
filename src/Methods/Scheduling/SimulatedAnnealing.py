@@ -337,7 +337,7 @@ class SimulatedAnnealing(object):
             self.data.trace.addStep(self.data.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
             best = self.data.trace.getBest()[1]
             if new_time <= self.data.system.tdir and new_rel >= self.data.system.rdir:
-                if curProc < best["processors"]  or (curProc == best["processors"] and curTime < best["time"]):
+                if new_proc < best["processors"]  or (new_proc == best["processors"] and new_time < best["time"]):
                     self.data.trace.setBest(self.data.trace.length() - 1)
                     self.write("BEST SOLUTION:", self.data.trace.getLast()[1])
 
