@@ -72,7 +72,11 @@ class Schedule(object):
         for m in self.processors:
             if m.number in self.vertices:
                 proc.append(m)
-        self.processors = proc 
+        self.processors = proc  
+        keys = [k for k in self.vertices.keys()]
+        for m in keys:
+            if len(self.vertices[m]) == 0:
+                del self.vertices[m]
                
     def __str__(self):
         res = "Schedule: \n"
@@ -553,11 +557,7 @@ class Schedule(object):
         self.vertices = {}
         self.currentVersions = {}
         p = self._getProcessor()
-        fict = Processor(-1)
-        spare = self._getProcessor()
         self.vertices[p.number] = []
-        self.vertices[-1] = []
-        self.vertices[spare.number] = []
         backup = [[v for v in self.program.vertices], [e for e in self.program.edges]]
         self.program.vertices = []
         self.program.edges = []
@@ -568,6 +568,11 @@ class Schedule(object):
         for e in backup[1]:
             if e.source in self.program.vertices and e.destination in self.program.vertices:
                 self.program.edges.append(e)
+
+        fict = Processor(-1)
+        spare = self._getProcessor()
+        self.vertices[-1] = []
+        self.vertices[spare.number] = []
         for m in oldverts.keys():
             p = self._getProcessor()
             self.vertices[p.number] = []
@@ -590,9 +595,9 @@ class Schedule(object):
                         if len(self.vertices[spare.number]) == 0:
                             self.MoveVertex(s, 0, spare, 0)
                         else:
-                            for i in range(len(self.vertices[spare.number])):
-                                if self.TryMoveVertex(s, 0, spare, i) == True:
-                                    self.MoveVertex(s, 0, spare, i)
+                            for j in range(len(self.vertices[spare.number])):
+                                if self.TryMoveVertex(s, 0, spare, j) == True:
+                                    self.MoveVertex(s, 0, spare, j)
                                     break
                     self.emptyprocessors = []
                     i += 1   

@@ -255,10 +255,11 @@ class SimulatedAnnealing(object):
                 for m2 in keys:
                     for i in range(len(s.vertices[m2])):
                         s2 = s.vertices[m2][i]
+                        target_proc = s2.m
+                        target_pos = s.vertices[s2.m.number].index(s2)
                         if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, i) == True:
-                            target_proc = s2.m
-                            target_pos = s.vertices[s2.m.number].index(s2)
                             return s1, src_pos, target_proc, target_pos
+        return s1, src_pos, target_proc, target_pos
 
     def MixedStrategy(self):
         s = self.data.system.schedule
@@ -351,7 +352,7 @@ class SimulatedAnnealing(object):
             r = random.random()
             number = self.data.iteration
             if self.raiseTemperature[1] == 0:
-                number = number - self.data.trace.best
+                number = max(number - self.data.trace.best, 1)
             if self.threshold[1] == 0:
                 #Bolzmann
                 t = self.data.initialTemperature / math.log(1 + number)

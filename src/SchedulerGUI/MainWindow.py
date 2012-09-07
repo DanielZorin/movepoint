@@ -340,6 +340,8 @@ class MainWindow(QMainWindow):
     def ResetSchedule(self):
         self.project.ResetSchedule()
         self.loadSchedule()
+        if self.project.method.algorithm == self.project.genetics:
+            self.project.genetics.Prepare()
         
     def LoadSystem(self):
         s = QFileDialog.getOpenFileName()
