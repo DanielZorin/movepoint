@@ -52,6 +52,16 @@
         <source>Operation probabilities: optimize time</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="38"/>
+        <source>Population size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="39"/>
+        <source>Mutation probability</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EdgeDialog</name>
@@ -457,27 +467,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="339"/>
+        <location filename="MainWindow.py" line="352"/>
         <source>An error occured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="188"/>
+        <location filename="MainWindow.py" line="189"/>
         <source>File is not a valid project file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="285"/>
+        <location filename="MainWindow.py" line="286"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="288"/>
+        <location filename="MainWindow.py" line="289"/>
         <source>Task </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="288"/>
+        <location filename="MainWindow.py" line="289"/>
         <source> is in a cycle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -544,6 +554,16 @@
     <message>
         <location filename="Windows/ui_MainWindow.py" line="444"/>
         <source>Time Computation Parameters...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="305"/>
+        <source>Warning!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="305"/>
+        <source>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -744,7 +764,7 @@
 <context>
     <name>Translator</name>
     <message>
-        <location filename="../plugins/FibreChannel.py" line="217"/>
+        <location filename="../plugins/FibreChannel.py" line="218"/>
         <source>Channel speed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -879,8 +899,5 @@
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ob</name>
 </context>
 </TS>

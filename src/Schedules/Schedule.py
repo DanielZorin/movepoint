@@ -49,34 +49,6 @@ class Schedule(object):
             s = ScheduleVertex(v, v.versions[0], p)
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
-    
-    def Serialize(self):
-        self.Consistency()
-        return [self.vertices, self.processors, self.emptyprocessors, self.currentVersions]
-
-    def Deserialize(self, d):
-        self.vertices = d[0]
-        self.processors = d[1]
-        self.emptyprocessors = d[2]
-        self.currentVersions = d[3]
-        self.Consistency()
-
-    def Consistency(self):
-        # TODO: super beedlowcode
-        for m in self.vertices.keys():
-            for s in self.vertices[m]:
-                self.currentVersions[s.v.number] = [s]
-        for m in self.processors:
-            self._delEmptyProc(m)
-        proc = []
-        for m in self.processors:
-            if m.number in self.vertices:
-                proc.append(m)
-        self.processors = proc  
-        keys = [k for k in self.vertices.keys()]
-        for m in keys:
-            if len(self.vertices[m]) == 0:
-                del self.vertices[m]
                
     def __str__(self):
         res = "Schedule: \n"
@@ -604,3 +576,31 @@ class Schedule(object):
         for m in self.processors:
             self._delEmptyProc(m)
         self.Consistency()
+
+    def Serialize(self):
+        self.Consistency()
+        return [self.vertices, self.processors, self.emptyprocessors, self.currentVersions]
+
+    def Deserialize(self, d):
+        self.vertices = d[0]
+        self.processors = d[1]
+        self.emptyprocessors = d[2]
+        self.currentVersions = d[3]
+        self.Consistency()
+
+    def Consistency(self):
+        # TODO: super beedlowcode
+        for m in self.vertices.keys():
+            for s in self.vertices[m]:
+                self.currentVersions[s.v.number] = [s]
+        for m in self.processors:
+            self._delEmptyProc(m)
+        proc = []
+        for m in self.processors:
+            if m.number in self.vertices:
+                proc.append(m)
+        self.processors = proc  
+        keys = [k for k in self.vertices.keys()]
+        for m in keys:
+            if len(self.vertices[m]) == 0:
+                del self.vertices[m]

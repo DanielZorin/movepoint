@@ -1,56 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="en_US" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="en_US">
 <context>
     <name>AlgorithmSettings</name>
     <message>
         <location filename="AlgorithmSettings.py" line="37"/>
         <source>Number of iterations</source>
-        <translation type="unfinished"></translation>
+        <translation>Number of iterations</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="10"/>
         <source>Strategy</source>
-        <translation type="unfinished"></translation>
+        <translation>Strategy</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="11"/>
         <source>Temperature function</source>
-        <translation type="unfinished"></translation>
+        <translation>Temperature function</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="12"/>
         <source>Raise temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Raise temperature</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="13"/>
         <source>Vertices limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertices limit</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="14"/>
         <source>Positions limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Positions limit</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="15"/>
         <source>Operation probabilities: optimize reliability</source>
-        <translation type="unfinished"></translation>
+        <translation>Operation probabilities: optimize reliability</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="26"/>
         <source>Deadline not violated</source>
-        <translation type="unfinished"></translation>
+        <translation>Deadline not violated</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="27"/>
         <source>Deadline violated</source>
-        <translation type="unfinished"></translation>
+        <translation>Deadline violated</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="18"/>
         <source>Operation probabilities: optimize time</source>
-        <translation type="unfinished"></translation>
+        <translation>Operation probabilities: optimize time</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="38"/>
+        <source>Population size</source>
+        <translation>Population size</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="39"/>
+        <source>Mutation probability</source>
+        <translation>Mutation probability</translation>
     </message>
 </context>
 <context>
@@ -487,27 +498,27 @@
         <translation>Open Project...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="339"/>
+        <location filename="MainWindow.py" line="352"/>
         <source>An error occured</source>
         <translation>An error occured</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="188"/>
+        <location filename="MainWindow.py" line="189"/>
         <source>File is not a valid project file: </source>
         <translation>File is not a valid project file: </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="285"/>
+        <location filename="MainWindow.py" line="286"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="288"/>
+        <location filename="MainWindow.py" line="289"/>
         <source>Task </source>
         <translation>Task </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="288"/>
+        <location filename="MainWindow.py" line="289"/>
         <source> is in a cycle</source>
         <translation> is in a cycle</translation>
     </message>
@@ -549,37 +560,47 @@
     <message>
         <location filename="Windows/ui_MainWindow.py" line="441"/>
         <source>Simulated Annealing</source>
-        <translation type="unfinished"></translation>
+        <translation>Simulated Annealing</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="442"/>
         <source>Genetics</source>
-        <translation type="unfinished"></translation>
+        <translation>Genetics</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="401"/>
         <source>Algorithm</source>
-        <translation type="unfinished"></translation>
+        <translation>Algorithm</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="402"/>
         <source>Time Computation Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Time Computation Method</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="443"/>
         <source>default</source>
-        <translation type="unfinished"></translation>
+        <translation>default</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="420"/>
         <source>Algorithm Parameters...</source>
-        <translation type="unfinished"></translation>
+        <translation>Algorithm Parameters...</translation>
     </message>
     <message>
         <location filename="Windows/ui_MainWindow.py" line="444"/>
         <source>Time Computation Parameters...</source>
-        <translation type="unfinished"></translation>
+        <translation>Time Computation Parameters...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="305"/>
+        <source>Warning!</source>
+        <translation>Warning!</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="305"/>
+        <source>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</source>
+        <translation>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</translation>
     </message>
 </context>
 <context>
@@ -789,9 +810,9 @@
 <context>
     <name>Translator</name>
     <message>
-        <location filename="../plugins/FibreChannel.py" line="217"/>
+        <location filename="../plugins/FibreChannel.py" line="218"/>
         <source>Channel speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Channel speed</translation>
     </message>
 </context>
 <context>
@@ -924,8 +945,5 @@
         <source>Home</source>
         <translation></translation>
     </message>
-</context>
-<context>
-    <name>ob</name>
 </context>
 </TS>

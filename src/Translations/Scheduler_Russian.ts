@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ru_RU">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>AlgorithmSettings</name>
     <message>
         <location filename="AlgorithmSettings.py" line="37"/>
         <source>Number of iterations</source>
-        <translation>Число итерация</translation>
+        <translation>Число итераций</translation>
     </message>
     <message>
         <location filename="AlgorithmSettings.py" line="10"/>
@@ -52,6 +52,16 @@
         <location filename="AlgorithmSettings.py" line="18"/>
         <source>Operation probabilities: optimize time</source>
         <translation>Вероятности операций: оптимизация времени</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="38"/>
+        <source>Population size</source>
+        <translation>Размер популяции</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="39"/>
+        <source>Mutation probability</source>
+        <translation>Вероятность мутации</translation>
     </message>
 </context>
 <context>
@@ -488,27 +498,27 @@
         <translation>Открыть проект...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="339"/>
+        <location filename="MainWindow.py" line="352"/>
         <source>An error occured</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="188"/>
+        <location filename="MainWindow.py" line="189"/>
         <source>File is not a valid project file: </source>
         <translation>Файл проекта некорректен:</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="285"/>
+        <location filename="MainWindow.py" line="286"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="288"/>
+        <location filename="MainWindow.py" line="289"/>
         <source>Task </source>
         <translation>Задание</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="288"/>
+        <location filename="MainWindow.py" line="289"/>
         <source> is in a cycle</source>
         <translation>входит в цикл</translation>
     </message>
@@ -581,6 +591,16 @@
         <location filename="Windows/ui_MainWindow.py" line="444"/>
         <source>Time Computation Parameters...</source>
         <translation>Настройки метода оценки времени...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="305"/>
+        <source>Warning!</source>
+        <translation>Внимание!</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="305"/>
+        <source>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</source>
+        <translation>Это приведет к сбросу поиска. Все найденные расписания будут потеряны. Вы уверены, что хотите продолжить?</translation>
     </message>
 </context>
 <context>
@@ -790,7 +810,7 @@
 <context>
     <name>Translator</name>
     <message>
-        <location filename="../plugins/FibreChannel.py" line="217"/>
+        <location filename="../plugins/FibreChannel.py" line="218"/>
         <source>Channel speed</source>
         <translation>Скорость канала</translation>
     </message>
