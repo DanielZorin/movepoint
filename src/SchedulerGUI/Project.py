@@ -59,6 +59,7 @@ class Project(object):
             self.annealing = self.method.algorithm
         else:
             self.genetics = self.method.algorithm
+        self.method.algorithm = self.annealing
         self.annealing.data = self.method
         self.genetics.data = self.method
 
