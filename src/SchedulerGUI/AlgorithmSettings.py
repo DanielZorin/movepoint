@@ -35,14 +35,14 @@ class AlgorithmSettings(QObject):
     def GetGeneticsSettings(self, method, algorithm):
         return [
         [self.tr("Number of iterations"), method.numberOfIterations],
-        [self.tr("Population size"), method.populationSize],
-        [self.tr("Mutation probability"), method.mutationProbability]
+        [self.tr("Population size"), algorithm.populationSize],
+        [self.tr("Mutation probability"), algorithm.mutationProbability]
                 ]
         
     def UpdateGeneticsSettings(self, dict, method, algorithm):
         method.numberOfIterations = dict[0][1]
-        method.populationSize = dict[1][1]
-        method.mutationProbability = dict[2][1]
+        algorithm.populationSize = dict[1][1]
+        algorithm.mutationProbability = dict[2][1]
 
     def GetMethodSettings(self, project):
         if project.UsesAnnealing():
