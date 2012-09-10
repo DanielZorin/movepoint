@@ -51,7 +51,7 @@ class RandomSimulatedAnnealing(object):
     def __init__(self, system):
         self.iteration = 0
         self.system = system
-        self.numberOfIterations = len(self.system.program.vertices) * 5
+        self.numberOfIterations = len(self.system.program.vertices) * 1
         self.temperature = 0
     
     def write(self, *text):
