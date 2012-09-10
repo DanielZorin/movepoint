@@ -104,10 +104,16 @@ class Schedule(object):
     def ExportCode(self):
         res = ""
         for k in self.vertices.keys():
-            proc = "Processor " + str(k) + ": \n"
+            proc = "// Processor " + str(k) + ": \n\n"
             for v in self.vertices[k]:
-                proc += str(v.v.number) + " -- "
-            proc += "\n"
+                proc += "// Task " + str(v.v.number) + "\n"
+                for e in self.program.edges:
+                    if e.source == v.v:
+                        for m in self.vertices.keys():
+                            if m != k:
+                                for v2 in self.vertices[m]:
+                                    if v2.v == e.destination:
+                                        proc += "MPI_SEND(" + str(m) + ", result);\n" 
             res += proc
         return res
     

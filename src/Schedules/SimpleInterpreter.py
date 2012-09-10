@@ -108,7 +108,11 @@ class SimpleInterpreter:
         
         for proc in schedule.processors:
             m = proc.number
-            sortedTasks[m] = [v for v in schedule.vertices[m]]
+            try:
+                sortedTasks[m] = [v for v in schedule.vertices[m]]
+            except:
+                print(schedule)
+                xxx = 9
             working[m] = None
             if len(sortedTasks[m]) > 0:
                 first = sortedTasks[m][0]
@@ -123,6 +127,9 @@ class SimpleInterpreter:
                 working[m] = ["ready"]
         while True:
             time += 1
+
+            if time > 1000:
+                xxx = 999
             
             # Advance all deliveries
             deliv2 = []

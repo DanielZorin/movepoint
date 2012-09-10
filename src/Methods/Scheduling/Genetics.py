@@ -45,6 +45,7 @@ class Genetics(object):
 
     def createPopulation(self):
         self.population = []
+        self.data.trace.deleteTail(self.data.system.tdir, self.data.system.rdir)
         backup = self.data.system.schedule.Serialize()
         for i in range(self.populationSize):
             self.data.system.schedule.Randomize()
