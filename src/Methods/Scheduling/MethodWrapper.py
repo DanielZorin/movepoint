@@ -79,6 +79,7 @@ class MethodWrapper(object):
             
     def Step(self):
         ''' Makes a single iteration of the algorithm'''
+        self.trace.deleteTail(self.system.tdir, self.system.rdir)
         self.lastOperation = VoidOperation()
         self.algorithm.Step()
 
@@ -139,15 +140,6 @@ class MethodWrapper(object):
         new_time = interpreter.Interpret(self.system.schedule)
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
-        self.trace.deleteTail()
+        self.trace.deleteTail(self.system.tdir, self.system.rdir)
         self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
-        best = self.trace.ops[0][1]
-        bestindex = 0
-        for i in range(1, self.trace.length()):
-            cur = self.trace.ops[i][1]
-            if cur["time"] <= self.system.tdir and cur["reliability"] >= self.system.rdir:
-                if cur["processors"] < best["processors"] or (cur["processors"] == best["processors"] and cur["time"] < best["time"]):
-                    bestindex = i
-                    best = cur
-        self.trace.setBest(bestindex)
         return True

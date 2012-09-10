@@ -114,8 +114,17 @@ class Trace:
     def length(self):
         return len(self.ops)
 
-    def deleteTail(self):
+    def deleteTail(self, tdir, rdir):
         self.ops = self.ops[:self.current + 1]
+        best = self.ops[0][1]
+        bestindex = 0
+        for i in range(1, self.length()):
+            cur = self.ops[i][1]
+            if cur["time"] <= tdir and cur["reliability"] >= rdir:
+                if cur["processors"] < best["processors"] or (cur["processors"] == best["processors"] and cur["time"] < best["time"]):
+                    bestindex = i
+                    best = cur
+        self.setBest(bestindex)
 
     def clear(self):
         self.ops = []
