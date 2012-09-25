@@ -62,6 +62,9 @@ class SimulatedAnnealing(object):
         op = self._chooseOperation()
         self._applyOperation(op)
         self._selectNewSchedule()
+
+    def Prepare(self):
+        pass
    
     def _chooseRandomKey(self, dict):
         ''' Dict is key:probability. A key is chosen according to this distribution'''
