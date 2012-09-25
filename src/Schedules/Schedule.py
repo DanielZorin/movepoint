@@ -502,7 +502,7 @@ class Schedule(object):
         # Use fictional processor number -1 to check correctness of the schedule.
         fict = Processor(-1)
         self.vertices[-1] = []
-        verts = self.program.vertices
+        verts = self.program.OrderedVertices()
         backup = [[v for v in self.program.vertices], [e for e in self.program.edges]]
         self.program.vertices = []
         self.program.edges = []

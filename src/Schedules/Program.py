@@ -144,6 +144,8 @@ class Program(object):
         self._buildData()
 
     def _buildData(self):
+        self._dep = {}
+        self._trans= {}
         for v in self.vertices:
             res = []
             for e in self.FindAllEdges(v2=v):
@@ -172,7 +174,24 @@ class Program(object):
                     cur = []
                     for v0 in new:
                         cur.append(v0)
-                    new = []      
+                    new = []  
+                    
+    def OrderedVertices(self):
+        res = []
+        for v in self.vertices:
+            if len(self._dep[v.number]) == 0:
+                res.append(v)
+        while len(res) != len(self.vertices):
+            for v in self.vertices:
+                if not v in res:
+                    edges = self.FindAllEdges(v2=v)
+                    add = True
+                    for e in edges:
+                        if not e.source in res:
+                            add = False
+                    if add:
+                        res.append(v)
+        return res
     
     def FindEdge(self, v1, v2):
         '''Search for a specific edge from v1 to v2. Returns None if the edge doesn't exist'''
