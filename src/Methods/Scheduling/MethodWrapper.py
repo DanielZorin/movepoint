@@ -52,6 +52,7 @@ class MethodWrapper(object):
         self.system.schedule.SetToDefault()
         self.numberOfIterations = 1 * len(self.system.program.vertices)
         self._prepare()
+        self.algorithm.Prepare()
     
     def _prepare(self):
         self.trace.clear()
