@@ -530,6 +530,7 @@ class Schedule(object):
         ''' Replaces the list of vertices on some processor with tasks, moving other vertices accordingly. 
         Used for crossover in genetic algorithm.'''
         oldverts = self.vertices
+        ordered = self.program.OrderedVertices()
         self.processors = []
         self.emptyprocessors = []
         self.vertices = {}
@@ -551,12 +552,20 @@ class Schedule(object):
         spare = self._getProcessor()
         self.vertices[-1] = []
         self.vertices[spare.number] = []
+        newprocs = {}
+        allverts = []
         for m in oldverts.keys():
-            p = self._getProcessor()
-            self.vertices[p.number] = []
-            i = 0
-            for v in oldverts[m]:
+            allverts += oldverts[m]
+        for vp in ordered:
+            for v in [t for t in allverts if t.v == vp]:
                 if [t for t in tasks if t.v == v.v] == []:
+                    if v.m in newprocs:
+                        p = newprocs[v.m]
+                    else:
+                        p = self._getProcessor()
+                        self.vertices[p.number] = []
+                        newprocs[v.m] = p
+                    i = oldverts[v.m].index(v)
                     self.program.vertices.append(v.v)
                     self.program.edges = []
                     for e in backup[1]:
@@ -573,12 +582,11 @@ class Schedule(object):
                         if len(self.vertices[spare.number]) == 0:
                             self.MoveVertex(s, 0, spare, 0)
                         else:
-                            for j in range(len(self.vertices[spare.number])):
+                            for j in range(len(self.vertices[spare.number]) + 1):
                                 if self.TryMoveVertex(s, 0, spare, j) == True:
                                     self.MoveVertex(s, 0, spare, j)
                                     break
                     self.emptyprocessors = []
-                    i += 1   
         for m in self.processors:
             self._delEmptyProc(m)
         self.Consistency()
