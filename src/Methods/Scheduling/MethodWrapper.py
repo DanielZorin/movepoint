@@ -138,7 +138,7 @@ class MethodWrapper(object):
         curRel = cur["reliability"]
         curProc = cur["processors"]
         self.lastOperation.result = True
-        new_time = interpreter.Interpret(self.system.schedule)
+        new_time = self.interpreter.Interpret(self.system.schedule)
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
         self.trace.deleteTail(self.system.tdir, self.system.rdir)

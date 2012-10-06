@@ -538,15 +538,21 @@ class Schedule(object):
         p = self._getProcessor()
         self.vertices[p.number] = []
         backup = [[v for v in self.program.vertices], [e for e in self.program.edges]]
-        self.program.vertices = []
-        self.program.edges = []
+        self.program._buildData()
+        #self.program.vertices = []
+        #self.program.edges = []
         for t in tasks:
-            self.vertices[p.number].append(ScheduleVertex(t.v, t.v.versions[0], p))
-            self.program.vertices.append(t.v)
+            s = ScheduleVertex(t.v, t.v.versions[0], p)
+            self.vertices[p.number].append(s)
+            self.currentVersions[t.v.number] = [s]
+        for v in self.program.vertices:
+            if not v.number in self.currentVersions:
+                self.currentVersions[v.number] = []
+        #    self.program.vertices.append(t.v)
         self.Consistency()
-        for e in backup[1]:
-            if e.source in self.program.vertices and e.destination in self.program.vertices:
-                self.program.edges.append(e)
+        #for e in backup[1]:
+        #    if e.source in self.program.vertices and e.destination in self.program.vertices:
+        #        self.program.edges.append(e)
 
         fict = Processor(-1)
         spare = self._getProcessor()
@@ -566,27 +572,32 @@ class Schedule(object):
                         self.vertices[p.number] = []
                         newprocs[v.m] = p
                     i = oldverts[v.m].index(v)
-                    self.program.vertices.append(v.v)
-                    self.program.edges = []
-                    for e in backup[1]:
-                        if e.source in self.program.vertices and e.destination in self.program.vertices:
-                            self.program.edges.append(e)
-                    self.program._buildData()
+                    #self.program.vertices.append(v.v)
+                    #self.program.edges = []
+                    #for e in backup[1]:
+                    #    if e.source in self.program.vertices and e.destination in self.program.vertices:
+                    #        self.program.edges.append(e)
+                    #self.program._buildData()
                     s = ScheduleVertex(v.v, v.v.versions[0], fict)
                     self.currentVersions[v.v.number] = [s]
                     self.vertices[-1] = [s]
                     self._succCache = {}
                     if self.TryMoveVertex(s, 0, p, i) == True:
-                        self.MoveVertex(s, 0, p, i)
+                        #print ("Applying operation 1", str(s), 0, p, i)
+                        self.MoveVertex(s, 0, p, i)                      
                     else:
                         if len(self.vertices[spare.number]) == 0:
+                            #print ("Applying operation 2", str(s), 0, spare, 0)
                             self.MoveVertex(s, 0, spare, 0)
                         else:
                             for j in range(len(self.vertices[spare.number]) + 1):
                                 if self.TryMoveVertex(s, 0, spare, j) == True:
+                                    #print ("Applying operation 3", str(s), 0, spare, j)
                                     self.MoveVertex(s, 0, spare, j)
                                     break
                     self.emptyprocessors = []
+                    #print(self)
+                    #print("++++++++++++")
         for m in self.processors:
             self._delEmptyProc(m)
         self.Consistency()

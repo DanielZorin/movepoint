@@ -203,7 +203,9 @@ class SimpleInterpreter:
             # TODO: this is an old workaround used for debugging. Beware.
             if time > 10000:
                 print(schedule)
-                raise "Can't calculate time. Possibly an infinite loop occurred"
+                print( "Can't calculate time. Possibly an infinite loop occurred")
+                import sys
+                sys.exit(-1)
         
         self.idletimes = sorted(self.idletimes, key=lambda x: x[1])
         # Calculate waiting time for each task

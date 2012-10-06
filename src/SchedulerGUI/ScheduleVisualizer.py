@@ -212,7 +212,7 @@ class ScheduleVisualizer(QWidget):
                                    n2 = self.targetPos[1])
             if result == True:
                 self.proc = self.schedule.GetProcessorsWithoutDoubles()
-                self.time = self.schedule.Interpret()
+                self.time = self.method.interpreter.Interpret(self.schedule)
                 self.emit(SIGNAL("ManualOperation"))
             else:
                 self.emit(SIGNAL("WrongOperation"), result)
