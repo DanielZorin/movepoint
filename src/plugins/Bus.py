@@ -8,6 +8,9 @@ class BusInterpreter:
     executionTimes = {}
     deliveryTimes = []
 
+    bandwidth = 1
+    delay = 0
+
     def __init__(self):
         pass
 
@@ -91,7 +94,7 @@ class BusInterpreter:
                         if (e[0] == d[0]) and (e[1] == d[1]):
                             # The delivery is over. We add the info about it to deliveryTimes
                             e[3] = True
-                            self.deliveryTimes.append((e[0].m, e[1].m, time - e[2], time))
+                            self.deliveryTimes.append((e[0].m, e[1].m, time - e[2] * self.bandwidth - self.delay, time))
                     busBusy = False
                     delivery = None
             
@@ -141,7 +144,7 @@ class BusInterpreter:
                 busBusy = True
                 e = deliveryQueue[0]
                 for d in e[1]:
-                    delivery = [e[0], d[0], e[0].m.GetDeliveryTime(d[0].m, d[1])-1]
+                    delivery = [e[0], d[0], e[0].m.GetDeliveryTime(d[0].m, d[1]) * self.bandwidth + self.delay -1]
                 deliveryQueue = deliveryQueue[1:]             
             
             # If all processors are "ready", stop interpretation
@@ -171,6 +174,26 @@ class BusInterpreter:
         self.delays = sorted(self.delays, key=lambda x: x[1])
         self.endtimes = endTimes
         return time
+
+    def GetSettings(self):
+        # importing here to allow using the class without Qt
+        from PyQt4.QtCore import QObject
+        class Translator(QObject):
+            def __init__(self, parent):
+                QObject.__init__(self)
+                self.parent = parent
+            def getTranslatedSettings(self):
+                return [
+                [self.tr("Channel bandwidth"), self.parent.bandwidth],
+                [self.tr("Delay"), self.parent.delay]
+                        ]
+        t = Translator(self)
+        return t.getTranslatedSettings()
+
+    def UpdateSettings(self, dict):
+        # importing here to allow using the class without Qt
+        self.bandwidth = dict[0][1]
+        self.delay = dict[1][1]
 
 def pluginMain():
     return BusInterpreter
