@@ -79,8 +79,8 @@ class Genetics(object):
             #print("base schedule is ")
             #print(s)
             #print ("new proc is ")
-            for v in proc:
-                print (v)
+            #for v in proc:
+            #    print (v)
             s.ReplaceProcessor(proc)
             time = self.data.interpreter.Interpret(s)
             rel = s.GetReliability()
@@ -89,7 +89,6 @@ class Genetics(object):
                                     {"time":time, "reliability":rel, "processors":proc}])
 
         #print ("=================================================")
-        
         s = self.data.system.schedule
         for i in range(int(self.populationSize / 2)):
             m1 = self.population[i]
@@ -111,6 +110,7 @@ class Genetics(object):
         new_time = cur["time"]
         new_rel = cur["reliability"]
         new_proc = cur["processors"]
+
         if new_time <= self.data.system.tdir and new_rel >= self.data.system.rdir:
             if new_proc < last["processors"] or new_time < last["time"]:
                 self.data.trace.addStep(Replacement(self.data.trace.getLast()[0].new, self.population[0][0]), self.population[0][1])
@@ -120,7 +120,9 @@ class Genetics(object):
     def mutation(self):
         newpopulation = []
         for c in self.population:
-            if random.random() < self.mutationProbability:
+            # Don't mess with the best solution.
+            # TODO: super beedlowcode
+            if random.random() < self.mutationProbability and c[0] != self.data.trace.getLast()[0].new:
                 self.data.system.schedule.Deserialize(c[0])
                 s = self.data.system.schedule
                 keys = [m for m in s.vertices.keys()]
