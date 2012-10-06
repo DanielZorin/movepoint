@@ -73,8 +73,14 @@ class Genetics(object):
         def mate(mate1, mate2):
             keys = [k for k in mate1[0][0].keys()]
             proc = random.randint(0, len(keys) - 1)
+            #print ("selected proc ", keys[proc])
             proc = mate1[0][0][keys[proc]]
             s.Deserialize(mate2[0])
+            #print("base schedule is ")
+            #print(s)
+            #print ("new proc is ")
+            for v in proc:
+                print (v)
             s.ReplaceProcessor(proc)
             time = self.data.interpreter.Interpret(s)
             rel = s.GetReliability()
@@ -82,11 +88,18 @@ class Genetics(object):
             self.population.append([s.Serialize(),
                                     {"time":time, "reliability":rel, "processors":proc}])
 
+        #print ("=================================================")
+        
         s = self.data.system.schedule
         for i in range(int(self.populationSize / 2)):
             m1 = self.population[i]
             m2 = self.population[i + 1]
+            #print ("mating 1")
+            #print ("begin...")
             mate(m1, m2)
+            
+            #print ("mating 2")
+            #print ("begin...")
             mate(m2, m1)
 
     def selection(self):
