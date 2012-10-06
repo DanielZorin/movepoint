@@ -8,7 +8,9 @@ class FibreChannelInterpreter:
     executionTimes = {}
     deliveryTimes = []
 
-    dummy = 0
+    bandwidth = 1
+    delay = 0
+    channels = 0
 
     def __init__(self):
         pass
@@ -114,7 +116,7 @@ class FibreChannelInterpreter:
                         if (e[0] == d[0]) and (e[1] == d[1]):
                             # The delivery is over. We add the info about it to deliveryTimes
                             e[3] = True
-                            self.deliveryTimes.append((e[0].m, e[1].m, time - e[2], time))
+                            self.deliveryTimes.append((e[0].m, e[1].m, time - e[2] * self.bandwidth - self.delay, time))
                     portStatus[d[0].m] = False
                     portStatus[d[1].m] = False
                         
@@ -168,11 +170,11 @@ class FibreChannelInterpreter:
                 for d in e[1]:
                     if portStatus[d[0].m.number] == True:
                         b = False
-                if b:
+                if b and ((self.channels == 0) or (len(deliveries) < self.channels)):
                     # Append: source, destination, length
                     portStatus[e[0].m.number] = True
                     for d in e[1]:
-                        deliveries.append([e[0], d[0], e[0].m.GetDeliveryTime(d[0].m, d[1])-1])
+                        deliveries.append([e[0], d[0], e[0].m.GetDeliveryTime(d[0].m, d[1]) * self.bandwidth + self.delay - 1])
                         portStatus[d[0].m.number] = True
                 else:
                     deliv2.append(e)
@@ -215,14 +217,18 @@ class FibreChannelInterpreter:
                 self.parent = parent
             def getTranslatedSettings(self):
                 return [
-                [self.tr("Channel speed"), self.parent.dummy]
+                [self.tr("Channel bandwidth"), self.parent.bandwidth],
+                [self.tr("Delay"), self.parent.delay],
+                [self.tr("Number of available channels\n (put 0 to make it unlimited)"), self.parent.channels]
                         ]
         t = Translator(self)
         return t.getTranslatedSettings()
 
     def UpdateSettings(self, dict):
         # importing here to allow using the class without Qt
-        self.dummy = dict[0][1]
+        self.bandwidth = dict[0][1]
+        self.delay = dict[1][1]
+        self.channels = dict[2][1]
 
 def pluginMain():
     return FibreChannelInterpreter

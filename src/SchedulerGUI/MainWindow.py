@@ -423,7 +423,11 @@ class MainWindow(QMainWindow):
         d = SettingsDialog(data, self)
         d.exec_()
         if d.result() == QDialog.Accepted:
-            self.project.method.interpreter.UpdateSettings(d.data)
+            res = QMessageBox.question(self, self.tr("Warning!"), self.tr("This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?"), QMessageBox.Ok | QMessageBox.Cancel)
+            if res == QMessageBox.Ok:
+                self.project.method.interpreter.UpdateSettings(d.data)
+                self.project.method.Reset()
+                self.viewer.setData(self.project.method)
                    
     def Parameters(self):
         data = self.algorithmSettings.GetMethodSettings(self.project)
