@@ -18,6 +18,8 @@ class Genetics(object):
     population = []
     populationSize = 20
     mutationProbability = 0.4
+    crossoverFunction = [["Number", "Delay", "Idle time"], 2]
+    selectionFunction = [["Rating", "Round Robin", "Tournament"], 0]
 
     def __init__(self, data):
         self.data = data
