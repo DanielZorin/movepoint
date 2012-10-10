@@ -1,6 +1,6 @@
 from PyQt4 import QtCore
 from PyQt4.QtGui import QFileDialog, QDialog, QMessageBox, QActionGroup, QMessageBox, QMainWindow, QAction, QIntValidator, QDoubleValidator, QLineEdit, qApp, QTableWidgetItem
-from PyQt4.QtCore import QTranslator, SIGNAL
+from PyQt4.QtCore import QTranslator, SIGNAL, QSettings
 import sys, os, pickle, _pickle, re
 from SchedulerGUI.Project import Project
 from SchedulerGUI.NewProjectDialog import NewProjectDialog
@@ -34,51 +34,49 @@ class MainWindow(QMainWindow):
         self.projFilter = self.tr("Scheduler projects (*.proj *.prj)")
         self.title = self.tr("Scheduler GUI")
         self.loadTranslations()
-        self.loadIniFile()
- 
-    def loadIniFile(self):
-        if "scheduler.ini" in os.listdir("."):
-            try:
-                f = open("scheduler.ini", "rb")
-                settings = pickle.load(f)
-                self.recentfiles = settings["recent"]
-                self.currentLanguage = settings["language"]
-                self.otherSettings = settings
-                f.close()
-            except:
-                pass
+        self.settings = QSettings("LVK Inc", "MovePoint") 
+        self.recentfiles = self.settings.value("recent")
+        if self.recentfiles:
             for p in self.recentfiles:
                 self.ui.recent.addItem(p[1])
+        else:
+            self.recentfiles = []
+        if self.settings.value("language"):
+            self.currentLanguage = self.settings.value("language")
             self.Translate(self.currentLanguage)
- 
-    def writeIniFile(self):
-        f = open("scheduler.ini", "wb")
-        settings = {}
-        settings["recent"] = self.recentfiles
-        settings["language"] = self.currentLanguage
-        settings["viewer"] = self.viewer.visualizer.colors
-        settings["graphEditor"] = self.graphEditor.canvas.colors
-        pickle.dump(settings, f)
-        f.close()          
-                    
-    def closeEvent(self, e):
-        self.writeIniFile()
-        e.accept()
 
     def LoadMainWindow(self):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.viewer = Viewer()
         self.graphEditor = GraphEditor()
-        self.viewer.visualizer.colors = self.otherSettings["viewer"]
-        self.graphEditor.canvas.colors = self.otherSettings["graphEditor"]
-        self.settings = PreferencesDialog(self.viewer.visualizer.colors, 
+        if self.settings.value("viewer"):
+            self.viewer.visualizer.colors = self.settings.value("viewer")     
+        if self.settings.value("graphEditor"):
+            self.graphEditor.canvas.colors = self.settings.value("graphEditor")
+        self.settingsDialog = PreferencesDialog(self.viewer.visualizer.colors, 
                                           self.graphEditor.canvas.colors,
                                           self.languages, self.currentLanguage)
         QtCore.QObject.connect(self, SIGNAL("step"), self.ui.progress.setValue)
         self.splash = False
         self.loadPlugins()
         self.algorithmSettings = AlgorithmSettings()
+
+    def loadProjectSettings(self):
+        if self.settings.value("algorithm"):
+            alg = str(self.settings.value("algorithm"))
+            if alg == "Genetics":
+                self.SetGenetics()
+            else:
+                self.SetAnnealing()
+        if self.settings.value("plugin"):
+            plugin = self.settings.value("plugin")
+            for k in self.interpreterPlugins.keys():
+                if k.text() == plugin:
+                    self.project.method.interpreter = self.interpreterPlugins[k]
+                    k.setChecked(True)
+                    self.project.method.Reset()
+                    self.loadSchedule()
 
     def LoadNew(self):
         self.newproject = NewProjectDialog()
@@ -91,6 +89,7 @@ class MainWindow(QMainWindow):
                 return  
             self.LoadMainWindow()
             self.setupProject()
+            self.loadProjectSettings()
 
     def LoadOpen(self):
         name = QFileDialog.getOpenFileName(filter=self.projFilter)
@@ -98,6 +97,7 @@ class MainWindow(QMainWindow):
             return
         self.LoadMainWindow()
         self.OpenProjectFromFile(name)
+        self.loadProjectSettings()
 
     def LoadRecent(self, item):
         for p in self.recentfiles:
@@ -109,6 +109,7 @@ class MainWindow(QMainWindow):
                 except: #_pickle.UnpicklingError:
                     QMessageBox.critical(self, self.tr("An error occured"), self.tr("File is not a valid project file: ") + name)
                     self.recentfiles = [p for p in self.recentfiles if p[0] != name]
+                    self.settings.setValue("recent", self.recentfiles)
                     self.ui.recent.clear()
                     for p in self.recentfiles:
                         self.ui.recent.addItem(p[1])
@@ -116,6 +117,7 @@ class MainWindow(QMainWindow):
                 self.LoadMainWindow()
                 self.projectFile = name
                 self.setupProject()
+                self.loadProjectSettings()
                 self.AddToRecent(name, self.project.name)
                 return                
     
@@ -242,6 +244,7 @@ class MainWindow(QMainWindow):
             if len(newrecent) > 5:
                 newrecent = newrecent[:-1]
         self.recentfiles = newrecent
+        self.settings.setValue("recent", self.recentfiles)
             
     def EnableRunning(self):
         self.ui.actionStart.setEnabled(True)
@@ -307,6 +310,7 @@ class MainWindow(QMainWindow):
             self.project.method.interpreter = self.interpreterPlugins[self.sender()]
             self.project.method.Reset()
             self.loadSchedule()
+            self.settings.setValue("plugin", self.sender().text())
         else:
             # Set the selector back
             for k in self.interpreterPlugins.keys():
@@ -319,6 +323,7 @@ class MainWindow(QMainWindow):
         self.ui.actionGenetics.setChecked(False)
         self.ui.comboBox.setCurrentIndex(0)
         self.project.method.algorithm = self.project.annealing
+        self.settings.setValue("algorithm", "Annealing")
 
     def SetGenetics(self):
         self.ui.actionAnnealing.setChecked(False)
@@ -326,6 +331,7 @@ class MainWindow(QMainWindow):
         self.ui.comboBox.setCurrentIndex(1)
         self.project.method.algorithm = self.project.genetics
         self.project.genetics.Prepare()
+        self.settings.setValue("algorithm", "Genetics")
 
     def Run(self):
         self.project.method.iteration = 1
@@ -437,11 +443,14 @@ class MainWindow(QMainWindow):
             self.algorithmSettings.UpdateMethodSettings(d.data, self.project)
  
     def Settings(self):
-        self.settings.exec_()
-        if self.settings.result() == QDialog.Accepted:
-            selected = self.languages[self.settings.ui.languages.currentIndex()]
+        self.settingsDialog.exec_()
+        if self.settingsDialog.result() == QDialog.Accepted:
+            selected = self.languages[self.settingsDialog.ui.languages.currentIndex()]
+            self.settings.setValue("viewer", self.viewer.visualizer.colors)  
+            self.settings.setValue("graphEditor", self.graphEditor.canvas.colors)
             if self.currentLanguage != selected:
                 self.currentLanguage = selected
+                self.settings.setValue("language", self.currentLanguage)
                 self.Translate(selected)
                
     def GenerateRandomSystem(self):
@@ -459,7 +468,7 @@ class MainWindow(QMainWindow):
         qApp.installTranslator(translator)
         self.ui.retranslateUi(self)
         if not self.splash:
-            self.settings.ui.retranslateUi(self.settings)
+            self.settingsDialog.ui.retranslateUi(self.settingsDialog)
             self.viewer.ui.retranslateUi(self.viewer) 
             self.graphEditor.ui.retranslateUi(self.graphEditor) 
             self.loadSchedule()  

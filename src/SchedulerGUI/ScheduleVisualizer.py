@@ -21,8 +21,8 @@ class ScheduleVisualizer(QWidget):
     procrects = {}
 
     colors = {
-              "axis": QColor(168, 34, 3),
-              "task": QColor(168, 134, 50),
+              "axis": QColor(255, 255, 255),
+              "task": QColor(255, 255, 0),
               "delivery": QColor(100, 0, 255),
               "select": QColor(255, 0, 0)
               }    
