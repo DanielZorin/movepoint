@@ -62,6 +62,16 @@
         <source>Mutation probability</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="40"/>
+        <source>Crossover function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="41"/>
+        <source>Selection method</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EdgeDialog</name>
@@ -467,27 +477,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="352"/>
+        <location filename="MainWindow.py" line="358"/>
         <source>An error occured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="189"/>
+        <location filename="MainWindow.py" line="191"/>
         <source>File is not a valid project file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="286"/>
+        <location filename="MainWindow.py" line="289"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="289"/>
+        <location filename="MainWindow.py" line="292"/>
         <source>Task </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="289"/>
+        <location filename="MainWindow.py" line="292"/>
         <source> is in a cycle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -557,12 +567,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="305"/>
+        <location filename="MainWindow.py" line="432"/>
         <source>Warning!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="305"/>
+        <location filename="MainWindow.py" line="432"/>
         <source>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -764,8 +774,19 @@
 <context>
     <name>Translator</name>
     <message>
-        <location filename="../plugins/FibreChannel.py" line="218"/>
-        <source>Channel speed</source>
+        <location filename="../Schedules/SimpleInterpreter.py" line="237"/>
+        <source>Channel bandwidth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Schedules/SimpleInterpreter.py" line="238"/>
+        <source>Delay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugins/FibreChannel.py" line="222"/>
+        <source>Number of available channels
+ (put 0 to make it unlimited)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
