@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<!DOCTYPE TS><TS version="2.0" language="en_US" sourcelanguage="">
 <context>
     <name>AlgorithmSettings</name>
     <message>
@@ -62,6 +61,16 @@
         <location filename="AlgorithmSettings.py" line="39"/>
         <source>Mutation probability</source>
         <translation>Mutation probability</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="40"/>
+        <source>Crossover function</source>
+        <translation>Crossover function</translation>
+    </message>
+    <message>
+        <location filename="AlgorithmSettings.py" line="41"/>
+        <source>Selection method</source>
+        <translation>Selection method</translation>
     </message>
 </context>
 <context>
@@ -498,27 +507,27 @@
         <translation>Open Project...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="352"/>
+        <location filename="MainWindow.py" line="358"/>
         <source>An error occured</source>
         <translation>An error occured</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="189"/>
+        <location filename="MainWindow.py" line="191"/>
         <source>File is not a valid project file: </source>
         <translation>File is not a valid project file: </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="286"/>
+        <location filename="MainWindow.py" line="289"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="289"/>
+        <location filename="MainWindow.py" line="292"/>
         <source>Task </source>
         <translation>Task </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="289"/>
+        <location filename="MainWindow.py" line="292"/>
         <source> is in a cycle</source>
         <translation> is in a cycle</translation>
     </message>
@@ -593,12 +602,12 @@
         <translation>Time Computation Parameters...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="305"/>
+        <location filename="MainWindow.py" line="432"/>
         <source>Warning!</source>
         <translation>Warning!</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="305"/>
+        <location filename="MainWindow.py" line="432"/>
         <source>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</source>
         <translation>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</translation>
     </message>
@@ -812,7 +821,24 @@
     <message>
         <location filename="../plugins/FibreChannel.py" line="218"/>
         <source>Channel speed</source>
-        <translation>Channel speed</translation>
+        <translation type="obsolete">Channel speed</translation>
+    </message>
+    <message>
+        <location filename="../Schedules/SimpleInterpreter.py" line="237"/>
+        <source>Channel bandwidth</source>
+        <translation>Channel bandwidth</translation>
+    </message>
+    <message>
+        <location filename="../Schedules/SimpleInterpreter.py" line="238"/>
+        <source>Delay</source>
+        <translation>Delay</translation>
+    </message>
+    <message>
+        <location filename="../plugins/FibreChannel.py" line="222"/>
+        <source>Number of available channels
+ (put 0 to make it unlimited)</source>
+        <translation>Number of available channels
+ (put 0 to make it unlimited)</translation>
     </message>
 </context>
 <context>
