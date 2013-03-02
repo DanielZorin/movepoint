@@ -37,8 +37,6 @@ class SimulatedAnnealing(object):
     oldSchedule = None
     ''' Current approximation. A copy is saved here, and all changes are applied to the original '''
     
-    initialTemperature = 100.0
-
     writeLog = False
 
     def __init__(self, data):
@@ -333,7 +331,7 @@ class SimulatedAnnealing(object):
                 self.CutProcessor()
             else:
                 self.DoMoveVertex()
-    
+
     def _selectNewSchedule(self):
         def accept():
             self.write("Accept")
@@ -361,12 +359,12 @@ class SimulatedAnnealing(object):
                 t = self.data.initialTemperature / math.log(1 + number)
             elif self.threshold[1] == 1:
                 #Cauchy
-                t = self.data.initialTemperature / float(1 + number)
+                t = self.data.initialTemperature * 20 / float(1 + number)
             elif self.threshold[1] == 2:
                 #Combined
-                t = self.data.initialTemperature * math.log(1 + number) / (1 + number)
+                t = self.data.initialTemperature * 20 * math.log(1 + number) / (1 + number)
             threshold = math.exp(-1 / t)
-            if r > threshold:
+            if r < threshold:
                 accept()
             else:
                 refuse()
@@ -381,7 +379,8 @@ class SimulatedAnnealing(object):
         curProc = cur["processors"]
         
         self.write("Old: ", curTime, curRel, curProc)    
-        self.write("New: ", new_time, new_rel, new_proc)   
+        self.write("New: ", new_time, new_rel, new_proc)
+        print (curTime, curProc)
         if (curProc > new_proc) or (curTime > new_time) or (curRel < new_rel):
             accept()
         else:

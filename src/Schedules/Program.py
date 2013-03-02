@@ -270,12 +270,13 @@ class Program(object):
                 v.versions[j].number = j + 1
         for i in range(params["n"]-1):
             for j in [0]:#range(random.randint(0, 1)):
-                src = self.vertices[i]
-                dest = self.vertices[random.randint(i+1, params["n"]-1)]
-                volume = random.randint(params["v1"], params["v2"])
-                e = ProgramEdge(src, dest, volume)
-                if self.FindEdge(src, dest) == None:
-                    self.edges.append(e)
+                if random.random() < 0.2:
+                    src = self.vertices[i]
+                    dest = self.vertices[random.randint(i+1, params["n"]-1)]
+                    volume = random.randint(params["v1"], params["v2"])
+                    e = ProgramEdge(src, dest, volume)
+                    if self.FindEdge(src, dest) == None:
+                        self.edges.append(e)
                     
         self._buildData()
     
