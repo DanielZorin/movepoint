@@ -1,6 +1,14 @@
 from Schedules.System import *
 from SchedulerGUI.Project import Project
-    
+import math    
+
+p = Project("program.xml", "temperature test") 
+p.GenerateRandomSystem({"n":30, "t1":2, "t2":6, "v1":1, "v2":2, "tdir":2, "rdir":2})
+print("deadline: ", p.method.algorithm.data.system.tdir)
+p.method.numberOfIterations = 500
+p.method.Start()
+exit(0)
+
 def run(p, v, i, strategy, threshold, raising):  
     p.method.strategies[1] = strategy
     p.method.threshold[1] = threshold

@@ -27,7 +27,7 @@ class MethodWrapper(object):
     
     trace = Trace()
 
-    initialTemperature = 100.0
+    initialTemperature = 5.0
 
     algorithm = None
     '''The actual algorithm instance'''
