@@ -17,6 +17,9 @@ class BusInterpreter:
     def GetName():
         return "Bus"
 
+    def GetType():
+        return "interpreter"
+
     def Interpret(self, schedule):
         ''' Returns the time of schedule execution assuming that each processor supports
         only one sending/receiving operation at a time. If one of the processors is busy, the delivery

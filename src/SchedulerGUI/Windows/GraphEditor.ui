@@ -74,7 +74,13 @@ QLabel, QSlider {
     <addaction name="actionSave_System_As"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuGenerate">
+    <property name="title">
+     <string>Generate</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuGenerate"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
