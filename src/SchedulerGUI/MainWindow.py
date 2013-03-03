@@ -153,6 +153,9 @@ class MainWindow(QMainWindow):
                 if "pluginMain" in dir(plugin):
                     pluginClass = plugin.pluginMain()
                     name = pluginClass.GetName()
+                    type = pluginClass.GetType()
+                    if type != "interpreter":
+                        continue
                     action = QAction(name, self)
                     action.setCheckable(True)
                     QtCore.QObject.connect(action, SIGNAL("triggered()"), self.ChangeInterpreter)

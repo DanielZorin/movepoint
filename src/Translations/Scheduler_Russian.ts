@@ -104,99 +104,104 @@
 <context>
     <name>GraphEditor</name>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="113"/>
+        <location filename="Windows/ui_GraphEditor.py" line="116"/>
         <source>Program Graph Editor</source>
         <translation>Редактор исходных данных</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="114"/>
+        <location filename="Windows/ui_GraphEditor.py" line="117"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="115"/>
+        <location filename="Windows/ui_GraphEditor.py" line="119"/>
         <source>toolBar</source>
         <translation>Панель инструментов</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="116"/>
+        <location filename="Windows/ui_GraphEditor.py" line="120"/>
         <source>Select</source>
         <translation>Выбор</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="117"/>
+        <location filename="Windows/ui_GraphEditor.py" line="121"/>
         <source>Alt+1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="118"/>
+        <location filename="Windows/ui_GraphEditor.py" line="122"/>
         <source>Add Vertex</source>
         <translation>Добавить вершину</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="119"/>
+        <location filename="Windows/ui_GraphEditor.py" line="123"/>
         <source>Alt+2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="120"/>
+        <location filename="Windows/ui_GraphEditor.py" line="124"/>
         <source>Add Edge</source>
         <translation>Добавить связь</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="121"/>
+        <location filename="Windows/ui_GraphEditor.py" line="125"/>
         <source>Alt+3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="122"/>
+        <location filename="Windows/ui_GraphEditor.py" line="126"/>
         <source>New System</source>
         <translation>Новая система</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="123"/>
+        <location filename="Windows/ui_GraphEditor.py" line="127"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="124"/>
+        <location filename="Windows/ui_GraphEditor.py" line="128"/>
         <source>Open System</source>
         <translation>Открыть систему</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="125"/>
+        <location filename="Windows/ui_GraphEditor.py" line="129"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="126"/>
+        <location filename="Windows/ui_GraphEditor.py" line="130"/>
         <source>Save System</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="127"/>
+        <location filename="Windows/ui_GraphEditor.py" line="131"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="128"/>
+        <location filename="Windows/ui_GraphEditor.py" line="132"/>
         <source>Save System As...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="129"/>
+        <location filename="Windows/ui_GraphEditor.py" line="133"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="130"/>
+        <location filename="Windows/ui_GraphEditor.py" line="134"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="Windows/ui_GraphEditor.py" line="131"/>
+        <location filename="Windows/ui_GraphEditor.py" line="135"/>
         <source>Ctrl+X</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="Windows/ui_GraphEditor.py" line="118"/>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
