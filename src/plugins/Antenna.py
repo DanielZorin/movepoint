@@ -88,6 +88,8 @@ class AntennaGenerator:
         last.append(v)           
 
         # Calculate tdir
+
+        s.program._buildData()
         return s
 
     def GetSettings(self):
