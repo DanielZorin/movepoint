@@ -271,19 +271,38 @@ class GraphCanvas(QWidget):
 
     def Visualize(self, p):
         self.program = p
+        levels = {}
+        leftverts = list(p.vertices)
+        verts = []
+        limit = len(p.vertices)
+        lev = 1
+        while len(leftverts) != 0:
+            curlev = []
+            newlv = []
+            for v in leftverts:
+                dep = p._dep[v.number]
+                cur = True
+                for v0 in dep:
+                    if (v0 in leftverts):
+                        cur = False
+                if cur:
+                    curlev.append(v)
+                    verts.append(v)
+                else:
+                    newlv.append(v)
+            leftverts = newlv
+            levels[lev] = curlev
+            lev += 1
+
         x = 50
         y = 50
-        maxi = 40 * int(math.sqrt(len(self.program.vertices)))
-        maxx = 0
-        for v in self.program.vertices:
-            task = QtCore.QRect(x - self.size / 2, y - self.size / 2, self.size, self.size)
-            if x < maxi:
-                x += 40
-                maxx = x
-            else:
-                y += 40
-                x = 50
-            self.vertices[v] = task
+        for level in levels.keys():
+            for v in levels[level]:
+                task = QtCore.QRect(x - self.size / 2, y - self.size / 2, self.size, self.size)
+                x += 120
+                self.vertices[v] = task
+            y += 80
+            x = 50
         self.ResizeCanvas()
         self.repaint()
  
