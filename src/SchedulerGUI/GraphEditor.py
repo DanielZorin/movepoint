@@ -117,7 +117,7 @@ class GraphEditor(QMainWindow):
         d.exec_()
         if d.result() == QDialog.Accepted:
             generator.UpdateSettings(d.data)
-            self.system.program = generator.Generate()
+            self.system = generator.Generate()
             self.system.program._buildData()
             self.canvas.Clear()
             self.canvas.Visualize(self.system.program)

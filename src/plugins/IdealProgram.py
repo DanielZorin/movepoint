@@ -1,3 +1,5 @@
+from Schedules.System import *
+
 class IdealProgramGenerator:
     bandwidth = 1
     delay = 0
@@ -12,6 +14,7 @@ class IdealProgramGenerator:
         return "generator"
 
     def Generate(self):
+        s = System()
         return None
 
     def GetSettings(self):
