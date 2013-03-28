@@ -253,33 +253,6 @@ class Program(object):
             
         return strict, normal
     
-    def GenerateRandom(self, params):
-        '''Generates a random graph with n vertices.
-        Each task has from 1 to 5 versions.
-        Times are random integers from t1 to t2.
-        Volumes are random integers from v1 to v2.
-        All parameters are passed in a dictionary.'''
-        for i in range(params["n"]):
-            v = ProgramVertex(i + 1, random.randint(params["t1"], params["t2"]))
-            self.vertices.append(v)
-            for j in range(random.randint(1,5)):
-                ver = Version(v, j + 1, (50.0 + random.random()) / 51.0)
-                v.versions.append(ver)
-            v.versions.sort(key=lambda x: x.reliability)
-            for j in range(len(v.versions)):
-                v.versions[j].number = j + 1
-        for i in range(params["n"]-1):
-            for j in [0]:#range(random.randint(0, 1)):
-                if random.random() < 0.2:
-                    src = self.vertices[i]
-                    dest = self.vertices[random.randint(i+1, params["n"]-1)]
-                    volume = random.randint(params["v1"], params["v2"])
-                    e = ProgramEdge(src, dest, volume)
-                    if self.FindEdge(src, dest) == None:
-                        self.edges.append(e)
-                    
-        self._buildData()
-    
     def __str__(self):
         res = ""
         for v in self.vertices:

@@ -126,45 +126,6 @@ class System(object):
             if not (p >= pcur or t > self.tdir or r < self.rdir):
                 return False
         return True
-     
-    def GenerateRandom(self, params):
-        ''' Generates a random system.
-        Now that the processors are fixed it merely creates a random program
-        The params dictionary is passed to the :meth:`~Schedules.Program.Program.GenerateRandom` function.
-        
-        Time and reliability constraints are generated here. Types of constraints (params["tdir"]/params["rdir"]):
-        
-        * 0 = Impossible
-        * 1 = Strict
-        * 2 = Normal
-        * 3 = Nonexisting
-        
-        Numbers are used because strings in GUI can be translated'''
-        self.program = Program("")
-        self.program.GenerateRandom(params)
-        self.schedule = Schedule(self.program, self.processors)       
-        self.schedule.SetToDefault()
-        maxchain = self.program.FindMaxChain(True) 
-        ss = sum([v.time for v in self.program.vertices])     
-        self.tdir = {
-                     0: 0,
-                     1: maxchain,
-                     2: int(maxchain + (ss - maxchain) / 3),
-                     # TODO: replace this workaround
-                     3: int(maxchain * 1000)
-                     }[params["tdir"]]
-                     
-        relstrict, relnormal = self.program.GetReliabilityBoundaries()
-        # TODO: this only works now that we have only one processor
-        procrel = self.processors[0].reliability ** params["n"]
-        relstrict *= procrel
-        relnormal *= procrel
-        self.rdir = {
-                     0: 1.0,
-                     1: relstrict,
-                     2: relnormal,
-                     3: 0.0
-                     }[params["rdir"]]
                      
 # Auxiliary functions used for testing.
 # TODO: maybe move them somewhere
