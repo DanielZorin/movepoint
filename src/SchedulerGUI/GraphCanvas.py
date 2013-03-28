@@ -294,15 +294,15 @@ class GraphCanvas(QWidget):
             levels[lev] = curlev
             lev += 1
 
-        x = 50
+        maxx = 50 + 120 * (max([len(lev) for lev in levels.values()]) - 1)
         y = 50
         for level in levels.keys():
+            x = maxx / 2 - (len(levels[level]) - 1) * 60
             for v in levels[level]:
                 task = QtCore.QRect(x - self.size / 2, y - self.size / 2, self.size, self.size)
                 x += 120
                 self.vertices[v] = task
             y += 80
-            x = 50
         self.ResizeCanvas()
         self.repaint()
  
