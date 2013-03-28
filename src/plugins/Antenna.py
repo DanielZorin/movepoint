@@ -1,14 +1,22 @@
 from Schedules.System import *
 from Schedules.ProgramVertex import ProgramVertex
 from Schedules.ProgramEdge import ProgramEdge
+from Core.Version import *
+from Core.Processor import *
 
 class AntennaGenerator:
-    K = 6
-    L = 4
-    n = 3
+    a = 2.5
+    B = 100
+    K = 2
+    L = 2
+    n = 10
+    steps = 2
     Mtheta = 2
     FFT = 10
     BCM = 10
+    perf = 100
+    bandwidth = 1
+    rel = 0.9
 
     def __init__(self):
         pass
@@ -19,78 +27,74 @@ class AntennaGenerator:
     def GetType():
         return "generator"
 
-    def Generate(self):
-        s = System()
+    def Generate(self, s):
+        s.program.vertices = []
+        s.program.edges = []
         # Create processors
 
         # Create FFT
-        vCount = 1
+        self.vCount = 1
+
+        #TODO: turn to generator function
+        def newVertex(time):
+            newv = ProgramVertex(self.vCount, time)
+            ver = Version(newv, 1, 1.0)
+            newv.versions.append(ver)
+            self.vCount += 1
+            s.program.vertices.append(newv)
+            return newv
+
         fft = []
         for i in range(self.K):
-            v = ProgramVertex(vCount, self.FFT)
+            v = newVertex(self.FFT)
             v.name = "FFT_" + str(i + 1)
-            vCount += 1
-            s.program.vertices.append(v)
             fft.append(v)
 
         # Create BCM
         last = []
         for i in range(self.L):
-            v = ProgramVertex(vCount, self.BCM)
+            v = newVertex(self.BCM)
             v.name = "BCM_" + str(i + 1) + "_stage_1"
-            vCount += 1
-            s.program.vertices.append(v)
             for v0 in fft:
                 e = ProgramEdge(v0, v, 1)
                 s.program.edges.append(e)
-            for j in range(self.n - 1):
-                v1 = ProgramVertex(vCount, self.BCM)
+            for j in range(self.steps - 1):
+                v1 = newVertex(self.BCM)
                 v1.name = "BCM_" + str(i + 1) + "_stage_" + str(j + 2)
-                vCount += 1
-                s.program.vertices.append(v1)
                 e = ProgramEdge(v, v1, 1)
                 s.program.edges.append(e)
                 v = v1
             prev = v
             lastpar = []
             for k in range(self.Mtheta):
-                v1 = ProgramVertex(vCount, self.BCM)
+                v1 = newVertex(self.BCM)
                 v1.name = "BCM_" + str(i + 1) + "_pstage_1_" + str(k)
-                vCount += 1
-                s.program.vertices.append(v1)
                 e = ProgramEdge(prev, v1, 1)
                 s.program.edges.append(e)
                 v = v1
-                for j in range(self.n - 2):
-                    v1 = ProgramVertex(vCount, self.BCM)
+                for j in range(self.steps - 2):
+                    v1 = newVertex(self.BCM)
                     v1.name = "BCM_" + str(i + 1) + "_pstage_" + str(j + 2) + "_" + str(k)
-                    vCount += 1
-                    s.program.vertices.append(v1)
                     e = ProgramEdge(v, v1, 1)
                     s.program.edges.append(e)
                     v = v1
                 lastpar.append(v)
-            v = ProgramVertex(vCount, self.BCM)
-            v.name = "BCM_" + str(i + 1) + "_pstage_" + str(self.n) + "_" + str(k)
-            vCount += 1
-            s.program.vertices.append(v)
+            v = newVertex(self.BCM)
+            v.name = "BCM_" + str(i + 1) + "_pstage_" + str(self.steps) + "_" + str(k)
             for v0 in lastpar:
                 e = ProgramEdge(v0, v, 1)
                 s.program.edges.append(e)
             last.append(v)
-        v = ProgramVertex(vCount, self.BCM)
+        v = newVertex(self.BCM)
         v.name = "BCM_final"
-        vCount += 1
-        s.program.vertices.append(v)
         for v0 in last:
             e = ProgramEdge(v0, v, 1)
             s.program.edges.append(e)
         last.append(v)           
 
         # Calculate tdir
-
+        s.tdir = self.a * self.B * self.n
         s.program._buildData()
-        return s
 
     def GetSettings(self):
         # importing here to allow using the class without Qt
@@ -101,24 +105,31 @@ class AntennaGenerator:
                 self.parent = parent
             def getTranslatedSettings(self):
                 return [
-                [self.tr("Net size (K) "), self.parent.K],
+                [self.tr("Frequency (B)"), self.parent.B],
+                [self.tr("Kotelnikov coefficient (a)"), self.parent.a],
+                [self.tr("Array size (K) "), self.parent.K],
                 [self.tr("L"), self.parent.L],
                 [self.tr("M-theta"), self.parent.Mtheta],
-                [self.tr("FFT time"), self.parent.FFT],
-                [self.tr("BCM time"), self.parent.BCM],
-                [self.tr("BCM steps"), self.parent.n],
+                [self.tr("BCM steps"), self.parent.steps],
+                [self.tr("Sample size (n)"), self.parent.n],
+                [self.tr("Performance"), self.parent.perf],
+                [self.tr("Bandwidth"), self.parent.bandwidth],
+                [self.tr("Reliability"), self.parent.rel],
                         ]
         t = Translator(self)
         return t.getTranslatedSettings()
 
     def UpdateSettings(self, dict):
-        # importing here to allow using the class without Qt
-        self.K = dict[0][1]
-        self.L = dict[1][1]
-        self.Mtheta = dict[2][1]
-        self.FFT = dict[3][1]
-        self.BCM = dict[4][1]
-        self.n = dict[5][1]
+        self.B = dict[0][1]
+        self.a = dict[1][1]
+        self.K = dict[2][1]
+        self.L = dict[3][1]
+        self.Mtheta = dict[4][1]
+        self.steps = dict[5][1]
+        self.n = dict[6][1]
+        self.perf = dict[7][1]
+        self.bandwidth = dict[8][1]
+        self.rel = dict[9][1]
 
 def pluginMain():
     return AntennaGenerator
