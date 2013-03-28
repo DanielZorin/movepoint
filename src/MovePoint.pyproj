@@ -59,6 +59,7 @@
     <Compile Include="plugins\Bus.py" />
     <Compile Include="plugins\FibreChannel.py" />
     <Compile Include="plugins\IdealProgram.py" />
+    <Compile Include="plugins\Random.py" />
     <Compile Include="plugins\__init__.py" />
     <Compile Include="SchedulerGUI\AlgorithmSettings.py" />
     <Compile Include="Schedules\SimpleInterpreter.py" />
