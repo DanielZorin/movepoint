@@ -6,13 +6,13 @@ from Core.Processor import *
 
 class AntennaGenerator:
     a = 2.5
-    B = 100
-    K = 2
+    B = 5
+    K = 10
     L = 2
-    n = 10
-    steps = 2
+    n = 5
+    steps = 3
     Mtheta = 2
-    FFT = 10
+    FFT = 1
     BCM = 10
     perf = 100
     bandwidth = 1
@@ -30,6 +30,11 @@ class AntennaGenerator:
     def Generate(self, s):
         s.program.vertices = []
         s.program.edges = []
+
+        # Calculate tdir
+        s.tdir = self.a * self.B * self.n
+        self.BCM = s.tdir / (self.steps * (1 + self.Mtheta) + 5)
+
         # Create processors
 
         # Create FFT
@@ -54,13 +59,13 @@ class AntennaGenerator:
         last = []
         for i in range(self.L):
             v = newVertex(self.BCM)
-            v.name = "BCM_" + str(i + 1) + "_stage_1"
+            v.name = "CME_" + str(i + 1) + "_stage_1"
             for v0 in fft:
                 e = ProgramEdge(v0, v, 1)
                 s.program.edges.append(e)
             for j in range(self.steps - 1):
                 v1 = newVertex(self.BCM)
-                v1.name = "BCM_" + str(i + 1) + "_stage_" + str(j + 2)
+                v1.name = "CME_" + str(i + 1) + "_stage_" + str(j + 2)
                 e = ProgramEdge(v, v1, 1)
                 s.program.edges.append(e)
                 v = v1
@@ -68,32 +73,29 @@ class AntennaGenerator:
             lastpar = []
             for k in range(self.Mtheta):
                 v1 = newVertex(self.BCM)
-                v1.name = "BCM_" + str(i + 1) + "_pstage_1_" + str(k)
+                v1.name = "CME_" + str(i + 1) + "_pstage_" + str(k) + "_1"
                 e = ProgramEdge(prev, v1, 1)
                 s.program.edges.append(e)
                 v = v1
                 for j in range(self.steps - 2):
                     v1 = newVertex(self.BCM)
-                    v1.name = "BCM_" + str(i + 1) + "_pstage_" + str(j + 2) + "_" + str(k)
+                    v1.name = "CME_" + str(i + 1) + "_pstage_" + str(k) + "_" + str(j + 2)
                     e = ProgramEdge(v, v1, 1)
                     s.program.edges.append(e)
                     v = v1
                 lastpar.append(v)
             v = newVertex(self.BCM)
-            v.name = "BCM_" + str(i + 1) + "_pstage_" + str(self.steps) + "_" + str(k)
+            v.name = "CME_" + str(i + 1) + "_pstage_" + str(self.steps)
             for v0 in lastpar:
                 e = ProgramEdge(v0, v, 1)
                 s.program.edges.append(e)
             last.append(v)
         v = newVertex(self.BCM)
-        v.name = "BCM_final"
+        v.name = "CME_final"
         for v0 in last:
             e = ProgramEdge(v0, v, 1)
             s.program.edges.append(e)
         last.append(v)           
-
-        # Calculate tdir
-        s.tdir = self.a * self.B * self.n
         s.program._buildData()
 
     def GetSettings(self):

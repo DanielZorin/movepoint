@@ -39,6 +39,7 @@
     <Folder Include="Schedules" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AntennaTest.py" />
     <Compile Include="Core\Common.py" />
     <Compile Include="Core\Error.py" />
     <Compile Include="Core\Hardware.py" />

@@ -164,22 +164,59 @@ class SimulatedAnnealing(object):
             if f < mini:
                 mini = f
                 proc = m
+            if f == mini:
+                maxdelay1 = 0
+                maxdelay2 = 0
+                for v in s.vertices[m.number]:
+                    for v1 in self.data.interpreter.delays:
+                        if v1[0] == v and v1[1] > maxdelay1:
+                            maxdelay1 = v1[1]
+                for v in s.vertices[proc.number]:
+                    for v1 in self.data.interpreter.delays:
+                        if v1[0] == v and v1[1] > maxdelay2:
+                            maxdelay2 = v1[1]
+                if maxdelay2 < maxdelay1:
+                    proc = m
         ch = [v for v in s.vertices[proc.number]]
         self.data.lastOperation = MultiOperation()
         src_pos = 0
         for s1 in ch:
             flag = True
-            for num in [n for n in s.vertices.keys() if n != proc.number]:
-                target_proc = s.GetProcessor(num)
-                for i in range(len(s.vertices[num]) + 1):
-                    target_pos = i
+            edges = s.program.FindAllEdges(v1=s1.v)
+            if len(edges) > 0:
+                e = edges[0]
+                for m in s.vertices.keys():
+                    for v in s.vertices[m]:
+                        if v.v == e.destination:
+                            s2 = v
+                            break
+                target_proc = s2.m
+                target_pos = s.vertices[s2.m.number].index(s2)
+                if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
+                    s.MoveVertex(s1, 0, target_proc, target_pos)
+                    self.data.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
+                    continue
+            int = self.data.interpreter
+            for num in int.idletimes:
+                s2 = num[0]
+                target_proc = s2.m
+                target_pos = s.vertices[s2.m.number].index(s2)
+                if target_proc != proc:
                     if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
                         s.MoveVertex(s1, 0, target_proc, target_pos)
                         self.data.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
                         flag = False
                         break
-                if not flag:
-                    break
+            if flag:
+                for m in s.vertices.keys():
+                    target_proc = s.GetProcessor(m)
+                    if target_proc != proc:
+                        target_pos = len(s.vertices[m])
+                        if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
+                            s.MoveVertex(s1, 0, target_proc, target_pos)
+                            self.data.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
+                            flag = False
+                            break
             if flag:
                 raise "Error"
                 break
@@ -380,7 +417,7 @@ class SimulatedAnnealing(object):
         
         self.write("Old: ", curTime, curRel, curProc)    
         self.write("New: ", new_time, new_rel, new_proc)
-        print (curTime, curProc)
+        #print (curTime, curProc)
         if (curProc > new_proc) or (curTime > new_time) or (curRel < new_rel):
             accept()
         else:
