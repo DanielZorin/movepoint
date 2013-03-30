@@ -50,7 +50,7 @@ class MethodWrapper(object):
     def Reset(self):
         ''' Resets the method to the zero iteration'''
         self.system.schedule.SetToDefault()
-        self.numberOfIterations = 1 * len(self.system.program.vertices)
+        self.numberOfIterations = 10 * len(self.system.program.vertices)
         self._prepare()
         self.algorithm.Prepare()
     
