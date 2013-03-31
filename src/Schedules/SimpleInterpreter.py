@@ -183,7 +183,7 @@ class SimpleInterpreter:
                     if CheckReady(sortedTasks[m][0]):
                         working[m] = ["working", proc.GetTime(sortedTasks[m][0].Task().time)]
                         self.executionTimes[sortedTasks[m][0]] = (time, time + proc.GetTime(sortedTasks[m][0].Task().time))
-                        self.idletimes.append([sortedTasks[m][0],delays[sortedTasks[m][0]]])
+                        self.idletimes.append([sortedTasks[m][0],delays[sortedTasks[m][0]] + 1])
                     else:
                         working[m] = ["waiting"]
                         delays[sortedTasks[m][0]] += 1

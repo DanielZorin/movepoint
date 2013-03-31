@@ -82,6 +82,9 @@ class Viewer(QMainWindow):
         self.ui.labeltime.setText(str(s["time"]))
         self.ui.labelrel.setText('{:f}'.format(s["reliability"])[:5])
         self.ui.labelproc.setText(str(s["processors"]))
+        print("=============")
+        for int in self.method.interpreter.idletimes:
+            print (int[0].v.number, int[1])
 
     def Scale(self, v):
         newscale = 1.5

@@ -12,7 +12,7 @@ class AntennaGenerator:
     n = 5
     steps = 3
     Mtheta = 2
-    FFT = 1
+    FFT = 3
     BCM = 10
     perf = 100
     bandwidth = 1
@@ -33,7 +33,7 @@ class AntennaGenerator:
 
         # Calculate tdir
         s.tdir = self.a * self.B * self.n
-        self.BCM = s.tdir / (self.steps * (1 + self.Mtheta) + 5)
+        self.BCM = int(s.tdir / (self.steps * (3 + self.Mtheta) + 5))
 
         # Create processors
 
