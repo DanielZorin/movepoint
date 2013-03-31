@@ -177,9 +177,9 @@ class SimulatedAnnealing(object):
                             maxdelay2 = v1[1]
                 if maxdelay2 < maxdelay1:
                     proc = m
-        ch = [v for v in s.vertices[proc.number]]
+        ch = [v for v in s.vertices[proc.number]][::-1]
         self.data.lastOperation = MultiOperation()
-        src_pos = 0
+        src_pos = len(ch) - 1
         for s1 in ch:
             flag = True
             edges = s.program.FindAllEdges(v1=s1.v)
@@ -192,9 +192,10 @@ class SimulatedAnnealing(object):
                             break
                 target_proc = s2.m
                 target_pos = s.vertices[s2.m.number].index(s2)
-                if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
-                    s.MoveVertex(s1, 0, target_proc, target_pos)
-                    self.data.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
+                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                    s.MoveVertex(s1, src_pos, target_proc, target_pos)
+                    self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
+                    src_pos -= 1
                     continue
             int = self.data.interpreter
             for num in int.idletimes:
@@ -202,9 +203,9 @@ class SimulatedAnnealing(object):
                 target_proc = s2.m
                 target_pos = s.vertices[s2.m.number].index(s2)
                 if target_proc != proc:
-                    if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
-                        s.MoveVertex(s1, 0, target_proc, target_pos)
-                        self.data.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
+                    if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                        s.MoveVertex(s1, src_pos, target_proc, target_pos)
+                        self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                         flag = False
                         break
             if flag:
@@ -212,11 +213,12 @@ class SimulatedAnnealing(object):
                     target_proc = s.GetProcessor(m)
                     if target_proc != proc:
                         target_pos = len(s.vertices[m])
-                        if s.TryMoveVertex(s1, 0, target_proc, target_pos) == True:
-                            s.MoveVertex(s1, 0, target_proc, target_pos)
-                            self.data.lastOperation.Add(MoveVertex(s1, proc, 0, target_proc, target_pos))
+                        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                            s.MoveVertex(s1, src_pos, target_proc, target_pos)
+                            self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                             flag = False
                             break
+            src_pos -= 1
             if flag:
                 raise "Error"
                 break
