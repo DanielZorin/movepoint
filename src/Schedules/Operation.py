@@ -1,4 +1,5 @@
 class VoidOperation:
+    result = True
     def Export(self):
         return ""
 
