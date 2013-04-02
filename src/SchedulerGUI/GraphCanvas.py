@@ -271,6 +271,8 @@ class GraphCanvas(QWidget):
 
     def Visualize(self, p):
         self.program = p
+        if len(p.vertices) == 0:
+            return
         levels = {}
         leftverts = list(p.vertices)
         verts = []

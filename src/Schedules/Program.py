@@ -177,9 +177,11 @@ class Program(object):
         lev -= 1            
         while lev > 0:
             for v in levels[lev]:
+                edges = self.FindAllEdges(v1=v)
                 trans = []
-                for e in self.FindAllEdges(v1=v):
+                for e in edges:
                     trans.extend(self._trans[e.destination.number])
+                    trans.append(e.destination)
                 self._trans[v.number] = trans
             lev -= 1
                     
