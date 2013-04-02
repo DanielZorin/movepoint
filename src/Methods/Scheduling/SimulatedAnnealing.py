@@ -233,6 +233,16 @@ class SimulatedAnnealing(object):
         s1 = proc[src_pos]
         return s1, src_pos
 
+    def _getRandomPosition(self):
+        s = self.data.system.schedule
+        keys = [k for k in s.vertices.keys()]
+        m = random.randint(0, len(keys) - 1)
+        m = keys[m]
+        proc = s.vertices[m]
+        pos = random.randint(0, len(proc))
+        return s.GetProcessor(m), pos
+
+
     def IdleStrategy(self):
         s = self.data.system.schedule
         int = self.data.interpreter
@@ -261,38 +271,29 @@ class SimulatedAnnealing(object):
     def DelayStrategy(self):
         s = self.data.system.schedule
         int = self.data.interpreter
-        if len(int.delays) == 0:
-            keys = [m for m in s.vertices.keys()]
-            proc = s.vertices[keys[random.randint(0, len(s.vertices.keys())-1)]]
-            s1 = proc[random.randint(0, len(proc)-1)]
-        else:
-            s1 = int.delays[min(random.randint(0,self.choice_vertices), len(int.delays)-1)][0]
-        
-        src_pos = s.vertices[s1.m.number].index(s1)
-        if src_pos > 0:
-            src_pos -= 1
-            s1 = s.vertices[s1.m.number][src_pos]
-        ch = []
-        timelimit = int.endtimes[s1] - s1.m.GetTime(s1.v.time)
-        for s2 in int.endtimes.keys():
-            proc = s2.m
-            num = s.vertices[s2.m.number].index(s2) 
-            if int.endtimes[s2] - s2.m.GetTime(s2.v.time) < timelimit:
-                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, proc, num) == True:
-                    ch.append(s2)
-            if len(ch) == self.choice_places:
-                break
-        if len(ch) == 0:
-            return self._findVertexToMove()
-        else:
-            if len(ch) == 1:
-                s2 = ch[0]
+        i = 0
+        while True:
+            if len(int.delays) == 0:
+                yield self._findVertexToMove()
+                continue
+            if self.data.lastOperation.result == True:
+                i = 0
+            s1 = int.delays[i % len(int.idletimes)][0]
+            src_pos = s.vertices[s1.m.number].index(s1)
+            if src_pos > 0:
+                src_pos -= 1
+                s1 = s.vertices[s1.m.number][src_pos]
+            found = False
+            for i in range(len(s.program.vertices)):
+                target_proc, target_pos = self._getRandomPosition()
+                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                    found = True
+                    break
+            if found:
+                yield s1, src_pos, target_proc, target_pos
             else:
-                s2 = ch[random.randint(0, len(ch)-1)]
-            target_proc = s2.m
-            target_pos = s.vertices[s2.m.number].index(s2)
-
-        return s1, src_pos, target_proc, target_pos
+                yield self._findVertexToMove()
+            i += 1
 
     def _findVertexToMove(self):
         s = self.data.system.schedule
@@ -310,36 +311,11 @@ class SimulatedAnnealing(object):
         return s1, src_pos, target_proc, target_pos
 
     def MixedStrategy(self):
-        s = self.data.system.schedule
-        int = self.data.interpreter
-        # TODO: what should we do if there are no delays? Maybe stop the algorithm?
-        if len(int.delays) == 0:
-            return self._findVertexToMove()
+        r = random.random()
+        if r < 0.5:
+            return next(self.IdleStrategy())
         else:
-            s1 = int.delays[min(random.randint(0,self.choice_vertices), len(int.delays)-1)][0]
-        src_pos = s.vertices[s1.m.number].index(s1)
-        ch = []
-        if len(int.idletimes) == 0:
-            return self._findVertexToMove()
-        for d in int.idletimes:
-            # If the delay is zero, we mustn't move anything there
-            if d[1] == 0:
-                # TODO: change
-                pass
-            s2 = d[0]
-            if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, s.vertices[s2.m.number].index(s2)) == True:
-                ch.append(s2)
-            if len(ch) == self.choice_places:
-                break              
-        if len(ch) == 1:
-            s2 = ch[0]
-        elif len(ch) == 0:
-            return self._findVertexToMove()
-        else:
-            s2 = ch[random.randint(0, len(ch)-1)]
-        target_proc = s2.m
-        target_pos = s.vertices[s2.m.number].index(s2)
-        return s1, src_pos, target_proc, target_pos
+            return next(self.DelayStrategy())
 
     def DoMoveVertex(self):
         s = self.data.system.schedule
@@ -347,7 +323,7 @@ class SimulatedAnnealing(object):
         if self.strategies[1] == 2:
             s1, src_pos, target_proc, target_pos = self.MixedStrategy()
         elif self.strategies[1] == 1:
-            s1, src_pos, target_proc, target_pos = self.DelayStrategy()
+            s1, src_pos, target_proc, target_pos = next(self.DelayStrategy())
         else:
             s1, src_pos, target_proc, target_pos = next(self.IdleStrategy())
                     
