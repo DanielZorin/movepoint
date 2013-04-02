@@ -25,7 +25,7 @@ class SimulatedAnnealing(object):
     choice_places = 5
     ''' Maximum number of places among which the parameters for "MoveVertex" are chosen '''
     
-    strategies = [["Idle time reduction", "Delay reduction", "Mixed"], 0]
+    strategies = [["Idle time reduction", "Delay reduction", "Mixed"], 2]
     ''' Used strategies for MoveVertex and their probabilities '''
 
     threshold = [["Bolzmann", "Cauchy", "Combined"], 0]
@@ -207,16 +207,6 @@ class SimulatedAnnealing(object):
                         self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                         flag = False
                         break
-            if flag:
-                for m in s.vertices.keys():
-                    target_proc = s.GetProcessor(m)
-                    if target_proc != proc:
-                        target_pos = len(s.vertices[m])
-                        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
-                            s.MoveVertex(s1, src_pos, target_proc, target_pos)
-                            self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
-                            flag = False
-                            break
             src_pos -= 1
             if flag:
                 raise "Error"

@@ -75,8 +75,11 @@ class MultiOperation:
             res.Add(op.Reverse())
         return res
 
-    def Export(self):
+    def __str__(self):
         return "MultiOperation {\n" + ''.join([op.Export() for op in self.ops]) + "}\n"
+
+    def Export(self):
+        return str(self)
 
 class Replacement:
     def __init__(self, old, new):
