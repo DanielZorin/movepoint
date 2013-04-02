@@ -151,30 +151,37 @@ class Program(object):
             for e in self.FindAllEdges(v2=v):
                 res.append(e.source)
             self._dep[v.number] = res 
-            
-        for v in self.vertices:
-            cur = []
-            for v2 in self.vertices:
-                if self.FindEdge(v, v2):
-                    if not(v2 in cur):
-                        cur.append(v2)
-            new = []
-            while True:
-                for v1 in cur:
-                    if not(v1 in new):
-                        new.append(v1)
-                    for v2 in self.vertices:
-                        if self.FindEdge(v1, v2):
-                            if not(v2 in new):
-                                new.append(v2)
-                if new == cur:
-                    self._trans[v.number] = cur
-                    break
+        
+        levels = {}
+        leftverts = list(self.vertices)
+        verts = []
+        limit = len(self.vertices)
+        lev = 1
+        while len(leftverts) != 0:
+            curlev = []
+            newlv = []
+            for v in leftverts:
+                dep = self._dep[v.number]
+                cur = True
+                for v0 in dep:
+                    if (v0 in leftverts):
+                        cur = False
+                if cur:
+                    curlev.append(v)
+                    verts.append(v)
                 else:
-                    cur = []
-                    for v0 in new:
-                        cur.append(v0)
-                    new = []  
+                    newlv.append(v)
+            leftverts = newlv
+            levels[lev] = curlev
+            lev += 1
+        lev -= 1            
+        while lev > 0:
+            for v in levels[lev]:
+                trans = []
+                for e in self.FindAllEdges(v1=v):
+                    trans.extend(self._trans[e.destination.number])
+                self._trans[v.number] = trans
+            lev -= 1
                     
     def OrderedVertices(self):
         res = []
