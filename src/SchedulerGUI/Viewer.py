@@ -84,7 +84,10 @@ class Viewer(QMainWindow):
         self.ui.labelproc.setText(str(s["processors"]))
         print("=============")
         for int in self.method.interpreter.idletimes:
-            print (int[0].v.number, int[1])
+            print (int[0], int[1])
+        for int in self.method.interpreter.delays:
+            print(int[0].v.number, int[1])
+        print (self.method.system.schedule)
 
     def Scale(self, v):
         newscale = 1.5

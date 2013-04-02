@@ -199,9 +199,8 @@ class SimulatedAnnealing(object):
                     continue
             int = self.data.interpreter
             for num in int.idletimes:
-                s2 = num[0]
-                target_proc = s2.m
-                target_pos = s.vertices[s2.m.number].index(s2)
+                target_proc = num[0][0]
+                target_pos = num[0][1]
                 if target_proc != proc:
                     if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
                         s.MoveVertex(s1, src_pos, target_proc, target_pos)
@@ -244,13 +243,13 @@ class SimulatedAnnealing(object):
                 continue
             if self.data.lastOperation.result == True:
                 i = 0
-            s2 = int.idletimes[i % len(int.idletimes)][0]
-            target_proc = s2.m
-            target_pos = s.vertices[s2.m.number].index(s2)
+            pos = int.idletimes[i % len(int.idletimes)][0]
+            target_proc = pos[0]
+            target_pos = pos[1]
             found = False
             for i in range(len(s.program.vertices)):
                 s1, src_pos = self._getRandomVertex()
-                if (s2 != s1) and s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
                     found = True
                     break
             if found:
@@ -270,6 +269,9 @@ class SimulatedAnnealing(object):
             s1 = int.delays[min(random.randint(0,self.choice_vertices), len(int.delays)-1)][0]
         
         src_pos = s.vertices[s1.m.number].index(s1)
+        if src_pos > 0:
+            src_pos -= 1
+            s1 = s.vertices[s1.m.number][src_pos]
         ch = []
         timelimit = int.endtimes[s1] - s1.m.GetTime(s1.v.time)
         for s2 in int.endtimes.keys():
