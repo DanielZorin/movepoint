@@ -37,7 +37,7 @@ class SimulatedAnnealing(object):
     oldSchedule = None
     ''' Current approximation. A copy is saved here, and all changes are applied to the original '''
     
-    writeLog = False
+    writeLog = True
 
     def __init__(self, data):
         self.data = data
@@ -198,16 +198,20 @@ class SimulatedAnnealing(object):
                     src_pos -= 1
                     continue
             int = self.data.interpreter
-            for num in int.idletimes:
-                target_proc = num[0][0]
-                target_pos = num[0][1]
-                if target_proc != proc:
-                    if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
-                        s.MoveVertex(s1, src_pos, target_proc, target_pos)
-                        self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
-                        flag = False
-                        break
-            src_pos -= 1
+            procs = [m for m in s.vertices.keys() if m != proc.number]
+            for m in procs:
+                for v in range(len(s.vertices[m]) + 1):
+                    target_proc = s.GetProcessor(m)
+                    target_pos = v
+                    if target_proc != proc:
+                        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                            s.MoveVertex(s1, src_pos, target_proc, target_pos)
+                            self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
+                            flag = False
+                            src_pos -= 1
+                            break
+                if not flag:
+                    break
             if flag:
                 raise "Error"
                 break
@@ -232,8 +236,8 @@ class SimulatedAnnealing(object):
         pos = random.randint(0, len(proc))
         return s.GetProcessor(m), pos
 
-
     def IdleStrategy(self):
+        print("idle")
         s = self.data.system.schedule
         int = self.data.interpreter
         i = 0
@@ -250,15 +254,18 @@ class SimulatedAnnealing(object):
             for i in range(len(s.program.vertices)):
                 s1, src_pos = self._getRandomVertex()
                 if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                    print ("found the last")
                     found = True
                     break
             if found:
                 yield s1, src_pos, target_proc, target_pos
             else:
+                print ("yielding random")
                 yield self._findVertexToMove()
             i += 1
 
     def DelayStrategy(self):
+        print("delay")
         s = self.data.system.schedule
         int = self.data.interpreter
         i = 0
@@ -277,11 +284,13 @@ class SimulatedAnnealing(object):
             for i in range(len(s.program.vertices)):
                 target_proc, target_pos = self._getRandomPosition()
                 if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                    print ("found last")
                     found = True
                     break
             if found:
                 yield s1, src_pos, target_proc, target_pos
             else:
+                print ("yielding random")
                 yield self._findVertexToMove()
             i += 1
 
@@ -398,3 +407,5 @@ class SimulatedAnnealing(object):
             accept()
         else:
             checkThreshold()
+
+

@@ -211,9 +211,17 @@ class SimpleInterpreter:
             # TODO: this is an old workaround used for debugging. Beware.
             if time > 10000:
                 print(schedule)
+                for v in schedule.program.vertices:
+                    print (v.number, " trans ", [v0.number for v0 in schedule.program._trans[v.number]])
+                print(schedule.program)
+                for m in self.executionTimes.keys():
+                    print(m.v.number, self.executionTimes[m])
+                print (working)
                 print( "Can't calculate time. Possibly an infinite loop occurred")
                 import sys
-                sys.exit(-1)
+                x = 0
+                y = 2/x
+                #sys.exit(-1)
         
         for v in self.idletimes:
             if len(schedule.vertices[v[0][0].number]) == v[0][1]:
