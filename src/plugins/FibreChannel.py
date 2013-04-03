@@ -147,6 +147,9 @@ class FibreChannelInterpreter:
                         sortedTasks[m] = sortedTasks[m][1:]
                         if len(sortedTasks[m]) == 0:
                             working[m] = ["ready"]
+                            target_proc = schedule.GetProcessor(m)
+                            target_pos = len(schedule.vertices[m])
+                            self.idletimes.append([[target_proc, target_pos], time])
                         else:
                             if CheckReady(sortedTasks[m][0]):
                                 working[m] = ["working", proc.GetTime(sortedTasks[m][0].Task().time)]
@@ -159,7 +162,9 @@ class FibreChannelInterpreter:
                     if CheckReady(sortedTasks[m][0]):
                         working[m] = ["working", proc.GetTime(sortedTasks[m][0].Task().time)]
                         self.executionTimes[sortedTasks[m][0]] = (time, time + proc.GetTime(sortedTasks[m][0].Task().time))
-                        self.idletimes.append([sortedTasks[m][0],delays[sortedTasks[m][0]] + 1])
+                        target_proc = schedule.GetProcessor(m)
+                        target_pos = schedule.vertices[m].index(sortedTasks[m][0])
+                        self.idletimes.append([[target_proc, target_pos], delays[sortedTasks[m][0]] + 1])
                     else:
                         working[m] = ["waiting"]
                         delays[sortedTasks[m][0]] += 1
@@ -196,7 +201,10 @@ class FibreChannelInterpreter:
                 print(self)
                 raise "Can't calculate time. Possibly an infinite loop occurred"
         
-        self.idletimes = sorted(self.idletimes, key=lambda x: x[1])
+        for v in self.idletimes:
+            if len(schedule.vertices[v[0][0].number]) == v[0][1]:
+                v[1] = time - v[1] + 1
+        self.idletimes = sorted(self.idletimes, key=lambda x: -x[1])
         # Calculate waiting time for each task
         for m in schedule.processors:
             for v in schedule.vertices[m.number]:
@@ -207,7 +215,7 @@ class FibreChannelInterpreter:
                     if start - endTimes[v0] > tmp:
                         tmp = start - endTimes[v0]
                 self.delays.append([v, tmp])
-        self.delays = sorted(self.delays, key=lambda x: x[1])
+        self.delays = sorted(self.delays, key=lambda x: -x[1])
         self.endtimes = endTimes
         return time
 

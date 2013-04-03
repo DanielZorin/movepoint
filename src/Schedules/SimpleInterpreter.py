@@ -111,11 +111,7 @@ class SimpleInterpreter:
         
         for proc in schedule.processors:
             m = proc.number
-            try:
-                sortedTasks[m] = [v for v in schedule.vertices[m]]
-            except:
-                print(schedule)
-                xxx = 9
+            sortedTasks[m] = [v for v in schedule.vertices[m]]
             working[m] = None
             if len(sortedTasks[m]) > 0:
                 first = sortedTasks[m][0]
@@ -130,9 +126,6 @@ class SimpleInterpreter:
                 working[m] = ["ready"]
         while True:
             time += 1
-
-            if time > 1000:
-                xxx = 999
             
             # Advance all deliveries
             deliv2 = []
@@ -219,9 +212,7 @@ class SimpleInterpreter:
                 print (working)
                 print( "Can't calculate time. Possibly an infinite loop occurred")
                 import sys
-                x = 0
-                y = 2/x
-                #sys.exit(-1)
+                sys.exit(-1)
         
         for v in self.idletimes:
             if len(schedule.vertices[v[0][0].number]) == v[0][1]:
