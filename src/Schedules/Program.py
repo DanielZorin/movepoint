@@ -115,10 +115,12 @@ class Program(object):
 
     def AddVertex(self, v):
         self.vertices.append(v)
+        # TODO: simplify
         self._buildData()
 
     def AddEdge(self, e):
         self.edges.append(e)
+        #TODO: simplify
         self._buildData()
 
     def DeleteVertex(self, v):
@@ -180,11 +182,11 @@ class Program(object):
                 edges = self.FindAllEdges(v1=v)
                 trans = []
                 for e in edges:
-                    trans.extend(self._trans[e.destination.number])
+                    trans += self._trans[e.destination.number]
                     trans.append(e.destination)
-                self._trans[v.number] = trans
+                self._trans[v.number] = sorted(list(set(trans)), key=lambda x: x.number)
             lev -= 1
-                    
+          
     def OrderedVertices(self):
         res = []
         for v in self.vertices:
