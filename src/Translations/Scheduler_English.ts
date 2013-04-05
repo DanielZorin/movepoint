@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="en_US" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="en_US">
 <context>
     <name>AlgorithmSettings</name>
     <message>
@@ -201,7 +202,7 @@
     <message>
         <location filename="Windows/ui_GraphEditor.py" line="118"/>
         <source>Generate</source>
-        <translation type="unfinished"></translation>
+        <translation>Generate</translation>
     </message>
 </context>
 <context>
@@ -512,27 +513,27 @@
         <translation>Open Project...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="358"/>
+        <location filename="MainWindow.py" line="361"/>
         <source>An error occured</source>
         <translation>An error occured</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="191"/>
+        <location filename="MainWindow.py" line="194"/>
         <source>File is not a valid project file: </source>
         <translation>File is not a valid project file: </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="289"/>
+        <location filename="MainWindow.py" line="292"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="292"/>
+        <location filename="MainWindow.py" line="295"/>
         <source>Task </source>
         <translation>Task </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="292"/>
+        <location filename="MainWindow.py" line="295"/>
         <source> is in a cycle</source>
         <translation> is in a cycle</translation>
     </message>
@@ -607,12 +608,12 @@
         <translation>Time Computation Parameters...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="432"/>
+        <location filename="MainWindow.py" line="435"/>
         <source>Warning!</source>
         <translation>Warning!</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="432"/>
+        <location filename="MainWindow.py" line="435"/>
         <source>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</source>
         <translation>This will reset the algorithm. All schedules will be lost. Are you sure you want to continue?</translation>
     </message>
@@ -829,21 +830,106 @@
         <translation type="obsolete">Channel speed</translation>
     </message>
     <message>
-        <location filename="../Schedules/SimpleInterpreter.py" line="237"/>
+        <location filename="../Schedules/SimpleInterpreter.py" line="244"/>
         <source>Channel bandwidth</source>
         <translation>Channel bandwidth</translation>
     </message>
     <message>
-        <location filename="../Schedules/SimpleInterpreter.py" line="238"/>
+        <location filename="../Schedules/SimpleInterpreter.py" line="245"/>
         <source>Delay</source>
         <translation>Delay</translation>
     </message>
     <message>
-        <location filename="../plugins/FibreChannel.py" line="222"/>
+        <location filename="../plugins/FibreChannel.py" line="233"/>
         <source>Number of available channels
  (put 0 to make it unlimited)</source>
         <translation>Number of available channels
  (put 0 to make it unlimited)</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="110"/>
+        <source>Frequency (B)</source>
+        <translation>Frequency (B)</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="111"/>
+        <source>Kotelnikov coefficient (a)</source>
+        <translation>Kotelnikov coefficient (a)</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="112"/>
+        <source>Array size (K) </source>
+        <translation>Array size (K) </translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="115"/>
+        <source>BCM steps</source>
+        <translation>BCM steps</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="116"/>
+        <source>Sample size (n)</source>
+        <translation>Sample size (n)</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="119"/>
+        <source>Reliability</source>
+        <translation type="obsolete">Reliability</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Random.py" line="95"/>
+        <source>Number of vertices</source>
+        <translation>Number of vertices</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Random.py" line="96"/>
+        <source>t1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../plugins/Random.py" line="97"/>
+        <source>t2</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../plugins/Random.py" line="98"/>
+        <source>v1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../plugins/Random.py" line="99"/>
+        <source>v2</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../plugins/Random.py" line="100"/>
+        <source>tdir</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../plugins/Random.py" line="101"/>
+        <source>rdir</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="113"/>
+        <source>Solution size (L)</source>
+        <translation>Solution size (L)</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="114"/>
+        <source>Number of support vectors (M-theta)</source>
+        <translation>Number of support vectors (M-theta)</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="117"/>
+        <source>Processor performance</source>
+        <translation>Processor performance</translation>
+    </message>
+    <message>
+        <location filename="../plugins/Antenna.py" line="118"/>
+        <source>Processor reliability</source>
+        <translation>Processor reliability</translation>
     </message>
 </context>
 <context>
