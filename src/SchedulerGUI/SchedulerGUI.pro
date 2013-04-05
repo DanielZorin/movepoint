@@ -1,5 +1,8 @@
 SOURCES = MainWindow.py \
 AlgorithmSettings.py \
+..\plugins\Antenna.py \
+..\plugins\Random.py \
+..\plugins\IdealProgram.py \
 ..\plugins\FibreChannel.py \
 ..\plugins\Bus.py \
 ..\Schedules\SimpleInterpreter.py \

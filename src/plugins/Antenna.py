@@ -110,13 +110,12 @@ class AntennaGenerator:
                 [self.tr("Frequency (B)"), self.parent.B],
                 [self.tr("Kotelnikov coefficient (a)"), self.parent.a],
                 [self.tr("Array size (K) "), self.parent.K],
-                [self.tr("L"), self.parent.L],
-                [self.tr("M-theta"), self.parent.Mtheta],
+                [self.tr("Solution size (L)"), self.parent.L],
+                [self.tr("Number of support vectors (M-theta)"), self.parent.Mtheta],
                 [self.tr("BCM steps"), self.parent.steps],
                 [self.tr("Sample size (n)"), self.parent.n],
-                [self.tr("Performance"), self.parent.perf],
-                [self.tr("Bandwidth"), self.parent.bandwidth],
-                [self.tr("Reliability"), self.parent.rel],
+                [self.tr("Processor performance"), self.parent.perf],
+                [self.tr("Processor reliability"), self.parent.rel],
                         ]
         t = Translator(self)
         return t.getTranslatedSettings()
@@ -130,8 +129,7 @@ class AntennaGenerator:
         self.steps = dict[5][1]
         self.n = dict[6][1]
         self.perf = dict[7][1]
-        self.bandwidth = dict[8][1]
-        self.rel = dict[9][1]
+        self.rel = dict[8][1]
 
 def pluginMain():
     return AntennaGenerator
