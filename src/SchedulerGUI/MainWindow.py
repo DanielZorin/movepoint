@@ -6,7 +6,6 @@ from SchedulerGUI.Project import Project
 from SchedulerGUI.NewProjectDialog import NewProjectDialog
 from SchedulerGUI.SettingsDialog import SettingsDialog
 from SchedulerGUI.PreferencesDialog import PreferencesDialog
-from SchedulerGUI.RandomSystemDialog import RandomSystemDialog
 from SchedulerGUI.Viewer import Viewer
 from SchedulerGUI.GraphEditor import GraphEditor
 from Schedules.Exceptions import SchedulerException
@@ -455,15 +454,7 @@ class MainWindow(QMainWindow):
                 self.currentLanguage = selected
                 self.settings.setValue("language", self.currentLanguage)
                 self.Translate(selected)
-               
-    def GenerateRandomSystem(self):
-        d = RandomSystemDialog()
-        d.exec_()
-        if d.result() == QDialog.Accepted:
-            params = d.GetResult()
-            self.project.GenerateRandomSystem(params)
-            self.loadSchedule()
-    
+
     def Translate(self, lang):
         # TODO: add all strings from various files
         translator = QTranslator(qApp)
@@ -504,5 +495,4 @@ class MainWindow(QMainWindow):
 
     def Exit(self):
         #Quits program
-        self.writeIniFile()
         sys.exit(0)
