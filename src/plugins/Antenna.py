@@ -112,7 +112,6 @@ class AntennaGenerator:
                 [self.tr("Array size (K) "), self.parent.K],
                 [self.tr("Solution size (L)"), self.parent.L],
                 [self.tr("Number of support vectors (M-theta)"), self.parent.Mtheta],
-                [self.tr("BCM steps"), self.parent.steps],
                 [self.tr("Sample size (n)"), self.parent.n],
                 [self.tr("Processor performance"), self.parent.perf],
                 [self.tr("Processor reliability"), self.parent.rel],
@@ -126,10 +125,9 @@ class AntennaGenerator:
         self.K = dict[2][1]
         self.L = dict[3][1]
         self.Mtheta = dict[4][1]
-        self.steps = dict[5][1]
-        self.n = dict[6][1]
-        self.perf = dict[7][1]
-        self.rel = dict[8][1]
+        self.n = dict[5][1]
+        self.perf = dict[6][1]
+        self.rel = dict[7][1]
 
 def pluginMain():
     return AntennaGenerator
