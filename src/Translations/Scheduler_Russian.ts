@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="ru_RU" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>AlgorithmSettings</name>
     <message>
@@ -893,7 +894,7 @@
     <message>
         <location filename="../plugins/Antenna.py" line="113"/>
         <source>Solution size (L)</source>
-        <translation>Размерность решения (L)</translation>
+        <translation>Число частотных составляющих (L)</translation>
     </message>
     <message>
         <location filename="../plugins/Antenna.py" line="114"/>

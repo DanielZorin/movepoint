@@ -102,6 +102,7 @@ class MainWindow(QMainWindow):
         for p in self.recentfiles:
             if p[1] == item.text():
                 name = p[0]
+                self.LoadMainWindow()
                 self.project = Project()
                 try:
                     self.project.Deserialize(name)
@@ -113,7 +114,6 @@ class MainWindow(QMainWindow):
                     for p in self.recentfiles:
                         self.ui.recent.addItem(p[1])
                     return
-                self.LoadMainWindow()
                 self.projectFile = name
                 self.setupProject()
                 self.loadProjectSettings()
