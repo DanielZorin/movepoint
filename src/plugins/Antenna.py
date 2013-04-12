@@ -107,13 +107,13 @@ class AntennaGenerator:
                 self.parent = parent
             def getTranslatedSettings(self):
                 return [
-                [self.tr("Frequency (B)"), self.parent.B],
-                [self.tr("Kotelnikov coefficient (a)"), self.parent.a],
-                [self.tr("Array size (K) "), self.parent.K],
-                [self.tr("Solution size (L)"), self.parent.L],
-                [self.tr("Number of support vectors (M-theta)"), self.parent.Mtheta],
-                [self.tr("Sample size (n)"), self.parent.n],
-                [self.tr("Processor performance"), self.parent.perf],
+                [self.tr("Frequency (Hz)"), self.parent.B],
+                [self.tr("Kotelnikov coefficient"), self.parent.a],
+                [self.tr("Array size"), self.parent.K],
+                [self.tr("Number of frequency components"), self.parent.L],
+                [self.tr("Number of support vectors"), self.parent.Mtheta],
+                [self.tr("Sample size"), self.parent.n],
+                [self.tr("Processor performance (flops)"), self.parent.perf],
                 [self.tr("Processor reliability"), self.parent.rel],
                         ]
         t = Translator(self)
