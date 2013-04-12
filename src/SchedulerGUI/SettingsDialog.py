@@ -14,7 +14,8 @@ class SettingsDialog(QDialog):
     def __init__(self, config, parent):
         QDialog.__init__(self)
         self.setStyleSheet(parent.styleSheet())
-        self.setWindowTitle("Method Settings")
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint | Qt.CustomizeWindowHint)
+        self.setWindowTitle(" ")
         self.data = config             
         self.ui = {}
         self.area = QScrollArea()
