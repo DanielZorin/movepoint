@@ -113,7 +113,7 @@ class AntennaGenerator:
                 [self.tr("Number of frequency components"), self.parent.L],
                 [self.tr("Number of support vectors"), self.parent.Mtheta],
                 [self.tr("Sample size"), self.parent.n],
-                [self.tr("Processor performance (flops)"), self.parent.perf],
+                [self.tr("Processor performance (GFLOPS)"), self.parent.perf],
                 [self.tr("Processor reliability"), self.parent.rel],
                         ]
         t = Translator(self)
