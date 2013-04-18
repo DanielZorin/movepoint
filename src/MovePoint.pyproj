@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{74733d23-9d25-4715-ac74-dbbc01fac17a}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>SchedulerGUI-launch.py</StartupFile>
+    <StartupFile>test.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -63,6 +63,7 @@
     <Compile Include="plugins\Random.py" />
     <Compile Include="plugins\__init__.py" />
     <Compile Include="SchedulerGUI\AlgorithmSettings.py" />
+    <Compile Include="Schedules\Metrics.py" />
     <Compile Include="Schedules\SimpleInterpreter.py" />
     <Compile Include="SRGMGUI-launch.py" />
     <Compile Include="Strategies.py" />
