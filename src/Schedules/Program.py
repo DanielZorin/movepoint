@@ -27,6 +27,7 @@ class Program(object):
     
     _dep = {}
     _trans = {}
+    _next = {}
 
     def __init__(self, filename=""):
         self.vertices = []
@@ -153,6 +154,8 @@ class Program(object):
             for e in self.FindAllEdges(v2=v):
                 res.append(e.source)
             self._dep[v.number] = res 
+
+            self._next[v.number] = self.FindAllEdges(v1=v)
         
         levels = {}
         leftverts = list(self.vertices)
