@@ -192,6 +192,12 @@ class Schedule(object):
         for v in self.program._dep[s.v.number]:
             dep += self.currentVersions[v.number]
         return dep
+
+    def _next(self, s):
+        dep = {}
+        for e in self.program._next[s.v.number]:
+            dep[e] = self.currentVersions[e.destination.number]
+        return dep
     
     def _trans(self, s):
         trans = []

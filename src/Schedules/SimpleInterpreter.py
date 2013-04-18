@@ -18,49 +18,74 @@ class SimpleInterpreter:
         return "Default"
 
     # This implementation used to work but is buggy now
-    '''
-    def Interpret(self, schedule):
-        def FindReadyTask(l, parsed):
-            for s in l:
-                b = True
-                for v in self._dep(s):
-                    if not (v in parsed):
-                        b = False
-                if s.n > 1:
-                    if not (self.vertices[s.m.number][s.n-2] in parsed):
-                        b = False
-                if b:
-                    return s
-            raise "FindReadyTask: Error"
-        
-        return 0
-        parsed = []
-        notparsed = []
-        for v in self.vertices.values():
-            notparsed += v
-        timestamps = {}
-        while notparsed != []:
-            s = FindReadyTask(notparsed, parsed)
-            parsed.append(s)
-            del notparsed[notparsed.index(s)]
-            curtime = s.Processor().GetTime(s.Task().time)
-            # First task starts at 0, others start when the previous one ends
-            if s.n == 1:
-                max = 0
-            else:
-                max = timestamps[self.vertices[s.m.number][s.n-2]]
-            for prev in self._dep(s):
-                e = self.program.FindEdge(prev.v, s.v)
-                tmp = timestamps[prev] + prev.Processor().GetDeliveryTime(s.Processor(), e.volume)
-                if tmp > max:
-                    max = tmp
-            timestamps[s] = max + curtime
-        max = 0
-        for v in timestamps.values():
-            if v > max:
-                max = v       
-        return max
-        '''
+    
+    def Interpret2(self, schedule):
+        sc = schedule
+        allverts = []
+        verts = {}
+        for m in sc.vertices.keys():
+            allverts.extend(sc.vertices[m])
+            verts[m] = list(sc.vertices[m])
+        limit = len(allverts)
+        levels = {}
+        lev = 0
+        parsed = 0
+        donetasks = []
+        while parsed < limit:
+            curlev = []
+            for m in [v for v in verts.keys()]:
+                ok = True
+                for v0 in schedule._dep(verts[m][0]):
+                    if not (v0 in donetasks):
+                        ok = False
+                        break
+                if ok:
+                    curlev.append(verts[m][0])
+                    parsed += 1
+                    verts[m] = verts[m][1:]
+                    if verts[m] == []:
+                        del verts[m]
+            donetasks.extend(curlev)
+            levels[lev] = curlev
+            lev += 1
+        #for v in levels.keys():
+        #    print(v, [s.v.number for s in levels[v]])
+        proctime = {}
+        verts = {}
+        incoming = {}
+        for m in sc.vertices.keys():
+            proctime[m] = 0
+            verts[m] = list(sc.vertices[m])
+            incoming[m] = []
+
+        for i in range(lev):
+            tasks = levels[i]
+            for t in tasks:
+                inc = [v for v in incoming[t.m] if v[0].destination == t.v]
+                begin = proctime[t.m]
+                for e in inc:
+                    if e[1][3] > begin:
+                        begin = e[1][3]
+                end = begin + t.m.GetTime(t.Task().time)
+                proctime[t.m] = end
+                self.executionTimes[t] = (begin, end)
+            newdels = []
+            for t in tasks:
+                nxt = sc._next(t)
+                for e in nxt.keys():
+                    for other in nxt[e]:
+                        if other.m != t.m:
+                            begin = self.executionTimes[t][1]
+                            end = begin + t.m.GetDeliveryTime(other.m, e.volume) * self.bandwidth + self.delay
+                            newd = (t.m, other.m, begin, end)
+                            newdels.append(newd)
+                            incoming[other.m].append((e, newd))
+            self.deliveryTimes.extend(newdels)
+        time = 0
+        for m in proctime.keys():
+            if proctime[m] > time:
+                time = proctime[m]
+        return time
 
     def Interpret(self, schedule):
         ''' Returns the time of schedule execution assuming that each processor supports
