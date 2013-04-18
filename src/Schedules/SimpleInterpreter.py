@@ -1,7 +1,6 @@
 class SimpleInterpreter:
     idletimes = []
     delays = []
-    endtimes = []
     
     # These arrays are filled during the interpretation.
     # This data is used for fast drawing of the schedule in GUI.
@@ -17,10 +16,12 @@ class SimpleInterpreter:
     def GetName(self):
         return "Default"
 
-    # This implementation used to work but is buggy now
-    
-    def Interpret2(self, schedule):
+    def Interpret(self, schedule):
         sc = schedule
+        self.idletimes = []
+        self.delays = []
+        self.executionTimes = {}
+        self.deliveryTimes = []
         allverts = []
         verts = {}
         for m in sc.vertices.keys():
@@ -48,8 +49,7 @@ class SimpleInterpreter:
             donetasks.extend(curlev)
             levels[lev] = curlev
             lev += 1
-        #for v in levels.keys():
-        #    print(v, [s.v.number for s in levels[v]])
+
         proctime = {}
         verts = {}
         incoming = {}
@@ -81,13 +81,40 @@ class SimpleInterpreter:
                             newdels.append(newd)
                             incoming[other.m].append((e, newd))
             self.deliveryTimes.extend(newdels)
+        
         time = 0
         for m in proctime.keys():
             if proctime[m] > time:
                 time = proctime[m]
+
+        for m in sc.processors:
+            pos = 0
+            for v in sc.vertices[m.number]:
+                start = self.executionTimes[v][0]
+                dep = sc._dep(v)
+                tmp = 0
+                for v0 in dep:
+                    end = self.executionTimes[v0][1]
+                    if start - end > tmp:
+                        tmp = start - end
+                self.delays.append([v, tmp])
+
+                if pos == 0:
+                    idle = start
+                else:
+                    idle = start - self.executionTimes[sc.vertices[m.number][pos-1]][1]
+                if idle > 0:
+                    self.idletimes.append([[m, pos], idle])
+                pos += 1
+            idle = time - self.executionTimes[sc.vertices[m][-1]][1]
+            if idle > 0:
+                self.idletimes.append([[m, pos], idle])
+        self.idletimes = sorted(self.idletimes, key=lambda x: -x[1])
+        self.delays = sorted(self.delays, key=lambda x: -x[1])
         return time
 
-    def Interpret(self, schedule):
+    # This implementation is much slower
+    def Interpret2(self, schedule):
         ''' Returns the time of schedule execution assuming that each processor supports
         only one sending/receiving operation at a time. If one of the processors is busy, the delivery
         is added to the queue and is initiated only when both processors become available.'''
