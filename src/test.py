@@ -2,14 +2,16 @@ from Schedules.System import *
 from Schedules.SimpleInterpreter import *
 from SchedulerGUI.Project import Project
 from plugins.Random import *
+from Schedules.Metrics import HMetric
 import time
 
 s = System("program.xml")
 gen = RandomProgramGenerator()
-gen.n = 1000
+gen.n = 100
 gen.Generate(s)
 int = SimpleInterpreter()
 s.schedule.SetToDefault()
+print (HMetric(s.schedule, s.schedule))
 t0 = time.clock()
 x0 = int.Interpret(s.schedule)
 print(x0, time.clock() - t0)
