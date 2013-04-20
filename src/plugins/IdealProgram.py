@@ -8,6 +8,7 @@ import random
 class IdealProgramGenerator:
     vertices = 20
     processors = 4
+    edges = 0.5
 
     def __init__(self):
         pass
@@ -38,8 +39,8 @@ class IdealProgramGenerator:
         verts = []
         for i in range(self.processors):
             lst = []
-            for j in range(count[i]):
-                lst.append(random.randint(1, 10))
+            for j in range(count[i] - 1):
+                lst.append(random.randint(2, 10))
             lst.append(tdir - sum(lst) - random.randint(0, 3))
             if lst[-1] < 0:
                 while lst[-1] < 2:
@@ -59,7 +60,7 @@ class IdealProgramGenerator:
         for v in s.program.vertices:
             ver = Version(v, 1, 1.0)
             v.versions.append(ver)
-        edges = self.vertices
+        edges = int(self.vertices * self.edges)
         total = 0
         while total < edges:
             i = random.randint(0, len(verts) - 1)
@@ -91,7 +92,8 @@ class IdealProgramGenerator:
             def getTranslatedSettings(self):
                 return [
                 [self.tr("Vertices"), self.parent.vertices],
-                [self.tr("Processors"), self.parent.processors]
+                [self.tr("Processors"), self.parent.processors],
+                [self.tr("Edges/vertices rate"), self.parent.edges]
                         ]
         t = Translator(self)
         return t.getTranslatedSettings()
@@ -100,6 +102,7 @@ class IdealProgramGenerator:
         # importing here to allow using the class without Qt
         self.vertices = dict[0][1]
         self.processors = dict[1][1]
+        self.edges = dict[2][1]
 
 def pluginMain():
     return IdealProgramGenerator
