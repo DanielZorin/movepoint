@@ -271,7 +271,7 @@ class SimulatedAnnealing(object):
                 continue
             if self.data.lastOperation.result == True:
                 i = 0
-            s1 = int.delays[i % len(int.idletimes)][0]
+            s1 = int.delays[i % len(int.delays)][0]
             src_pos = s.vertices[s1.m.number].index(s1)
             if src_pos > 0:
                 src_pos -= 1
