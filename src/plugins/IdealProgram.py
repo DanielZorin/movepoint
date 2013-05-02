@@ -1,6 +1,7 @@
 from Schedules.System import *
 from Schedules.ProgramVertex import ProgramVertex
 from Schedules.ProgramEdge import ProgramEdge
+from Schedules.Schedule import *
 from Core.Version import *
 from Core.Processor import *
 import random
@@ -8,7 +9,7 @@ import random
 class IdealProgramGenerator:
     vertices = 20
     processors = 4
-    edges = 0.5
+    edges = 0.99
 
     def __init__(self):
         pass
@@ -22,6 +23,9 @@ class IdealProgramGenerator:
     def Generate(self, s):
         s.program.vertices = []
         s.program.edges = []
+        ideal = Schedule(s.program, s.processors)
+        ideal.vertices = {}
+        ideal.processors = []
 
         tdir = int(self.vertices * 5 / self.processors)
         avg = int(self.vertices / self.processors)
@@ -50,19 +54,36 @@ class IdealProgramGenerator:
                         lst[-1] += 1
             print (i, lst)
             summ = 0
+            proc = ideal._getProcessor()
+            ideal.vertices[proc.number] = []
             for j in lst:
                 v = ProgramVertex(total, j)
+                ver = Version(v, 1, 1.0)
+                v.versions.append(ver)
                 s.program.vertices.append(v)
                 total += 1
                 verts.append((v, i, summ, summ + v.time))
                 summ += v.time
+                ideal.vertices[proc.number].append(ScheduleVertex(v, ver, proc))
 
-        for v in s.program.vertices:
-            ver = Version(v, 1, 1.0)
-            v.versions.append(ver)
         edges = int(self.vertices * self.edges)
         total = 0
         while total < edges:
+            r = random.random()
+            if r > 0.6:
+                i = random.randint(1, self.processors)
+                proc = ideal.vertices[i]
+                if len(proc) > 1:
+                    start = random.randint(0, len(proc) - 2)
+                    v1 = proc[start].v
+                    v2 = proc[random.randint(start + 1, len(proc) - 1)].v
+                    vol = random.randint(1, 10)
+                    e = ProgramEdge(v1, v2, vol)
+                    if s.program.FindEdge(v1, v2) == None:
+                        s.program.edges.append(e)
+                        print(v1.number, v2.number)
+                        total += 1
+                continue
             i = random.randint(0, len(verts) - 1)
             j = random.randint(0, self.processors - 1)
             if j == verts[i][1]:
