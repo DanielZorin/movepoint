@@ -19,15 +19,15 @@ p = Project("program.xml", "temperature test")
 for i in range(1, 160):
     for j in range(1, 100):
         for s in [0, 1, 2]:
-            #try:
-            run(p, i * 5, j, s)
-            while p.method.trace.getCurrent()[1]["processors"] != p.method.trace.getBest()[1]["processors"]:
-                p.method.ScrollTrace(-1)
-            iter = p.method.trace.current
-            proc = p.method.trace.getBest()[1]["processors"]
-            #except:
-            #    iter = -1
-            #    proc = -1
+            try:
+                run(p, i * 5, j, s)
+                while p.method.trace.getCurrent()[1]["processors"] != p.method.trace.getBest()[1]["processors"]:
+                    p.method.ScrollTrace(-1)
+                iter = p.method.trace.current
+                proc = p.method.trace.getBest()[1]["processors"]
+            except:
+                iter = -1
+                proc = -1
             f = open("final_results.txt", "a")
             f.write(str(i * 5) + ";" + str(j) + ";" + str(s) + ";" + str(proc) + ";" + str(iter) + "\n")
             f.close()
