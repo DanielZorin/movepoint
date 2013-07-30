@@ -387,22 +387,23 @@ def HMetric(s1, s2):
         for m2 in s2.vertices.keys():
             str1 = []
             str2 = []
-            verts1 = s1.vertices[m1]
-            verts2 = s2.vertices[m2]
+            verts1 = [(v.v.number, v.k.number) for v in s1.vertices[m1]]
+            verts2 = [(v.v.number, v.k.number) for v in s2.vertices[m2]]
             uniq1 = 0
             uniq2 = 0
             for v in verts1:
                 if v in verts2:
-                    str1.append((v.v.number, v.k.number))
+                    str1.append(v)
                 else:
                     uniq1 += 1
             for v in verts2:
                 if v in verts1:
-                    str2.append((v.v.number, v.k.number))
+                    str2.append(v)
                 else:
                     uniq2 += 1
             lcs = len(str1) - LCSLength(str1, str2)
             matrix[i][j] = lcs + uniq2
+            print(matrix)
             j += 1
         i += 1
     m = Munkres()
