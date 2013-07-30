@@ -74,7 +74,7 @@ class MethodWrapper(object):
             if (self.trace.getLast()[1]["processors"] == 1) and \
                 (self.trace.getLast()[1]["time"]  <= self.system.tdir) and \
                 (self.trace.getLast()[1]["reliability"]  >= self.system.rdir):
-                self.write("Early end: ", self.iteration)
+                #self.write("Early end: ", self.iteration)
                 return  
         return    
             

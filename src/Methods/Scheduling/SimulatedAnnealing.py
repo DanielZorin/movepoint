@@ -158,7 +158,7 @@ class SimulatedAnnealing(object):
     def CutProcessor(self):
         s = self.data.system.schedule
         mini = len(s.program.vertices)
-        proc = None
+        proc = s.processors[0]
         for m in s.processors:
             f = len(s.vertices[m.number])
             if f < mini:
