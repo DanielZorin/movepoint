@@ -276,7 +276,7 @@ class Munkres:
 
     def __find_smallest(self):
         """Find the smallest uncovered value in the matrix."""
-        minval = sys.maxint
+        minval = sys.maxsize
         for i in range(self.n):
             for j in range(self.n):
                 if (not self.row_covered[i]) and (not self.col_covered[j]):
@@ -380,7 +380,7 @@ def LCSLength(str1, str2):
 
 def HMetric(s1, s2):
     ''' Calculates H-Metric between two schedules'''
-    matrix = [[0 for m1 in s1.vertices.keys()] for m2 in s2.vertices.keys()]
+    matrix = [[0 for m1 in s2.vertices.keys()] for m2 in s1.vertices.keys()]
     i = 0
     for m1 in s1.vertices.keys():
         j = 0
