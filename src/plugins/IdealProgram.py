@@ -9,7 +9,7 @@ import random
 class IdealProgramGenerator:
     vertices = 20
     processors = 4
-    edges = 0.99
+    edges = 0.75
 
     def __init__(self):
         pass
@@ -52,7 +52,7 @@ class IdealProgramGenerator:
                     if lst[r] > 1:
                         lst[r] -= 1
                         lst[-1] += 1
-            print (i, lst)
+            #print (i, lst)
             summ = 0
             proc = ideal._getProcessor()
             ideal.vertices[proc.number] = []
@@ -81,7 +81,7 @@ class IdealProgramGenerator:
                     e = ProgramEdge(v1, v2, vol)
                     if s.program.FindEdge(v1, v2) == None:
                         s.program.edges.append(e)
-                        print(v1.number, v2.number)
+                        #print(v1.number, v2.number)
                         total += 1
                 continue
             i = random.randint(0, len(verts) - 1)
@@ -99,9 +99,9 @@ class IdealProgramGenerator:
                             s.program.edges.append(e)
                             total += 1
         s.program._buildData()
-        s.tdir = tdir
+        s.tdir = tdir * 1.5
         s.rdir = 0.0
-        return None
+        return ideal
 
     def GetSettings(self):
         # importing here to allow using the class without Qt

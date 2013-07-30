@@ -4,9 +4,7 @@ from plugins.Random import *
 
 gen = RandomProgramGenerator()
 
-def run(p, v, i, strategy):
-    gen.n = v
-    gen.Generate(p.method.system)  
+def run(p, v, i, strategy):  
     p.method.algorithm.strategies[1] = strategy
     p.method.Reset()
     p.method.Start()
@@ -17,12 +15,13 @@ def run(p, v, i, strategy):
 # Compare temperatures with each other
 p = Project("program.xml", "temperature test")
 for i in range(1, 160):
+    gen.n = i * 5
+    gen.Generate(p.method.system)
     for j in range(1, 100):
         for s in [0, 1, 2]:
             try:
                 run(p, i * 5, j, s)
-                while p.method.trace.getCurrent()[1]["processors"] != p.method.trace.getBest()[1]["processors"]:
-                    p.method.ScrollTrace(-1)
+                p.method.ScrollTrace(p.method.trace.best - p.method.trace.current)
                 iter = p.method.trace.current
                 proc = p.method.trace.getBest()[1]["processors"]
             except:

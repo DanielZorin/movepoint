@@ -53,7 +53,7 @@ class MethodWrapper(object):
         self.numberOfIterations = 10 * len(self.system.program.vertices)
         self._prepare()
         self.algorithm.Prepare()
-    
+   
     def _prepare(self):
         self.trace.clear()
         self.lastOperation = VoidOperation()
