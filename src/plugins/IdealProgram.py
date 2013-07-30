@@ -8,7 +8,7 @@ import random
 
 class IdealProgramGenerator:
     vertices = 20
-    processors = 4
+    processors = 2
     edges = 0.75
 
     def __init__(self):
