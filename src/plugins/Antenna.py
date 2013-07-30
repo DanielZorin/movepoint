@@ -7,13 +7,13 @@ import math
 
 class AntennaGenerator:
     a = 2.5
-    B = 5
-    K = 10
-    L = 2
-    n = 5
+    B = 80
+    K = 5
+    L = 3
+    n = 100
     steps = 1
     Mtheta = 2
-    perf = 100
+    perf = 50
     bandwidth = 1
     rel = 0.9
 
@@ -31,9 +31,9 @@ class AntennaGenerator:
         s.program.edges = []
 
         # Calculate tdir
-        s.tdir = self.a * self.B * self.n
+        s.tdir = int(self.a * self.B * self.n / self.perf)
 
-        # Create processors
+        # Create processorsw
 
         # Create FFT
         self.vCount = 1
