@@ -407,13 +407,38 @@ class Schedule(object):
             self._delEmptyProc(s.m)
             s.m = m2
             return True
- 
-    # TODO: deprecate this method       
-    def TryMoveVertex(self, s, n1, m2, n2):
+       
+    def TryMoveVertex(self, s, n1, m2, n2, limits=[]):
         '''Moves a :class:`~Schedules.ScheduleVertex.ScheduleVertex` s1 to position n on processor m 
         
-         :return: True if the operation is possible. String with the description of error otherwise'''
+        :return: True if the operation is possible. String with the description of error otherwise'''
 
+        for limit in limits:
+            v1 = limit[0]
+            v2 = limit[1]
+            c = limit[2]
+            if (s.v != v1) and (s.v != v2):
+                continue
+            if s.v == v1:
+                other = v2
+            else:
+                other = v1
+            verts = self.FindAllVertices(v=other)
+            for v in verts:
+                if c == "=":
+                    if v.m == m2:
+                        return False
+                if (c == ">") or (c == "<"):
+                    if v.m != m2:
+                        return False
+                    if (c == ">") and (other == v2) and self.vertices[v.m.number].index(v) < n2:
+                        return False
+                    if (c == ">") and (other == v1) and self.vertices[v.m.number].index(v) > n2:
+                        return False
+                    if (c == "<") and (other == v2) and self.vertices[v.m.number].index(v) > n2:
+                        return False
+                    if (c == "<") and (other == v1) and self.vertices[v.m.number].index(v) < n2:
+                        return False
         if s.m == m2:
         # Same processor
             if n2 > n1:

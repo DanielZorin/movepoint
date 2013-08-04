@@ -403,7 +403,6 @@ def HMetric(s1, s2):
                     uniq2 += 1
             lcs = len(str1) - LCSLength(str1, str2)
             matrix[i][j] = lcs + uniq2
-            print(matrix)
             j += 1
         i += 1
     m = Munkres()

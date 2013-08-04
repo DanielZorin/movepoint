@@ -22,11 +22,10 @@ for i in range(2, 160):
         for s in [0, 1, 2]:
             #try:
             ideal = run(p, i * 5, j, s)
-            metric = HMetric(ideal, p.method.system.schedule)
             p.method.ScrollTrace(p.method.trace.best - p.method.trace.current)
+            metric = HMetric(ideal, p.method.system.schedule)
             iter = p.method.trace.current
-            proc = p.method.trace.getBest()[1]["processors"]
-            print (proc, p.method.trace.getBest()[1])            
+            proc = p.method.trace.getBest()[1]["processors"]           
             #except:
             #    iter = -1
             #    proc = -1
