@@ -22,8 +22,8 @@ class Project(object):
     def __init__(self, s="", name=""):
         self.system = System(s)
         self.method = MethodWrapper(self.system)
-        self.annealing = SimulatedAnnealing(self.method)
-        self.genetics = Genetics(self.method)
+        self.annealing = SimulatedAnnealing(self.system.schedule, (self.system.tdir, self.system.rdir), self.method.trace[0], self.method.interpreter)
+        self.genetics = Genetics(self.system.schedule, (self.system.tdir, self.system.rdir), self.method.trace[0])
         self.method.algorithm = self.annealing
         self.method.Reset()
         self.name = name

@@ -47,6 +47,11 @@ class System(object):
         # TODO: exception in case of any errors         
         self.schedule = Schedule(self.program, self.processors)
         self.schedule.SetToDefault()
+
+    def ChangeProgram(self, program):
+        self.program = program
+        self.schedule = Schedule(self.program, self.processors)
+        self.schedule.SetToDefault()
                    
     def LoadProcessors(self, filename):
         '''Parse the XML with to get the specs of the processors

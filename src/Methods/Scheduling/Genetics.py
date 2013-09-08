@@ -21,8 +21,11 @@ class Genetics(object):
     crossoverFunction = [["Number", "Delay", "Idle time"], 2]
     selectionFunction = [["Truncation", "Tournament"], 0]
 
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, schedule, deadlines, trace):
+        self.schedule = schedule
+        self.tdir = deadlines[0]
+        self.rdir = deadlines[1]
+        self.trace = trace
         logging.basicConfig(level=logging.DEBUG)
     
     def write(self, *text):
