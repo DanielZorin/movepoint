@@ -42,6 +42,8 @@ class SimulatedAnnealing(object):
     def __init__(self, data):
         self.data = data
         logging.basicConfig(level=logging.DEBUG)
+        self.delayGen = self.DelayStrategy()
+        self.idleGen = self.IdleStrategy()
     
     def write(self, *text):
         ''' Print debug information'''
@@ -52,13 +54,14 @@ class SimulatedAnnealing(object):
             logger = logging.getLogger('SimulatedAnnealing')
             logger.debug(" ".join(res))
             
-    def Step(self):
+    def Step(self, limits = []):
         ''' Makes a single iteration of the algorithm'''
         self.write("---------------------------")
         self.write("iteration ", self.data.iteration)
+        self.limits = limits
         self.data.lastOperation = VoidOperation()
         op = self._chooseOperation()
-        self._applyOperation(op)
+        self._applyOperation(op, limits)
         self._selectNewSchedule()
 
     def Prepare(self):
@@ -155,7 +158,7 @@ class SimulatedAnnealing(object):
         else:
             raise "Error"  
 
-    def CutProcessor(self):
+    def CutProcessor(self, limits=[]):
         s = self.data.system.schedule
         mini = len(s.program.vertices)
         proc = s.processors[0]
@@ -192,7 +195,7 @@ class SimulatedAnnealing(object):
                             break
                 target_proc = s2.m
                 target_pos = s.vertices[s2.m.number].index(s2)
-                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos, limits) == True:
                     s.MoveVertex(s1, src_pos, target_proc, target_pos)
                     self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                     src_pos -= 1
@@ -204,7 +207,7 @@ class SimulatedAnnealing(object):
                     target_proc = s.GetProcessor(m)
                     target_pos = v
                     if target_proc != proc:
-                        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos, limits) == True:
                             s.MoveVertex(s1, src_pos, target_proc, target_pos)
                             self.data.lastOperation.Add(MoveVertex(s1, proc, src_pos, target_proc, target_pos))
                             flag = False
@@ -213,6 +216,8 @@ class SimulatedAnnealing(object):
                 if not flag:
                     break
             if flag:
+                # TODO: fix the problem with limits
+                break
                 raise "Error"
                 break
         return   
@@ -252,7 +257,7 @@ class SimulatedAnnealing(object):
             found = False
             for i in range(len(s.program.vertices)):
                 s1, src_pos = self._getRandomVertex()
-                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos, self.limits) == True:
                     found = True
                     break
             if found:
@@ -279,7 +284,7 @@ class SimulatedAnnealing(object):
             found = False
             for i in range(len(s.program.vertices)):
                 target_proc, target_pos = self._getRandomPosition()
-                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos, self.limits) == True:
                     found = True
                     break
             if found:
@@ -306,33 +311,31 @@ class SimulatedAnnealing(object):
     def MixedStrategy(self):
         r = random.random()
         if r < 0.5:
-            return next(self.IdleStrategy())
+            return next(self.idleGen)
         else:
-            return next(self.DelayStrategy())
+            return next(self.delayGen)
 
-    def DoMoveVertex(self):
+    def DoMoveVertex(self, limits=[]):
         s = self.data.system.schedule
         r = random.random()
         if self.strategies[1] == 2:
             s1, src_pos, target_proc, target_pos = self.MixedStrategy()
         elif self.strategies[1] == 1:
-            s1, src_pos, target_proc, target_pos = next(self.DelayStrategy())
+            s1, src_pos, target_proc, target_pos = next(self.delayGen)
         else:
-            s1, src_pos, target_proc, target_pos = next(self.IdleStrategy())
+            s1, src_pos, target_proc, target_pos = next(self.idleGen)
                     
         self.write(s1.v.number, s1.m.number, src_pos, target_proc, target_pos)
-        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos) == True:
+        if s.TryMoveVertex(s1, src_pos, target_proc, target_pos, limits) == True:
             self.data.lastOperation = MoveVertex(s1, s1.m, src_pos, target_proc, target_pos)
             s.ApplyOperation(self.data.lastOperation)
             self.data.lastOperation.pos2 = (s1.m, s.vertices[s1.m.number].index(s1))
         else:
-            print ([p for p in ch])
-            for p in ch:
-                print (s.TryMoveVertex(s1, p.m, p.n))
+            s.TryMoveVertex(s1, src_pos, target_proc, target_pos, limits)
             raise "Something went wrong"          
                          
     # Selects parameters for the operation and applies it whenever possible
-    def _applyOperation(self, op):
+    def _applyOperation(self, op, limits=[]):
         self.write(op)
         if op == "AddProcessor":
             self.DoAddProcessor()
@@ -344,9 +347,9 @@ class SimulatedAnnealing(object):
             self.DoDeleteVersion()        
         elif op == "MoveVertex":
             if self.data.trace.getLast()[1]["time"]  < self.data.system.tdir and self.data.trace.getLast()[1]["processors"] > 1:
-                self.CutProcessor()
+                self.CutProcessor(limits)
             else:
-                self.DoMoveVertex()
+                self.DoMoveVertex(limits)
 
     def _selectNewSchedule(self):
         def accept():

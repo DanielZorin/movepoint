@@ -37,7 +37,7 @@ class Genetics(object):
     def Prepare(self):
         self.createPopulation()
              
-    def Step(self):
+    def Step(self, limits = []):
         ''' Makes a single iteration of the algorithm'''
         self.rank()
         self.crossover()

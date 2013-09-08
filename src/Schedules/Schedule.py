@@ -117,19 +117,79 @@ class Schedule(object):
             res += proc
         return res
     
-    def SetToDefault(self):    
+    def SetToDefault(self, limits=[]):    
         ''' Places each vertex on a new processor'''
         self.vertices = {}
         self.processors = []
         self.emptyprocessors = []
-        i = 1
+        special = []
+        for l in limits:
+            if l[2] == ">":
+                special.append(l[0])
+                special.append(l[1])
+
         for v in self.program.vertices:
+            if not (v.number in special):
+                p = self._getProcessor()
+                s = ScheduleVertex(v, v.versions[0], p)
+                self.vertices[p.number] = [s]
+                self.currentVersions[v.number] = [s]
+
+        if not limits:
+            return
+
+        sets = []
+        for l in limits:
+            if l[2] == ">":
+                found = False
+                for s in sets:
+                    if (l[0] in s) or (l[1] in s):
+                        s.add(l[0])
+                        s.add(l[1])
+                        found = True
+                if not found:
+                    s = set([l[1], l[0]])
+                    sets.append(s)
+        def comp(a, b):
+            for l in limits:
+                if l[2] == ">":
+                    if (l[0] == a) and (l[1] == b):
+                        return 1
+                    elif (l[1] == a) and (l[0] == b):
+                        return -1
+            return 0
+
+        def cmp2key(mycmp):
+            class K:
+                def __init__(self, obj, *args):
+                    self.obj = obj
+                def __lt__(self, other):
+                    return mycmp(self.obj, other.obj) < 0
+                def __gt__(self, other):
+                    return mycmp(self.obj, other.obj) > 0
+                def __eq__(self, other):
+                    return mycmp(self.obj, other.obj) == 0
+                def __le__(self, other):
+                    return mycmp(self.obj, other.obj) <= 0
+                def __ge__(self, other):
+                    return mycmp(self.obj, other.obj) >= 0
+                def __ne__(self, other):
+                    return mycmp(self.obj, other.obj) != 0
+            return K
+        for s in sets:
+            res = list(s)
+            res.sort(key=cmp2key(lambda x, y: comp(x, y)))
             p = self._getProcessor()
-            s = ScheduleVertex(v, v.versions[0], p)
-            self.vertices[p.number] = [s]
-            self.currentVersions[v.number] = [s]
-            i += 1
-            
+            self.vertices[p.number] = []
+            for r in res:
+                for v in self.program.vertices:
+                    if v.number == r:
+                        v0 = v
+                s = ScheduleVertex(v0, v0.versions[0], p)
+                self.vertices[p.number].append(s)
+                self.currentVersions[v0.number]= [s]
+                        
+
     def SetToDefault2(self):
         ''' Places all vertices on one processor '''
         self.vertices = {}
@@ -240,7 +300,7 @@ class Schedule(object):
                         return t
         return None
      
-    def FindAllVertices(self, v = None, k = None):
+    def FindAllVertices(self, v = None, k = None, vid = None):
         ''' Returns a list of vertices satisfying the given mask.
         "None" stands for any value'''
         res = []
@@ -248,7 +308,8 @@ class Schedule(object):
             for t in self.vertices[m]:
                 if (v is None) or (t.v == v):
                     if (k is None) or (t.k == k):
-                        res.append(t)
+                        if (vid is None) or (t.v.number == vid):
+                            res.append(t)
         return res
     
     def FindProcessor(self, v):
@@ -417,13 +478,13 @@ class Schedule(object):
             v1 = limit[0]
             v2 = limit[1]
             c = limit[2]
-            if (s.v != v1) and (s.v != v2):
+            if (s.v.number != v1) and (s.v.number != v2):
                 continue
-            if s.v == v1:
+            if s.v.number == v1:
                 other = v2
             else:
                 other = v1
-            verts = self.FindAllVertices(v=other)
+            verts = self.FindAllVertices(vid=other)
             for v in verts:
                 if c == "=":
                     if v.m == m2:

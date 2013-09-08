@@ -47,9 +47,9 @@ class MethodWrapper(object):
         self.system = s
         self._prepare()
     
-    def Reset(self):
+    def Reset(self, limits=[]):
         ''' Resets the method to the zero iteration'''
-        self.system.schedule.SetToDefault()
+        self.system.schedule.SetToDefault(limits)
         self.numberOfIterations = 10 * len(self.system.program.vertices)
         self._prepare()
         self.algorithm.Prepare()
@@ -64,12 +64,12 @@ class MethodWrapper(object):
         self.trace.addStep(self.lastOperation, data)
         self.trace.setBest(0)
         
-    def Start(self):
+    def Start(self, limits=[]):
         ''' Runs the algorithm with the given number of iterations'''
         self.iteration = 1
         while self.iteration <= self.numberOfIterations:
-            #print(self.iteration)
-            self.Step()
+            print(self.iteration)
+            self.Step(limits)
             self.iteration += 1
             if (self.trace.getLast()[1]["processors"] == 1) and \
                 (self.trace.getLast()[1]["time"]  <= self.system.tdir) and \
@@ -78,11 +78,11 @@ class MethodWrapper(object):
                 return  
         return    
             
-    def Step(self):
+    def Step(self, limits=[]):
         ''' Makes a single iteration of the algorithm'''
         self.trace.deleteTail(self.system.tdir, self.system.rdir)
         self.lastOperation = VoidOperation()
-        self.algorithm.Step()
+        self.algorithm.Step(limits)
 
     def ScrollTrace(self, diff):
         ''' Scrolls diff operations along the trace'''
