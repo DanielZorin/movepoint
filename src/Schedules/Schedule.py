@@ -43,6 +43,7 @@ class Schedule(object):
         self.program = program
         self.availableProcessors = processors
         self.emptyprocessors = []
+        self.processors = []
         self.vertices = {}
         for v in self.program.vertices:
             p = self._getProcessor()
@@ -129,6 +130,7 @@ class Schedule(object):
             self.vertices[p.number] = [s]
             self.currentVersions[v.number] = [s]
             i += 1
+        x = 99
             
     def SetToDefault2(self):
         ''' Places all vertices on one processor '''

@@ -5,8 +5,10 @@ Created on 10.11.2010
 '''
 
 from Schedules.Operation import *
+from Schedules.Schedule import *
 from Schedules.SimpleInterpreter import SimpleInterpreter
-import logging
+from Methods.Scheduling.SimulatedAnnealing import *
+import logging, multiprocessing, os, threading
 
 class MethodWrapper(object):
     ''' Simulated Annealing method adapted for scheduling.
@@ -24,10 +26,15 @@ class MethodWrapper(object):
     
     lastOperation = VoidOperation()
     ''' Here we keep the info about the last operation. It's used in GUI '''
-    
-    trace = Trace()
 
-    initialTemperature = 5.0
+    parallelThreads = 1
+    ''' Number of parallel threads. By default, there is no parallelism'''
+
+    limits = []
+    
+    trace = [Trace()]
+
+    algs = []
 
     algorithm = None
     '''The actual algorithm instance'''
@@ -55,32 +62,66 @@ class MethodWrapper(object):
         self.algorithm.Prepare()
    
     def _prepare(self):
-        self.trace.clear()
-        self.lastOperation = VoidOperation()
-        data = {"time":self.interpreter.Interpret(self.system.schedule),
-                "reliability":self.system.schedule.GetReliability(),
-                "processors":self.system.schedule.GetProcessors()
-                }
-        self.trace.addStep(self.lastOperation, data)
-        self.trace.setBest(0)
+        self.limits = []
+        if self.parallelThreads > 1:
+            pass
+
+        self.trace = []
+        for i in range(self.parallelThreads):
+            self.trace.append(Trace())
+        for t in self.trace:
+            t.clear()
+            self.lastOperation = VoidOperation()
+            data = {"time":self.interpreter.Interpret(self.system.schedule),
+                    "reliability":self.system.schedule.GetReliability(),
+                    "processors":self.system.schedule.GetProcessors()
+                    }
+            t.addStep(self.lastOperation, data)
+            t.setBest(0)
         
     def Start(self):
         ''' Runs the algorithm with the given number of iterations'''
         self.iteration = 1
-        while self.iteration <= self.numberOfIterations:
-            #print(self.iteration)
-            self.Step()
-            self.iteration += 1
-            if (self.trace.getLast()[1]["processors"] == 1) and \
-                (self.trace.getLast()[1]["time"]  <= self.system.tdir) and \
-                (self.trace.getLast()[1]["reliability"]  >= self.system.rdir):
-                #self.write("Early end: ", self.iteration)
-                return  
-        return    
+        if self.parallelThreads == 1:
+            while self.algorithm.iteration <= self.numberOfIterations:           
+                self.Step()
+                self.algorithm.iteration += 1
+                if (self.trace[0].getLast()[1]["processors"] == 1) and \
+                    (self.trace[0].getLast()[1]["time"]  <= self.system.tdir) and \
+                    (self.trace[0].getLast()[1]["reliability"]  >= self.system.rdir):
+                    return 
+        else:
+            threads = []
+            algs = [0 for i in range(self.parallelThreads)]
+            for id in range(self.parallelThreads):
+                limits = []
+                print ("thread ", id)
+                s = Schedule(self.system.program, self.system.schedule.availableProcessors)
+                s.SetToDefault()
+                algs[id] = SimulatedAnnealing(s, (self.algorithm.tdir, self.algorithm.rdir), self.trace[id], SimpleInterpreter())
+                thread = threading.Thread(target=self.StartThread, args=(algs[id], limits, id))
+                threads.append(thread)
+                thread.start()
+            #for t in threads:
+            #    t.join()
+        return
+    
+    def StartThread(self, alg, limits, id):
+        self.trace[id].deleteTail(self.system.tdir, self.system.rdir)
+        self.lastOperation = VoidOperation()
+        while alg.iteration <= self.numberOfIterations:
+            print ("thread " + str(id) +  " " + str(alg.iteration))
+            alg.Step(limits, id)
+            alg.iteration += 1
+            if (self.trace[id].getLast()[1]["processors"] == 1) and \
+                (self.trace[id].getLast()[1]["time"]  <= self.system.tdir) and \
+                (self.trace[id].getLast()[1]["reliability"]  >= self.system.rdir):
+                return      
+
             
     def Step(self):
         ''' Makes a single iteration of the algorithm'''
-        self.trace.deleteTail(self.system.tdir, self.system.rdir)
+        self.trace[0].deleteTail(self.system.tdir, self.system.rdir)
         self.lastOperation = VoidOperation()
         self.algorithm.Step()
 
@@ -89,19 +130,19 @@ class MethodWrapper(object):
         if diff == 0:
             return
         if diff > 0:
-            if self.trace.current + diff >= self.trace.length():
-                diff = self.trace.length() - self.trace.current - 1
+            if self.trace[0].current + diff >= self.trace[0].length():
+                diff = self.trace[0].length() - self.trace[0].current - 1
             for i in range(diff):
-                self.trace.current += 1
-                op = self.trace.getCurrent()
+                self.trace[0].current += 1
+                op = self.trace[0].getCurrent()
                 self.system.schedule.ApplyOperation(op[0])
         if diff < 0:
-            if self.trace.current + diff < 0:
+            if self.trace[0].current + diff < 0:
                 diff = -self.trace.current
             for i in range(-diff):
-                op = self.trace.getCurrent()
+                op = self.trace[0].getCurrent()
                 self.system.schedule.ApplyOperation(op[0].Reverse())
-                self.trace.current -= 1
+                self.trace[0].current -= 1
 
     def ManualStep(self, op, **params):
         ''' Callback for applying operations from the outside of this class, i.e. when the operation is defined by GUI'''
@@ -141,6 +182,6 @@ class MethodWrapper(object):
         new_time = self.interpreter.Interpret(self.system.schedule)
         new_rel = self.system.schedule.GetReliability()
         new_proc = self.system.schedule.GetProcessors()
-        self.trace.deleteTail(self.system.tdir, self.system.rdir)
-        self.trace.addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
+        self.trace[0].deleteTail(self.system.tdir, self.system.rdir)
+        self.trace[0].addStep(self.lastOperation, {"time":new_time, "reliability":new_rel, "processors":new_proc})
         return True

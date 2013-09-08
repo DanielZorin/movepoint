@@ -36,8 +36,16 @@ class SimpleInterpreter:
             curlev = []
             for m in [v for v in verts.keys()]:
                 ok = True
-                for v0 in schedule._dep(verts[m][0]):
+                dep = schedule._dep(verts[m][0])
+                for v0 in dep:
                     if not (v0 in donetasks):
+                        if lev >= 1:
+                            if len(levels[lev-1]) == 0:
+                                print ("not found ", v0)
+                                print(schedule)
+                                for v in donetasks:
+                                    print(v.v.number)
+                                print("=========================================")
                         ok = False
                         break
                 if ok:
