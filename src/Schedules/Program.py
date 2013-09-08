@@ -179,6 +179,7 @@ class Program(object):
             leftverts = newlv
             levels[lev] = curlev
             lev += 1
+        self.levels = levels
         lev -= 1            
         while lev > 0:
             for v in levels[lev]:
@@ -266,6 +267,48 @@ class Program(object):
             strict *= p
             
         return strict, normal
+
+    def FindIndependentPair(self):
+        levs = [k for k in self.levels.keys()]
+
+        for lev1 in levs:
+            for v1 in self.levels[lev1]:
+                for lev2 in levs[::-1]:
+                    for v2 in self.levels[lev2]:
+                        if not (v2 in self._trans[v1.number]):
+                            yield (v1, v2)
+        yield (None, None)
+
+    def GenerateLimits(self, n):
+        if n < 3:
+            return []
+        if n % 2 == 0:
+            n += 1
+        ready = 0
+        limits = []
+        gen = self.FindIndependentPair()
+        while ready < n:
+            v1, v2 = next(gen)
+            if v1 == None:
+                # Can't generate enough pairs
+                return limits
+            if len(limits) == 0:
+                limits = [[(v1.number, v2.number, "=")], [(v1.number, v2.number, ">")], [(v2.number, v1.number, ">")]]
+                ready = 3
+                continue
+            lens = [len(v) for v in limits]
+            for i in range(1, len(limits)):
+                if len(limits[i]) < len(limits[i - 1]):
+                    break
+            lim = limits[i]
+            del limits[i]
+            limits = [lim + [(v1.number, v2.number, "=")]] + limits
+            limits = [lim + [(v1.number, v2.number, ">")]] + limits
+            limits = [lim + [(v2.number, v1.number, ">")]] + limits
+            ready += 2
+
+        return limits
+
     
     def __str__(self):
         res = ""
