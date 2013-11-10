@@ -32,7 +32,6 @@ class Project(object):
         fn = open(filename, "wb")
         dict = {"name": self.name, 
                 "system": self.system,
-                "method": self.method,
                 "graph": self.graph,
                 # This is a very weird bug. Somehow processors aren't saved as a part of system.
                 # Without this system.processors is []
@@ -49,16 +48,11 @@ class Project(object):
         self.system = dict["system"]
         self.system.program._buildData()
         self.system.processors = dict["proc"]
-        self.method = dict["method"]
+        self.method.ChangeSystem(self.system)
         self.method.trace = dict["trace"]
         self.graph = dict["graph"]
         # TODO: get rid of this
         self.system.schedule.Consistency()
-        # TODO: temporary workaround
-        if isinstance(self.method.algorithm, SimulatedAnnealing):
-            self.annealing = self.method.algorithm
-        else:
-            self.genetics = self.method.algorithm
         self.method.algorithm = self.annealing
         self.annealing.data = self.method
         self.genetics.data = self.method

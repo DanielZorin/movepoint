@@ -38,13 +38,14 @@ class MethodWrapper(object):
     def __init__(self, system):
         self.iteration = 1
         self.system = system
-        self.numberOfIterations = len(self.system.program.vertices) * 1 + 1
+        self.numberOfIterations = len(self.system.program.vertices) * 10 + 1
         self._prepare()
     
     def ChangeSystem(self, s):
         ''' Replace the system'''
-        self.numberOfIterations = len(self.system.program.vertices) * 1
         self.system = s
+        self.system.schedule.Consistency()
+        self.numberOfIterations = len(self.system.program.vertices) * 10
         self._prepare()
     
     def Reset(self, limits=[]):

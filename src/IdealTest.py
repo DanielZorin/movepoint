@@ -15,17 +15,23 @@ def run(p, v, i, strategy):
 
 # Compare temperatures with each other
 p = Project("program.xml", "temperature test")
-for i in range(2, 160):
+for i in range(4, 5):
     gen.vertices = i * 5
     ideal = gen.Generate(p.method.system)
-    for j in range(1, 100):
+    for j in range(1, 10):
         for s in [0, 1, 2]:
             #try:
             ideal = run(p, i * 5, j, s)
             p.method.ScrollTrace(p.method.trace.best - p.method.trace.current)
             metric = HMetric(ideal, p.method.system.schedule)
+            time =  p.method.trace.getBest()[1]["time"] 
+            print (metric)
+            print(ideal, time)
+            print ("-=-=-=-=-=-=-=-=-=-=-")
+            print (p.method.system.schedule)
             iter = p.method.trace.current
-            proc = p.method.trace.getBest()[1]["processors"]           
+            proc = p.method.trace.getBest()[1]["processors"]  
+                    
             #except:
             #    iter = -1
             #    proc = -1

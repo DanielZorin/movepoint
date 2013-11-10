@@ -15,7 +15,7 @@ def RunProcess(q, name, limits):
 
 if __name__ == '__main__':
     gen = RandomProgramGenerator()
-    gen.n = 20
+    gen.n = 50
     p = Project("program.xml", "temperature test")
     gen.Generate(p.method.system)
     limits = p.method.system.program.GenerateLimits(count)
