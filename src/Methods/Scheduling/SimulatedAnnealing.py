@@ -19,12 +19,6 @@ class SimulatedAnnealing(object):
                  "time-exceed":{"DeleteVersion":0.5, "DeleteProcessor":0.33, "MoveVertex":0.5} }
     ''' Operation priorities (dictionary operation_name:priority) '''
     
-    choice_vertices = 5
-    ''' Maximum number of vertices among which the parameters for "MoveVertex" are chosen '''
-    
-    choice_places = 5
-    ''' Maximum number of places among which the parameters for "MoveVertex" are chosen '''
-    
     strategies = [["Idle time reduction", "Delay reduction", "Mixed"], 2]
     ''' Used strategies for MoveVertex and their probabilities '''
 

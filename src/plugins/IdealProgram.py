@@ -9,7 +9,7 @@ import random
 class IdealProgramGenerator:
     vertices = 20
     processors = 2
-    edges = 0.75
+    edges = 2.75
 
     def __init__(self):
         pass
@@ -99,7 +99,7 @@ class IdealProgramGenerator:
                             s.program.edges.append(e)
                             total += 1
         s.program._buildData()
-        s.tdir = tdir * 1.5
+        s.tdir = tdir #* 1.5
         s.rdir = 0.0
         return ideal
 

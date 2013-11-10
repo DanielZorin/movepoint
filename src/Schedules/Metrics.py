@@ -402,9 +402,10 @@ def HMetric(s1, s2):
                 else:
                     uniq2 += 1
             lcs = len(str1) - LCSLength(str1, str2)
-            matrix[i][j] = lcs + uniq2
+            matrix[i][j] = lcs + uniq1
             j += 1
         i += 1
+    print (matrix)
     m = Munkres()
     indexes = m.compute(matrix)
     total_cost = 0
