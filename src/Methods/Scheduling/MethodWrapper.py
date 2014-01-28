@@ -69,7 +69,7 @@ class MethodWrapper(object):
         ''' Runs the algorithm with the given number of iterations'''
         self.iteration = 1
         while self.iteration <= self.numberOfIterations:
-            print(self.iteration)
+            #print(self.iteration)
             self.Step(limits)
             self.iteration += 1
             if (self.trace.getLast()[1]["processors"] == 1) and \

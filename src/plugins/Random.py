@@ -11,6 +11,7 @@ class RandomProgramGenerator:
     t2 = 5
     v1 = 2
     v2 = 5
+    q = 0.7
     tdir = [["Unreal", "Very strict", "Normal", "None"], 2]
     rdir = [["Unreal", "Very strict", "Normal", "None"], 2]
 
@@ -49,14 +50,13 @@ class RandomProgramGenerator:
             for j in range(len(v.versions)):
                 v.versions[j].number = j + 1
         for i in range(self.n-1):
-            for j in [0]:#range(random.randint(0, 1)):
-                if random.random() < 0.7:
-                    src = s.program.vertices[i]
-                    dest = s.program.vertices[random.randint(i+1, self.n-1)]
-                    volume = random.randint(self.v1, self.v2)
-                    e = ProgramEdge(src, dest, volume)
-                    if s.program.FindEdge(src, dest) == None:
-                        s.program.edges.append(e)
+            if random.random() < self.q:
+                src = s.program.vertices[i]
+                dest = s.program.vertices[random.randint(i+1, self.n-1)]
+                volume = random.randint(self.v1, self.v2)
+                e = ProgramEdge(src, dest, volume)
+                if s.program.FindEdge(src, dest) == None:
+                    s.program.edges.append(e)
                     
         s.program._buildData()
 
