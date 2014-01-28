@@ -38,6 +38,7 @@ class SimulatedAnnealing(object):
         logging.basicConfig(level=logging.DEBUG)
         self.delayGen = self.DelayStrategy()
         self.idleGen = self.IdleStrategy()
+        self.randomGen = self.RandomStrategy()
     
     def write(self, *text):
         ''' Print debug information'''
@@ -287,6 +288,25 @@ class SimulatedAnnealing(object):
                 yield self._findVertexToMove()
             i += 1
 
+    def RandomStrategy(self):
+        s = self.data.system.schedule
+        int = self.data.interpreter
+        verts = [v for v in s.vertices[m] for m in s.vertices.keys()]
+        i = 0
+        while True:
+            s1, src_pos = self._getRandomVertex()
+            found = False
+            for i in range(len(s.program.vertices)):
+                target_proc, target_pos = self._getRandomPosition()
+                if s.TryMoveVertex(s1, src_pos, target_proc, target_pos, self.limits) == True:
+                    found = True
+                    break
+            if found:
+                yield s1, src_pos, target_proc, target_pos
+            else:
+                yield self._findVertexToMove()
+            i += 1
+
     def _findVertexToMove(self):
         s = self.data.system.schedule
         keys = [m for m in s.vertices.keys()]
@@ -316,6 +336,8 @@ class SimulatedAnnealing(object):
             s1, src_pos, target_proc, target_pos = self.MixedStrategy()
         elif self.strategies[1] == 1:
             s1, src_pos, target_proc, target_pos = next(self.delayGen)
+        elif self.strategies[1] == 3:
+            s1, src_pos, target_proc, target_pos = next(self.randomGen)
         else:
             s1, src_pos, target_proc, target_pos = next(self.idleGen)
                     
