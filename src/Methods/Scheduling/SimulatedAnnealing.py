@@ -19,7 +19,7 @@ class SimulatedAnnealing(object):
                  "time-exceed":{"DeleteVersion":0.5, "DeleteProcessor":0.33, "MoveVertex":0.5} }
     ''' Operation priorities (dictionary operation_name:priority) '''
     
-    strategies = [["Idle time reduction", "Delay reduction", "Mixed"], 2]
+    strategies = [["Idle time reduction", "Delay reduction", "Mixed", "Random"], 2]
     ''' Used strategies for MoveVertex and their probabilities '''
 
     threshold = [["Bolzmann", "Cauchy", "Combined"], 0]
@@ -291,7 +291,6 @@ class SimulatedAnnealing(object):
     def RandomStrategy(self):
         s = self.data.system.schedule
         int = self.data.interpreter
-        verts = [v for v in s.vertices[m] for m in s.vertices.keys()]
         i = 0
         while True:
             s1, src_pos = self._getRandomVertex()

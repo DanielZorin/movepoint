@@ -401,17 +401,22 @@ class Schedule(object):
         #Not enough versions
         if len(totalver) <= len(curver) + 1:
             return False
-        if not p1:
+        if not p1 or not p1.number in self.vertices.keys():
             p = self._getProcessor()
             s1 = ScheduleVertex(v, totalver[len(curver)], p)
             s2 = ScheduleVertex(v, totalver[len(curver)+1], p)
             self.vertices[p.number] = [s1, s2]
         else:
             p = p1
-            s1 = ScheduleVertex(v, totalver[len(curver)], p1)
-            s2 = ScheduleVertex(v, totalver[len(curver)+1], p1)
-            self.vertices[p1.number].insert(n1-1, s1)
-            self.vertices[p2.number].insert(n2-1, s2)
+            s1 = ScheduleVertex(v, totalver[len(curver)], p1)      
+            self.vertices[p1.number] = [s1]
+            if not p2 or not p2.number in self.vertices.keys():
+                p2 = self._getProcessor()
+                s2 = ScheduleVertex(v, totalver[len(curver)+1], p2)
+                self.vertices[p2.number] = [s2]
+            else:
+                s2 = ScheduleVertex(v, totalver[len(curver)+1], p2)
+                self.vertices[p2.number].insert(n2-1, s2)
         self.currentVersions[v.number] += [s1, s2]
         self._succCache = {}
         return p.number
