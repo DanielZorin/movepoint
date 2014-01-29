@@ -77,7 +77,7 @@ class MethodWrapper(object):
                 (self.trace.getLast()[1]["reliability"]  >= self.system.rdir):
                 #self.write("Early end: ", self.iteration)
                 return  
-        return    
+        return
             
     def Step(self, limits=[]):
         ''' Makes a single iteration of the algorithm'''
