@@ -64,6 +64,6 @@ if __name__ == '__main__':
                         iter = -1
                         proc = -1
                         time = -1
-                    f = open("parallel_results.txt", "a")
+                    f = open("results_parallel.txt", "a")
                     f.write(str(n * 5) + ";" + str(j) + ";" + str(s) + ";" + str(count) + ";" + str(proc) + ";" + str(time) + "\n")
                     f.close()

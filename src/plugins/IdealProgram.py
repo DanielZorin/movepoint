@@ -10,6 +10,7 @@ class IdealProgramGenerator:
     vertices = 20
     processors = 2
     edges = 0.75
+    k = 1.3
 
     def __init__(self):
         pass
@@ -98,7 +99,7 @@ class IdealProgramGenerator:
                             s.program.edges.append(e)
                             total += 1
         s.program._buildData()
-        s.tdir = tdir * 1.3
+        s.tdir = tdir * self.k
         s.rdir = 0.0
         return ideal
 

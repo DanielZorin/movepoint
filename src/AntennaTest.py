@@ -24,8 +24,7 @@ for l in range(1, 10):
             res += str(float(best["processors"]) / float(l + 1) / float(m + 1)) + ";"
         except:
             res += "ERROR;"
-    print (res)
+        f = open("results_antenna.txt", "w")
+        f.write(res)
+        f.close()
     res += "\n"
-f = open("results_antenna.txt", "w")
-f.write(res)
-f.close()
