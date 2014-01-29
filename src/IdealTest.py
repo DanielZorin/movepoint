@@ -15,11 +15,13 @@ def run(p, v, i, strategy):
 
 # Compare temperatures with each other
 p = Project("program.xml", "temperature test")
-for i in range(5, 7):
+for i in range(5, 100):
     gen.vertices = i * 5
+    gen.edges = 0.5
+    gen.k = 1.8
     ideal = gen.Generate(p.method.system)
-    for j in range(1, 10):
-        for s in [0, 1, 2]:
+    for j in range(1, 101):
+        for s in [0, 1, 2, 3]:
             #try:
             ideal = run(p, i * 5, j, s)
             p.method.ScrollTrace(p.method.trace.best - p.method.trace.current)
@@ -31,6 +33,6 @@ for i in range(5, 7):
             #except:
             #    iter = -1
             #    proc = -1
-            f = open("ideal_results.txt", "a")
+            f = open("results_ideal.txt", "a")
             f.write(str(i * 5) + ";" + str(j) + ";" + str(s) + ";" + str(proc) + ";" + str(iter) + ";" + str(metric) + "\n")
             f.close()
