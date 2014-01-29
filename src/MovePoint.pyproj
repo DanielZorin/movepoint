@@ -62,8 +62,9 @@
     <Compile Include="plugins\IdealProgram.py" />
     <Compile Include="plugins\Random.py" />
     <Compile Include="plugins\__init__.py" />
-    <Compile Include="RunAnnealing.py" />
+    <Compile Include="ParallelTest.py" />
     <Compile Include="SchedulerGUI\AlgorithmSettings.py" />
+    <Compile Include="SchedulerGUI\ParallelRunner.py" />
     <Compile Include="Schedules\Metrics.py" />
     <Compile Include="Schedules\SimpleInterpreter.py" />
     <Compile Include="SRGMGUI-launch.py" />

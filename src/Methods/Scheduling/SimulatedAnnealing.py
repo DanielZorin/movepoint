@@ -317,7 +317,7 @@ class SimulatedAnnealing(object):
                         s2 = s.vertices[m2][i]
                         target_proc = s2.m
                         target_pos = s.vertices[s2.m.number].index(s2)
-                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, i) == True:
+                        if (s2 != s1) and s.TryMoveVertex(s1, src_pos, s2.m, i, self.limits) == True:
                             return s1, src_pos, target_proc, target_pos
         return s1, src_pos, target_proc, target_pos
 
