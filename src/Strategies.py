@@ -71,7 +71,6 @@ for i in range(2, 50):
     gen.tdir[1] = 1
     gen.rdir[1] = 3
     gen.Generate(p.method.system)
-    avg = [0, 0, 0, 0]
     for j in range(1, 101):
         for s in [0, 1, 2, 3]:
             try:
@@ -82,7 +81,6 @@ for i in range(2, 50):
             except:
                 iter = -1
                 proc = -1
-            avg[s] += proc
             f = open("final_results.txt", "a")
             f.write("limited-time;" + str(i * 5) + ";" + str(j) + ";" + str(s) + ";" + str(proc) + ";" + str(iter) + "\n")
             f.close()

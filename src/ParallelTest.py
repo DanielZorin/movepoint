@@ -28,7 +28,7 @@ if __name__ == '__main__':
     p = Project("program.xml", "temperature test")
     for n in range(3, 50):
         gen.n = n * 5
-        gen.q = 0
+        gen.q = 1.0
         gen.Generate(p.method.system)
         for j in range(1, 101):
             for s in [0, 1, 2]:
