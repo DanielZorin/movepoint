@@ -49,14 +49,14 @@ class RandomProgramGenerator:
             v.versions.sort(key=lambda x: x.reliability)
             for j in range(len(v.versions)):
                 v.versions[j].number = j + 1
-        for i in range(self.n-1):
-            if random.random() < self.q:
-                src = s.program.vertices[i]
-                dest = s.program.vertices[random.randint(i+1, self.n-1)]
-                volume = random.randint(self.v1, self.v2)
-                e = ProgramEdge(src, dest, volume)
-                if s.program.FindEdge(src, dest) == None:
-                    s.program.edges.append(e)
+        for i in range(int((self.n-1) * self.q)):
+            num = int(i / self.q)
+            src = s.program.vertices[num]
+            dest = s.program.vertices[random.randint(num+1, self.n-1)]
+            volume = random.randint(self.v1, self.v2)
+            e = ProgramEdge(src, dest, volume)
+            if s.program.FindEdge(src, dest) == None:
+                s.program.edges.append(e)
                     
         s.program._buildData()
 
