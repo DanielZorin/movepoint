@@ -405,7 +405,7 @@ def HMetric(s1, s2):
             matrix[i][j] = lcs + uniq1
             j += 1
         i += 1
-    print (matrix)
+    #print (matrix)
     m = Munkres()
     indexes = m.compute(matrix)
     total_cost = 0
