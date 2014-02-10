@@ -13,7 +13,7 @@ def run(p, v, i, strategy):
     return p.method.trace.getBest()[1]
 
 p = Project("program.xml", "temperature test")
-for i in range(2, 50):
+for i in range(27, 50):
     print (i*5)
     gen.n = i * 5
     #Unlimited time, limited reliability
