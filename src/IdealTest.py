@@ -15,24 +15,28 @@ def run(p, v, i, strategy):
 
 # Compare temperatures with each other
 p = Project("program.xml", "temperature test")
-for i in range(5, 25):
-    gen.vertices = i
-    gen.edges = 0.9
-    gen.k = 1.8
-    ideal = gen.Generate(p.method.system)
-    for j in range(1, 6):
-        for s in [0, 1, 2, 3]:
-            try:
-                print(i, j)
-                ideal = run(p, i * 5, j, s)
-                p.method.ScrollTrace(p.method.trace.best - p.method.trace.current)
-                metric = HMetric(ideal, p.method.system.schedule)
-                time =  p.method.trace.getBest()[1]["time"] 
-                iter = p.method.trace.current
-                proc = p.method.trace.getBest()[1]["processors"]                   
-            except:
-                iter = -1
-                proc = -1
-            f = open("results_ideal.txt", "a")
-            f.write(str(i * 5) + ";" + str(j) + ";" + str(s) + ";" + str(proc) + ";" + str(iter) + ";" + str(metric) + "\n")
-            f.close()
+for e in [0.2, 0.9, 1.5]:
+    for i in range(5, 25):
+        gen.vertices = i
+        gen.edges = e
+        gen.k = 1.8
+        ideal = gen.Generate(p.method.system)
+        f = open("results_ideal.txt", "a")
+        f.write(str(e) + "\n")
+        f.close()
+        for j in range(1, 6):
+            for s in [0, 1, 2, 3]:
+                try:
+                    print(i, j)
+                    ideal = run(p, i * 5, j, s)
+                    p.method.ScrollTrace(p.method.trace.best - p.method.trace.current)
+                    metric = HMetric(ideal, p.method.system.schedule)
+                    time =  p.method.trace.getBest()[1]["time"] 
+                    iter = p.method.trace.current
+                    proc = p.method.trace.getBest()[1]["processors"]                   
+                except:
+                    iter = -1
+                    proc = -1
+                f = open("results_ideal.txt", "a")
+                f.write(str(i * 5) + ";" + str(j) + ";" + str(s) + ";" + str(proc) + ";" + str(iter) + ";" + str(metric) + "\n")
+                f.close()
