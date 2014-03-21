@@ -48,6 +48,28 @@ for test in results.keys():
 	f.write(s.replace(".", ","))
 f.close()
 
+f = open("results_ideal.txt", "r")
+lines = f.readlines()
+f.close()
+results = {0:[], 1:[], 2:[], 3:[]}
+for s in lines:
+	parts = s.split(";")
+	results[int(parts[2])].append(int(parts[5]))
+f = open("results_ideal_parsed.txt", "w")
+s = "---;0;1;2;3\n"
+sizes = range(int((len(results[0]) - 1) / 5))
+res = []
+print(results)
+def avg(x):
+	return sum(x) / len(x)
+for i in sizes:
+	res.append([(i + 5) * 5, avg(results[0][i*5:i*5+5]), avg(results[1][i*5:i*5+5]), avg(results[2][i*5:i*5+5]), avg(results[3][i*5:i*5+5])])
+for r in res:
+	s += ';'.join([str(x) for x in r]) + "\n"
+f.write(s.replace(".", ","))
+f.close()
+exit(0)
+
 f = open("results_antenna.txt", "r")
 lines = f.readlines()
 f.close()
@@ -59,7 +81,10 @@ for s in lines:
 	key = (int(parts[1]), int(parts[2]))
 	if not key in results[parts[0]]:
 		results[parts[0]][key] = []
-	results[parts[0]][key].append(float(parts[4]))
+	try:
+		results[parts[0]][key].append(float(parts[4]))
+	except:
+		pass
 f = open("results_antenna_parsed.txt", "w")
 for test in results.keys():
 	s = test + "\n---;m=1;m=2;m=3\n"
