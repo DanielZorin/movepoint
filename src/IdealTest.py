@@ -17,7 +17,7 @@ def run(p, v, i, strategy):
 p = Project("program.xml", "temperature test")
 for e in [0.2, 0.9, 1.5]:
     for i in range(5, 25):
-        gen.vertices = i
+        gen.vertices = i * 5
         gen.edges = e
         gen.k = 1.8
         ideal = gen.Generate(p.method.system)

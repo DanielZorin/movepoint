@@ -87,7 +87,7 @@ class IdealProgramGenerator:
         while total < edges:
             print (total)
             iter += 1
-            if iter == 10000:
+            if iter == 1000:
                 break
             i = random.randint(0, len(verts) - 1)
             j = random.randint(0, self.processors - 1)

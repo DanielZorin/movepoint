@@ -16,7 +16,7 @@ gen.K = 8
 res = ""
 for k in [16, 32, 64, 128]:
     for l in [8, 16, 32, 64]:
-        for m in [5,6,7,8]: 
+        for m in [1,2,3,4]: 
             gen.K = k
             gen.L = l
             gen.Mtheta = m 
