@@ -53,6 +53,7 @@ class AntennaGenerator:
         while y != 0:
             x, y = y, x % y
         gcd = x
+        s.tdir = int(s.tdir / gcd)
         fft = []
         for i in range(self.K):
             v = newVertex(int(self.a * self.L / gcd))
