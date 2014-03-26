@@ -23,7 +23,7 @@ for k in [16, 32, 64, 128]:
             gen.B = 900
             gen.Generate(p.system)
             print (k, l, m)
-            for i in range(20):
+            for i in [1]:
                 try:
                     best = run(p, l, m)
                     ratio = str(float(best["processors"]) / float(l + 1) / float(m + 1)) + ";"
